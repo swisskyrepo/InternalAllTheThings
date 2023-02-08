@@ -1,0 +1,24 @@
+name: ci 
+on:
+  push:
+    branches:
+      - master 
+      - main
+  # At minute 0 past every 6th hour
+  schedule:
+  - cron: "0 */6 * * *"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - run: pip install mkdocs-material
+      - run: pip install mkdocs-git-revision-date-localized-plugin
+      - run: pip install mkdocs-git-committers-plugin
+      - run: mkdocs gh-deploy --force
