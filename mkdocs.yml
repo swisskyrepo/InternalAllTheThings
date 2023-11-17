@@ -23,6 +23,9 @@ theme:
     - toc.integrate
     - navigation.top
 
+extra_css:
+    - custom.css
+
 markdown_extensions:
   - def_list
   - pymdownx.tasklist:
