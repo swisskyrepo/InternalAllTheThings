@@ -1,4 +1,4 @@
-# Microsoft Entra ID / Azure Active Directory
+# Azure AD Tokens
 
 
 ## Access Token

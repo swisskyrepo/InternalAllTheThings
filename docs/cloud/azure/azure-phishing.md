@@ -1,4 +1,6 @@
-# Illicit Consent Grant
+# Azure AD Phishing
 
-# Device Code Phishing
+## Illicit Consent Grant
+
+## Device Code Phishing
 

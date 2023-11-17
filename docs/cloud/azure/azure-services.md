@@ -1,13 +1,14 @@
-# Azure Runbook
+# Azure Services
+
+## Azure Runbook
 
 Runbook must be SAVED and PUBLISHED before running it.
 
 
 
+## Office 365
 
-# Office 365
-
-## Extracting Microsoft Teams Messages
+### Extracting Microsoft Teams Messages
 
 ```ps1
 TokenTacticsV2> RefreshTo-MSTeamsToken -domain domain.local

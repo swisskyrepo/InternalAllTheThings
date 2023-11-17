@@ -1,4 +1,4 @@
-# IAM
+# Azure AD IAM
 
 > Root Management Group (Tenant) > Management Group > Subscription > Resource Group > Resource
 

@@ -1,4 +1,6 @@
-# OSINT AAD - Recon Domains
+# Azure AD Enumerate
+
+## OSINT AAD - Recon Domains
 
 Extract openly available information for the given tenant: https://aadinternals.com/osint/
 
@@ -7,7 +9,7 @@ Invoke-AADIntReconAsOutsider -Domain "company.com" | Format-Table
 Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
 ```
 
-# Azure AD - Collectors
+## Azure AD - Collectors
 
 * roadrecon
     ```ps1
@@ -20,11 +22,11 @@ Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
     ```
 
 
-# Azure AD - Conditionnal Access
+## Azure AD - Conditionnal Access
 
 Enumerate Conditionnal Access Policies: `roadrecon plugin policies`
 
-# Azure AD - MFA
+## Azure AD - MFA
 
 * [dafthack/MFASweep](https://github.com/dafthack/MFASweep) - A tool for checking if MFA is enabled on multiple Microsoft Services
 ```ps1
