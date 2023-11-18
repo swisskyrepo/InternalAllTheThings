@@ -2,7 +2,7 @@
 
 ## OSINT AAD - Recon Domains
 
-Extract openly available information for the given tenant: https://aadinternals.com/osint/
+Extract openly available information for the given tenant: [aadinternals.com/osint](https://aadinternals.com/osint/)
 
 ```ps1
 Invoke-AADIntReconAsOutsider -Domain "company.com" | Format-Table
