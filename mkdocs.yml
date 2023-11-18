@@ -19,8 +19,8 @@ theme:
         name: Switch to light mode
 
   features:
+    - content.code.copy
     - navigation.tracking
-    - toc.integrate
     - navigation.top
 
 extra_css:
