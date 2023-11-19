@@ -69,21 +69,21 @@ roadtx gettokens --refresh-token <refresh-token> -c 04b07795-8ddb-461a-bbee-02f9
 ```
 
 ```
-scope                                       resource                                                          client                              
-.default                                    04b07795-8ddb-461a-bbee-02f9e1bf7b46                              04b07795-8ddb-461a-bbee-02f9e1bf7b46
-                                            1950a258-227b-4e31-a9cf-717495945fc2                              1950a258-227b-4e31-a9cf-717495945fc2
-                                            https://graph.microsoft.com                                       00b41c95-dab0-4487-9791-b9d2c32c80f2
-                                                                                                              04b07795-8ddb-461a-bbee-02f9e1bf7b46
-                                            https://graph.windows.net                                         00b41c95-dab0-4487-9791-b9d2c32c80f2
-                                                                                                              04b07795-8ddb-461a-bbee-02f9e1bf7b46
-                                            https://outlook.office.com                                        00b41c95-dab0-4487-9791-b9d2c32c80f2
-                                                                                                              04b07795-8ddb-461a-bbee-02f9e1bf7b46
-Files.Read.All                              d3590ed6-52b3-4102-aeff-aad2292ab01c                              d3590ed6-52b3-4102-aeff-aad2292ab01c
-                                            https://graph.microsoft.com                                       d3590ed6-52b3-4102-aeff-aad2292ab01c
-                                            https://outlook.office.com                                        1fec8e78-bce4-4aaf-ab1b-5451cc387264
-Mail.ReadWrite.All                          https://graph.microsoft.com                                       00b41c95-dab0-4487-9791-b9d2c32c80f2
-                                            https://outlook.office.com                                        00b41c95-dab0-4487-9791-b9d2c32c80f2
-                                            https://outlook.office365.com                                     00b41c95-dab0-4487-9791-b9d2c32c80f2
+scope               resource                                client                              
+.default            04b07795-8ddb-461a-bbee-02f9e1bf7b46    04b07795-8ddb-461a-bbee-02f9e1bf7b46
+                    1950a258-227b-4e31-a9cf-717495945fc2    1950a258-227b-4e31-a9cf-717495945fc2
+                    https://graph.microsoft.com             00b41c95-dab0-4487-9791-b9d2c32c80f2
+                                                            04b07795-8ddb-461a-bbee-02f9e1bf7b46
+                    https://graph.windows.net               00b41c95-dab0-4487-9791-b9d2c32c80f2
+                                                            04b07795-8ddb-461a-bbee-02f9e1bf7b46
+                    https://outlook.office.com              00b41c95-dab0-4487-9791-b9d2c32c80f2
+                                                            04b07795-8ddb-461a-bbee-02f9e1bf7b46
+Files.Read.All      d3590ed6-52b3-4102-aeff-aad2292ab01c    d3590ed6-52b3-4102-aeff-aad2292ab01c
+                    https://graph.microsoft.com             3590ed6-52b3-4102-aeff-aad2292ab01c
+                    https://outlook.office.com              1fec8e78-bce4-4aaf-ab1b-5451cc387264
+Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9791-b9d2c32c80f2
+                    https://outlook.office.com              00b41c95-dab0-4487-9791-b9d2c32c80f2
+                    https://outlook.office365.com           00b41c95-dab0-4487-9791-b9d2c32c80f2
 ```
 
 

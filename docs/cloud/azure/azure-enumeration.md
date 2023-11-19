@@ -22,9 +22,12 @@ Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
     ```
 
 
-## Azure AD - Conditionnal Access
+## Azure AD - Conditionnal Access Policy
 
 Enumerate Conditionnal Access Policies: `roadrecon plugin policies`
+
+
+
 
 ## Azure AD - MFA
 

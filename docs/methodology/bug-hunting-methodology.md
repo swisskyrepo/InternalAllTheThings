@@ -1,4 +1,4 @@
-# Bug Hunting Methodology and Enumeration
+# Bug Hunting Methodology
 
 ## Summary
 

@@ -5,10 +5,11 @@
 > The attacker creates an Azure-registered application that requests access to data such as contact information, email, or documents. The attacker then tricks an end user into granting consent to the application so that the attacker can gain access to the data that the target user has access to. 
 
 Check if users are allowed to consent to apps: `PS AzureADPreview> (GetAzureADMSAuthorizationPolicy).PermissionGrantPolicyIdsAssignedToDefaultUserRole`
-* **Disable user consent** : Users cannot grant permissions to applications.
-* **Users can consent to apps from verified publishers or your organization, but only for permissions you select** : All users can only consent to apps that were published by a verified publisher and apps that are registered in your tenant
-* **Users can consent to all apps** : allows all users to consent to any permission which doesn't require admin consent,
-* **Custom app consent policy**
+
+* **Disable user consent** : Users cannot grant permissions to applications.   
+* **Users can consent to apps from verified publishers or your organization, but only for permissions you select** : All users can only consent to apps that were published by a verified publisher and apps that are registered in your tenant    
+* **Users can consent to all apps** : allows all users to consent to any permission which doesn't require admin consent.    
+* **Custom app consent policy**   
 
 ### Register Application
 

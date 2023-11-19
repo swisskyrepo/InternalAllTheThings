@@ -11,6 +11,15 @@
 ```ps1
 ```
 
+* Add user to a group
+    ```ps1
+    $groupid = "<group-id>"
+    $targetmember = "<user-id>"
+    $group = Get-MgGroup -GroupId $groupid
+    $members = Get-MgGroupMember -GroupId $groupid
+    New-MgGroupMember -GroupId $groupid -DirectoryObjectid $targetmember
+    ```
+
 
 ## Devices
 
