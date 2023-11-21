@@ -46,3 +46,14 @@ roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --kee
 
 
 # Service Principals
+
+
+
+# Other
+
+Lists all the client IDs you can use to get a token with the `mail.read` scope on the Microsoft Graph:
+
+```ps1
+roadtx getscope -s https://graph.microsoft.com/mail.read
+roadtx findscope -s https://graph.microsoft.com/mail.read
+```

