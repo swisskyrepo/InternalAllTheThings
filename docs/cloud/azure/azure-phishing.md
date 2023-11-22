@@ -102,7 +102,7 @@ roadtx codeauth -c <app-id> -r msgraph -t <tenant-id> <0.A....> -ru 'https://<ph
 
 ## Phishing with Evilginx2
 
-* Run `evilginx2` with o365 phishlet
+* Run [kgretzky/evilginx2](https://github.com/kgretzky/evilginx2) with o365 phishlet
     ```powershell
     PS C:\Tools> evilginx2 -p C:\Tools\evilginx2\phishlets
     : config domain username.corp
