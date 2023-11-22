@@ -23,6 +23,16 @@
 
 ## Devices
 
+### List Devices
+
+```ps1
+Connect-AzureAD
+Get-AzureADDevice
+$user = Get-AzureADUser -SearchString "username"
+Get-AzureADUserRegisteredDevice -ObjectId $user.ObjectId -All $true
+```
+
+
 ### Join Devices
 
 * [Enroll Windows 10/11 devices in Intune](https://learn.microsoft.com/en-us/mem/intune/user-help/enroll-windows-10-device)
@@ -45,11 +55,21 @@ roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --kee
 ```
 
 
+### Bitlocker Keys
+
+```ps1
+Install-Module Microsoft.Graph -Scope CurrentUser
+Import-Module Microsoft.Graph.Identity.SignIns
+Connect-MgGraph -Scopes BitLockerKey.Read.All
+Get-MgInformationProtectionBitlockerRecoveryKey -All
+Get-MgInformationProtectionBitlockerRecoveryKey -BitlockerRecoveryKeyId $bitlockerRecoveryKeyId
+```
+
+
 # Service Principals
 
 
-
-# Other
+## Other
 
 Lists all the client IDs you can use to get a token with the `mail.read` scope on the Microsoft Graph:
 
@@ -57,3 +77,8 @@ Lists all the client IDs you can use to get a token with the `mail.read` scope o
 roadtx getscope -s https://graph.microsoft.com/mail.read
 roadtx findscope -s https://graph.microsoft.com/mail.read
 ```
+
+
+## References
+
+* [Pentesting Azure Mindmap](https://github.com/synacktiv/Mindmaps)
