@@ -156,6 +156,61 @@ Use the user account to create a computer and request a PRT
 * Request a PRT with MFA claim: `roadtx prt -r <refreshtoken> -c <device>.pem -k <device>.key`
 
 
+
+
+## Authenticate to the Microsoft Graph API in PowerShell
+
+* [Microsoft Applications ID](https://learn.microsoft.com/fr-fr/troubleshoot/azure/active-directory/verify-first-party-apps-sign-in)
+
+| Name                       | GUID                                 |
+|----------------------------|--------------------------------------|
+| Microsoft Azure PowerShell | 1950a258-227b-4e31-a9cf-717495945fc2 |	
+| Microsoft Azure CLI	     | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
+| Portail Azure              | c44b4083-3bb0-49c1-b47d-974e53cbdf3c |	
+
+
+### Graph API Refresh Token
+
+Authenticating to the Microsoft Graph API in PowerShell
+
+```ps1
+$body = @{
+    "client_id" =     "1950a258-227b-4e31-a9cf-717495945fc2"
+    "resource" =      "https://graph.microsoft.com" # Microsoft Graph API 
+}
+$UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+$Headers=@{}
+$Headers["User-Agent"] = $UserAgent
+$authResponse = Invoke-RestMethod `
+    -UseBasicParsing `
+    -Method Post `
+    -Uri "https://login.microsoftonline.com/common/oauth2/devicecode?api-version=1.0" `
+    -Headers $Headers `
+    -Body $body
+$authResponse
+```
+
+
+### Graph API Access Token
+
+This request require getting the Refresh Token.
+
+```ps1
+$body=@{
+    "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
+    "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
+    "code" =       $authResponse.device_code
+}
+$Tokens = Invoke-RestMethod `
+    -UseBasicParsing `
+    -Method Post `
+    -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
+    -Headers $Headers `
+    -Body $body
+$Tokens
+```
+
+
 ## References
 
 * [Hacking Your Cloud: Tokens Edition 2.0 - Edwin David - April 13, 2023](https://trustedsec.com/blog/hacking-your-cloud-tokens-edition-2-0)

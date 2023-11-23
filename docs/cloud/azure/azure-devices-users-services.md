@@ -20,6 +20,19 @@
     New-MgGroupMember -GroupId $groupid -DirectoryObjectid $targetmember
     ```
 
+### Dynamic Group Membership
+
+Get groups that allow Dynamic membership: `Get-AzureADMSGroup | ?{$_.GroupTypes -eq 'DynamicMembership'}`
+
+Rule example : `(user.otherMails -any (_ -contains "vendor")) -and (user.userType -eq "guest")`     
+Rule description: Any Guest user whose secondary email contains the string 'vendor' will be added to the group
+
+1. Open user's profile, click on **Manage**
+2. Click on **Resend** invite and to get an invitation URL
+3. Set the secondary email
+    ```powershell
+    PS> Set-AzureADUser -ObjectId <OBJECT-ID> -OtherMails <Username>@<TENANT NAME>.onmicrosoft.com -Verbose
+    ```
 
 ## Devices
 
