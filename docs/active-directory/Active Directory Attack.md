@@ -329,6 +329,18 @@ root@payload$ ./bloodhound --no-sandbox
 Go to http://127.0.0.1:7474, use db:bolt://localhost:7687, user:neo4J, pass:neo4j
 ```
 
+NOTE: Currently BloodHound Community Edition is still a work in progress, it is highly recommended to stay on the original [BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound/) version. 
+
+```ps1
+git clone https://github.com/SpecterOps/BloodHound
+cd examples/docker-compose/
+cat docker-compose.yml | docker compose -f - up
+# UI: http://localhost:8080/ui/login
+# Username: admin
+# Password: see your Docker logs
+```
+
+
 You can add some custom queries like :
 * [Bloodhound-Custom-Queries from @hausec](https://github.com/hausec/Bloodhound-Custom-Queries/blob/master/customqueries.json)
 * [BloodHoundQueries from CompassSecurity](https://github.com/CompassSecurity/BloodHoundQueries/blob/master/customqueries.json)
