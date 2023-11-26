@@ -8,9 +8,10 @@
 
 ## Users
 
-```ps1
-```
-
+* List users: `Get-AzureADUser -All $true`
+* Enumerate groups: `Get-AzureADGroup -All $true`
+* Enumerate roles: `Get-AzureADDirectoryRole -Filter "DisplayName eq 'Global Administrator'" | Get-AzureADDirectoryRoleMember`
+* List roles: `Get-AzureADMSRoleDefinition | ?{$_.IsBuiltin -eq $False} | select DisplayName`
 * Add user to a group
     ```ps1
     $groupid = "<group-id>"
@@ -19,6 +20,8 @@
     $members = Get-MgGroupMember -GroupId $groupid
     New-MgGroupMember -GroupId $groupid -DirectoryObjectid $targetmember
     ```
+
+### Use Credentials
 
 ### Dynamic Group Membership
 

