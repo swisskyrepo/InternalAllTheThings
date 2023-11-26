@@ -20,14 +20,17 @@
 
 * Federation with Azure AD or O365
     ```powershell
+    Get-AADIntLoginInformation -UserName <USER>@<TENANT NAME>.onmicrosoft.com
     https://login.microsoftonline.com/getuserrealm.srf?login=<USER>@<DOMAIN>&xml=1
     https://login.microsoftonline.com/getuserrealm.srf?login=root@<TENANT NAME>.onmicrosoft.com&xml=1
     ```
 * Get the Tenant ID
     ```powershell
+    Get-AADIntTenantID -Domain <TENANT NAME>.onmicrosoft.com
     https://login.microsoftonline.com/<DOMAIN>/.well-known/openid-configuration
     https://login.microsoftonline.com/<TENANT NAME>.onmicrosoft.com/.well-known/openid-configuration
     ```
+
 
 
 ### Enumerate Email
@@ -60,6 +63,7 @@ PS> Invoke-MSOLSpray -UserList C:\Tools\validemails.txt -Password <PASSWORD> -Ve
 Extract openly available information for the given tenant: [aadinternals.com/osint](https://aadinternals.com/osint/)
 
 ```ps1
+Invoke-AADIntReconAsOutsider -DomainName <DOMAIN>
 Invoke-AADIntReconAsOutsider -Domain "company.com" | Format-Table
 Invoke-AADIntReconAsOutsider -UserName "user@company.com" | Format-Table
 ```
@@ -80,13 +84,33 @@ Subdomain Service
 
 * Using Az Powershell module
     ```powershell
+    # Enumerate resources
     PS Az> Get-AzResource
-    PS Az> Get-AzVM | fl
+
+    # List all VM's the user has access to
+    PS Az> Get-AzVM 
+
+    # Get all webapps
     PS Az> Get-AzWebApp | ?{$_.Kind -notmatch "functionapp"}
+
+    # Get all function apps
     PS Az> Get-AzFunctionApp
-    PS Az> Get-AzStorageAccount | fl
+
+    # List all storage accounts
+    PS Az> Get-AzStorageAccount
+
+    # List all keyvaults
     PS Az> Get-AzKeyVault
+
+    # Get all application objects registered using the current tenant
+    PS AzureAD> Get-AzureADApplication -All $true
+
+    # Enumerate role assignments
+    PS Az> Get-AzRoleAssignment -Scope /subscriptions/<SUBSCRIPTION-ID>/resourceGroups/RESEARCH/providers/Microsoft.Compute/virtualMachines/<VM-NAME>
     PS Az> Get-AzRoleAssignment -SignInName test@<TENANT NAME>.onmicrosoft.com
+
+    # Check AppID Alternative Names/Display Name 
+    PS AzureAD> Get-AzureADServicePrincipal -All $True | ?{$_.AppId -eq "<APP-ID>"} | fl
     ```
 
 * Using az cli

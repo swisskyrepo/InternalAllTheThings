@@ -9,10 +9,21 @@
 ## Users
 
 * List users: `Get-AzureADUser -All $true`
-* Enumerate groups: `Get-AzureADGroup -All $true`
+* Enumerate groups
+
+    ```ps1
+    # List groups
+    Get-AzureADGroup -All $true
+    
+    # Get members of a group
+    Get-AzADGroup -DisplayName '<GROUP-NAME>'
+    Get-AzADGroupMember -GroupDisplayName '<GROUP-NAME>' | select UserPrincipalName
+    ```
+
 * Enumerate roles: `Get-AzureADDirectoryRole -Filter "DisplayName eq 'Global Administrator'" | Get-AzureADDirectoryRoleMember`
 * List roles: `Get-AzureADMSRoleDefinition | ?{$_.IsBuiltin -eq $False} | select DisplayName`
 * Add user to a group
+
     ```ps1
     $groupid = "<group-id>"
     $targetmember = "<user-id>"
@@ -46,6 +57,20 @@ Connect-AzureAD
 Get-AzureADDevice
 $user = Get-AzureADUser -SearchString "username"
 Get-AzureADUserRegisteredDevice -ObjectId $user.ObjectId -All $true
+```
+
+
+### Device State
+
+```ps1
+PS> dsregcmd.exe /status
++----------------------------------------------------------------------+
+| Device State |
++----------------------------------------------------------------------+
+ AzureAdJoined : YES
+ EnterpriseJoined : NO
+ DomainJoined : NO
+ Device Name : jumpvm
 ```
 
 

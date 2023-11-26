@@ -1,5 +1,19 @@
 # Azure AD Tokens
 
+## Connection
+
+After a successfull authentication, you will get an access token.
+
+* az cli
+* Azure AD Powershell
+* Az Powershell
+* External HTTP API
+* Internal HTTP API
+    ```ps1
+    curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+    curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+    ```
+
 
 ## Access Token
 
