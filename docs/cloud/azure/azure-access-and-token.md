@@ -4,15 +4,84 @@
 
 After a successfull authentication, you will get an access token.
 
-* az cli
-* Azure AD Powershell
-* Az Powershell
-* External HTTP API
-* Internal HTTP API
+### az cli
+
+* Login with credentials
     ```ps1
-    curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
-    curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+    az login -u <username> -p <password>
+    az login --service-principal -u <app-id> -p <password> --tenant <tenant-id>
     ```
+* Get token
+    ```ps1
+    az account get-access-token
+    az account get-access-token --resource-type aad-graph
+    ```
+
+Whoami equivalent: `az ad signed-in-user show`
+
+
+### Azure AD Powershell
+
+* Login with credentials
+    ```ps1
+    $passwd = ConvertTo-SecureString "<PASSWORD>" -AsPlainText -Force
+    $creds = New-Object System.Management.Automation.PSCredential("test@<TENANT NAME>.onmicrosoft.com", $passwd)
+    Connect-AzureAD -Credential $creds
+    ```
+
+
+### Az Powershell
+
+* Login with credentials
+    ```ps1
+    $passwd = ConvertTo-SecureString "<PASSWORD>" -AsPlainText -Force
+    $creds = New-Object System.Management.Automation.PSCredential ("<USERNAME>@<TENANT NAME>.onmicrosoft.com", $passwd)
+    Connect-AzAccount -Credential $creds
+    ```
+* Login with service principal secret
+    ```ps1
+    $password = ConvertTo-SecureString '<SECRET>' -AsPlainText -Force
+    $creds = New-Object System.Management.Automation.PSCredential('<APP-ID>', $password)
+    Connect-AzAccount -ServicePrincipal -Credential $creds -Tenant 29sd87e56-a192-a934-bca3-0398471ab4e7d
+
+    ```
+* Get token
+    ```ps1
+    (Get-AzAccessToken -ResourceUrl https://graph.microsoft.com).Token
+    Get-AzAccessToken -ResourceTypeName MSGraph
+    ```
+
+
+### Microsoft Graph Powershell
+
+* Login  with credentials
+
+Whoami equivalent: `Get-MgContext`
+
+
+### External HTTP API
+
+* Login with credentials
+    ```ps1
+    ```
+
+
+### Internal HTTP API
+
+> **MSI_ENDPOINT** is an alias for **IDENTITY_ENDPOINT**, and **MSI_SECRET** is an alias for **IDENTITY_HEADER**.
+
+Find `IDENTITY_HEADER` and `IDENTITY_ENDPOINT` from the environment : `env`
+
+Most of the time, you want a token for one of these resources: 
+* https://storage.azure.com
+* https://vault.azure.net
+* https://graph.microsoft.com
+* https://management.azure.com
+
+```ps1
+curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+```
 
 
 ## Access Token
@@ -28,7 +97,7 @@ Decode access tokens: [jwt.ms](https://jwt.ms/)
     --data-urlencode 'client_secret=<client-secret>' \
     --data-urlencode 'grant_type=client_credentials'
     ```
-* Use an access token
+* Use the access token with MgGraph
     ```ps1
     # use the jwt
     $token = "eyJ0eXAiO..."
@@ -38,6 +107,15 @@ Decode access tokens: [jwt.ms](https://jwt.ms/)
     # whoami
     Get-MgContext
     Disconnect-MgGraph
+    ```
+* Use the access token with AzureAD
+    ```powershell
+    Connect-AzureAD -AadAccessToken <access-token> -TenantId <tenant-id> -AccountId <account-id>
+    ```
+* Use the access token with Az Powershell
+    ```powershell
+    Connect-AzAccount -AccessToken <access-token> -AccountId <account-id>
+    Connect-AzAccount -AccessToken <access-token> -GraphAccessToken <graph-access-token> -AccountId <account-id>
     ```
 
 
@@ -104,6 +182,8 @@ Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9
 ## Primary Refresh Token
 
 A Primary Refresh Token (PRT) is a key artifact in the authentication and identity management process in Microsoft's Azure AD (Azure Active Directory) environment. The PRT is primarily used for maintaining a seamless sign-in experience on devices. 
+
+:warning: A PRT is valid for 90 days and is continuously renewed as long as the device is in use. However, it's only valid for 14 days if the device is not in use. 
 
 * Use PRT token
     ```ps1
