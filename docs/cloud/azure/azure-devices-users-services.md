@@ -48,6 +48,24 @@ Rule description: Any Guest user whose secondary email contains the string 'vend
     PS> Set-AzureADUser -ObjectId <OBJECT-ID> -OtherMails <Username>@<TENANT NAME>.onmicrosoft.com -Verbose
     ```
 
+
+### Administrative Unit
+
+Administrative Unit can reset password of another user
+
+```powershell
+PS AzureAD> Get-AzureADMSAdministrativeUnit -All $true
+PS AzureAD> Get-AzureADMSAdministrativeUnit -Id <ID>
+PS AzureAD> Get-AzureADMSAdministrativeUnitMember -Id <ID>
+PS AzureAD> Get-AzureADMSScopedRoleMembership -Id <ID> | fl
+PS AzureAD> Get-AzureADDirectoryRole -ObjectId <RoleId>
+PS AzureAD> Get-AzureADUser -ObjectId <RoleMemberInfo.Id> | fl
+
+PS C:\Tools> $password = "Password" | ConvertToSecureString -AsPlainText -Force
+PS C:\Tools> (Get-AzureADUser -All $true | ?{$_.UserPrincipalName -eq "<Username>@<TENANT NAME>.onmicrosoft.com"}).ObjectId | SetAzureADUserPassword -Password $Password -Verbose
+```
+
+
 ## Devices
 
 ### List Devices

