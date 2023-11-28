@@ -1,4 +1,4 @@
-# Microsoft Entra Connect
+# Azure AD Connect
 
 Check if Azure AD Connect is installed : `Get-ADSyncConnector`
 

