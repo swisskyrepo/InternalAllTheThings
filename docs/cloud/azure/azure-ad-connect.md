@@ -1,10 +1,25 @@
 # Azure AD Connect
 
+| Active Directory                  | Azure AD          |
+|-----------------------------------|-------------------|
+| LDAP                              | REST API'S        |
+| NTLM/Kerberos                     | OAuth/SAML/OpenID |
+| Structured directory (OU tree)    | Flat structure    |
+| GPO                               | No GPO's          |
+| Super fine-tuned access controls  | Predefined roles  |
+| Domain/forest                     | Tenant            |
+| Trusts                            | Guests            |
+
 Check if Azure AD Connect is installed : `Get-ADSyncConnector`
 
 * For **PHS**, we can extract the credentials
-* For **PTA**, we can install the agent
-* For **Federation**, we can extract the certificate from ADFS server using DA
+    * Passwords from on-premise AD are sent to the cloud
+    * Use replication via a service account created by AD Connect
+* For **PTA**, we can attack the agent
+    * Possible to perform DLL injection into the PTA agent and intercept authentication requests: credentials in clear-text
+* For **Federation**, connect Windows Server AD to Azure AD using Federation Server (ADFS)
+    * Dir-Sync : Handled by on-premise Windows Server AD, sync username/password
+    * extract the certificate from ADFS server using DA
 
 
 ## Password Hash Synchronization
@@ -101,3 +116,8 @@ Using [https://autologon.microsoftazuread-sso.com/](https://autologon.microsofta
 
 * [Introduction to Microsoft Entra Connect V2 - Microsoft](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect-v2)
 * [TR19: I'm in your cloud, reading everyone's emails - hacking Azure AD via Active Directory - Dirk-jan Mollema - 1st apr. 2019](https://www.youtube.com/watch?v=JEIR5oGCwdg)
+* [Impersonating Office 365 Users With Mimikatz - Michael Grafnetter - January 15, 2017](https://www.dsinternals.com/en/impersonating-office-365-users-mimikatz/)
+* [Azure AD Overview - John Savill's Technical Training - Oct 7, 2014](https://www.youtube.com/watch?v=l_pnNpdxj20) 
+* [Windows Azure Active Directory in plain English - Openness AtCEE - Jan 9, 2014](https://www.youtube.com/watch?v=IcSATObaQZE)
+* [Azure AD connect for RedTeam - Adam Chester @xpnsec -  2019-02-18](https://blog.xpnsec.com/azuread-connect-for-redteam/)
+* [Azure AD Kerberos Tickets: Pivoting to the Cloud - Edwin David - February 09, 2023](https://trustedsec.com/blog/azure-ad-kerberos-tickets-pivoting-to-the-cloud)

@@ -127,8 +127,15 @@ Runbook must be **SAVED** and **PUBLISHED** before running it.
     PS Az> Get-AzKeyVaultSecret -VaultName <VaultName> -Name Reader -AsPlainText
     ```
 
+* Extract secrets from Automations, AppServices and KeyVaults
+    ```powershell
+    Import-Module Microburst.psm1
+    PS Microburst> Get-AzurePasswords
+    PS Microburst> Get-AzurePasswords -Verbose | Out-GridView
+    ```
 
-## Azure Storage Blob
+
+## Storage Blob
 
 * Blobs - `*.blob.core.windows.net`
 * File Services - `*.file.core.windows.net`
@@ -164,13 +171,50 @@ PS Az> Get-AzStorageBlobContent -Container <NAME> -Context (Get-AzStorageAccount
 :warning: You can also use `subscription`(username/password) to access storage resources such as blobs and files.
 
 
-## Azure Web App
+## Web Apps
 
 ### SSH Connection
 
 ```powershell
 az webapp create-remote-connection --subscription <SUBSCRIPTION-ID> --resource-group <RG-NAME> -n <APP-SERVICE-NAME>
 ```
+
+## Application Endpoint
+
+* Enumerate possible endpoints for applications starting/ending with PREFIX
+    ```powershell
+    PS C:\Tools> Get-AzureADServicePrincipal -All $true -Filter "startswith(displayName,'PREFIX')" | % {$_.ReplyUrls}
+    PS C:\Tools> Get-AzureADApplication -All $true -Filter "endswith(displayName,'PREFIX')" | Select-Object ReplyUrls,WwwHomePage,HomePage
+    ```
+
+
+## Application Proxy
+
+* Enumerate applications that have Proxy
+    ```powershell
+    PS C:\Tools> Get-AzureADApplication -All $true | %{try{GetAzureADApplicationProxyApplication -ObjectId $_.ObjectID;$_.DisplayName;$_.ObjectID}catch{}}
+    PS C:\Tools> Get-AzureADServicePrincipal -All $true | ?{$_.DisplayName -eq "Finance Management System"}
+
+    PS C:\Tools> . C:\Tools\GetApplicationProxyAssignedUsersAndGroups.ps1
+    PS C:\Tools> Get-ApplicationProxyAssignedUsersAndGroups -ObjectId <OBJECT-ID>
+    ```
+
+
+## Deployment Template
+
+* List the deployments
+    ```powershell
+    PS Az> Get-AzResourceGroup
+    PS Az> Get-AzResourceGroupDeployment -ResourceGroupName SAP
+    ```
+* Export the deployment template
+    ```ps1
+    PS Az> Save-AzResourceGroupDeploymentTemplate -ResourceGroupName <RESOURCE GROUP> -DeploymentName <DEPLOYMENT NAME>
+    
+    # search for hardcoded password
+    cat <DEPLOYMENT NAME>.json 
+    cat <PATH TO .json FILE> | Select-String password
+    ```
 
 
 ## Azure Devops
@@ -260,3 +304,5 @@ Get-MgDrive -top 1
 * [Microsoft Graph - servicePrincipal: addPassword](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-addpassword?view=graph-rest-1.0&tabs=powershell)
 * [Microsoft Intune - Microsoft Intune support for Windows LAPS](https://learn.microsoft.com/en-us/mem/intune/protect/windows-laps-overview)
 * [Pentesting Azure Mindmap - Alexis Danizan](https://github.com/synacktiv/Mindmaps)
+* [Running Powershell scripts on Azure VM - Netspi](https://blog.netspi.com/running-powershell-scripts-on-azure-vms/)
+* [Get-AzurePasswords: A Tool for Dumping Credentials from Azure Subscriptions - August 28, 2018 - Karl Fosaaen](https://www.netspi.com/blog/technical/cloud-penetration-testing/get-azurepasswords/)

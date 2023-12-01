@@ -199,6 +199,20 @@ Decode access tokens: [jwt.ms](https://jwt.ms/)
     ```
 
 
+### Access Token Locations
+
+Tokens are stored by default on the disk in you use **Azure Cloud Shell**. They canbe extracted by dumping the content of the storage account.
+
+* az cli
+    * az cli stores access tokens in clear text in **accessTokens.json** in the directory `C:\Users\<username>\.Azure`
+    * azureProfile.json in the same directory contains information about subscriptions.
+
+* Az PowerShell
+    * Az PowerShell stores access tokens in clear text in **TokenCache.dat** in the directory `C:\Users\<username>\.Azure`
+    * It also stores **ServicePrincipalSecret** in clear-text in **AzureRmContext.json** 
+    * Users can save tokens using `Save-AzContext`
+
+
 ## Refresh Token
 
 * Requesting a token using credentials
@@ -282,6 +296,7 @@ MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joine
     mimikatz # sekurlsa::cloudap
     mimikatz # sekurlsa::dpapi
     mimikatz # dpapi::cloudapkd /keyvalue:<key-value> /unprotect
+    mimikatz # dpapi::cloudapkd /context:<context> /derivedkey:<derived-key> /Prt:<prt>
     ```
 * Use either roadtx or AADInternals to generate a new PRT token
     ```ps1
@@ -353,8 +368,14 @@ Use the user account to create a computer and request a PRT
 
 ## References
 
+* [Introducing ROADtools - The Azure AD exploration framework - Dirk-jan Mollema - April 16, 2020](https://dirkjanm.io/introducing-roadtools-and-roadrecon-azure-ad-exploration-framework/)
 * [Hacking Your Cloud: Tokens Edition 2.0 - Edwin David - April 13, 2023](https://trustedsec.com/blog/hacking-your-cloud-tokens-edition-2-0)
 * [Microsoft 365 Developer Program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
 * [PRT Abuse from Userland with Cobalt Strike - 0xbad53c](https://red.0xbad53c.com/red-team-operations/azure-and-o365/prt-abuse-from-userland-with-cobalt-strike)
 * [Pass-the-PRT attack and detection by Microsoft Defender for … - Derk van der Woude - Jun 9](https://derkvanderwoude.medium.com/pass-the-prt-attack-and-detection-by-microsoft-defender-for-afd7dbe83c94)
 * [Journey to Azure AD PRT: Getting access with pass-the-token and pass-the-cert - AADInternals.com - September 01, 2020](https://aadinternals.com/post/prt/)
+* [Get Access Tokens for Managed Service Identity on Azure App Service](https://zhiliaxu.github.io/app-service-managed-identity.html)
+* [Attacking Azure Cloud shell - Karl Fosaaen - December 10, 2019](https://blog.netspi.com/attacking-azure-cloud-shell/)
+* [Azure AD Pass The Certificate - Mor - Aug 19, 2020](https://medium.com/@mor2464/azure-ad-pass-the-certificate-d0c5de624597)
+* [Azure Privilege Escalation Using Managed Identities - Karl Fosaaen - February 20th, 2020](https://blog.netspi.com/azure-privilege-escalation-using-managed-identities/)
+* [Hunting Azure Admins for Vertical Escalation - LEE KAGAN - MARCH 13, 2020](https://www.lares.com/hunting-azure-admins-for-vertical-escalation/)

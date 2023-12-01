@@ -14,3 +14,8 @@
     PS > $creds = New-Object System.Management.Automation.PSCredential('<AppID>', $password)
     PS > Connect-AzAccount -ServicePrincipal -Credential $creds -Tenant '<TenantID>'
     ```
+
+
+## References
+
+* [Maintaining Azure Persistence via automation accounts - Karl Fosaaen - September 12, 2019](https://blog.netspi.com/maintaining-azure-persistence-via-automation-accounts/)

@@ -32,7 +32,6 @@
     New-MgGroupMember -GroupId $groupid -DirectoryObjectid $targetmember
     ```
 
-### Use Credentials
 
 ### Dynamic Group Membership
 
@@ -66,6 +65,17 @@ PS C:\Tools> (Get-AzureADUser -All $true | ?{$_.UserPrincipalName -eq "<Username
 ```
 
 
+### Convert GUID to SID
+
+The user's Entra ID is translated to SID by concatenating `"S-1–12–1-"` to the decimal representation of each section of the Entra ID.
+
+```powershell
+GUID: [base16(a1)]-[base16(a2)]-[ base16(a3)]-[base16(a4)]
+SID: S-1–12–1-[base10(a1)]-[ base10(a2)]-[ base10(a3)]-[ base10(a4)]
+```
+
+For example, the representation of `6aa89ecb-1f8f-4d92–810d-b0dce30b6c82` is `S-1–12–1–1789435595–1301421967–3702525313–2188119011`
+
 ## Devices
 
 ### List Devices
@@ -90,6 +100,11 @@ PS> dsregcmd.exe /status
  DomainJoined : NO
  Device Name : jumpvm
 ```
+
+* **Azure AD Joined** : https://pbs.twimg.com/media/EQZv62NWAAEQ8wE?format=jpg&name=large
+* **Workplace Joined** : https://pbs.twimg.com/media/EQZv7UHXsAArdhn?format=jpg&name=large
+* **Hybrid Joined** : https://pbs.twimg.com/media/EQZv77jXkAAC4LK?format=jpg&name=large
+* **Workplace joined on AADJ or Hybrid** : https://pbs.twimg.com/media/EQZv8qBX0AAMWuR?format=jpg&name=large
 
 
 ### Join Devices
@@ -125,7 +140,7 @@ Get-MgInformationProtectionBitlockerRecoveryKey -BitlockerRecoveryKeyId $bitlock
 ```
 
 
-# Service Principals
+## Service Principals
 
 
 ## Other
@@ -141,3 +156,6 @@ roadtx findscope -s https://graph.microsoft.com/mail.read
 ## References
 
 * [Pentesting Azure Mindmap](https://github.com/synacktiv/Mindmaps)
+* [AZURE AD cheatsheet - BlackWasp](https://hideandsec.sh/books/cheatsheets-82c/page/azure-ad)
+* [Moving laterally between Azure AD joined machines - Tal Maor - Mar 17, 2020](https://medium.com/@talthemaor/moving-laterally-between-azure-ad-joined-machines-ed1f8871da56)
+* [AZURE AD INTRODUCTION FOR RED TEAMERS - Aymeric Palhière (bak) - 2020-04-20](https://www.synacktiv.com/posts/pentest/azure-ad-introduction-for-red-teamers.html)
