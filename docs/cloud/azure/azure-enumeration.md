@@ -2,16 +2,52 @@
 
 ## Azure AD - Collectors
 
-* roadrecon
+* [**Microsoft Portals**](https://msportals.io/) - Microsoft Administrator Sites
+* [**ROADTool**](https://github.com/dirkjanm/ROADtools) - A collection of Azure AD tools for offensive and defensive security purposes 
     ```ps1
     roadrecon auth --access-token eyJ0eXA...
     roadrecon auth --prt-cookie <primary-refresh-token> -r msgraph -c "1950a258-227b-4e31-a9cf-717495945fc2"
     roadrecon gather
+    roadrecon gui
     ```
-* AzureHound
+* [**BloodHoundAD/AzureHound**](https://github.com/BloodHoundAD/AzureHound) - Azure Data Exporter for BloodHound
     ```ps1
     ./azurehound --refresh-token <refresh-token> list --tenant "<target-tenant-id>" -o output.json
+    ./azurehound -u "<username>@contoso.onmicrosoft.com" -p "<password>" list groups --tenant "<tenant>.onmicrosoft.com"
+    ./azurehound -j "<jwt>" list users --tenant "<tenant>.onmicrosoft.com"
     ```
+* [**BloodHoundAD/BARK**](https://github.com/BloodHoundAD/BARK) - BloodHound Attack Research Kit
+    ```ps1
+    . .\BARK.ps1
+    $MyRefreshTokenRequest = Get-AZRefreshTokenWithUsernamePassword -username "user@contoso.onmicrosoft.com" -password "MyVeryCoolPassword" -TenantID "contoso.onmicrosoft.com"
+    $MyMSGraphToken = Get-MSGraphTokenWithRefreshToken -RefreshToken $MyRefreshTokenRequest.refresh_token -TenantID "contoso.onmicrosoft.com"
+    $MyAADUsers = Get-AllAzureADUsers -Token $MyMSGraphToken.access_token -ShowProgress
+    ```
+* [**dafthack/GraphRunner**](https://github.com/dafthack/GraphRunner) - A Post-exploitation Toolset for Interacting with the Microsoft Graph API
+    ```ps1
+    Invoke-GraphRecon -Tokens $tokens -PermissionEnum
+    Invoke-DumpCAPS -Tokens $tokens -ResolveGuids
+    Invoke-DumpApps -Tokens $tokens
+    Get-DynamicGroups -Tokens $tokens
+    ```
+* [**NetSPI/MicroBurst**](https://github.com/NetSPI/MicroBurst) - MicroBurst includes functions and scripts that support Azure Services discovery, weak configuration auditing, and post exploitation actions such as credential dumping
+    ```powershell
+    PS C:> Import-Module .\MicroBurst.psm1
+    PS C:> Import-Module .\Get-AzureDomainInfo.ps1
+    PS C:> Get-AzureDomainInfo -folder MicroBurst -Verbose
+    ```
+* [**hausec/PowerZure**](https://github.com/hausec/PowerZure) - PowerShell framework to assess Azure security
+    ```powershell
+    PS C:> Import-Module .\Powerzure.psd1
+    PS C:> Set-Subscription -Id [idgoeshere]
+    PS C:> Get-AzureTarget
+    PS C:> Get-AzureInTuneScript
+    PS C:> Show-AzureKeyVaultContent -All
+    ```
+* [**Azure/StormSpotter**](https://github.com/Azure/Stormspotter) - :warning: This repository has not been updated recently - Azure Red Team tool for graphing Azure and Azure Active Directory objects
+* [**nccgroup/Azucar**](https://github.com/nccgroup/azucar.git) - :warning: This repository has been archived - Azucar automatically gathers a variety of configuration data and analyses all data relating to a particular subscription in order to determine security risks.
+* [**FSecureLABS/Azurite Explorer**](https://github.com/FSecureLABS/Azurite) - :warning: This repository has not been updated recently - Enumeration and reconnaissance activities in the Microsoft Azure Cloud.
+* [**cyberark/SkyArk**](https://github.com/cyberark/SkyArk) - :warning: This repository has not been updated recently - Discover the most privileged users in the scanned Azure environment - including the Azure Shadow Admins.   
 
 
 ## Azure AD - User Enumeration
