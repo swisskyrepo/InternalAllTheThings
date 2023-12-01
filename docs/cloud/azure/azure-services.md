@@ -6,8 +6,7 @@
 
 > Allow anyone with "Contributor" rights to run PowerShell scripts on any Azure VM in a subscription as `NT Authority\System`
 
-**Requirements**: 
-* `Microsoft.Compute/virtualMachines/runCommand/action`
+**Requirements**: `Microsoft.Compute/virtualMachines/runCommand/action`
 
 * List available Virtual Machines
     ```powershell
