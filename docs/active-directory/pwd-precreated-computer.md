@@ -1,4 +1,4 @@
-## Password - Pre-Created Computer Account
+# Password - Pre-Created Computer Account
 
 When `Assign this computer account as a pre-Windows 2000 computer` checkmark is checked, the password for the computer account becomes the same as the computer account in lowercase. For instance, the computer account **SERVERDEMO$** would have the password **serverdemo**. 
 

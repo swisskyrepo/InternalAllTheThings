@@ -1,4 +1,4 @@
-# Active Directory Recon
+# Active Directory Enumeration
 
 ## Using BloodHound
 
@@ -78,7 +78,6 @@ cat docker-compose.yml | docker compose -f - up
 # Username: admin
 # Password: see your Docker logs
 ```
-
 
 You can add some custom queries like :
 * [Bloodhound-Custom-Queries from @hausec](https://github.com/hausec/Bloodhound-Custom-Queries/blob/master/customqueries.json)
@@ -277,4 +276,3 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   $Env:LOGONSERVER 
   echo %LOGONSERVER%
   ```
-
