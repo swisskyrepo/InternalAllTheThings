@@ -1,4 +1,4 @@
-# Active Directory Federation Services
+# Active Directory - Federation Services
 
 ## ADFS - Golden SAML
 

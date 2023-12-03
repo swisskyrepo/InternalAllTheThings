@@ -1,4 +1,4 @@
-# DCOM
+# Internal - DCOM
 
 > DCOM is an extension of COM (Component Object Model), which allows applications to instantiate and access the properties and methods of COM objects on a remote computer.
 

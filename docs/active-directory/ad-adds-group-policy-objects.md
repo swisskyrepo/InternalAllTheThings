@@ -1,4 +1,4 @@
-# Group Policy Objects
+# Active Directory - Group Policy Objects
 
 > Creators of a GPO are automatically granted explicit Edit settings, delete, modify security, which manifests as CreateChild, DeleteChild, Self, WriteProperty, DeleteTree, Delete, GenericRead, WriteDacl, WriteOwner
 

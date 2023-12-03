@@ -1,4 +1,4 @@
-# Active Directory Groups 
+# Active Directory - Groups 
 
 ## Dangerous Built-in Groups Usage
 
