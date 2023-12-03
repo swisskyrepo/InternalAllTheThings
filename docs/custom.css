@@ -11,3 +11,18 @@
         width: auto;
     } 
 }
+
+/* Fix padding Chrome browsers */
+@supports selector(::-webkit-scrollbar) {
+    .md-sidebar__scrollwrap {
+        scrollbar-gutter: auto
+    }
+
+    [dir=ltr] .md-sidebar__inner {
+        padding-right: 0;
+    }
+
+    [dir=rtl] .md-sidebar__inner {
+        padding-left: calc(100% - 11.5rem)
+    }
+}
