@@ -1,4 +1,4 @@
-# Active Directory Integrated DNS
+# Active Directory - Integrated DNS - ADIDNS
 
 ADIDNS zone DACL (Discretionary Access Control List) enables regular users to create child objects by default, attackers can leverage that and hijack traffic. Active Directory will need some time (~180 seconds) to sync LDAP changes via its DNS dynamic updates protocol.
 

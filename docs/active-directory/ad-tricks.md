@@ -1,4 +1,4 @@
-# Active Directory Tricks
+# Active Directory - Tricks
 
 ## Kerberos Clock Synchronization
 

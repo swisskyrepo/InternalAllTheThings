@@ -1,4 +1,4 @@
-# Active Directory - Dumping NTDS
+# Active Directory - NTDS Dumping
 
 You will need the following files to extract the ntds : 
 - NTDS.dit file

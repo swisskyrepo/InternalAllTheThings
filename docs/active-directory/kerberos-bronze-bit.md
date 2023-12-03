@@ -1,4 +1,4 @@
-## Kerberos - Bronze Bit
+# Kerberos - Bronze Bit
 
 CVE-2020-17049
 

@@ -1,4 +1,4 @@
-# Internal - Man-in-the-Middle and Relay
+# Internal - MITM and Relay
 
 NTLMv1 and NTLMv2 can be relayed to connect to another machine.
 

@@ -1,4 +1,4 @@
-# Linux Active Directory
+# Active Directory - Linux
 
 ## CCACHE ticket reuse from /tmp
 

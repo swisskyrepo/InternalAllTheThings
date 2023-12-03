@@ -1,4 +1,4 @@
-# RODC - Read Only Domain Controller
+# Active Directory - Read Only Domain Controller
 
 RODCs are an alternative for Domain Controllers in less secure physical locations
 - Contains a filtered copy of AD (LAPS and Bitlocker keys are excluded)
