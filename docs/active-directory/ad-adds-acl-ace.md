@@ -1,4 +1,7 @@
-# Active Directory ACLs/ACEs
+# Active Directory - Access Controls
+
+* ACL: Access Control Lists
+* ACE: Access Control Entry
 
 Check ACL for an User with [ADACLScanner](https://github.com/canix1/ADACLScanner).
 

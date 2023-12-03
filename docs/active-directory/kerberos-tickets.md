@@ -1,4 +1,4 @@
-# Kerberos Tickets
+# Kerberos - Tickets
 
 Tickets are used to grant access to network resources. A ticket is a data structure that contains information about the user's identity, the network service or resource being accessed, and the permissions or privileges associated with that resource. Kerberos tickets have a limited lifetime and expire after a set period of time, typically 8 to 12 hours.
 

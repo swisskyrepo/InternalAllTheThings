@@ -1,4 +1,4 @@
-# Active Directory Certificate Services
+# Active Directory - Certificate Services
 
 * Find ADCS Server
   * `crackmapexec ldap domain.lab -u username -p password -M adcs`
