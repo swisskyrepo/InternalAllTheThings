@@ -164,3 +164,8 @@ IconIndex=1
     </simpleLocation>
 </searchConnectorDescription>
 ```
+
+
+## References
+
+* [SMB Share – SCF File Attacks - December 13, 2017 - @netbiosX](https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/)

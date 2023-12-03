@@ -89,3 +89,8 @@ Crack the hashes with Hashcat / John The Ripper
 john --format=netntlmv2 hash.txt
 hashcat -m 5600 -a 3 hash.txt
 ```
+
+
+## References
+
+* [NTLMv1_Downgrade.md - S3cur3Th1sSh1t - 09/07/2021](https://gist.github.com/S3cur3Th1sSh1t/0c017018c2000b1d5eddf2d6a194b7bb)

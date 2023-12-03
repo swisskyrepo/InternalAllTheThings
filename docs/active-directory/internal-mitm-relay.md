@@ -2,8 +2,8 @@
 
 NTLMv1 and NTLMv2 can be relayed to connect to another machine.
 
-| Hash                 | Hashcat | Attack method       |
-|---|---|---|
+| Hash                  | Hashcat | Attack method        |
+|-----------------------|---------|----------------------|
 | LM                    | `3000`  | crack/pass the hash  |
 | NTLM/NTHash           | `1000`  | crack/pass the hash  |
 | NTLMv1/Net-NTLMv1     | `5500`  | crack/relay attack   |
@@ -273,3 +273,12 @@ pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and c
   * Other features are available such as keystroke recording
 * Alternatives
   * S3th: https://github.com/SySS-Research/Seth, performs ARP spoofing prior to launching the RDP listener	
+
+
+## References
+
+* [Playing with Relayed Credentials - June 27, 2018](https://www.secureauth.com/blog/playing-relayed-credentials)
+* [Exploiting CVE-2019-1040 - Combining relay vulnerabilities for RCE and Domain Admin - Dirk-jan Mollema](https://dirkjanm.io/exploiting-CVE-2019-1040-relay-vulnerabilities-for-rce-and-domain-admin/)
+* [Lateral Movement – WebClient](https://pentestlab.blog/2021/10/20/lateral-movement-webclient/)
+* [Drop the MIC - CVE-2019-1040 - Marina Simakov - Jun 11, 2019](https://blog.preempt.com/drop-the-mic)
+* [Top Five Ways I Got Domain Admin on Your Internal Network before Lunch (2018 Edition) - Adam Toscher](https://medium.com/@adam.toscher/top-five-ways-i-got-domain-admin-on-your-internal-network-before-lunch-2018-edition-82259ab73aaa)

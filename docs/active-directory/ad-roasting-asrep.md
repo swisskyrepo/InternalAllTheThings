@@ -94,3 +94,9 @@ Research from Project Zero : https://googleprojectzero.blogspot.com/2022/10/rc4-
 **Mitigations**: 
 * All accounts must have "Kerberos Pre-Authentication" enabled (Enabled by Default).
 * Disable RC4 cipher if possible.
+
+
+# References
+
+* [Roasting AS-REPs - January 17, 2017 - harmj0y](https://www.harmj0y.net/blog/activedirectory/roasting-as-reps/)
+* [Kerberosity Killed the Domain: An Offensive Kerberos Overview - Ryan Hausknecht - Mar 10](https://posts.specterops.io/kerberosity-killed-the-domain-an-offensive-kerberos-overview-eb04b1402c61)

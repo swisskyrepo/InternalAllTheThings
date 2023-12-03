@@ -47,3 +47,9 @@ PXE allows a workstation to boot from the network by retrieving an operating sys
     >>>> >>>> UserID = MdtService
     >>>> >>>> UserPassword = Somepass1
     ```
+
+
+## References
+
+* [Attacks Against Windows PXE Boot Images - February 13th, 2018 - Thomas Elling](https://blog.netspi.com/attacks-against-windows-pxe-boot-images/)
+* [COMPROMISSION DES POSTES DE TRAVAIL GRÂCE À LAPS ET PXE MISC n° 103 - mai 2019 - Rémi Escourrou, Cyprien Oger ](https://connect.ed-diamond.com/MISC/MISC-103/Compromission-des-postes-de-travail-grace-a-LAPS-et-PXE)

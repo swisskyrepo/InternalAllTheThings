@@ -32,3 +32,10 @@ StandIn.exe --dns --filter SQL --limit 10
 StandIn.exe --dns --forest --domain <domain> --user <username> --pass <password>
 StandIn.exe --dns --legacy --domain <domain> --user <username> --pass <password>
 ```
+
+
+## References
+
+* [Getting in the Zone: dumping Active Directory DNS using adidnsdump - Dirk-jan Mollema](https://blog.fox-it.com/2019/04/25/getting-in-the-zone-dumping-active-directory-dns-using-adidnsdump/)
+* [ADIDNS Revisited – WPAD, GQBL, and More - December 5, 2018 | Kevin Robertson](https://www.netspi.com/blog/technical/network-penetration-testing/adidns-revisited/)
+* [Beyond LLMNR/NBNS Spoofing – Exploiting Active Directory-Integrated DNS - July 10, 2018 | Kevin Robertson](https://www.netspi.com/blog/technical/network-penetration-testing/exploiting-adidns/)

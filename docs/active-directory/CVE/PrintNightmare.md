@@ -87,3 +87,8 @@ cme smb -u user -p password -d domain.local -M webdav [TARGET]
 | 0x5    | `rpc_s_access_denied` | Permissions on the file in the SMB share |
 | 0x525  | `ERROR_NO_SUCH_USER`  | The specified account does not exist.    |
 | 0x180  | unknown error code    | Share is not SMB2                        |
+
+
+## References
+
+* [Playing with PrintNightmare - 0xdf - Jul 8, 2021](https://0xdf.gitlab.io/2021/07/08/playing-with-printnightmare.html)
