@@ -1,4 +1,4 @@
-# 📕 InternalAllTheThings
+# InternalAllTheThings
 
 Active Directory and Internal Pentest Cheatsheets
 
@@ -11,10 +11,17 @@ Active Directory and Internal Pentest Cheatsheets
 📖 Documentation
 -----
 
-TODO
+* Feel free to update any pages with your knowledge by submitting a Pull Request
+* Content in this repository is provided as is, for learning purpose. The author and contributors take no responsibility if you break something.
 
 
 👨‍💻 Contributions
 -----
 
-TODO
+<p align="center">
+<a href="https://github.com/swisskyrepo/InternalAllTheThings/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=swisskyrepo/InternalAllTheThings&max=36">
+</a>
+</p>
+
+Thanks again for your contribution! :heart:
