@@ -1,4 +1,4 @@
-# Kerberos Service for User Extension
+# Kerberos - Service for User Extension
 
 * **Service For User To Self** which allows a service to obtain a TGS on behalf of another user
 * **Service For User To Proxy** which allows a service to obtain a TGS on behalf of another user on another service
