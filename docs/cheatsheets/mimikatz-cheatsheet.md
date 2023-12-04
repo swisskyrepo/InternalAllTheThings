@@ -1,4 +1,4 @@
-# Windows - Mimikatz
+# Mimikatz
 
 ## Summary
 
