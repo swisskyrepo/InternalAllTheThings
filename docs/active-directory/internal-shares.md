@@ -7,7 +7,7 @@
 * [ShawnDEvans/smbmap - a handy SMB enumeration tool](https://github.com/ShawnDEvans/smbmap)
   ```powershell
   smbmap -H 10.10.10.10                # null session
-  smbmap -H 10.10.10.10 -R             # recursive listing
+  smbmap -H 10.10.10.10 -r PATH        # recursive listing
   smbmap -H 10.10.10.10 -u invaliduser # guest smb session
   smbmap -H 10.10.10.10 -d "DOMAIN.LOCAL" -u "USERNAME" -p "Password123*"
   ```

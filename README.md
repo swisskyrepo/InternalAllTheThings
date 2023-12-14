@@ -1,4 +1,4 @@
-# InternalAllTheThings
+# Internal All The Things
 
 Active Directory and Internal Pentest Cheatsheets
 

