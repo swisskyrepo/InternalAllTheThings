@@ -68,6 +68,15 @@
     ```
 
 
+### Enumerate from a Guest Account
+
+```ps1
+powerpwn recon --tenant {tenantId} --cache-path {path}
+powerpwn dump -tenant {tenantId} --cache-path {path}
+powerpwn gui --cache-path {path}
+```
+
+
 ### Enumerate Emails
 
 > By default, O365 has a lockout policy of 10 tries, and it will lock out an account for one (1) minute.

