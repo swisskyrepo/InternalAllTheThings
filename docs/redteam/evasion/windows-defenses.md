@@ -13,6 +13,7 @@
 * [Protected Process Light](#protected-process-light)
 * [Credential Guard](#credential-guard)
 * [Event Tracing for Windows](#event-tracing-for-windows)
+* [Attack Surface Reduction](#attack-surface-reduction)
 * [Windows Defender Antivirus](#windows-defender-antivirus)
 * [Windows Defender Application Control](#windows-defender-application-control)
 * [Windows Defender Firewall](#windows-defender-firewall)
@@ -296,6 +297,26 @@ The `Microsoft-Windows-Threat-Intelligence` provider corresponds to ETWTI, an ad
 The most common bypassing technique is patching the function `EtwEventWrite` which is called to write/log ETW events. You can list the providers registered for a process with `logman query providers -pid <PID>`
 
 
+## Attack Surface Reduction
+
+> Attack Surface Reduction (ASR) refers to strategies and techniques used to decrease the potential points of entry that attackers could use to exploit a system or network.
+
+```ps1
+Add-MpPreference -AttackSurfaceReductionRules_Ids 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 -AttackSurfaceReductionRules_Actions AuditMode
+Add-MpPreference -AttackSurfaceReductionRules_Ids 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 -AttackSurfaceReductionRules_Actions Enabled
+```
+
+| Description | Ids |
+|---------------------------------------------------------------------------|--------------------------------------|
+| Block execution of potentially obfuscated scripts                         | 5beb7efe-fd9a-4556-801d-275e5ffc04cc |
+| Block JavaScript or VBScript from launching downloaded executable content | d3e037e1-3eb8-44c8-a917-57927947596d |
+| Block abuse of exploited vulnerable signed drivers                        | 56a863a9-875e-4185-98a7-b882c64b5ce5 |
+| Block executable content from email client and webmail                    | be9ba2d9-53ea-4cdc-84e5-9b1eeee46550 |
+| Block process creations originating from PSExec and WMI commands          | d1e49aac-8f56-4280-b9ba-993a6d77406c |
+| Use advanced protection against ransomware                                | c1db55ab-c21a-4637-bb3f-a12568109d35 |
+| Block credential stealing from the Windows local security authority subsystem (lsass.exe) | 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 |
+
+
 ## Windows Defender Antivirus
 
 Also known as `Microsoft Defender`.
@@ -419,3 +440,4 @@ You can check if it is done decrypting using this command: `manage-bde -status`
 * [Disabling Event Tracing For Windows - UNPROTECT PROJECT - Tuesday 19 April 2022](https://unprotect.it/technique/disabling-event-tracing-for-windows-etw/)
 * [ETW: Event Tracing for Windows 101 - ired.team](https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101)
 * [Remove Windows Defender Application Control (WDAC) policies - Microsoft - 12/09/2022](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/disable-windows-defender-application-control-policies)
+* [Attack surface reduction rules reference - Microsoft 365 - 11/30/2023](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide)

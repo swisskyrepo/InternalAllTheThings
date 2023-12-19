@@ -2,9 +2,17 @@
 
 ## Pentest Requirements
 
+Users and roles:
 * **Global Reader** and **Security Reader** roles in Azure AD
 * **Reader** permission over the subscription
 
+Subscriptions:
+* [Azure Dev/Test](https://azure.microsoft.com/en-us/pricing/offers/dev-test) subscription.
+* Visual Studio subscription determines the monthly Azure credits you receive
+    * Visual Studio Enterprise: $150/month
+    * MSDN Platforms: $100
+    * Visual Studio Professional: $50
+    * Visual Studio Test Professional: $50
 
 ## Powershell and Native Modules
 
