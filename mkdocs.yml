@@ -1,4 +1,6 @@
 site_name: Internal All The Things
+site_description: 'Active Directory and Internal Pentest Cheatsheets'
+
 theme:
   name: material
   icon:
