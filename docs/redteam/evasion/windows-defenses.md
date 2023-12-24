@@ -302,11 +302,11 @@ The most common bypassing technique is patching the function `EtwEventWrite` whi
 > Attack Surface Reduction (ASR) refers to strategies and techniques used to decrease the potential points of entry that attackers could use to exploit a system or network.
 
 ```ps1
-Add-MpPreference -AttackSurfaceReductionRules_Ids 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 -AttackSurfaceReductionRules_Actions AuditMode
-Add-MpPreference -AttackSurfaceReductionRules_Ids 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 -AttackSurfaceReductionRules_Actions Enabled
+Add-MpPreference -AttackSurfaceReductionRules_Ids <Id> -AttackSurfaceReductionRules_Actions AuditMode
+Add-MpPreference -AttackSurfaceReductionRules_Ids <Id> -AttackSurfaceReductionRules_Actions Enabled
 ```
 
-| Description | Ids |
+| Description | Id |
 |---------------------------------------------------------------------------|--------------------------------------|
 | Block execution of potentially obfuscated scripts                         | 5beb7efe-fd9a-4556-801d-275e5ffc04cc |
 | Block JavaScript or VBScript from launching downloaded executable content | d3e037e1-3eb8-44c8-a917-57927947596d |
