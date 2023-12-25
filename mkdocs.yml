@@ -1,5 +1,6 @@
 site_name: Internal All The Things
 site_description: 'Active Directory and Internal Pentest Cheatsheets'
+site_url: https://swisskyrepo.github.io/InternalAllTheThings
 
 theme:
   name: material
