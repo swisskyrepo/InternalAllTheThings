@@ -13,9 +13,13 @@ RODCs are an alternative for Domain Controllers in less secure physical location
 ## RODC Key List Attack
 
 **Requirements**:
+
 * [Impacket PR #1210 - The Kerberos Key List Attack](https://github.com/SecureAuthCorp/impacket/pull/1210)
 * **krbtgt** credentials of the RODC (-rodcKey) 
 * **ID of the krbtgt** account of the RODC (-rodcNo)
+
+
+**Exploit**:
 
 * using Impacket
   ```ps1

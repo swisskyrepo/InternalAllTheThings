@@ -1,9 +1,14 @@
 # Active Directory - Certificate Services
 
-* Find ADCS Server
-  * `crackmapexec ldap domain.lab -u username -p password -M adcs`
-  * `ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName`
-* Enumerate AD Enterprise CAs with certutil: `certutil.exe -config - -ping`, `certutil -dump`
+Active Directory Certificate Services (AD CS) is a Microsoft Windows server role that provides a public key infrastructure (PKI). It allows you to create, manage, and distribute digital certificates, which are used to secure communication and transactions across a network. 
+
+
+## ADCS Enumeration
+
+* crackmapexec: `crackmapexec ldap domain.lab -u username -p password -M adcs`
+* ldapsearch: `ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName`
+* certutil: `certutil.exe -config - -ping`, `certutil -dump`
+
 
 ## ESC1 - Misconfigured Certificate Templates
 

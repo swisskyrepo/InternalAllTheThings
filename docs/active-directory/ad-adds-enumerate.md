@@ -216,11 +216,7 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Confirming admin access:
   Invoke-UserHunter -CheckAccess
   ```
-  :heavy_exclamation_mark: **Priv Esc to Domain Admin with User Hunting:** \
-  I have local admin access on a machine -> A Domain Admin has a session on that machine -> I steal his token and impersonate him ->   
-  Profit!
 
-  [PowerView 3.0 Tricks](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993)
 
 ## Using AD Module
 
@@ -319,3 +315,4 @@ You can remotely query every machines on the network to get a list of the users'
 * [Penetration Testing Active Directory, Part I - March 5, 2019 - Hausec](https://hausec.com/2019/03/05/penetration-testing-active-directory-part-i/)
 * [Penetration Testing Active Directory, Part II - March 12, 2019 - Hausec](https://hausec.com/2019/03/12/penetration-testing-active-directory-part-ii/)
 * [Using bloodhound to map the user network - Hausec](https://hausec.com/2017/10/26/using-bloodhound-to-map-the-user-network/)
+* [PowerView 3.0 Tricks - HarmJ0y](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993)
