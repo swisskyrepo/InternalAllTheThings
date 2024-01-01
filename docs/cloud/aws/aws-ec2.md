@@ -1,4 +1,4 @@
-# AWS - EC2
+# AWS - Service - EC2
 
 * [dufflebag](https://labs.bishopfox.com/dufflebag) - Find secrets that are accidentally exposed via Amazon EBS's "public" mode
 

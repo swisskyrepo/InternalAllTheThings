@@ -1,4 +1,4 @@
-# AWS - Lambda
+# AWS - Service - Lambda
 
 
 ## Extract function's code

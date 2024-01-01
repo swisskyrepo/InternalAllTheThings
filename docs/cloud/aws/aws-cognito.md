@@ -1,4 +1,4 @@
-# AWS - Cognito
+# AWS - Service - Cognito
 
 * [Cognito Scanner](https://github.com/padok-team/cognito-scanner) - A CLI tool for executing attacks on cognito such as *Unwanted account creation*, *Account Oracle* and *Identity Pool escalation*.
     ```bash

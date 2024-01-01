@@ -1,4 +1,4 @@
-# AWS - SSM
+# AWS - Service - SSM
 
 ## Command execution
 

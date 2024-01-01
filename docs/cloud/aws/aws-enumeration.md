@@ -115,3 +115,7 @@ pip install -r requirements.txt
 ## References
 
 * [An introduction to penetration testing AWS - Akimbocore - HollyGraceful - 06 August 2021](https://akimbocore.com/article/introduction-to-penetration-testing-aws/)
+* [AWS CLI Cheatsheet - apolloclark](https://gist.github.com/apolloclark/b3f60c1f68aa972d324b)
+* [AWS - Cheatsheet - @Magnussen](https://www.magnussen.funcmylife.fr/article_35)
+* [Pacu Open source AWS Exploitation framework - RhinoSecurityLabs](https://rhinosecuritylabs.com/aws/pacu-open-source-aws-exploitation-framework/)
+* [PACU Spencer Gietzen - 30 juil. 2018](https://youtu.be/XfetW1Vqybw?list=PLBID4NiuWSmfdWCmYGDQtlPABFHN7HyD5)

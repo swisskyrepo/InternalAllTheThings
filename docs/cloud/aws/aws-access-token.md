@@ -80,6 +80,25 @@ print ("account id:" + "{:012d}".format(AWSAccount_from_AWSKeyID("ASIAQNZGKIQY56
 * Tokyo - http://s3-ap-northeast-1.amazonaws.com
 
 
+## Gaining AWS Console Access via API Keys
+
+A utility to convert your AWS CLI credentials into AWS console access.
+
+* Using [NetSPI/aws_consoler](https://github.com/NetSPI/aws_consoler)
+    ```powershell
+    $> aws_consoler -v -a AKIA[REDACTED] -s [REDACTED]
+    2020-03-13 19:44:57,800 [aws_consoler.cli] INFO: Validating arguments...
+    2020-03-13 19:44:57,801 [aws_consoler.cli] INFO: Calling logic.
+    2020-03-13 19:44:57,820 [aws_consoler.logic] INFO: Boto3 session established.
+    2020-03-13 19:44:58,193 [aws_consoler.logic] WARNING: Creds still permanent, creating federated session.
+    2020-03-13 19:44:58,698 [aws_consoler.logic] INFO: New federated session established.
+    2020-03-13 19:44:59,153 [aws_consoler.logic] INFO: Session valid, attempting to federate as arn:aws:sts::123456789012:federated-user/aws_consoler.
+    2020-03-13 19:44:59,668 [aws_consoler.logic] INFO: URL generated!
+    https://signin.aws.amazon.com/federation?Action=login&Issuer=consoler.local&Destination=https%3A%2F%2Fconsole.aws.amazon.com%2Fconsole%2Fhome%3Fregion%3Dus-east-1&SigninToken=[REDACTED]
+    ```
+
+
 ## References
 
 * [A short note on AWS KEY ID - Tal Be'ery - Oct 27, 2023](https://medium.com/@TalBeerySec/a-short-note-on-aws-key-id-f88cc4317489)
+* [Gaining AWS Console Access via API Keys - Ian Williams - March 18th, 2020](https://blog.netspi.com/gaining-aws-console-access-via-api-keys/)
