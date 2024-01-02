@@ -70,7 +70,7 @@ You can access an organization's Azure DevOps Services instance via https://dev.
   $'https://dev.azure.com/YOURORGANIZATION/_apis/graph/groups?api-version=7.0'
   ```
 
-* Enumerate porject permissions: `ADOKit.exe getpermissions /credential:UserAuthentication=ABC123 /url:https://dev.azure.com/YourOrganization /project:"project name"`
+* Enumerate project permissions: `ADOKit.exe getpermissions /credential:UserAuthentication=ABC123 /url:https://dev.azure.com/YourOrganization /project:"project name"`
 
 
 ## Privilege Escalation

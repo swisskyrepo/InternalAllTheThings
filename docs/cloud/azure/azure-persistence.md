@@ -1,6 +1,6 @@
 # Azure Persistence
 
-## Add secrets to application
+## Add Secrets to Application
 
 * Add secrets with [lutzenfried/OffensiveCloud/Add-AzADAppSecret.ps1](https://github.com/lutzenfried/OffensiveCloud/blob/main/Azure/Tools/Add-AzADAppSecret.ps1)
     ```powershell
@@ -15,7 +15,24 @@
     PS > Connect-AzAccount -ServicePrincipal -Credential $creds -Tenant '<TenantID>'
     ```
 
+## Add Service Principal
+
+* Generate a new service principal password/secret
+    ```ps1
+    Import-Module Microsoft.Graph.Applications
+    Connect-MgGraph 
+    $servicePrincipalId = "<service-principal-id>"
+
+    $params = @{
+        passwordCredential = @{
+            displayName = "NewCreds"
+        }
+    }
+    Add-MgServicePrincipalPassword -ServicePrincipalId $servicePrincipalId -BodyParameter $params
+    ```
+
 
 ## References
 
 * [Maintaining Azure Persistence via automation accounts - Karl Fosaaen - September 12, 2019](https://blog.netspi.com/maintaining-azure-persistence-via-automation-accounts/)
+* [Microsoft Graph - servicePrincipal: addPassword](https://learn.microsoft.com/en-us/graph/api/serviceprincipal-addpassword?view=graph-rest-1.0&tabs=powershell)
