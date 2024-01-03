@@ -1,8 +1,16 @@
-# Azure Services - Runbook
+# Azure Services - Runbook and Automation
+
+## Runbook
 
 Runbook must be **SAVED** and **PUBLISHED** before running it.
 
-## Create a Runbook
+### List the Runbooks
+
+```ps1
+Get-AzAutomationAccount | Get-AzAutomationRunbook
+```
+
+### Create a Runbook
 
 * Check user right for automation
     ```powershell
@@ -18,7 +26,27 @@ Runbook must be **SAVED** and **PUBLISHED** before running it.
 * Start the Runbook: `Start-AzAutomationRunbook -RunbookName <RUNBOOK-NAME> -RunOn Workergroup1 -AutomationAccountName <AUTOMATION-ACCOUNT> -ResourceGroupName <RG-NAME> -Verbose`
 
 
-## Persistence via Automation accounts
+## Automation Account
+
+### List Automation Accounts
+
+Azure Automation provides a way to automate the repetitive tasks you perform in your Azure environment.
+
+```ps1
+Get-AzAutomationAccount
+```
+
+### Get Automation Credentials
+
+```ps1
+Get-AzAutomationAccount | Get-AzAutomationCredential
+Get-AzAutomationAccount | Get-AzAutomationConnection
+Get-AzAutomationAccount | Get-AzAutomationCertificate
+Get-AzAutomationAccount | Get-AzAutomationVariable
+```
+
+
+### Persistence via Automation Accounts
 
 * Create a new Automation Account
     * "Create Azure Run As account": Yes
@@ -37,6 +65,22 @@ Runbook must be **SAVED** and **PUBLISHED** before running it.
     $body = ConvertTo-Json -InputObject $AccountInfo
     $response = Invoke-WebRequest -Method Post -Uri $uri -Body $body
     ```
+
+
+## Desired State Configuration
+
+### List the DSC
+
+```ps1
+Get-AzAutomationAccount | Get-AzAutomationDscConfiguration
+```
+
+### Export the configuration
+
+```ps1
+$DSCName = ${dscToExport}
+Get-AzAutomationAccount | Get-AzAutomationDscConfiguration | where {$_.name -march $DSCName} | Export-AzAutomationDscConfiguration -OutputFolder (get-location) -Debug
+```
 
 
 ## References

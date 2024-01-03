@@ -50,6 +50,7 @@ PS > Set-AADIntUserPassword -SourceAnchor "<IMMUTABLE-ID>" -Password "Password" 
 
 ## Federation
 
+* [Golden SAML](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adfs-federation-services/)
 
 
 ## AD Connect - Credentials

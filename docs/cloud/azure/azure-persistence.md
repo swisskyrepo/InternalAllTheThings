@@ -15,6 +15,7 @@
     PS > Connect-AzAccount -ServicePrincipal -Credential $creds -Tenant '<TenantID>'
     ```
 
+
 ## Add Service Principal
 
 * Generate a new service principal password/secret
@@ -30,6 +31,13 @@
     }
     Add-MgServicePrincipalPassword -ServicePrincipalId $servicePrincipalId -BodyParameter $params
     ```
+
+
+## Add User to Group
+
+```ps1
+Add-AzureADGroupMember -ObjectId <group_id> -RefObjectId <user_id> -Verbose
+```
 
 
 ## References

