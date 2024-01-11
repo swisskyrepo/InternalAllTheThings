@@ -2,6 +2,11 @@
 
 There are 3-4 fields that seem to be common in most Active Directory schemas: `UserPassword`, `UnixUserPassword`, `unicodePwd` and `msSFU30Password`.
 
+* Windows/Linux command
+    ```ps1
+    bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(|(userPassword=*)(unixUserPassword=*)(unicodePassword=*)(description=*))' --attr userPassword,unixUserPassword,unicodePwd,description
+    ```
+
 * Password in User Description
     ```powershell
     crackmapexec ldap domain.lab -u 'username' -p 'password' -M user-desc

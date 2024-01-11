@@ -12,6 +12,10 @@
   Get-DomainComputer -TrustedToAuth | select -exp dnshostname
   Get-DomainComputer previous_result | select -exp msds-AllowedToDelegateTo
   ```
+* bloodyAD:
+  ```ps1
+  bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=16777216))' --attr sAMAccountName,msds-allowedtodelegateto
+  ```
 
 ## Exploit the Constrained Delegation
 

@@ -30,7 +30,11 @@ Check the `TRUSTED_FOR_DELEGATION` property.
   # From https://github.com/samratashok/ADModule
   PS> Get-ADComputer -Filter {TrustedForDelegation -eq $True}
   ```
-
+* [bloodyAD](https://github.com/CravateRouge/bloodyAD)
+  ```ps1
+  bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))' --attr sAMAccountName,userAccountControl
+  ```
+  
 * [ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
   ```powershell
   $> ldapdomaindump -u "DOMAIN\\Account" -p "Password123*" 10.10.10.10   
