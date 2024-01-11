@@ -2,6 +2,8 @@
 
 Active Directory and Internal Pentest Cheatsheets
 
+An alternative display version is available at [Internal All The Things - Web version](https://swisskyrepo.github.io/InternalAllTheThings/).
+
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/swisskyrepo/InternalAllTheThings/master/assets/banner.png">
@@ -26,4 +28,6 @@ Active Directory and Internal Pentest Cheatsheets
 
 Thanks again for your contribution! :heart:
 
-You can also share the project : [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Internal%20All%20The%20Things,%20a%20list%20of%20useful%20payloads%20and%20bypasses%20for%20Internal%20Security%20Assessments-%20by%20@pentest_swissky&url=https://github.com/swisskyrepo/InternalAllTheThings)
+You can also share the project and contribute with a Github Sponsorship.    
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Internal%20All%20The%20Things,%20a%20list%20of%20useful%20payloads%20and%20bypasses%20for%20Internal%20Security%20Assessments-%20by%20@pentest_swissky&url=https://github.com/swisskyrepo/InternalAllTheThings) 
+[![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&link=https://github.com/sponsors/swisskyrepo)](https://github.com/sponsors/swisskyrepo)
