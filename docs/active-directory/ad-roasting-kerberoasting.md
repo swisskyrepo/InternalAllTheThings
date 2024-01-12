@@ -80,6 +80,7 @@ Then crack the ticket using the correct hashcat mode (`$krb5tgs$23`= `etype 23`)
 
 
 **Mitigations**: 
+
 * Have a very long password for your accounts with SPNs (> 32 characters)
 * Make sure no users have SPNs
 
