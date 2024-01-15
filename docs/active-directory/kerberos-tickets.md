@@ -111,6 +111,7 @@ Converting kirbi => ccache
 
 
 Mitigations:
+
 * Hard to detect because they are legit TGT tickets
 * Mimikatz generate a golden ticket with a life-span of 10 years
 
@@ -148,6 +149,7 @@ Interesting services to target with a silver ticket :
 
 
 Mitigations:
+
 * Set the attribute "Account is Sensitive and Cannot be Delegated" to prevent lateral movement with the generated ticket.
 
 
@@ -155,7 +157,8 @@ Mitigations:
 
 > Request a legit low-priv TGT and recalculate only the PAC field providing the krbtgt encryption key
 
-Require: 
+Requirements:
+
 * krbtgt NT Hash
 * krbtgt AES key
 
@@ -172,7 +175,8 @@ Rubeus.exe diamond /domain:DOMAIN /user:USER /password:PASSWORD /dc:DOMAIN_CONTR
 
 The goal is to mimic the PAC field as close as possible to a legitimate one.
 
-Require:
+Requirements:
+
 * [Impacket PR#1411](https://github.com/SecureAuthCorp/impacket/pull/1411)
 * krbtgt AES key
 

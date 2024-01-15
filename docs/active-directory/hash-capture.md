@@ -2,14 +2,16 @@
 
 ## Capturing and cracking Net-NTLMv1/NTLMv1 hashes/tokens
 
-> Net-NTLMv1 (NTLMv1) authentication tokens are used for network authentication (they are derived from a challenge/response DES-based algorithm with the user's NT-hash as symetric keys. 
+> Net-NTLMv1 (NTLMv1) authentication tokens are used for network authentication. They are derived from a challenge/response DES-based algorithm with the user's NT-hash as symetric keys. 
 
 :information_source: : Coerce a callback using PetitPotam or SpoolSample on an affected machine and downgrade the authentication to **NetNTLMv1 Challenge/Response authentication**. This uses the outdated encryption method DES to protect the NT/LM Hashes.
 
 **Requirements**:
+
 * LmCompatibilityLevel = 0x1: Send LM & NTLM (`reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel`)
 
 **Exploitation**:
+
 * Capturing using Responder: Edit the `/etc/responder/Responder.conf` file to include the magical **1122334455667788** challenge
     ```ps1
     HTTPS = On
@@ -67,6 +69,7 @@
 **Mitigations**: 
 
 * Set the Lan Manager authentication level to `Send NTLMv2 responses only. Refuse LM & NTLM`
+
 
 ## Capturing and cracking Net-NTLMv2/NTLMv2 hashes
 

@@ -67,7 +67,8 @@
 
 > If you can escalate on a host that is an SCCM client, you can retrieve plaintext domain credentials.
 
-On the machine.
+On the machine
+
 * Find SCCM blob
     ```ps1
     Get-Wmiobject -namespace "root\ccm\policy\Machine\ActualConfig" -class "CCM_NetworkAccessAccount"

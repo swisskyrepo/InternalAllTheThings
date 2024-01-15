@@ -2,10 +2,13 @@
 
 ## Using BloodHound
 
-Use the correct collector
+Use the correct collector:
+
 * AzureHound for Azure Active Directory
 * SharpHound for local Active Directory
 * RustHound for local Active Directory
+
+**Examples**:
 
 * use [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) (more info: [Cloud - Azure Pentest](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Cloud%20-%20Azure%20Pentest.md#azure-recon-tools))
 
@@ -80,6 +83,7 @@ cat docker-compose.yml | docker compose -f - up
 ```
 
 You can add some custom queries like :
+
 * [Bloodhound-Custom-Queries from @hausec](https://github.com/hausec/Bloodhound-Custom-Queries/blob/master/customqueries.json)
 * [BloodHoundQueries from CompassSecurity](https://github.com/CompassSecurity/BloodHoundQueries/blob/master/customqueries.json)
 * [BloodHound Custom Queries from Exegol - @ShutdownRepo](https://raw.githubusercontent.com/ShutdownRepo/Exegol/master/sources/bloodhound/customqueries.json)

@@ -9,6 +9,7 @@ CVE-2020-17049
 :warning: Patched Error Message : `[-] Kerberos SessionError: KRB_AP_ERR_MODIFIED(Message stream modified)`
 
 Requirements:
+
 * Service account's password hash 
 * Service account's with `Constrained Delegation` or `Resource Based Constrained Delegation`
 * [Impacket PR #1013](https://github.com/SecureAuthCorp/impacket/pull/1013) 
