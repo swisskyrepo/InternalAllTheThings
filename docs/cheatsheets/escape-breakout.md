@@ -15,6 +15,12 @@
 * [Shell URI Handlers](#shell-uri-handlers)
 * [References](#references)
 
+
+## Tools
+
+* [kiosk.vsim.xyz](https://kiosk.vsim.xyz/) - tooling for browser-based, Kiosk mode testing.
+
+
 ## Gaining a command shell
 
 * **Shortcut**
@@ -51,6 +57,7 @@
 * Start the OSK (On-Screen-Keyboard)
 * You can now use the keyboard shortcut (CTRL+N)
 
+
 ## Dialog Boxes
 
 ### Creating new files
@@ -58,9 +65,11 @@
 * Batch files – Right click > New > Text File > rename to .BAT (or .CMD) > edit > open
 * Shortcuts – Right click > New > Shortcut > `%WINDIR%\system32`
 
+
 ## Open a new Windows Explorer instance
 
 * Right click any folder > select `Open in new window`
+
 
 ## Exploring Context Menus
 
@@ -81,6 +90,7 @@ Many input boxes accept file paths; try all inputs with UNC paths such as `//att
 ### Bypass file restrictions
 
 Enter *.* or *.exe or similar in `File name` box
+
 
 ## Internet Explorer
 
@@ -142,6 +152,7 @@ firefox irc://127.0.0.1 -P "Test"
 * shell:Common Administrative Tools
 * shell:MyComputerFolder
 * shell:InternetFolder
+
 
 ## References
 

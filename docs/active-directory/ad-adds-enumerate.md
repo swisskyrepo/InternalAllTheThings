@@ -4,19 +4,18 @@
 
 Use the correct collector:
 
-* AzureHound for Azure Active Directory
-* SharpHound for local Active Directory
-* RustHound for local Active Directory
+* [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) for Azure Active Directory
+* [BloodHoundAD/SharpHound](https://github.com/BloodHoundAD/SharpHound) for local Active Directory (C# collector)
+* [FalconForceTeam/SOAPHound](https://github.com/FalconForceTeam/SOAPHound) for local Active Directory (C# collector using ADWS)
+* [NH-RED-TEAM/RustHound](https://github.com/NH-RED-TEAM/RustHound) for local Active Directory (Rust collector)
+* [fox-it/BloodHound.py](https://github.com/fox-it/BloodHound.py) for local Active Directory (Python collector)
 
 **Examples**:
 
 * use [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) (more info: [Cloud - Azure Pentest](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Cloud%20-%20Azure%20Pentest.md#azure-recon-tools))
 
-* use [BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound)
+* use [BloodHoundAD/SharpHound.exe](https://github.com/BloodHoundAD/BloodHound) - run the collector on the machine using SharpHound.exe
   ```powershell
-  # run the collector on the machine using SharpHound.exe
-  # https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.exe
-  # /usr/lib/bloodhound/resources/app/Collectors/SharpHound.exe
   .\SharpHound.exe -c all -d active.htb --searchforest
   .\SharpHound.exe -c all,GPOLocalGroup # all collection doesn't include GPOLocalGroup by default
   .\SharpHound.exe --CollectionMethod DCOnly # only collect from the DC, doesn't query the computers (more stealthy)
@@ -24,22 +23,11 @@ Use the correct collector:
   .\SharpHound.exe -c all --LdapUsername <UserName> --LdapPassword <Password> --JSONFolder <PathToFile>
   .\SharpHound.exe -c all --LdapUsername <UserName> --LdapPassword <Password> --domaincontroller 10.10.10.100 -d active.htb
   .\SharpHound.exe -c all,GPOLocalGroup --outputdirectory C:\Windows\Temp --randomizefilenames --prettyjson --nosavecache --encryptzip --collectallproperties --throttle 10000 --jitter 23
-
-  # or run the collector on the machine using Powershell
-  # https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1
-  # /usr/lib/bloodhound/resources/app/Collectors/SharpHound.ps1
+  ```
+* use [BloodHoundAD/SharpHound.ps1](https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1) - run the collector on the machine using Powershell
+  ```powershell
   Invoke-BloodHound -SearchForest -CSVFolder C:\Users\Public
   Invoke-BloodHound -CollectionMethod All  -LDAPUser <UserName> -LDAPPass <Password> -OutputDirectory <PathToFile>
-
-  # or remotely via BloodHound Python
-  # https://github.com/fox-it/BloodHound.py
-  pip install bloodhound
-  bloodhound-python -d lab.local -u rsmith -p Winter2017 -gc LAB2008DC01.lab.local -c all
-  
-  # or locally/remotely from an ADExplorer snapshot from SysInternals (ADExplorer remains a legitimate binary signed by Microsoft, avoiding detection with security solutions)
-  # https://github.com/c3c/ADExplorerSnapshot.py
-  pip3 install --user .
-  ADExplorerSnapshot.py <snapshot path> -o <*.json output folder path>
   ```
 * Collect more data for certificates exploitation using Certipy
   ```ps1
@@ -47,7 +35,7 @@ Use the correct collector:
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -old-bloodhound
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -vulnerable -hide-admins -username user@domain -password Password123
   ```
-* use [OPENCYBER-FR/RustHound](https://github.com/OPENCYBER-FR/RustHound)
+* Use [NH-RED-TEAM/RustHound](https://github.com/OPENCYBER-FR/RustHound)
   ```ps1
   # Windows with GSSAPI session
   rusthound.exe -d domain.local --ldapfqdn domain
@@ -55,6 +43,28 @@ Use the correct collector:
   rusthound.exe -d domain.local -u user@domain.local -p Password123 -o output -z
   # Linux with username:password and ADCS module for @ly4k BloodHound version
   rusthound -d domain.local -u 'user@domain.local' -p 'Password123' -o /tmp/adcs --adcs -z
+  ```
+* Use [FalconForceTeam/SOAPHound](https://github.com/FalconForceTeam/SOAPHound)
+  ```ps1
+  --buildcache: Only build cache and not perform further actions
+  --bhdump: Dump BloodHound data
+  --certdump: Dump AD Certificate Services (ADCS) data
+  --dnsdump: Dump AD Integrated DNS data
+
+  SOAPHound.exe --buildcache -c c:\temp\cache.txt
+  SOAPHound.exe -c c:\temp\cache.txt --bhdump -o c:\temp\bloodhound-output
+  SOAPHound.exe -c c:\temp\cache.txt --bhdump -o c:\temp\bloodhound-output --autosplit --threshold 1000
+  SOAPHound.exe -c c:\temp\cache.txt --certdump -o c:\temp\bloodhound-output
+  SOAPHound.exe --dnsdump -o c:\temp\dns-output
+  ```
+* Use [fox-it/BloodHound.py](https://github.com/fox-it/BloodHound.py)
+  ```
+  pip install bloodhound
+  bloodhound-python -d lab.local -u rsmith -p Winter2017 -gc LAB2008DC01.lab.local -c all
+  ```
+* Use [c3c/ADExplorerSnapshot.py](https://github.com/c3c/ADExplorerSnapshot.py) to query data from SysInternals/ADExplorer snapshot  (ADExplorer remains a legitimate binary signed by Microsoft, avoiding detection with security solutions).
+  ```py
+  ADExplorerSnapshot.py <snapshot path> -o <*.json output folder path>
   ```
 
 Then import the zip/json files into the Neo4J database and query them.
@@ -320,3 +330,4 @@ You can remotely query every machines on the network to get a list of the users'
 * [Penetration Testing Active Directory, Part II - March 12, 2019 - Hausec](https://hausec.com/2019/03/12/penetration-testing-active-directory-part-ii/)
 * [Using bloodhound to map the user network - Hausec](https://hausec.com/2017/10/26/using-bloodhound-to-map-the-user-network/)
 * [PowerView 3.0 Tricks - HarmJ0y](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993)
+* [SOAPHound - tool to collect Active Directory data via ADWS - Nikos Karouzos - 01/26/204](https://medium.com/falconforce/soaphound-tool-to-collect-active-directory-data-via-adws-165aca78288c)
