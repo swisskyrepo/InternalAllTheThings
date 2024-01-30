@@ -97,3 +97,4 @@ cme smb -u user -p password -d domain.local -M webdav [TARGET]
 ## References
 
 * [Playing with PrintNightmare - 0xdf - Jul 8, 2021](https://0xdf.gitlab.io/2021/07/08/playing-with-printnightmare.html)
+* [A Practical Guide to PrintNightmare in 2024 - itm4n - Jan 28, 2024](https://itm4n.github.io/printnightmare-exploitation/)

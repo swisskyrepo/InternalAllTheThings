@@ -12,9 +12,9 @@ Use the correct collector:
 
 **Examples**:
 
-* use [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) (more info: [Cloud - Azure Pentest](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Cloud%20-%20Azure%20Pentest.md#azure-recon-tools))
+* Use [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) (more info: [Cloud - Azure Pentest](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Cloud%20-%20Azure%20Pentest.md#azure-recon-tools))
 
-* use [BloodHoundAD/SharpHound.exe](https://github.com/BloodHoundAD/BloodHound) - run the collector on the machine using SharpHound.exe
+* Use [BloodHoundAD/SharpHound.exe](https://github.com/BloodHoundAD/BloodHound) - run the collector on the machine using SharpHound.exe
   ```powershell
   .\SharpHound.exe -c all -d active.htb --searchforest
   .\SharpHound.exe -c all,GPOLocalGroup # all collection doesn't include GPOLocalGroup by default
@@ -24,12 +24,12 @@ Use the correct collector:
   .\SharpHound.exe -c all --LdapUsername <UserName> --LdapPassword <Password> --domaincontroller 10.10.10.100 -d active.htb
   .\SharpHound.exe -c all,GPOLocalGroup --outputdirectory C:\Windows\Temp --randomizefilenames --prettyjson --nosavecache --encryptzip --collectallproperties --throttle 10000 --jitter 23
   ```
-* use [BloodHoundAD/SharpHound.ps1](https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1) - run the collector on the machine using Powershell
+* Use [BloodHoundAD/SharpHound.ps1](https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1) - run the collector on the machine using Powershell
   ```powershell
   Invoke-BloodHound -SearchForest -CSVFolder C:\Users\Public
   Invoke-BloodHound -CollectionMethod All  -LDAPUser <UserName> -LDAPPass <Password> -OutputDirectory <PathToFile>
   ```
-* Collect more data for certificates exploitation using Certipy
+* Use [ly4k/Certipy](https://github.com/ly4k/Certipy) to collect certificates data
   ```ps1
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -bloodhound
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -old-bloodhound
