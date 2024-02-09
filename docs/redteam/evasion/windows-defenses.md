@@ -321,29 +321,45 @@ Add-MpPreference -AttackSurfaceReductionRules_Ids <Id> -AttackSurfaceReductionRu
 
 Also known as `Microsoft Defender`.
 
-```powershell
-# check status of Defender
-PS C:\> Get-MpComputerStatus
+* Check status of Defender
+    ```powershell
+    PS C:\> Get-MpComputerStatus
+    ```
 
-# disable scanning all downloaded files and attachments, disable AMSI (reactive)
-PS C:\> Set-MpPreference -DisableRealtimeMonitoring $true; Get-MpComputerStatus
-PS C:\> Set-MpPreference -DisableIOAVProtection $true
+* Disable scanning all downloaded files and attachments
+    ```powershell
+    PS C:\> Set-MpPreference -DisableRealtimeMonitoring $true; Get-MpComputerStatus
+    PS C:\> Set-MpPreference -DisableIOAVProtection $true
+    ```
 
-# disable AMSI (set to 0 to enable)
-PS C:\> Set-MpPreference -DisableScriptScanning 1 
+* Disable AMSI (set to 0 to enable)
+    ```powershell
+    PS C:\> Set-MpPreference -DisableScriptScanning 1 
+    ```
 
-# exclude a folder
-PS C:\> Add-MpPreference -ExclusionPath "C:\Temp"
-PS C:\> Add-MpPreference -ExclusionPath "C:\Windows\Tasks"
-PS C:\> Set-MpPreference -ExclusionProcess "word.exe", "vmwp.exe"
+* Exclude a folder, a process from scanning
+    ```powershell
+    PS C:\> Add-MpPreference -ExclusionPath "C:\Temp"
+    PS C:\> Add-MpPreference -ExclusionPath "C:\Windows\Tasks"
+    PS C:\> Set-MpPreference -ExclusionProcess "word.exe", "vmwp.exe"
+    ```
 
-# exclude using wmi
-PS C:\> WMIC /Namespace:\\root\Microsoft\Windows\Defender class MSFT_MpPreference call Add ExclusionPath="C:\Users\Public\wmic"
+* Exclude a folder using WMI
+    ```powershell
+    PS C:\> WMIC /Namespace:\\root\Microsoft\Windows\Defender class MSFT_MpPreference call Add ExclusionPath="C:\Users\Public\wmic"
+    ```
 
-# remove signatures (if Internet connection is present, they will be downloaded again):
-PS > & "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe" -RemoveDefinitions -All
-PS > & "C:\Program Files\Windows Defender\MpCmdRun.exe" -RemoveDefinitions -All
-```
+* Remove signatures. **NOTE**: if Internet connection is present, they will be downloaded again.
+    ```powershell
+    PS > & "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe" -RemoveDefinitions -All
+    PS > & "C:\Program Files\Windows Defender\MpCmdRun.exe" -RemoveDefinitions -All
+    ```
+
+Identify the exact bytes that are detected by Windows Defender Antivirus
+
+* [matterpreter/DefenderCheck](https://github.com/matterpreter/DefenderCheck) - Identifies the bytes that Microsoft Defender flags on
+* [gatariee/gocheck](https://github.com/gatariee/gocheck) - DefenderCheck but blazingly fast™
+
 
 
 ## Windows Defender Application Control
