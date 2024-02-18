@@ -25,3 +25,16 @@ cmedb (test) > proto smb
 cmedb (test)(smb) > creds
 cmedb (test)(smb) > export creds csv /tmp/creds
 ```
+
+NetExec workspaces
+
+```ps1
+# get current workspace
+poetry run nxcdb -gw 
+
+# create workspace
+poetry run nxcdb -cw testing
+
+# set workspace
+poetry run nxcdb -sw testing 
+```
