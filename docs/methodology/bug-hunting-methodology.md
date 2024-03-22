@@ -78,7 +78,7 @@
 
 * Locate `robots.txt`, `security.txt`, `sitemap.xml` files
 * Retrieve comments in source code
-* Discover URL: [tomnomnom/waybackurls](github.com/tomnomnom/waybackurls)
+* Discover URL: [tomnomnom/waybackurls](https://github.com/tomnomnom/waybackurls)
 * Search for `hidden` parameters: [PortSwigger/param-miner](https://github.com/PortSwigger/param-miner)
 
 * List all the subdirectories and files with `gobuster` or `ffuf`

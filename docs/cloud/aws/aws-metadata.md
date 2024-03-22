@@ -37,8 +37,8 @@ Example : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/me
     "Code" : "Success",
     "LastUpdated" : "2019-07-31T23:08:10Z",
     "Type" : "AWS-HMAC",
-    "AccessKeyId" : "ASIA54BL6PJR37YOEP67",
-    "SecretAccessKey" : "OiAjgcjm1oi2xxxxxxxxOEXkhOMhCOtJMP2",
+    "AccessKeyId" : "ASIAREDACTEDXXXXXXXX",
+    "SecretAccessKey" : "XXXXXXXXXXXXXXXXXXXXXX",
     "Token" : "AgoJb3JpZ2luX2VjEDU86Rcfd/34E4rtgk8iKuTqwrRfOppiMnv",
     "Expiration" : "2019-08-01T05:20:30Z"
     }
@@ -59,9 +59,9 @@ Example : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/me
     ```powershell
     {
         "RoleArn": "arn:aws:iam::953574914659:role/awesome-waf-role",
-        "AccessKeyId": "ASIA54BL6PJR2L75XHVS",
+        "AccessKeyId": "ASIAXXXXXXXXXX",
         "SecretAccessKey": "j72eTy+WHgIbO6zpe2DnfjEhbObuTBKcemfrIygt",
-        "Token": "FQoGZXIvYXdzEMj//////////wEaDEQW+wwBtaoyqH5lNSLGBF3PnwnLYa3ggfKBtLMoWCEyYklw6YX85koqNwKMYrP6ymcjv4X2gF5enPi9/Dx6m/1TTFIwMzZ3tf4V3rWP3HDt1ea6oygzTrWLvfdp57sKj+2ccXI+WWPDZh3eJr4Wt4JkiiXrWANn7Bx3BUj9ZM11RXrKRCvhrxdrMLoewRkWmErNEOFgbaCaT8WeOkzqli4f+Q36ZerT2V+FJ4SWDX1CBsimnDAMAdTIRSLFxVBBwW8171OHiBOYAMK2np1xAW1d3UCcZcGKKZTjBee2zs5+Rf5Nfkoq+j7GQkmD2PwCeAf0RFETB5EVePNtlBWpzfOOVBtsTUTFewFfx5cyNsitD3C2N93WR59LX/rNxyncHGDUP/6UPlasOcfzAaG738OJQmWfQTR0qksHIc2qiPtkstnNndh76is+r+Jc4q3wOWu2U2UBi44Hj+OS2UTpMAwc/MshIiGsUOrBQdPqcLLdAxKpUNTdSQNLg5wv4f2OrOI8/sneV58yBRolBz8DZoH8wohtLXpueDt8jsVSVLznnMOOe/4ehHE2Nt+Fy+tjaY5FUi/Ijdd5IrIdIvWFHY1XcPopUFYrDqr0yuZvX1YddfIcfdbmxf274v69FuuywXTo7cXk1QTMYZWlD/dPI/k6KQeO446UrHT9BJxcJMpchAIVRpI7nVKkSDwku1joKUG7DOeycuAbhecVZG825TocL0ks2yXPnIdvckAaU9DZf+afIV3Nxv3TI4sSX1npBhb2f/8C31pv8VHyu2NiN5V6OOHzZijHsYXsBQ==",
+        "Token": "FQoGZXIvYXdzEMj/////...jHsYXsBQ==",
         "Expiration": "2019-09-18T04:05:59Z"
     }
     ```
