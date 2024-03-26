@@ -136,7 +136,7 @@ docker run -it txt3rob/aquatone-docker aq example.com
 cat /tmp/subresult$1 | ./Aquatone/aquatone -ports large -out /tmp/aquatone$1
 
 # Amass version
-./Amass/amass -active -brute -o /tmp/hosts.txt -d $1
+./Amass/amass enum -active -brute -o /tmp/hosts.txt -d $1
 cat /tmp/hosts.txt | ./Aquatone/aquatone -ports large -out /tmp/aquatone$1
 ```
 
