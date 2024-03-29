@@ -24,9 +24,9 @@
   ----------          ----------                    ---------      --------------
   domainA.local      domainB.local                  TreeRoot       Bidirectional
   ```
-* Crackmapexec module `enum_trusts`
+* netexec module `enum_trusts`
   ```powershell
-  cme ldap <ip> -u <user> -p <pass> -M enum_trusts 
+  nxc ldap <ip> -u <user> -p <pass> -M enum_trusts 
   ```
 
 

@@ -9,7 +9,7 @@ If you do not want modified ACLs to be overwritten every hour, you should change
 Find users with `AdminCount=1`.
 
 ```ps1
-crackmapexec ldap 10.10.10.10 -u username -p password --admin-count
+netexec ldap 10.10.10.10 -u username -p password --admin-count
 # or
 bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get search --filter '(admincount=1)' --attr sAMAccountName
 # or

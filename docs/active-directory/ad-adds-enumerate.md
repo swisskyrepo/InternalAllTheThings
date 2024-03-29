@@ -282,9 +282,9 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
 Sometimes you need to find a machine where a specific user is logged in.    
 You can remotely query every machines on the network to get a list of the users's sessions.
 
-* CrackMapExec
+* netexec
   ```ps1
-  cme smb 10.10.10.0/24 -u Administrator -p 'P@ssw0rd' --sessions
+  nxc smb 10.10.10.0/24 -u Administrator -p 'P@ssw0rd' --sessions
   SMB         10.10.10.10    445    WIN-8OJFTLMU1IG  [+] Enumerated sessions
   SMB         10.10.10.10    445    WIN-8OJFTLMU1IG  \\10.10.10.10            User:Administrator
   ```
@@ -320,7 +320,7 @@ You can remotely query every machines on the network to get a list of the users'
 ## References
 
 * [Explain like I’m 5: Kerberos - Apr 2, 2013 - @roguelynn](https://www.roguelynn.com/words/explain-like-im-5-kerberos/)
-* [Pen Testing Active Directory Environments - Part I: Introduction to crackmapexec (and PowerView)](https://blog.varonis.com/pen-testing-active-directory-environments-part-introduction-crackmapexec-powerview/)
+* [Pen Testing Active Directory Environments - Part I: Introduction to netexec (and PowerView)](https://blog.varonis.com/pen-testing-active-directory-environments-part-introduction-netexec-powerview/)
 * [Pen Testing Active Directory Environments - Part II: Getting Stuff Done With PowerView](https://blog.varonis.com/pen-testing-active-directory-environments-part-ii-getting-stuff-done-with-powerview/)
 * [Pen Testing Active Directory Environments - Part III:  Chasing Power Users](https://blog.varonis.com/pen-testing-active-directory-environments-part-iii-chasing-power-users/)
 * [Pen Testing Active Directory Environments - Part IV: Graph Fun](https://blog.varonis.com/pen-testing-active-directory-environments-part-iv-graph-fun/)
