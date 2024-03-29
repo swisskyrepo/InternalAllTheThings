@@ -10,12 +10,12 @@
 
 0. Check the MachineAccountQuota of the account
   ```powershell
-  crackmapexec ldap 10.10.10.10 -u username -p 'Password123' -d 'domain.local' --kdcHost 10.10.10.10 -M MAQ
+  netexec ldap 10.10.10.10 -u username -p 'Password123' -d 'domain.local' --kdcHost 10.10.10.10 -M MAQ
   StandIn.exe --object ms-DS-MachineAccountQuota=*
   ```
 1. Check if the DC is vulnerable
   ```powershell
-  crackmapexec smb 10.10.10.10 -u '' -p '' -d domain -M nopac
+  netexec smb 10.10.10.10 -u '' -p '' -d domain -M nopac
   ```
 
 **Exploitation**

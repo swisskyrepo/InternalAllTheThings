@@ -16,7 +16,7 @@ $ who
 $ write root pts/2	# press Ctrl+D  after typing the message. 
 ```
 
-## CrackMapExec Credential Database
+## netexec Credential Database
 
 ```ps1
 cmedb (default) > workspace create test

