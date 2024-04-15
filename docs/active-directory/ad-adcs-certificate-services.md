@@ -399,7 +399,7 @@ Members           : {}
 
 * Find `ms-DS-MachineAccountQuota`
   ```ps1
-  bloodyAD -d lab.local -u username -p 'Password123*' --host 10.10.10.10 get object 'DC=lab,DC=local' ms-DS-MachineAccountQuota 
+  bloodyAD -d lab.local -u username -p 'Password123*' --host 10.10.10.10 get object 'DC=lab,DC=local' --attr ms-DS-MachineAccountQuota 
   ```
 * Add a new computer in the Active Directory, by default `MachineAccountQuota = 10`
   ```ps1
