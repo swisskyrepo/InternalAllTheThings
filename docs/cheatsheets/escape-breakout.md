@@ -1,7 +1,8 @@
-# Application Escape and Breakout
+# Kiosk Escape and Jail Breakout
 
 ## Summary
 
+* [Methodology](#methodology)
 * [Gaining a command shell](#gaining-a-command-shell)
 * [Sticky Keys](#sticky-keys)
 * [Dialog Boxes](#dialog-boxes)
@@ -19,6 +20,19 @@
 ## Tools
 
 * [kiosk.vsim.xyz](https://kiosk.vsim.xyz/) - tooling for browser-based, Kiosk mode testing.
+
+
+## Methodology
+
+- Display global variables and their permissions: `export -p`
+- Switch to another user using `sudo`/`su`
+- Basic privilege escalations such as CVE, sudo misconfiguration, etc. Comprehensive list at [Linux](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/) / [Windows](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/windows-privilege-escalation/)
+- List default commands in the restricted shell: `compgen -c`
+- Container escape if it's running inside a `Docker`/`LXC` container
+- Pivot onto the network
+    - Scan other machines on the network or attempt SSRF exploitation
+    - Metadata for Cloud assets, see `cloud/aws` and `cloud/azure`
+- Use globbing capability built inside the shell: `echo *`, `echo .*`, `echo /*`
 
 
 ## Gaining a command shell
@@ -106,6 +120,7 @@ Enter *.* or *.exe or similar in `File name` box
 * Print menus
 * All other menus that provide dialog boxes
 
+
 ### Accessing filesystem
 
 Enter these paths in the address bar:
@@ -114,6 +129,7 @@ Enter these paths in the address bar:
 * C:/windows/
 * %HOMEDRIVE%
 * \\127.0.0.1\c$\Windows\System32
+
 
 ### Unassociated Protocols
 
@@ -142,6 +158,14 @@ firefox irc://127.0.0.1 -P "Test"
 
 
 ## Shell URI Handlers
+
+A URI (Uniform Resource Identifier) handler is a software component that enables a web browser or operating system to pass a URI to an appropriate application for further handling. 
+
+For example, when you click on a "mailto:" link in a webpage, your device knows to open your default email application. This is because the "mailto:" URI scheme is registered to be handled by an email application. Similarly, "http:" and "https:" URIs are typically handled by a web browser.
+
+In essence, URI handlers provide a bridge between web content and desktop applications, allowing for a seamless user experience when navigating between different types of resources.
+
+The following URI handlers might trigger application on the machine: 
 
 * shell:DocumentsLibrary
 * shell:Librariesshell:UserProfiles

