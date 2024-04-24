@@ -1,8 +1,8 @@
 # Deployment - SCCM
 
-## SCCM Application Deployment
-
 > SCCM is a solution from Microsoft to enhance administration in a scalable way across an organisation.
+
+## SCCM Application Deployment
 
 * [PowerShellMafia/PowerSCCM - PowerShell module to interact with SCCM deployments](https://github.com/PowerShellMafia/PowerSCCM)
 * [nettitude/MalSCCM - Abuse local or remote SCCM servers to deploy malicious applications to hosts they manage](https://github.com/nettitude/MalSCCM)
