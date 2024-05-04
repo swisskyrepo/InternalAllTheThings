@@ -559,8 +559,14 @@ stty rows <num> columns <cols>
 To overcome this issue, run `nc` in a `tmux`, and send a `SIGTSTP` signal to the `nc` process.
 
 ```bash
+# Enter in tmux
+tmux
+
+# Do your netcat stuff ...
+nc -lnvp 4242
+
 # Create a new window in tmux
-## <ctrl+b> then <c>
+ctrl+b c
 
 # Find the PID of the nc process (column PID)
 ps aux # | grep -i nc | grep -vi grep
