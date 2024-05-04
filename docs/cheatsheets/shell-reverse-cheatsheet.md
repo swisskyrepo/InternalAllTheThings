@@ -555,6 +555,20 @@ export TERM=xterm-256color
 stty rows <num> columns <cols>
 ```
 
+:warning: With Windows Terminal + WSL container,  `[CTRL] + [Z]` can get you out of / freeze the container.
+To overcome this issue, run `nc` in a `tmux`, and send a `SIGTSTP` signal to the `nc` process.
+
+```bash
+# Create a new window in tmux
+## <ctrl+b> then <c>
+
+# Find the PID of the nc process (column PID)
+ps aux # | grep -i nc | grep -vi grep
+
+# Send a SIGTSTP (ctrl+z) signal to the process
+kill -s TSTP <PID>
+```
+
 or use `socat` binary to get a fully tty reverse shell
 
 ```bash
