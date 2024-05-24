@@ -2,10 +2,18 @@
 
 > SCCM is a solution from Microsoft to enhance administration in a scalable way across an organisation.
 
+
 ## SCCM Application Deployment
+
+> Application Deployment is a process that involves packaging software applications and distributing them to selected computers or devices within an organization
+
+**Tools**:
 
 * [PowerShellMafia/PowerSCCM - PowerShell module to interact with SCCM deployments](https://github.com/PowerShellMafia/PowerSCCM)
 * [nettitude/MalSCCM - Abuse local or remote SCCM servers to deploy malicious applications to hosts they manage](https://github.com/nettitude/MalSCCM)
+
+
+**Exploitation**:
 
 * Using **SharpSCCM**
   ```ps1

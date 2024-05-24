@@ -31,3 +31,4 @@ Get-MgDrive -top 1
 ## References
 
 * [Pentesting Azure Mindmap - Alexis Danizan](https://github.com/synacktiv/Mindmaps)
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

@@ -11,4 +11,4 @@
 
 ## References
 
-* []()
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

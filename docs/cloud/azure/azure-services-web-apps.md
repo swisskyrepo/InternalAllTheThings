@@ -31,4 +31,4 @@ az webapp create-remote-connection --subscription <SUBSCRIPTION-ID> --resource-g
 
 ## References
 
-* []()
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

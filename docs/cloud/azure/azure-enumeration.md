@@ -251,3 +251,4 @@ Invoke-MFASweep -Username targetuser@targetdomain.com -Password Winter2020 -Reco
 * [Bypassing conditional access by faking device compliance - @DrAzureAD - September 06, 2020](https://o365blog.com/post/mdm/)
 * [CARTP-cheatsheet - Azure AD cheatsheet for the CARTP course](https://github.com/0xJs/CARTP-cheatsheet/blob/main/Authenticated-enumeration.md)
 * [Attacking Azure/Azure AD and introducing Powerzure - SpecterOps - Ryan Hausknecht - Jan 28, 2020](https://posts.specterops.io/attacking-azure-azure-ad-and-introducing-powerzure-ca70b330511a)
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

@@ -45,4 +45,4 @@ PS Az> (Get-AzStorageAccount | Get-AzStorageContainer).cloudBlobContainer | sele
 
 ## References
 
-* []()
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

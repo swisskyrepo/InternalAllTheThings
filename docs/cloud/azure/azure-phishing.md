@@ -143,3 +143,4 @@ roadtx codeauth -c <app-id> -r msgraph -t <tenant-id> <0.A....> -ru 'https://<ph
 * [The Art of the Device Code Phish - Bobby Cooke - July 12, 2021](https://0xboku.com/2021/07/12/ArtOfDeviceCodePhish.html)
 * [Power Pwn - Black Hat Arsenal 2023 - Aug 24, 2023](https://www.youtube.com/watch?v=LpdckZyBwvs)
 * [Low Code High Risk - Enterprise Domination via Low Code Abuse - Defcon 30 - Oct 20, 2022](https://www.youtube.com/watch?v=D3A62Rzozq4)
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

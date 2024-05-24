@@ -141,3 +141,4 @@ You can access an organization's Azure DevOps Services instance via https://dev.
 ## References
 
 * [Hiding in the Clouds: Abusing Azure DevOps Services to Bypass Microsoft Sentinel Analytic Rules - Brett Hawkins - November 6, 2023](https://www.ibm.com/downloads/cas/5JKAPVYD)
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)
