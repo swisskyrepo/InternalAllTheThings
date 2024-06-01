@@ -51,3 +51,4 @@ Get-AzACR -username ${username} -password ${password} -registry ${registryURI}
 ## References
 
 * [PENTESTING AZURE: RECON TECHNIQUES - April 29, 2022 Stefan Tita](https://securitycafe.ro/2022/04/29/pentesting-azure-recon-techniques/)
+* [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

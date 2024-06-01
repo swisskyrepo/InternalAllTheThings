@@ -10,6 +10,18 @@ Active Directory Certificate Services (AD CS) is a Microsoft Windows server role
 * certutil: `certutil.exe -config - -ping`, `certutil -dump`
 
 
+## Certificate Enrollment
+
+* DNS required (`CT_FLAG_SUBJECT_ALT_REQUIRE_DNS` or `CT_FLAG_SUBJECT_ALT_REQUIRE_DOMAIN_DNS`): only principals with their `dNSHostName` attribute set can enroll.
+  * Active Directory Users cannot enroll in certificate templates requiring `dNSHostName`. 
+  * Computers will get their `dNSHostName` attribute set when you **domain-join** a computer, but the attribute is null if you simply create a computer object in AD. 
+  * Computers have validated write to their `dNSHostName` attribute meaning they can add a DNS name matching their computer name.
+
+* Email required (`CT_FLAG_SUBJECT_ALT_REQUIRE_EMAIL` or `CT_FLAG_SUBJECT_REQUIRE_EMAIL`): only principals with their `mail` attribute set can enroll unless the template is of schema version 1.
+  * By default, users and computers do not have their `mail` attribute set, and they cannot modify this attribute themselves.
+  * Users might have the `mail` attribute set, but it is rare for computers.
+
+
 ## ESC1 - Misconfigured Certificate Templates
 
 > Domain Users can enroll in the **VulnTemplate** template, which can be used for client authentication and has **ENROLLEE_SUPPLIES_SUBJECT** set. This allows anyone to enroll in this template and specify an arbitrary Subject Alternative Name (i.e. as a DA). Allows additional identities to be bound to a certificate beyond the Subject.
@@ -510,3 +522,4 @@ Using the **UnPAC The Hash** method, you can retrieve the NT Hash for an User vi
 * [ADCS ESC13 Abuse Technique - Jonas Bülow Knudsen - 02/15/2024](https://posts.specterops.io/adcs-esc13-abuse-technique-fda4272fbd53)
 * [From DA to EA with ESC5 - Andy Robbins - May 16, 2023](https://posts.specterops.io/from-da-to-ea-with-esc5-f9f045aa105c)
 * [ADCS ESC14 Abuse Technique - Jonas Bülow Knudsen - 02/01/2024](https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9)
+* [ADCS Attack Paths in BloodHound — Part 2 - Jonas Bülow Knudsen - May 1, 2024](https://posts.specterops.io/adcs-attack-paths-in-bloodhound-part-2-ac7f925d1547)
