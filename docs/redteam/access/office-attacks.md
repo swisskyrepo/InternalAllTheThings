@@ -624,11 +624,11 @@ End Sub
 
 ### VBA Obfuscation
 
-```ps1
-# https://www.youtube.com/watch?v=L0DlPOLx2k0
-$ git clone https://github.com/bonnetn/vba-obfuscator
-$ cat example_macro/download_payload.vba | docker run -i --rm bonnetn/vba-obfuscator /dev/stdin
-```
+* [bonnetn/vba-obfuscator](https://github.com/bonnetn/vba-obfuscator) [Youtube demo](https://www.youtube.com/watch?v=L0DlPOLx2k0)
+    ```ps1
+    $ cat example_macro/download_payload.vba | docker run -i --rm bonnetn/vba-obfuscator /dev/stdin
+    ```
+* [trustedsec/The_Shelf/spinningteacup](https://github.com/trustedsec/The_Shelf/tree/main/Retired/spinningteacup)
 
 
 ### VBA Purging
@@ -798,3 +798,4 @@ $ phishery -u https://secure.site.local/docs -i good.docx -o bad.docx
 * [Anti-Analysis Techniques Used in Excel 4.0 Macros - 24 March 2021 - @Jacob_Pimental](https://www.goggleheadedhacker.com/blog/post/23)
 * [So you think you can block Macros? - Pieter Ceelen - April 25, 2023](https://outflank.nl/blog/2023/04/25/so-you-think-you-can-block-macros/)
 * [MS OFFICE FILE FORMAT SORCERY - TROOPERS19 - Pieter Ceelen & Stan Hegt - 21 March 2019 ](https://github.com/outflanknl/Presentations/blob/master/Troopers19_MS_Office_file_format_sorcery.pdf)
+* [VenomousSway - VBA payload generation framework / Retired TrustedSec Capabilities - Trustedsec - May 22, 2024](https://github.com/trustedsec/The_Shelf/tree/main/Retired/venomoussway)

