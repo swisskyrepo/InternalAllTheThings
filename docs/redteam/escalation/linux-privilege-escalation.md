@@ -201,6 +201,34 @@ $ locate password | more
 ...
 ```
 
+
+### Preseed
+
+A preseed.cfg file is used in Debian-based Linux distributions to automate the installation process. It contains answers to the questions that the installer normally asks, allowing for a fully unattended installation. This file can specify configurations such as partitioning schemes, package selections, network settings, and user accounts.
+
+* Root password in clear text
+  ```ps1
+  d-i passwd/root-password password root_password_123
+  d-i passwd/root-password-again password root_password_123
+  ```
+
+* Root password encrypted using an MD5 hash
+  ```ps1
+  d-i passwd/root-password-crypted password $1$DhSfFtNS$v/Eb.KsQkTq8nKIX1.B8n.
+  ```
+
+* Normal user's password in clear text
+  ```ps1
+  d-i passwd/user-password password my_password_123
+  d-i passwd/user-password-again password my_password_123
+  ```
+
+* Normal user's password encrypted using an MD5 hash
+  ```ps1
+  d-i passwd/user-password-crypted password $1$DgJMNO1/$BqfY2C5y00p0yhpApPmmJ1
+  ```
+
+
 ## SSH Key
 
 ### Sensitive files
@@ -830,3 +858,4 @@ https://www.exploit-db.com/exploits/18411
 * [Local Privilege Escalation Workshop - Slides.pdf - @sagishahar](https://github.com/sagishahar/lpeworkshop/blob/master/Local%20Privilege%20Escalation%20Workshop%20-%20Slides.pdf)
 * [SSH Key Predictable PRNG (Authorized_Keys) Process - @weaknetlabs](https://github.com/weaknetlabs/Penetration-Testing-Grimoire/blob/master/Vulnerabilities/SSH/key-exploit.md)
 * [The Dirty Pipe Vulnerability](https://dirtypipe.cm4all.com/)
+* [Setting the root password in preseed.cfg for unattended installation - Sebest - Mar 31, 2010](https://sebest.github.io/post/setting-the-root-password-in-preseed-cfg-for-unattended-installation/)
