@@ -1,32 +1,10 @@
 # Android Application
 
-## Summary
-
-* [Extract APK](#extract-apk)
-    * [ADB Method](#adb-method)
-    * [Stores](#stores)
-* [Static Analysis](#static-analysis)
-    * [Extract Contents From APK](#extract-contents-from-apk)
-    * [Decompile Data as Java Code](#decompile-data-as-Java-code)
-    * [Decompile Native Code](#decompile-native-code)
-    * [Sign and Package APK](#sign-and-package-apk)
-    * [Mobile Security Framework Static](#mobile-security-framework-static)
-    * [Online Assets](#online-assets)
-    * [React Native and Hermes](#react-native-and-hermes)
-* [Dynamic Analysis](#dynamic-analysis)
-    * [Frida](#frida)
-    * [Runtime Mobile Security](#runtime-mobile-security)
-    * [Genymotion](#genymotion)
-    * [Android SDK Emulator](#android-sdk-emulator)
-    * [Mobile Security Framework Dynamic](#mobile-security-framework-dynamic)
-* [SSL Pinning Bypass](#ssl-pinning-bypass)
-* [Root Detection Bypass](#root-detection-bypass)
-* [References](#references)
-
 ## Lab
 
-* [HTB - Pinned](https://app.hackthebox.com/challenges/282)
-* [HTB - Manager](https://app.hackthebox.com/challenges/283)
+* [payatu/diva-android](https://github.com/payatu/diva-android) - Damn Insecure and vulnerable App for Android
+* [HTB VIP - Pinned](https://app.hackthebox.com/challenges/282) - Hack The Box challenge
+* [HTB VIP - Manager](https://app.hackthebox.com/challenges/283) - Hack The Box challenge
 
 
 ## Extract APK
@@ -360,6 +338,47 @@ Common bypass:
 * [fridantiroot](https://codeshare.frida.re/@dzonerzy/fridantiroot/) - `frida --codeshare dzonerzy/fridantiroot -f YOUR_BINARY`
 * [xamarin-antiroot](https://codeshare.frida.re/@Gand3lf/xamarin-antiroot/) - `frida --codeshare Gand3lf/xamarin-antiroot -f YOUR_BINARY`
 * [multiple-root-detection-bypass/](https://codeshare.frida.re/@KishorBal/multiple-root-detection-bypass/) - `frida --codeshare KishorBal/multiple-root-detection-bypass -f YOUR_BINARY`
+
+
+## Android Debug Bridge
+
+Android Debug Bridge (ADB) is a versatile command-line tool that enables communication between a computer and an Android device. It facilitates tasks like installing apps, debugging, accessing the device's shell, and transferring files, making it essential for developers and power users in Android development and troubleshooting.
+
+| Command                      | Description                                    |
+|------------------------------|------------------------------------------------|
+| `adb devices`                | List devices                                   |
+| `adb connect <IP>:<PORT>`    | Connect to a remote device                     |
+| `adb install app.apk`        | Install application                            |
+| `adb uninstall app.apk`      | Uninstall application                          |
+| `adb root`                   | Restarting adbd as root                        |
+| `adb shell pm list packages` | List packages                                  |
+| `adb shell pm list packages -3` | Show third party packages                   |
+| `adb shell pm list packages -f` | Show packages and associated files          |
+| `adb shell pm clear com.test.abc` | Delete all data associated with a package |
+| `adb pull <remote> <local>`  | Download file                                  |
+| `adb push <local> <remote>`  | Upload file                                    |
+| `adb shell screenrecord /sdcard/demo.mp4`| Record video of the screen         |
+| `adb shell am start -n com.test.abc` | Start an activity                      |
+| `adb shell am startservice ` | Start a service                                |
+| `adb shell am broadcast `    | Send a broadcast                               |
+| `adb logcat *:D`             | Show log with Debug level                      |
+| `adb logcat -c`              | Clears the entire log                          |
+
+
+## Android Virtual Device
+
+An Android Virtual Device (AVD) is an emulator configuration that mimics a physical Android device. It allows developers to test and run Android apps in a simulated environment with specific hardware profiles, screen sizes, and Android versions, facilitating app testing without needing actual devices.
+
+```ps1
+emulator -avd Pixel_8_API_34 -writable-system
+```
+
+| Command                      | Description                                    |
+|------------------------------|------------------------------------------------|
+| `-tcpdump /path/dumpfile.cap`| Capture all the traffic in a file |
+| `-dns-server X.X.X.X`        | Set DNS servers |
+| `-http-proxy X.X.X.X:8080`   | Set HTTP proxy |
+| `-port 5556`                 | Set the ADB TCP port number |
 
 
 ## References

