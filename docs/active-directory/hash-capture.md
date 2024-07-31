@@ -1,18 +1,35 @@
 # Hash - Capture and Cracking
 
+## LmCompatibilityLevel
+
+LmCompatibilityLevel is a Windows security setting that determines the level of authentication protocol used between computers. It specifies how Windows handles NTLM and LAN Manager (LM) authentication protocols, impacting how passwords are stored and how authentication requests are processed. The level can range from 0 to 5, with higher levels generally providing more secure authentication methods.
+
+```ps1
+reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
+```
+
+* **Level 0** - Send LM and NTLM response; never use NTLM 2 session security. Clients use LM and NTLM authentication, and never use NTLM 2 session security; domain controllers accept LM, NTLM, and NTLM 2 authentication.
+* **Level 1** - Use NTLM 2 session security if negotiated. Clients use LM and NTLM authentication, and use NTLM 2 session security if the server supports it; domain controllers accept LM, NTLM, and NTLM 2 authentication.
+* **Level 2** - Send NTLM response only. Clients use only NTLM authentication, and use NTLM 2 session security if the server supports it; domain controllers accept LM, NTLM, and NTLM 2 authentication.
+* **Level 3** - Send NTLM 2 response only. Clients use NTLM 2 authentication, and use NTLM 2 session security if the server supports it; domain controllers accept LM, NTLM, and NTLM 2 authentication.
+* **Level 4** - Domain controllers refuse LM responses. Clients use NTLM authentication, and use NTLM 2 session security if the server supports it; domain controllers refuse LM authentication (that is, they accept NTLM and NTLM 2).
+* **Level 5** - Domain controllers refuse LM and NTLM responses (accept only NTLM 2). Clients use NTLM 2 authentication, use NTLM 2 session security if the server supports it; domain controllers refuse NTLM and LM authentication (they accept only NTLM 2).A client computer can only use one protocol in talking to all servers. You cannot configure it, for example, to use NTLM v2 to connect to Windows 2000-based servers and then to use NTLM to connect to other servers. This is by design.
+
+
 ## Capturing and cracking Net-NTLMv1/NTLMv1 hashes/tokens
 
 > Net-NTLMv1 (NTLMv1) authentication tokens are used for network authentication. They are derived from a challenge/response DES-based algorithm with the user's NT-hash as symetric keys. 
 
-:information_source: : Coerce a callback using PetitPotam or SpoolSample on an affected machine and downgrade the authentication to **NetNTLMv1 Challenge/Response authentication**. This uses the outdated encryption method DES to protect the NT/LM Hashes.
+:information_source: Coerce a callback using PetitPotam or SpoolSample on an affected machine and downgrade the authentication to **NetNTLMv1 Challenge/Response authentication**. This uses the outdated encryption method DES to protect the NT/LM Hashes.
 
 **Requirements**:
 
-* LmCompatibilityLevel = 0x1: Send LM & NTLM (`reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel`)
+* `LmCompatibilityLevel = 0x1`: Send LM and NTLM response
+
 
 **Exploitation**:
 
-* Capturing using Responder: Edit the `/etc/responder/Responder.conf` file to include the magical **1122334455667788** challenge
+* Capturing using [lgandx/Responder](https://github.com/lgandx/Responder): Edit the `/etc/responder/Responder.conf` file to include the magical **1122334455667788** challenge
     ```ps1
     HTTPS = On
     DNS = On
@@ -97,3 +114,7 @@ hashcat -m 5600 -a 3 hash.txt
 ## References
 
 * [NTLMv1_Downgrade.md - S3cur3Th1sSh1t - 09/07/2021](https://gist.github.com/S3cur3Th1sSh1t/0c017018c2000b1d5eddf2d6a194b7bb)
+* [Practical Attacks against NTLMv1 - Esteban Rodriguez - September 15, 2022](https://trustedsec.com/blog/practical-attacks-against-ntlmv1)
+* [Attacking LM/NTLMv1 Challenge/Response Authentication - defence in depth - April 21, 2011](http://www.defenceindepth.net/2011/04/attacking-lmntlmv1-challengeresponse_21.html)
+* [CRACKING NETLM/NETNTLMV1 AUTHENTICATION - crack.sh](https://crack.sh/netntlm/)
+* [NTLMv1 to NTLM Reversing - evilmog - 03-03-2020](https://hashcat.net/forum/thread-9009-post-47806.html)

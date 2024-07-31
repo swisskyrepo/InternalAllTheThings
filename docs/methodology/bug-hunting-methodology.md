@@ -1,19 +1,5 @@
 # Bug Hunting Methodology
 
-## Summary
-
-* [Passive Recon](#passive-recon)
-  * Shodan
-  * Wayback Machine
-  * The Harvester
-  * Github OSINT
-
-* [Active Recon](#active-recon)
-  * [Network discovery](#network-discovery)
-  * [Web discovery](#web-discovery)
-
-* [Web Vulnerabilities](#looking-for-web-vulnerabilities)
-
 ## Passive recon
 
 * Using [Shodan](https://www.shodan.io/) to detect similar app

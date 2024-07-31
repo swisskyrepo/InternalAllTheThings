@@ -309,7 +309,7 @@ Enumerate users from the Domain Controllers.
 
 * Using `netexec`
   ```ps1
-  netexec smb 10.10.11.231 -u guest -p '' --rid-brute
+  netexec smb 10.10.11.231 -u guest -p '' --rid-brute 10000 --log rid-brute.txt
   SMB         10.10.11.231    445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:rebound.htb) (signing:True) (SMBv1:False)
   SMB         10.10.11.231    445    DC01             [+] rebound.htb\guest: 
   SMB         10.10.11.231    445    DC01             498: rebound\Enterprise Read-only Domain Controllers (SidTypeGroup)

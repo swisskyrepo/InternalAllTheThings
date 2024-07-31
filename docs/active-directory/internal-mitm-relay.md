@@ -293,3 +293,4 @@ pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and c
 * [Lateral Movement – WebClient](https://pentestlab.blog/2021/10/20/lateral-movement-webclient/)
 * [Drop the MIC - CVE-2019-1040 - Marina Simakov - Jun 11, 2019](https://blog.preempt.com/drop-the-mic)
 * [Top Five Ways I Got Domain Admin on Your Internal Network before Lunch (2018 Edition) - Adam Toscher](https://medium.com/@adam.toscher/top-five-ways-i-got-domain-admin-on-your-internal-network-before-lunch-2018-edition-82259ab73aaa)
+* [Relay Your Heart Away: An OPSEC-Conscious Approach to 445 Takeover - Nick Powers - 07/27/2024](https://www.youtube.com/watch?v=iBqOOkQGJEA)
