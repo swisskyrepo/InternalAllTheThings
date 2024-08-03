@@ -271,6 +271,36 @@ Dynamic Analysis from MobSF grants you the following features:
 * Frida API Monitor
 
 
+### Appium
+
+Appium is an open-source project and ecosystem of related software, designed to facilitate UI automation of many app platforms, including mobile (iOS, Android, Tizen), browser (Chrome, Firefox, Safari), desktop (macOS, Windows), TV (Roku, tvOS, Android TV, Samsung), and more!
+
+* Install appium: `npm install -g appium`
+* Install and validate the `uiautomator2` driver
+    ```ps1
+    export JAVA_HOME=/usr/lib/jvm/default-java
+    export ANDROID_HOME=/home/user/Android/Sdk/
+    wget https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar
+    sudo mv bundletool-all-1.17.1.jar /usr/local/bin
+    appium driver install uiautomator2
+    appium driver doctor uiautomator2
+    ```
+* Start the server on the default host (0.0.0.0) and port (4723): `appium server`
+* Install the Appium Python client: `pip install Appium-Python-Client`
+* Use the [appium/appium-inspector](https://github.com/appium/appium-inspector) with the following capability
+    ```json
+    {
+    "platformName": "Android",
+    "appium:automationName": "UiAutomator2"
+    }
+    ```
+
+Examples:
+* [quickstarts/py/test.py](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/py/test.py)
+* [quickstarts/js/test.js](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/js/test.js)
+* [quickstarts/js/test.rb](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/rb/test.rb)
+
+
 ## SSL Pinning Bypass
 
 SSL certificate pinning in an APK involves embedding a server's public key or certificate directly into the app. This ensures the app only trusts specific certificates, preventing man-in-the-middle attacks by rejecting any certificates not matching the pinned ones, even if they are otherwise valid.
@@ -391,3 +421,4 @@ emulator -avd Pixel_8_API_34 -writable-system
 * [Configuring Burp Suite with Android Emulators - Aashish Tamang - Jun 6, 2022](https://blog.yarsalabs.com/setting-up-burp-for-android-application-testing/)
 * [Introduction to Android Pentesting - Jarrod - July 8, 2024](https://owlhacku.com/introduction-to-android-pentesting/)
 * [A beginners guide to using Frida to bypass root detection. - DianaOpanga - Nov 27, 2023](https://medium.com/@dianaopanga/a-beginners-guide-to-using-frida-to-bypass-root-detection-16af76b989ac)
+* [Appium documentation](https://appium.io/docs/en/latest/)
