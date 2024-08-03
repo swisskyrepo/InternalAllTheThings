@@ -25,8 +25,14 @@ adb pull /data/app/com.example.someapp-2.apk
 Warning: Downloading APK files from unofficial stores can compromise your device's security. These sources often host malware and malicious software. Always use trusted and official app stores for downloads.
 
 * [Google Play](https://play.google.com/store/apps) - Official Store
-* [Apkpure](https://apkpure.fr/fr/) - Alternative to Google Play
+* [Apkpure.fr](https://apkpure.fr/fr/) - Alternative to Google Play
+* [Apkpure.co](https://apkpure.co) - Alternative to Google Play
 * [Aptoide](https://fr.aptoide.com/) - Alternative to Google Play
+* [Aurora Store](https://f-droid.org/fr/packages/com.aurora.store/) - Alternative to Google Play
+
+Download APK from Google Play using a 3rd Party:
+* [apkcombo.com](https://apkcombo.com/downloader/)
+* [apps.evozi.com](https://apps.evozi.com/apk-downloader/)
 
 
 ## Static Analysis
