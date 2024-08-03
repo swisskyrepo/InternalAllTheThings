@@ -31,6 +31,7 @@ Warning: Downloading APK files from unofficial stores can compromise your device
 * [Aurora Store](https://f-droid.org/fr/packages/com.aurora.store/) - Alternative to Google Play
 
 Download APK from Google Play using a 3rd Party:
+
 * [apkcombo.com](https://apkcombo.com/downloader/)
 * [apps.evozi.com](https://apps.evozi.com/apk-downloader/)
 
@@ -302,6 +303,7 @@ Appium is an open-source project and ecosystem of related software, designed to 
     ```
 
 Examples:
+
 * [quickstarts/py/test.py](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/py/test.py)
 * [quickstarts/js/test.js](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/js/test.js)
 * [quickstarts/js/test.rb](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/rb/test.rb)
