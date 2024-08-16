@@ -1,4 +1,4 @@
-# Azure Requirements
+# Azure - Requirements
 
 ## Pentest Requirements
 

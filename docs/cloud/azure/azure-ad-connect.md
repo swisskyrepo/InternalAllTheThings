@@ -1,4 +1,4 @@
-# Azure AD Connect
+# Azure AD - Azure AD Connect
 
 | Active Directory                  | Azure AD          |
 |-----------------------------------|-------------------|

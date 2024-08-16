@@ -1,4 +1,4 @@
-# Azure AD Tokens
+# Azure AD - Tokens
 
 ## Connection
 

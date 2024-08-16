@@ -1,4 +1,4 @@
-# Azure AD Phishing
+# Azure AD - Phishing
 
 ## Illicit Consent Grant
 

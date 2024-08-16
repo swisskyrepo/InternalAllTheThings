@@ -10,6 +10,7 @@
     * [Just Enough Administration](#just-enough-administration)
     * [Contrained Language Mode](#constrained-language-mode)
     * [Script Block Logging](#script-block-logging)
+    * [SecureString](#securestring)
 * [Protected Process Light](#protected-process-light)
 * [Credential Guard](#credential-guard)
 * [Event Tracing for Windows](#event-tracing-for-windows)
@@ -165,6 +166,37 @@ function Enable-PSScriptBlockLogging
 
     Set-ItemProperty $basePath -Name EnableScriptBlockLogging -Value "1"
 }
+```
+
+
+### SecureString
+
+A `SecureString` in PowerShell is a data type designed to store sensitive information like passwords or confidential data in a more secure manner than a plain string. Unlike a regular string, which stores data in plain text and can be easily accessed in memory, a `SecureString` encrypts the data in memory, providing better protection against unauthorized access.
+
+Convert to SecureString
+
+```ps1
+$original = 'myPassword'  
+$secureString = ConvertTo-SecureString $original -AsPlainText -Force
+$secureStringValue = ConvertFrom-SecureString $secureString
+```
+
+Get the original content
+
+```ps1
+$secureStringBack = $secureStringValue | ConvertTo-SecureString
+$bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureStringBack);
+$finalValue = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+```
+
+When a `SecureString` is created, the plain text characters are encrypted immediately using the Data Protection API (**DPAPI**)
+
+Using the AES key
+
+```ps1
+[Byte[]] $key = (49,222,...,87,159)
+$pass = (echo "AA...AA=" | ConvertTo-SecureString -Key $key)
+[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass))
 ```
 
 
