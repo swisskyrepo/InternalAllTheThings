@@ -2,7 +2,7 @@
 
 > Root Management Group (Tenant) > Management Group > Subscription > Resource Group > Resource
 
-* Users
+* Users (User, Groups, Dynamic Groups)
 * Devices
 * Service Principals (Application and Managed Identities)
 
@@ -35,7 +35,10 @@
 
 ### Dynamic Group Membership
 
-Get groups that allow Dynamic membership: `Get-AzureADMSGroup | ?{$_.GroupTypes -eq 'DynamicMembership'}`
+Get groups that allow Dynamic membership: 
+
+* Powershell Azure AD: `Get-AzureADMSGroup | ?{$_.GroupTypes -eq 'DynamicMembership'}`
+* RoadRecon database: `select objectId, displayName, description, membershipRule, membershipRuleProcessingState, isMembershipRuleLocked from groups where membershipRule is not null;`
 
 Rule example : `(user.otherMails -any (_ -contains "vendor")) -and (user.userType -eq "guest")`     
 Rule description: Any Guest user whose secondary email contains the string 'vendor' will be added to the group

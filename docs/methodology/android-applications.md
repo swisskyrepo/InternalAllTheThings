@@ -419,6 +419,31 @@ emulator -avd Pixel_8_API_34 -writable-system
 | `-port 5556`                 | Set the ADB TCP port number |
 
 
+## Unlock Bootloader
+
+**Requirements**:
+
+* Enable `Settings` > `Developer Options` > `OEM unlocking`
+* Enable `Settings` > `Developer Options` > `USB Debugging`
+
+Unlock the bootloader will wipe the userdata partition. On some device these methods will require a key to successfully unlock the bootloader.
+
+* Method 1
+    ```ps1
+    adb reboot bootloader
+    fastboot oem unlock
+    ```
+* Method 2
+    ```ps1
+    adb reboot bootloader
+    fastboot flashing unlock
+    ```
+* Methods based on the chip
+    * For Qualcomm devices, you can use EDL (Emergency Download Mode)
+    * For MediaTek devices, BROM (Boot ROM) mode
+    * For Unisoc devices, Research Download Mode.
+
+
 ## References
 
 * [Android App Reverse Engineering 101 - @maddiestone](https://www.ragingrock.com/AndroidAppRE/)
@@ -430,3 +455,4 @@ emulator -avd Pixel_8_API_34 -writable-system
 * [Introduction to Android Pentesting - Jarrod - July 8, 2024](https://owlhacku.com/introduction-to-android-pentesting/)
 * [A beginners guide to using Frida to bypass root detection. - DianaOpanga - Nov 27, 2023](https://medium.com/@dianaopanga/a-beginners-guide-to-using-frida-to-bypass-root-detection-16af76b989ac)
 * [Appium documentation](https://appium.io/docs/en/latest/)
+* [How to root an Android device for analysis and vulnerability assessment - Joe Lovett - 23 Aug 2024](https://www.pentestpartners.com/security-blog/how-to-root-an-android-device-for-analysis-and-vulnerability-assessment/)

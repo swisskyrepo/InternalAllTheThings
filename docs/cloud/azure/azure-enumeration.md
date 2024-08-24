@@ -38,11 +38,19 @@
     ```
 * [**hausec/PowerZure**](https://github.com/hausec/PowerZure) - PowerShell framework to assess Azure security
     ```powershell
-    PS C:> Import-Module .\Powerzure.psd1
-    PS C:> Set-Subscription -Id [idgoeshere]
-    PS C:> Get-AzureTarget
-    PS C:> Get-AzureInTuneScript
-    PS C:> Show-AzureKeyVaultContent -All
+    Import-Module .\Powerzure.psd1
+    Set-Subscription -Id [idgoeshere]
+    Get-AzureTarget
+    Get-AzureInTuneScript
+    Show-AzureKeyVaultContent -All
+    ```
+* [**silverhack/monkey365**](https://github.com/silverhack/monkey365) - Microsoft 365, Azure subscriptions and Microsoft Entra ID security configuration reviews.
+    ```powershell
+    Get-ChildItem -Recurse c:\monkey365 | Unblock-File
+    Import-Module C:\temp\monkey365
+    Get-Help Invoke-Monkey365
+    Get-Help Invoke-Monkey365 -Examples
+    Get-Help Invoke-Monkey365 -Detailed
     ```
 * [**Flangvik/TeamFiltration**](https://github.com/Flangvik/TeamFiltration) - TeamFiltration is a cross-platform framework for enumerating, spraying, exfiltrating, and backdooring O365 AAD accounts
     ```ps1
