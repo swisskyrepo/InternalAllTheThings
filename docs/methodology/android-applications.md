@@ -149,6 +149,16 @@ Hermes: pip install hbctool
 ```
 
 
+### Flutter
+
+Indentify Flutter use in the `MANIFEST.MF` and search for `libflutter.so`.
+
+* [worawit/blutter](https://github.com/worawit/blutter) - Flutter Mobile Application Reverse Engineering Tool
+    ```ps1
+    blutter jadx/resources/lib/arm64-v8a/ ./blutter_output
+    ```
+
+
 ## Dynamic Analysis
 
 Dynamic analysis for Android malware involves executing and monitoring an app in a controlled environment to observe its behavior. This technique detects malicious activities like data exfiltration, unauthorized access, and system modifications. Additionally, it aids in reverse engineering app features, revealing hidden functionalities and potential vulnerabilities for better threat mitigation.
@@ -307,6 +317,31 @@ Examples:
 * [quickstarts/py/test.py](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/py/test.py)
 * [quickstarts/js/test.js](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/js/test.js)
 * [quickstarts/js/test.rb](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/rb/test.rb)
+
+
+### Flutter
+
+Repackage a Flutter Android application to allow Burp Suite proxy interception.
+
+* [ptswarm/reFlutter](https://github.com/ptswarm/reFlutter) - Flutter Reverse Engineering Framework
+    ```
+    pip3 install reflutter
+    reflutter application.apk
+    ```
+* Sign the apk with [patrickfav/uber-apk-signer](https://github.com/patrickfav/uber-apk-signer/releases/tag/v1.2.1) 
+    ```ps1
+    java -jar ./uber-apk-signer-1.3.0.jar --apks release.apk
+    java -jar ./uber-apk-signer.jar --allowResign -a release.RE.apk
+    ```
+
+An alternative way to do it is using a rooted Android device with `zygisk-reflutter`.
+
+* [yohanes/zygisk-reflutter](https://github.com/yohanes/zygisk-reflutter) - Zygisk-based reFlutter (Rooted Android with Magisk installed and Zygisk Enabled)
+    ```ps1
+    adb push  zygiskreflutter_1.0.zip /sdcard/
+    adb shell su -c magisk --install-module /sdcard/zygiskreflutter_1.0.zip
+    adb reboot
+    ```
 
 
 ## SSL Pinning Bypass

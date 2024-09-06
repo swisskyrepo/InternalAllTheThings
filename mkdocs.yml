@@ -38,7 +38,7 @@ theme:
     - search.suggest
 
 extra_css:
-    - custom.css
+  - custom.css
 
 markdown_extensions:
   - def_list

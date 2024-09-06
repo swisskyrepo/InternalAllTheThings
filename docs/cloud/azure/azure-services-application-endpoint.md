@@ -9,6 +9,13 @@
     ```
 
 
+## Access
+
+```ps1
+https://myapps.microsoft.com/signin/<App ID>?tenantId=<TenantID>
+```
+
+
 ## References
 
 * [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)

