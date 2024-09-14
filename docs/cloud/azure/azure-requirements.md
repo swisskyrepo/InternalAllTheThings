@@ -30,7 +30,6 @@ Subscriptions:
 * **Core Domain**: The initial domain name <tenant>.onmicrosoft.com is the core domain. It is possible to define custom domain names too.
 
 
-
 ## References
 
 * [Az - Permissions for a Pentest - HackTricks](https://cloud.hacktricks.xyz/pentesting-cloud/azure-security/az-permissions-for-a-pentest)

@@ -1,4 +1,4 @@
-# Azure AD - Azure AD Connect
+# Azure AD - AD Connect and Cloud Sync
 
 | Active Directory                  | Azure AD          |
 |-----------------------------------|-------------------|

