@@ -62,8 +62,8 @@ export AWS_SESSION_TOKEN=FQoGZXIvYXdzE[...]8aOK4QU=
 
 An open S3 bucket refers to an Amazon Simple Storage Service (Amazon S3) bucket that has been configured to allow public access, either intentionally or by mistake. This means that anyone on the internet could potentially access, read, or even modify the data stored in the bucket, depending on the permissions set.
 
-* [http://s3.amazonaws.com/[bucket_name]/](http://s3.amazonaws.com/[bucket_name]/)
-* [http://[bucket_name].s3.amazonaws.com/](http://[bucket_name].s3.amazonaws.com/)
+* [http://s3.amazonaws.com/<bucket-name>/](http://s3.amazonaws.com/<bucket-name>/)
+* [http://<bucket-name>.s3.amazonaws.com/](http://<bucket-name>.s3.amazonaws.com/)
 
 AWS S3 buckets name examples: [http://flaws.cloud.s3.amazonaws.com](http://flaws.cloud.s3.amazonaws.com). 
 
