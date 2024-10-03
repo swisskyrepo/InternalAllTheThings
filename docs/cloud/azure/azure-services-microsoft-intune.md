@@ -28,8 +28,11 @@ Microsoft Intune is a cloud-based service that provides mobile device management
 **Requirements**:
 
 * App with permission: `DeviceManagementConfiguration.Read.All`
+* `Microsoft.Graph.Intune` dependency installed: `Install-Module Microsoft.Graph.Intune`
 
 **Extract Intune scripts**:
+
+The following scripts are deprecated, use `MgGraph` instead of `MsGraph`, and change the appropriate function `InvokeMgGraph` too.
 
 * [okieselbach/Get-DeviceManagementScripts.ps1](https://raw.githubusercontent.com/okieselbach/Intune/master/Get-DeviceManagementScripts.ps1) - Get all or individual Intune PowerShell scripts and save them in specified folder.
     ```ps1

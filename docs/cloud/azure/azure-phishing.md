@@ -4,6 +4,9 @@
 
 > The attacker creates an Azure-registered application that requests access to data such as contact information, email, or documents. The attacker then tricks an end user into granting consent to the application so that the attacker can gain access to the data that the target user has access to. 
 
+:warning: All Office 365 users will be protected from app-based attacks now that publisher verification is generally available as they "will no longer be able to consent to new multi-tenant apps registered after November 8th, 2020 coming from unverified publishers".
+
+
 Check if users are allowed to consent to apps: `PS AzureADPreview> (GetAzureADMSAuthorizationPolicy).PermissionGrantPolicyIdsAssignedToDefaultUserRole`
 
 * **Disable user consent** : Users cannot grant permissions to applications.   
@@ -30,12 +33,14 @@ Check if users are allowed to consent to apps: `PS AzureADPreview> (GetAzureADMS
 6. Search and select the below mentioned permissions and click on Add permission
     * Contacts.Read 
     * Mail.Read / Mail.ReadWrite
+    * Mail.ReadBasic
     * Mail.Send
     * Notes.Read.All
     * Mailboxsettings.ReadWrite
     * Files.ReadWrite.All 
     * User.ReadBasic.All
     * User.Read
+
 
 ### Setup 365-Stealer (Deprecated)
 
@@ -66,6 +71,7 @@ Check if users are allowed to consent to apps: `PS AzureADPreview> (GetAzureADMS
     - `--refresh-token XXX --client-id YYY --client-secret ZZZ`: use a refresh token
 - Find the Phishing URL: go to `https://<IP/Domain>:<Port>` and click on **Read More** button or in the console.
 
+
 ### Vajra
 
 > Vajra is a UI-based tool with multiple techniques for attacking and enumerating in the target's Azure environment. It features an intuitive web-based user interface built with the Python Flask module for a better user experience. The primary focus of this tool is to have different attacking techniques all at one place with web UI interfaces. - https://github.com/TROUBLE-1/Vajra
@@ -74,7 +80,7 @@ Check if users are allowed to consent to apps: `PS AzureADPreview> (GetAzureADMS
 
 ### Roadtx
 
-* Use the authorization code flow in roadtx to get token
+* Use the authorization code flow in `roadtx` to get token
 ```ps1
 roadtx codeauth -c <app-id> -r msgraph -t <tenant-id> <0.A....> -ru 'https://<phish-app>/redir' -p <app-secret>
 ```
