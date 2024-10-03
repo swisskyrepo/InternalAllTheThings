@@ -380,3 +380,4 @@ Use the user account to create a computer and request a PRT
 * [Azure Privilege Escalation Using Managed Identities - Karl Fosaaen - February 20th, 2020](https://blog.netspi.com/azure-privilege-escalation-using-managed-identities/)
 * [Hunting Azure Admins for Vertical Escalation - LEE KAGAN - MARCH 13, 2020](https://www.lares.com/hunting-azure-admins-for-vertical-escalation/)
 * [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)
+* [Understanding Tokens in Entra ID: A Comprehensive Guide - Lina Lau - September 18, 2024](https://www.xintra.org/blog/tokens-in-entra-id-guide)
