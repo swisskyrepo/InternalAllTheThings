@@ -82,40 +82,49 @@ Whoami equivalent: `Get-MgContext`
 
 * Login with credentials
     ```ps1
+    # TODO
     ```
-* Login with device code flow
-    ```ps1
-    # paste this in a PowerShell console
-    $body = @{
-        "client_id" =     "1950a258-227b-4e31-a9cf-717495945fc2"!
-        "resource" =      "https://graph.microsoft.com"
-    }
-    $UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
-    $Headers=@{}
-    $Headers["User-Agent"] = $UserAgent
-    $authResponse = Invoke-RestMethod `
-        -UseBasicParsing `
-        -Method Post `
-        -Uri "https://login.microsoftonline.com/common/oauth2/devicecode?api-version=1.0" `
-        -Headers $Headers `
-        -Body $body
-    $authResponse
 
-    # then browse to https://microsoft.com/devicelogin and use the device_code
-    # finally execute this command to ask for tokens
-    $body=@{
-        "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
-        "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
-        "code" =       $authResponse.device_code
-    }
-    $Tokens = Invoke-RestMethod `
-        -UseBasicParsing `
-        -Method Post `
-        -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
-        -Headers $Headers `
-        -Body $body
-    $Tokens
-    ```
+#### Device Code
+
+Request a device code
+
+```ps1
+$body = @{
+    "client_id" =     "1950a258-227b-4e31-a9cf-717495945fc2"
+    "resource" =      "https://graph.microsoft.com"
+}
+$UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+$Headers=@{}
+$Headers["User-Agent"] = $UserAgent
+$authResponse = Invoke-RestMethod `
+    -UseBasicParsing `
+    -Method Post `
+    -Uri "https://login.microsoftonline.com/common/oauth2/devicecode?api-version=1.0" `
+    -Headers $Headers `
+    -Body $body
+$authResponse
+```
+
+Go to device login [microsoft.com/devicelogin](https://login.microsoftonline.com/common/oauth2/deviceauth) and input the device code. Then ask for an access token.
+
+```ps1
+$body=@{
+    "client_id" =  "1950a258-227b-4e31-a9cf-717495945fc2"
+    "grant_type" = "urn:ietf:params:oauth:grant-type:device_code"
+    "code" =       $authResponse.device_code
+}
+$Tokens = Invoke-RestMethod `
+    -UseBasicParsing `
+    -Method Post `
+    -Uri "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" `
+    -Headers $Headers `
+    -Body $body
+$Tokens
+```
+
+
+#### Service Principal 
 
 * Request an access token using a **service principal password**
     ```ps1
@@ -126,6 +135,31 @@ Whoami equivalent: `Get-MgContext`
     --data-urlencode 'client_secret=<client-secret>' \
     --data-urlencode 'grant_type=client_credentials'
     ```
+
+#### App Secret
+
+An App Secret (also called a client secret) is a string used for securing communication between an application and Azure Active Directory (Azure AD). It is a credential that the application uses along with its client ID to authenticate itself when accessing Azure resources, such as APIs or other services, on behalf of a user or a system.
+
+```ps1
+$appid = '<app-id>'
+$tenantid = '<tenant-id>'
+$secret = '<app-secret>'
+ 
+$body =  @{
+    Grant_Type    = "client_credentials"
+    Scope         = "https://graph.microsoft.com/.default"
+    Client_Id     = $appid
+    Client_Secret = $secret
+}
+ 
+$connection = Invoke-RestMethod `
+    -Uri https://login.microsoftonline.com/$tenantid/oauth2/v2.0/token `
+    -Method POST `
+    -Body $body
+
+Connect-MgGraph -AccessToken $connection.access_token
+```
+
 
 ### Internal HTTP API
 
