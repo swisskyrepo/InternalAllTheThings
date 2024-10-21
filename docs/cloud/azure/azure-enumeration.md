@@ -3,7 +3,7 @@
 ## Azure AD - Collectors
 
 * [**Microsoft Portals**](https://msportals.io/) - Microsoft Administrator Sites
-* [**ROADTool**](https://github.com/dirkjanm/ROADtools) - A collection of Azure AD tools for offensive and defensive security purposes 
+* [**dirkjanm/ROADTool**](https://github.com/dirkjanm/ROADtools) - A collection of Azure AD tools for offensive and defensive security purposes 
     ```ps1
     roadrecon auth --access-token eyJ0eXA...
     roadrecon auth --prt-cookie <primary-refresh-token> -r msgraph -c "1950a258-227b-4e31-a9cf-717495945fc2"
@@ -52,6 +52,12 @@
     Get-Help Invoke-Monkey365 -Examples
     Get-Help Invoke-Monkey365 -Detailed
     ```
+* [**prowler-cloud/prowler**](https://github.com/prowler-cloud/prowler) - Prowler is an Open Source Security tool for AWS, Azure, GCP and Kubernetes to do security assessments, audits, incident response, compliance, continuous monitoring, hardening and forensics readiness. Includes CIS, NIST 800, NIST CSF, CISA, FedRAMP, PCI-DSS, GDPR, HIPAA, FFIEC, SOC2, GXP, Well-Architected Security, ENS and more
+* [**projectdiscovery/nuclei-templates**](https://github.com/projectdiscovery/nuclei-templates/tree/main/cloud/azure) - Community curated list of templates for the nuclei engine to find security vulnerabilities.
+    ```ps1
+    nuclei -t ~/nuclei-templates/cloud/azure/ -code -v
+    ```
+* [**nccgroup/ScoutSuite**](https://github.com/nccgroup/ScoutSuite) - Multi-Cloud Security Auditing Tool
 * [**Flangvik/TeamFiltration**](https://github.com/Flangvik/TeamFiltration) - TeamFiltration is a cross-platform framework for enumerating, spraying, exfiltrating, and backdooring O365 AAD accounts
     ```ps1
     TeamFiltration.exe --outpath  C:\Clients\2023\FooBar\TFOutput --config myCustomConfig.json --exfil --cookie-dump C:\\CookieData.txt --all
@@ -66,9 +72,8 @@
     ```
 * [**Azure/StormSpotter**](https://github.com/Azure/Stormspotter) - :warning: This repository has not been updated recently - Azure Red Team tool for graphing Azure and Azure Active Directory objects
 * [**nccgroup/Azucar**](https://github.com/nccgroup/azucar.git) - :warning: This repository has been archived - Azucar automatically gathers a variety of configuration data and analyses all data relating to a particular subscription in order to determine security risks.
-* [**FSecureLABS/Azurite Explorer**](https://github.com/FSecureLABS/Azurite) - :warning: This repository has not been updated recently - Enumeration and reconnaissance activities in the Microsoft Azure Cloud.
+* [**FSecureLABS/Azurite**](https://github.com/FSecureLABS/Azurite) - :warning: This repository has not been updated recently - Enumeration and reconnaissance activities in the Microsoft Azure Cloud.
 * [**cyberark/SkyArk**](https://github.com/cyberark/SkyArk) - :warning: This repository has not been updated recently - Discover the most privileged users in the scanned Azure environment - including the Azure Shadow Admins.   
-
 
 ## Azure AD - User Enumeration
 
@@ -223,3 +228,4 @@ Invoke-MFASweep -Username targetuser@targetdomain.com -Password Winter2020 -Reco
 * [CARTP-cheatsheet - Azure AD cheatsheet for the CARTP course](https://github.com/0xJs/CARTP-cheatsheet/blob/main/Authenticated-enumeration.md)
 * [Attacking Azure/Azure AD and introducing Powerzure - SpecterOps - Ryan Hausknecht - Jan 28, 2020](https://posts.specterops.io/attacking-azure-azure-ad-and-introducing-powerzure-ca70b330511a)
 * [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)
+* [Azure Config Review - Nuclei Templates v10.0.0 - Prince Chaddha - Sep 12, 2024](https://blog.projectdiscovery.io/azure-config-review-with-nuclei/)
