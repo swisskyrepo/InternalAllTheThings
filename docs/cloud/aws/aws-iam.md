@@ -1,6 +1,19 @@
 # AWS - Identity & Access Management
 
-## AWS - Shadow Admin 
+## Listing IAM access Keys
+
+```ps1
+aws iam list-access-keys
+```
+
+### Listing IAM Users and Groups
+
+```ps1
+aws iam list-users
+aws iam list-groups
+```
+
+## Shadow Admin 
 
 ### Admin equivalent permission 
 
@@ -102,7 +115,6 @@
     ```powershell
     $ aws glue create-dev-endpoint –endpoint-name my_dev_endpoint –role-arn arn_of_glue_service_role –public-key file://path/to/my/public/ssh/key.pub
     ```
-
 
 
 ## References

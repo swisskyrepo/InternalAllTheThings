@@ -3,6 +3,18 @@
 * [dufflebag](https://labs.bishopfox.com/dufflebag) - Find secrets that are accidentally exposed via Amazon EBS's "public" mode
 
 
+## Listing Information About EC2
+
+```ps1
+aws ec2 describe-instances
+aws ec2 describe-instances --region region
+aws ec2 describe-instances --instance-ids ID
+```
+
+
+
+
+
 ## Copy EC2 using AMI Image
 
 First you need to extract data about the current instances and their AMI/security groups/subnet : `aws ec2 describe-images --region eu-west-1`

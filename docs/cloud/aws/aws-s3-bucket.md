@@ -58,12 +58,13 @@ export AWS_SESSION_TOKEN=FQoGZXIvYXdzE[...]8aOK4QU=
 ```
 
 
-## Open S3 Bucket
+## Public S3 Bucket
 
 An open S3 bucket refers to an Amazon Simple Storage Service (Amazon S3) bucket that has been configured to allow public access, either intentionally or by mistake. This means that anyone on the internet could potentially access, read, or even modify the data stored in the bucket, depending on the permissions set.
 
 * [http://s3.amazonaws.com/<bucket-name>/](http://s3.amazonaws.com/<bucket-name>/)
 * [http://<bucket-name>.s3.amazonaws.com/](http://<bucket-name>.s3.amazonaws.com/)
+* [https://<bucket-name>.region.amazonaws.com/<file>>](https://<bucket-name>.region.amazonaws.com/<file>)
 
 AWS S3 buckets name examples: [http://flaws.cloud.s3.amazonaws.com](http://flaws.cloud.s3.amazonaws.com). 
 
@@ -107,21 +108,21 @@ aws s3 ls s3://flaws.cloud/ --no-sign-request --region us-west-2
 
 ### Copy, Upload and Download Files
 
-* Copy
+* **Copy**
 	```bash
 	aws s3 cp <source> <target> [--options]
 	aws s3 cp local.txt s3://bucket-name/remote.txt --acl authenticated-read
 	aws s3 cp login.html s3://bucket-name --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 	```
 
-* Upload
+* **Upload**
 	```bash
 	aws s3 mv <source> <target> [--options]
 	aws s3 mv test.txt s3://hackerone.files
 	SUCCESS : "move: ./test.txt to s3://hackerone.files/test.txt"
 	```
 
-* Download
+* **Download**
 	```bash
 	aws s3 sync <source> <target> [--options]
 	aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sign-request --region us-west-2
