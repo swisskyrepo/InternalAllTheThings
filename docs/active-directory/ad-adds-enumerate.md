@@ -2,11 +2,12 @@
 
 ## Using BloodHound
 
-Use the correct collector:
+Use the appropriate data collector to gather information for **BloodHound** or **BloodHound Community Edition (CE)** across various platforms.
 
 * [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) for Azure Active Directory
 * [BloodHoundAD/SharpHound](https://github.com/BloodHoundAD/SharpHound) for local Active Directory (C# collector)
 * [FalconForceTeam/SOAPHound](https://github.com/FalconForceTeam/SOAPHound) for local Active Directory (C# collector using ADWS)
+* [g0h4n/RustHound-CE](https://github.com/g0h4n/RustHound-CE) for local Active Directory (Rust collector)
 * [NH-RED-TEAM/RustHound](https://github.com/NH-RED-TEAM/RustHound) for local Active Directory (Rust collector)
 * [fox-it/BloodHound.py](https://github.com/fox-it/BloodHound.py) for local Active Directory (Python collector)
 * [coffeegist/bofhound](https://github.com/coffeegist/bofhound) for local Active Directory  (Generate BloodHound compatible JSON from logs written by ldapsearch BOF, pyldapsearch and Brute Ratel's LDAP Sentinel)
