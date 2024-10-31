@@ -1,4 +1,4 @@
-# Hash - Pass-the-Hash
+# Hash - Pass the Hash
 
 The types of hashes you can use with Pass-The-Hash are NT or NTLM hashes. Since Windows Vista, attackers have been unable to pass-the-hash to local admin accounts that weren’t the built-in RID 500.
 
