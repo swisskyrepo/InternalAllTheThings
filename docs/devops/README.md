@@ -1,32 +1,27 @@
 # CI/CD attacks
 
-> CI/CD pipelines are often triggered by untrusted actions such a forked pull requests and new issue submissions for public git repositories.\
-> These systems often contain sensitive secrets or run in privileged environments.\
-> Attackers may gain an RCE into such systems by submitting crafted payloads that trigger the pipelines.\
-> Such vulnerabilities are also known as Poisoned Pipeline Execution (PPE)
+> CI/CD pipelines are often triggered by untrusted actions such a forked pull requests and new issue submissions for public git repositories. These systems often contain sensitive secrets or run in privileged environments. Attackers may gain an RCE into such systems by submitting crafted payloads that trigger the pipelines. Such vulnerabilities are also known as Poisoned Pipeline Execution (PPE).
 
 
 ## Summary
 
-- [CI/CD attacks](#cicd-attacks)
-  - [Summary](#summary)
-  - [Tools](#tools)
-  - [Package managers & Build Files](#package-managers--build-files)
-    - [Javascript / Typescript - package.json](#javascript--typescript---packagejson)
-    - [Python - setup.py](#python---setuppy)
-    - [Bash / sh - *.sh](#bash--sh---sh)
-    - [Maven / Gradle](#maven--gradle)
-    - [BUILD.bazel](#buildbazel)
-    - [Makefile](#makefile)
-    - [Rakefile](#rakefile)
-    - [C# - *.csproj](#c---csproj)
-  - [CI/CD products](#cicd-products)
-    - [GitHub Actions](#github-actions)
-    - [Azure Pipelines (Azure DevOps)](#azure-pipelines-azure-devops)
-    - [CircleCI](#circleci)
-    - [Drone CI](#drone-ci)
-    - [BuildKite](#buildkite)
-  - [References](#references)
+- [Tools](#tools)
+- [Package managers & Build Files](#package-managers--build-files)
+  - [Javascript / Typescript - package.json](#javascript--typescript---packagejson)
+  - [Python - setup.py](#python---setuppy)
+  - [Bash / sh - *.sh](#bash--sh---sh)
+  - [Maven / Gradle](#maven--gradle)
+  - [BUILD.bazel](#buildbazel)
+  - [Makefile](#makefile)
+  - [Rakefile](#rakefile)
+  - [C# - *.csproj](#c---csproj)
+- [CI/CD products](#cicd-products)
+  - [GitHub Actions](./github-actions)
+  - [Azure Pipelines (Azure DevOps)](./azure-devops)
+  - [Circle CI](./circle-ci)
+  - [Drone CI](./drone-ci)
+  - [BuildKite](./buildkite)
+- [References](#references)
 
 
 ## Tools
@@ -233,11 +228,9 @@ NOTE: Since this is an XML file - XML special characters must be escaped.
 ```
 
 
-
-
 ## References
 
-* [Poisoned Pipeline Execution](https://www.cidersecurity.io/top-10-cicd-security-risks/poisoned-pipeline-execution-ppe/)
-* [DEF CON 25 - spaceB0x - Exploiting Continuous Integration (CI) and Automated Build systems](https://youtu.be/mpUDqo7tIk8)
-* [Azure-Devops-Command-Injection](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)
-* [x33fcon lighting talk - Hacking Java serialization from python - Tomasz Bukowski](https://youtu.be/14tNFwfety4)
+* [Poisoned Pipeline Execution](https://web.archive.org/web/20240226215436/https://www.cidersecurity.io/top-10-cicd-security-risks/poisoned-pipeline-execution-ppe/)
+* [DEF CON 25 - Exploiting Continuous Integration (CI) and Automated Build systems - spaceB0x - 2 nov. 2017](https://youtu.be/mpUDqo7tIk8)
+* [Azure DevOps CICD Pipelines - Command Injection with Parameters, Variables and a discussion on Runner hijacking - Sana Oshika - May 1 2023](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)
+* [x33fcon lighting talk - Hacking Java serialization from python - Tomasz Bukowski - 16 july 2024](https://youtu.be/14tNFwfety4)
