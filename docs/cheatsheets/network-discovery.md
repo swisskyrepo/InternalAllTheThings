@@ -54,12 +54,27 @@ MDNS works by using multicast addresses to send DNS queries and responses. When 
 mdns-scan
 ```
 
-
 ## ARP
 
 ARP (Address Resolution Protocol) is a networking protocol used to map IP addresses to MAC (Media Access Control) addresses on a local area network (LAN). 
 
-* ARP scan
+* ARP neighbors
+    ```ps1
+    :~$ ip neigh
+    192.168.122.1 dev enp1s0 lladdr 52:54:00:ff:0a:2c STALE
+    192.168.122.98 dev enp1s0 lladdr 52:54:00:ff:aa:bb STALE
+    ```
+
+* ARP scan with `nmap` - note, needs root privileges. Check what packets nmap is sending with `--packet-trace`
+    ```ps1
+    :~# nmap -sn -n 192.168.122.0/24 
+    Starting Nmap 7.93 ( https://nmap.org )
+    Nmap scan report for 192.168.122.1
+    Host is up (0.00032s latency).
+    MAC Address: 52:54:00:FF:0A:2C (QEMU virtual NIC)
+    ```
+    
+* ARP scan with `arp-scan`
     ```ps1
     root@kali:~# arp-scan -l
     Interface: eth0, datalink type: EN10MB (Ethernet)
