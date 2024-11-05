@@ -427,8 +427,8 @@ Members           : {}
 
 **Requirements**
 
-* **Template Schema Version 1**
-* **ENROLLEE_SUPPLIES_SUBJECT** = True
+* **Template Schema** Version 1
+* **ENROLLEE_SUPPLIES_SUBJECT** = `True`
 
 **Exploitation**:
 
