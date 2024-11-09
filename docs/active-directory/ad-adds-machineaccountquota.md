@@ -38,8 +38,7 @@ The system compares this count to the `MachineAccountQuota` value set for that u
     $computerCount
     ```
 
-4. **Failure Handling**:
-    - If the quota is exceeded, the user attempting to create the account will receive an error message indicating that they cannot create a new computer account because they have reached their quota limit.
+4. **Failure Handling**: If the quota is exceeded, the user attempting to create the account will receive an error message indicating that they cannot create a new computer account because they have reached their quota limit.
 
 
 ## References
