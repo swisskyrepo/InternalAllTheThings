@@ -5,7 +5,6 @@
 * Data Tables - `*.table.core.windows.net`
 * Queues - `*.queue.core.windows.net`
 
-
 ## Enumerate blobs
 
 ```powershell
@@ -13,7 +12,6 @@ PS > . C:\Tools\MicroBurst\Misc\InvokeEnumerateAzureBlobs.ps1
 PS > Invoke-EnumerateAzureBlobs -Base <SHORT DOMAIN> -OutputFile azureblobs.txt
 Found Storage Account -  redacted.blob.core.windows.net
 ```
-
 
 ## List and download blobs
 
@@ -50,7 +48,6 @@ $ curl -s -H "x-ms-version: 2019-12-12" 'https://<storage-name>.blob.core.window
       <Name>scripts-transfer.zip</Name>
 ```
 
-
 ```powershell
 PS Az> Get-AzResource
 PS Az> Get-AzStorageAccount -name <NAME> -ResourceGroupName <NAME>
@@ -64,18 +61,16 @@ Retrieve exposed containers with public access
 PS Az> (Get-AzStorageAccount | Get-AzStorageContainer).cloudBlobContainer | select Uri,@{n='PublicAccess';e={$_.Properties.PublicAccess}}
 ```
 
-
 ## SAS URL
 
 * Use [Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
-* Click on **Open Connect Dialog** in the left menu. 
-* Select **Blob container**. 
+* Click on **Open Connect Dialog** in the left menu.
+* Select **Blob container**.
 * On the **Select Authentication Method** page
     * Select **Shared access signature (SAS)** and click on Next
     * Copy the URL in **Blob container SAS URL** field.
 
 :warning: You can also use `subscription`(username/password) to access storage resources such as blobs and files.
-
 
 ## References
 
