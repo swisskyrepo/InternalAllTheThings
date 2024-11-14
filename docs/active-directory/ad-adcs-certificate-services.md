@@ -423,7 +423,10 @@ Members           : {}
   ```
 
 
-## ESC15 - EKUwu Application Policies
+## ESC15 - EKUwu Application Policies - CVE-2024-49019
+
+This technique now has a CVE number and was patched on November 12, See [Active Directory Certificate Services Elevation of Privilege Vulnerability - CVE-2024-49019](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-49019) for more information.
+
 
 **Requirements**
 

