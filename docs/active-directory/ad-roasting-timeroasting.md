@@ -8,8 +8,8 @@
     hashcat -m 31300 ntp-hashes.txt
     ```
 
-
 ## References
 
-* [Timeroasting: Attacking Trust Accounts in Active Directory - Tom Tervoort - 01 March 2023](https://www.secura.com/blog/timeroasting-attacking-trust-accounts-in-active-directory)
+* [On the Applicability of the Timeroasting Attack - snovvcrash - December 8, 2024](https://snovvcrash.rocks/2024/12/08/applicability-of-the-timeroasting-attack.html)
 * [TIMEROASTING, TRUSTROASTING AND COMPUTER SPRAYING WHITE PAPER - Tom Tervoort](https://www.secura.com/uploads/whitepapers/Secura-WP-Timeroasting-v3.pdf)
+* [Timeroasting: Attacking Trust Accounts in Active Directory - Tom Tervoort - 01 March 2023](https://www.secura.com/blog/timeroasting-attacking-trust-accounts-in-active-directory)

