@@ -175,7 +175,8 @@ Get-ChildItem C:\Users -Force | select Name
 
 List logon requirements; useable for bruteforcing
 
-```powershell$env:usernadsc
+```powershell
+$env:usernadsc
 net accounts
 ```
 
