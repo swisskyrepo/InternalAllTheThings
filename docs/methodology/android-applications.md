@@ -173,6 +173,26 @@ Dynamic analysis for Android malware involves executing and monitoring an app in
 * Click Install certificates from SD card
 * Configure the AVD to use the proxy
 
+```ps1
+# Convert Burp certificate for Android
+openssl x509 -inform DER -in burp.der -out burp.pem
+openssl x509 -inform PEM -subject_hash_old -in burp.pem |head -1
+mv burp.pem <hash output>.0
+
+# Push the certificate in the AVD
+emulator -list-avds
+emulator -avd Pentesting_Device -writable-system
+adb root
+adb remount
+adb push <hash>.0 /sdcard/
+
+# Change the permissions
+adb shell
+mv /sdcard/<hash>.0 /system/etc/security/cacerts/
+chmod 644 /system/etc/security/cacerts/<hash>.0
+chown root:root /system/etc/security/cacerts/<hash>.0
+```
+
 
 ### Frida
 
@@ -417,6 +437,38 @@ Common bypass:
 
 Android Debug Bridge (ADB) is a versatile command-line tool that enables communication between a computer and an Android device. It facilitates tasks like installing apps, debugging, accessing the device's shell, and transferring files, making it essential for developers and power users in Android development and troubleshooting.
 
+### USB Debugging
+
+* Open the **Settings** app.
+* Select **System**.
+* Scroll to the bottom and select **About phone**.
+* Scroll to the bottom and tap **Build number** 7 times.
+* Return to the previous screen to find **Developer options** near the bottom.
+* Scroll down and enable **USB debugging**.
+
+```ps1
+./platform-tools/adb connect IP:PORT
+./platform-tools/adb shell
+```
+
+### Wireless Debugging
+
+* Open the **Settings** app.
+* Select **System**.
+* Scroll to the bottom and select **About phone**.
+* Scroll to the bottom and tap **Build number** 7 times.
+* Return to the previous screen to find **Developer options** near the bottom.
+* Scroll down and enable **Wifi debugging**.
+* Click on **Wifi debugging** to access the settings
+
+One more step, you need to pair the devices using a code.
+
+```ps1
+./platform-tools/adb pair IP:PORT CODE
+./platform-tools/adb connect IP:PORT
+./platform-tools/adb shell
+```
+
 | Command                      | Description                                    |
 |------------------------------|------------------------------------------------|
 | `adb devices`                | List devices                                   |
@@ -490,4 +542,5 @@ Unlock the bootloader will wipe the userdata partition. On some device these met
 * [Introduction to Android Pentesting - Jarrod - July 8, 2024](https://owlhacku.com/introduction-to-android-pentesting/)
 * [A beginners guide to using Frida to bypass root detection. - DianaOpanga - Nov 27, 2023](https://medium.com/@dianaopanga/a-beginners-guide-to-using-frida-to-bypass-root-detection-16af76b989ac)
 * [Appium documentation](https://appium.io/docs/en/latest/)
-* [How to root an Android device for analysis and vulnerability assessment - Joe Lovett - 23 Aug 2024](https://www.pentestpartners.com/security-blog/how-to-root-an-android-device-for-analysis-and-vulnerability-assessment/)
+* [How to root an Android device for analysis and vulnerability assessment - Joe Lovett - Aug 23, 2024](https://www.pentestpartners.com/security-blog/how-to-root-an-android-device-for-analysis-and-vulnerability-assessment/)
+* [Configuring Android Emulator with Burp Suite - Jarrod @Jrod_R87 - Jan 8, 2025](https://owlhacku.com/configuring-android-emulator-with-burp-suite/)

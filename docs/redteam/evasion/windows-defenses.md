@@ -407,10 +407,12 @@ Also known as `WDAC/UMCI/Device Guard`.
     DeviceGuardCodeIntegrityPolicyEnforcementStatus         : EnforcementMode
     DeviceGuardUserModeCodeIntegrityPolicyEnforcementStatus : EnforcementMode
     ```
+
 * Remove WDAC policies using CiTool.exe (Windows 11 2022 Update)
     ```ps1
     $ CiTool.exe -rp "{PolicyId GUID}" -json
     ```
+    
 * Device Guard policy location: `C:\Windows\System32\CodeIntegrity\CiPolicies\Active\{PolicyId GUID}.cip`
 * Device Guard example policies: `C:\Windows\System32\CodeIntegrity\ExamplePolicies\`
 * WDAC utilities: [mattifestation/WDACTools](https://github.com/mattifestation/WDACTools), a PowerShell module to facilitate building, configuring, deploying, and auditing Windows Defender Application Control (WDAC) policies

