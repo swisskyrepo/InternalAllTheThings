@@ -776,3 +776,4 @@ Add-Type -TypeDefinition $Winpatch -Language CSharp
 ## References
 
 * [S3cur3Th1sSh1t - Amsi-Bypass-Powershell](https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell/blob/master/README.md)
+* [Reinventing PowerShell in C/C++ - Clément Labro - February 18, 2025](https://blog.scrt.ch/2025/02/18/reinventing-powershell-in-c-c/)

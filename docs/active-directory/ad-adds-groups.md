@@ -2,7 +2,7 @@
 
 ## Dangerous Built-in Groups Usage
 
-If you do not want modified ACLs to be overwritten every hour, you should change ACL template on the object `CN=AdminSDHolder,CN=System` or set `"dminCount` attribute to `0` for the required object.
+If you do not want modified ACLs to be overwritten every hour, you should change ACL template on the object `CN=AdminSDHolder,CN=System` or set `adminCount` attribute to `0` for the required object.
 
 >  The AdminCount attribute is set to `1` automatically when a user is assigned to any privileged group, but it is never automatically unset when the user is removed from these group(s).
 
@@ -99,6 +99,7 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
 > Members of the Backup Operators group can back up and restore all files on a computer, regardless of the permissions that protect those files. Backup Operators also can log on to and shut down the computer. This group cannot be renamed, deleted, or moved. By default, this built-in group has no members, and it can perform backup and restore operations on domain controllers.
 
 This groups grants the following privileges :
+
 - SeBackup privileges
 - SeRestore privileges
 

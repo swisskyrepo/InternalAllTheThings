@@ -45,7 +45,8 @@ While both caches serve the same basic purpose of storing Kerberos tickets to en
 ## Pass-the-Ticket Golden Tickets
 
 Forging a TGT require:
-* the `krbtgt` NT hash
+
+* `krbtgt` NT hash
 * since recently, we cannot use a non-existent account name as a result of `CVE-2021-42287` mitigations
 
 > The way to forge a Golden Ticket is very similar to the Silver Ticket one. The main differences are that, in this case, no service SPN must be specified to ticketer.py, and the krbtgt NT hash must be used.
