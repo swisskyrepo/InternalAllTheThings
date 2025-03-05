@@ -6,10 +6,12 @@
 * [User Account Control](#user-account-control)
 * [DPAPI](#dpapi)
 * [Powershell](#powershell)
+    * [Execution Policy](#execution-policy)
     * [Anti Malware Scan Interface](#anti-malware-scan-interface)
     * [Just Enough Administration](#just-enough-administration)
     * [Contrained Language Mode](#constrained-language-mode)
     * [Script Block and Module Logging](#script-block-and-module-logging)
+    * [PowerShell Transcript](#powershell-transcript)
     * [SecureString](#securestring)
 * [Protected Process Light](#protected-process-light)
 * [Credential Guard](#credential-guard)
@@ -72,6 +74,43 @@ Refer to [PayloadsAllTheThings/Windows - DPAPI.md](https://github.com/swisskyrep
 
 
 ## Powershell
+
+### Execution Policy
+
+> PowerShell Execution Policy is a security feature that controls how scripts run on a system. It helps prevent unauthorized scripts from executing, but it is not a security boundary—it only prevents accidental execution of unsigned scripts.
+
+* Check current policy
+    ```ps1
+    Get-ExecutionPolicy
+    ```
+
+| Policy	    | Description                                       |
+| ------------- | ------------------------------------------------- |
+| Restricted    | No scripts allowed (default in some systems).     |
+| AllSigned     | Only runs signed scripts.                         |
+| RemoteSigned  | Local scripts run, remote scripts must be signed. |
+| Unrestricted  | Runs all scripts, warns for remote scripts.       |
+| Bypass        | No restrictions; all scripts run.                 |
+
+* `Restricted`: it prevents the execution of all scripts (the default for workstations).
+* `RemoteSigned`: it blocks the execution of unsigned scripts downloaded from the Internet, but allows the execution of "local" scripts (the default on servers). The command `Unblock-File` can be used to remove the Mark-of-the-Web (MotW) and make a downloaded script look like a "local" script.
+    ```ps1
+    # Bypass
+    Unblock-File my-file-from-internet
+    ```
+* `AllSigned`: it blocks unsigned scripts. This is the most secure option.
+    ```ps1
+    # Bypass
+    Get-Content .\run.ps1 | Invoke-Expression
+    ```
+
+You can just run `powershell.exe` with the option `-ep Bypass`, or use the built-in command `Set-ExecutionPolicy`. 
+
+```ps1
+powershell -ep bypass
+Set-ExecutionPolicy Bypass -Scope Process -Force
+```
+
 
 ### Anti Malware Scan Interface
 
@@ -173,6 +212,24 @@ Disable ETW of the current PowerShell session with [tandasat/KillETW.ps1](https:
 ```ps1
 # This PowerShell command sets 0 to System.Management.Automation.Tracing.PSEtwLogProvider etwProvider.m_enabled which effectively disables Suspicious ScriptBlock Logging etc.
 [Reflection.Assembly]::LoadWithPartialName('System.Core').GetType('System.Diagnostics.Eventing.EventProvider').GetField('m_enabled','NonPublic,Instance').SetValue([Ref].Assembly.GetType('System.Management.Automation.Tracing.PSEtwLogProvider').GetField('etwProvider','NonPublic,Static').GetValue($null),0)
+```
+
+
+### PowerShell Transcript
+
+PowerShell Transcript is a logging feature that records all commands and output from a PowerShell session. It helps with auditing, debugging, and troubleshooting by saving session activity to a text file. 
+
+Start a transcript and store the output in a custom file.
+
+```ps1
+Start-Transcript -Path "C:\transcripts\transcript0.txt" -NoClobber
+```
+
+Common locations for PowerShell transcripts outputs:
+
+```ps1
+C:\Users\<USERNAME>\Documents\PowerShell_transcript.<HOSTNAME>.<RANDOM>.<TIMESTAMP>.txt
+C:\Transcripts\<DATE>\PowerShell_transcript.<HOSTNAME>.<RANDOM>.<TIMESTAMP>.txt
 ```
 
 
