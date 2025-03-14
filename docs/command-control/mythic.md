@@ -32,6 +32,7 @@ Agents can be found at: [https://github.com/MythicAgents](https://github.com/Myt
 ./mythic-cli install github https://github.com/MythicAgents/poseidon # A Mythic Agent written in Golang for Linux/MacOS
 ./mythic-cli install github https://github.com/MythicAgents/Apollo # # A Mythic Agent written in C# using the 4.0 .NET Framework 
 ./mythic-cli install github https://github.com/MythicAgents/Athena # A Mythic Agent written in .NET
+./mythic-cli install github https://github.com/MythicAgents/Xenon # A Mythic Agent written in C, compatible with httpx profiles
 ```
 
 ## Profiles
@@ -39,6 +40,7 @@ Agents can be found at: [https://github.com/MythicAgents](https://github.com/Myt
 C2 Profiles can be found at: [https://github.com/MythicC2Profiles](https://github.com/MythicC2Profiles)
 
 ```ps1
+./mythic-cli install github https://github.com/MythicC2Profiles/httpx
 ./mythic-cli install github https://github.com/MythicC2Profiles/http
 ./mythic-cli install github https://github.com/MythicC2Profiles/websocket
 ./mythic-cli install github https://github.com/MythicC2Profiles/dns

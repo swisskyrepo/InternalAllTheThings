@@ -72,14 +72,14 @@ dpapi::masterkey /in:"C:\Users\<USERNAME>\AppData\Roaming\Microsoft\Protect\S-1-
 
 ### Hekatomb - Steal all credentials on domain
 
-> [Processus-Thief/Hekatomb](https://github.com/Processus-Thief/HEKATOMB) is a python script that connects to LDAP directory to retrieve all computers and users informations. Then it will download all DPAPI blob of all users from all computers. Finally, it will extract domain controller private key through RPC uses it to decrypt all credentials.
+> [ProcessusT/Hekatomb](https://github.com/ProcessusT/HEKATOMB) is a python script that connects to LDAP directory to retrieve all computers and users informations. Then it will download all DPAPI blob of all users from all computers. Finally, it will extract domain controller private key through RPC uses it to decrypt all credentials.
 
 ```python
 pip3 install hekatomb
 hekatomb -hashes :ed0052e5a66b1c8e942cc9481a50d56 DOMAIN.local/administrator@10.0.0.1 -debug -dnstcp
 ```
 
-![Data in memory](https://github.com/Processus-Thief/HEKATOMB/raw/main/.assets/github1.png)
+![Data in memory](https://github.com/ProcessusT/HEKATOMB/raw/main/.assets/github1.png)
 
 ### DonPAPI - Dumping DPAPI credz remotely
 
