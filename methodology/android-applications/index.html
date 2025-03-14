@@ -1,0 +1,5518 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Active Directory and Internal Pentest Cheatsheets">
+      
+      
+      
+        <link rel="canonical" href="https://swisskyrepo.github.io/InternalAllTheThings/methodology/android-applications/">
+      
+      
+        <link rel="prev" href="../../devops/github-actions/">
+      
+      
+        <link rel="next" href="../bug-hunting-methodology/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
+    
+    
+      
+        <title>Android Application - Internal All The Things</title>
+      
+    
+    
+	
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+  <style>
+  .social-container {
+    float: right;
+  }
+  </style>
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Android Application - Internal All The Things" >
+      
+        <meta  property="og:description"  content="Active Directory and Internal Pentest Cheatsheets" >
+      
+        <meta  property="og:image"  content="https://swisskyrepo.github.io/InternalAllTheThings/assets/images/social/methodology/android-applications.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://swisskyrepo.github.io/InternalAllTheThings/methodology/android-applications/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Android Application - Internal All The Things" >
+      
+        <meta  name="twitter:description"  content="Active Directory and Internal Pentest Cheatsheets" >
+      
+        <meta  name="twitter:image"  content="https://swisskyrepo.github.io/InternalAllTheThings/assets/images/social/methodology/android-applications.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#android-application" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Internal All The Things" class="md-header__button md-logo" aria-label="Internal All The Things" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Internal All The Things
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Android Application
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swisskyrepo/InternalAllTheThings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Internal All The Things" class="md-nav__button md-logo" aria-label="Internal All The Things" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Internal All The Things
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swisskyrepo/InternalAllTheThings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal All The Things
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DISCLAIMER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DISCLAIMER
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Active directory
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Active directory
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adcs-certificate-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Certificate Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-acl-ace/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Access Controls ACL/ACE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-enumerate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Enumeration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-group-policy-objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Group Policy Objects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Groups
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-machineaccountquota/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Machine Account Quota
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-ntds-dumping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - NTDS Dumping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adds-rodc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Read Only Domain Controller
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-adfs-federation-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Federation Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-integrated-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Integrated DNS - ADIDNS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-roasting-asrep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - ASREP Roasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-roasting-kerberoasting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - Kerberoasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-roasting-timeroasting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - Timeroasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/ad-tricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Tricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/deployment-sccm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment - SCCM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/deployment-wsus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment - WSUS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/hash-capture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Capture and Cracking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/hash-over-pass-the-hash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - OverPass-the-Hash
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/hash-pass-the-hash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Pass the Hash
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/hash-pass-the-key/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Pass The Key
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/internal-dcom/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - DCOM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/internal-pxe-boot-image/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - PXE Boot Image
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/internal-relay-kerberos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - Kerberos Relay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/internal-relay-ntlm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - NTLM Relay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/internal-shares/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - Shares
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/kerberos-bronze-bit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Bronze Bit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/kerberos-delegation-constrained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Constrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/kerberos-delegation-rbcd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Resource Based Constrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/kerberos-delegation-unconstrained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Unconstrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/kerberos-s4u/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Service for User Extension
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/kerberos-tickets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Tickets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-comments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - AD User Comment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-dsrm-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - DSRM Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-group-policy-preferences/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Group Policy Preferences
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-precreated-computer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Pre-Created Computer Account
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-read-gmsa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - GMSA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-read-laps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - LAPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-shadow-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Shadow Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/pwd-spraying/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Spraying
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/trust-pam/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trust - Privileged Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/trust-relationship/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trust - Relationship
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/trust-sid-hijacking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Child Domain to Forest Compromise - SID Hijacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/trust-ticket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Forest to Forest Compromise - Trust Ticket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_45" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_45" id="__nav_3_45_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CVE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_45_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_45">
+            <span class="md-nav__icon md-icon"></span>
+            CVE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/CVE/MS14-068/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MS14-068 Checksum Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/CVE/NoPAC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NoPAC / samAccountName Spoofing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/CVE/PrintNightmare/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PrintNightmare
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/CVE/PrivExchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PrivExchange
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../active-directory/CVE/ZeroLogon/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ZeroLogon
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cheatsheets
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Cheatsheets
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/as-400/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AS400
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/escape-breakout/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kiosk Escape and Jail Breakout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/hash-cracking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash Cracking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/liferay/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Liferay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/mimikatz-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mimikatz
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/miscellaneous-tricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Miscellaneous &amp; Tricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/network-discovery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Discovery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/powershell-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Powershell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/shell-bind-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bind Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/shell-reverse-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reverse Shell Cheat Sheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cheatsheets/source-code-management-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source Code Management &amp; CI/CD Compromise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cloud
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cloud
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Aws
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Aws
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-access-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Access Token &amp; Secrets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-cognito/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - Cognito
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-dynamodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - DynamoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-ec2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - EC2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Enumerate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-iam/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Identity &amp; Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-ioc-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - IOC &amp; Detections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-lambda/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - Lambda &amp; API Gateway
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Metadata SSRF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-s3-bucket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - S3 Buckets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-ssm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - SSM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/aws/aws-training/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Training
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Azure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Azure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/aka-ms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aka.ms Shortcuts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-access-and-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Access and Tokens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-ad-conditional-access-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Conditional Access Policy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-ad-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - AD Connect and Cloud Sync
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-devices-users-sp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - IAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Enumerate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-phishing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Phishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure - Requirements
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-application-endpoint/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Application Endpoint
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-application-proxy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Application Proxy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-container-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Container Registry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-deployment-template/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Deployment Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Azure DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-keyvault/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - KeyVault
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-microsoft-intune/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Microsoft Intune
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-office-365/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Office 365
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-runbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Runbook and Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-storage-blob/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Storage Blob
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-virtual-machine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Virtual Machine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-web-apps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Web Apps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/azure/azure-services-web-domains/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - DNS Suffix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ibm
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Ibm
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/ibm/ibm-cloud-databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IBM Cloud Managed Database Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cloud/ibm/ibm-cloud-object-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IBM Cloud Object Storage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Command control
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Command control
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-control/cobalt-strike-beacons/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike - Beacons
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-control/cobalt-strike-kits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike - Kits
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-control/cobalt-strike/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-control/metasploit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metasploit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-control/mythic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mythic C2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../containers/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../containers/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/mssql-audit-checks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Audit Checks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/mssql-command-execution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Command Execution
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/mssql-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/mssql-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Database Enumeration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../databases/mssql-linked-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Linked Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Devops
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Devops
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD attacks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/azure-devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/buildkite/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BuildKite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/circle-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CircleCI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/drone-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Drone CI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/github-actions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GitHub Actions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Methodology
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Methodology
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Android Application
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Android Application
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extract-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extract APK
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extract APK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adb-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADB Method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stores
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extract-contents-from-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extract Contents From APK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decompile-data-as-java-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decompile Data as Java Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decompile-native-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decompile Native Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign-and-package-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sign and Package APK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-security-framework-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile Security Framework Static
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#online-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Online Assets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-native-and-hermes" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Native and Hermes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flutter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flutter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#burp-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Burp Suite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frida" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frida
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-mobile-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime Mobile Security
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#genymotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Genymotion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#android-sdk-emulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Android SDK emulator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-security-framework-dynamic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile Security Framework Dynamic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appium
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flutter_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flutter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssl-pinning-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL Pinning Bypass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-detection-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Root Detection Bypass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#android-debug-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Android Debug Bridge
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Android Debug Bridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usb-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      USB Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wireless Debugging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#android-virtual-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      Android Virtual Device
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unlock-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unlock Bootloader
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bug-hunting-methodology/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bug Hunting Methodology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../source-code-analysis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source Code Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vulnerability-reports/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vulnerability Reports
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redteam
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Redteam
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Access
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Access
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/html-smuggling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTML Smuggling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/initial-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Initial Access
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/office-attacks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Office - Attacks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/phishing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Phishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/web-attack-surface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Attack Surface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/windows-download-execute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Download and execute methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/access/windows-using-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Using credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Escalation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_2">
+            <span class="md-nav__icon md-icon"></span>
+            Escalation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/escalation/linux-privilege-escalation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Privilege Escalation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/escalation/windows-privilege-escalation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Privilege Escalation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Evasion
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            Evasion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/edr-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoint Detection and Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/elastic-edr/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Elastic EDR
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/linux-evasion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Evasion
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/proxy-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Bypass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/windows-amsi-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - AMSI Bypass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/windows-defenses/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Defenses
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/evasion/windows-dpapi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - DPAPI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_4" id="__nav_11_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_4">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/persistence/linux-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/persistence/rdp-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDP - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/persistence/windows-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_5" id="__nav_11_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pivoting
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_5">
+            <span class="md-nav__icon md-icon"></span>
+            Pivoting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redteam/pivoting/network-pivoting-techniques/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Pivoting Techniques
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extract-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extract APK
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extract APK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adb-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      ADB Method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stores
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extract-contents-from-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extract Contents From APK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decompile-data-as-java-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decompile Data as Java Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decompile-native-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decompile Native Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign-and-package-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sign and Package APK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-security-framework-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile Security Framework Static
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#online-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Online Assets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-native-and-hermes" class="md-nav__link">
+    <span class="md-ellipsis">
+      React Native and Hermes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flutter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flutter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#burp-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Burp Suite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frida" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frida
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-mobile-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime Mobile Security
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#genymotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Genymotion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#android-sdk-emulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Android SDK emulator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-security-framework-dynamic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile Security Framework Dynamic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appium" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appium
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flutter_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flutter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssl-pinning-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL Pinning Bypass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-detection-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Root Detection Bypass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#android-debug-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Android Debug Bridge
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Android Debug Bridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usb-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      USB Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wireless-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wireless Debugging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#android-virtual-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      Android Virtual Device
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unlock-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unlock Bootloader
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+	
+                  
+
+
+  
+    <a href="https://github.com/swisskyrepo/InternalAllTheThings/blob/main/docs/methodology/android-applications.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/swisskyrepo/InternalAllTheThings/raw/main/docs/methodology/android-applications.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="android-application">Android Application</h1>
+<h2 id="lab">Lab</h2>
+<ul>
+<li><a href="https://github.com/payatu/diva-android">payatu/diva-android</a> - Damn Insecure and vulnerable App for Android</li>
+<li><a href="https://app.hackthebox.com/challenges/282">HTB VIP - Pinned</a> - Hack The Box challenge</li>
+<li><a href="https://app.hackthebox.com/challenges/283">HTB VIP - Manager</a> - Hack The Box challenge</li>
+</ul>
+<h2 id="extract-apk">Extract APK</h2>
+<h3 id="adb-method">ADB Method</h3>
+<p>Connect to ADB shell and list/download packages.
+You might need to enable <code>Developer mode</code> and <code>Debugging</code> in order to connect with <code>adb</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">adb</span> <span class="n">shell</span> <span class="n">pm</span> <span class="n">list</span> <span class="n">packages</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">adb</span> <span class="n">shell</span> <span class="n">pm</span> <span class="n">path</span> <span class="n">com</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">someapp</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">adb</span> <span class="n">pull</span> <span class="p">/</span><span class="n">data</span><span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">com</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">someapp</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div>
+<h3 id="stores">Stores</h3>
+<p>Warning: Downloading APK files from unofficial stores can compromise your device's security. These sources often host malware and malicious software. Always use trusted and official app stores for downloads.</p>
+<ul>
+<li><a href="https://play.google.com/store/apps">Google Play</a> - Official Store</li>
+<li><a href="https://apkpure.fr/fr/">Apkpure.fr</a> - Alternative to Google Play</li>
+<li><a href="https://apkpure.co">Apkpure.co</a> - Alternative to Google Play</li>
+<li><a href="https://fr.aptoide.com/">Aptoide</a> - Alternative to Google Play</li>
+<li><a href="https://f-droid.org/fr/packages/com.aurora.store/">Aurora Store</a> - Alternative to Google Play</li>
+</ul>
+<p>Download APK from Google Play using a 3rd Party:</p>
+<ul>
+<li><a href="https://apkcombo.com/downloader/">apkcombo.com</a></li>
+<li><a href="https://apps.evozi.com/apk-downloader/">apps.evozi.com</a></li>
+</ul>
+<h2 id="static-analysis">Static Analysis</h2>
+<h3 id="extract-contents-from-apk">Extract Contents From APK</h3>
+<p>Search for strings <code>flag</code>,<code>secret</code>, the default string file is <code>Resources/resources.arsc/res/values/strings.xml</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">apktool</span> <span class="n">d</span> <span class="n">application</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div>
+<h3 id="decompile-data-as-java-code">Decompile Data as Java Code</h3>
+<ul>
+<li>Rename <code>application.apk</code> to <code>application.zip</code>: <code>mv application.apk application.zip</code></li>
+<li>Extract <code>classes.dex</code>: <code>unzip application.zip</code></li>
+<li>Use <code>dex2jar</code> to obtain a jar file: <code>/usr/bin/d2j-dex2jar classes.dex</code></li>
+<li>Use <code>jadx</code> using full CPU: <code>jadx classes.dex -j $(grep -c ^processor /proc/cpuinfo) -d Downloads/app/ &gt; /dev/null</code>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">jadx-gui</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">-</span><span class="n">-deobf</span> <span class="c"># remove obfuscation by AndroGuard</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">-e</span>      <span class="c"># generate a gradle project for Android Studio (easy to find function)</span>
+</code></pre></div></li>
+</ul>
+<p>To reverse <code>.odex</code> you need to provide the <code>/system/framework/arm</code>, fortunately since we have the firmware we have it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">java</span> <span class="n">-jar</span> <span class="n">baksmali</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">4</span><span class="p">.</span><span class="n">jar</span> <span class="n">x</span> <span class="n">application</span><span class="p">.</span><span class="n">odex</span> <span class="n">-d</span> <span class="n">k107-mb</span><span class="p">-</span><span class="n">8</span><span class="p">.</span><span class="n">1</span><span class="p">/</span><span class="n">system</span><span class="p">/</span><span class="n">framework</span><span class="p">/</span><span class="n">arm</span> <span class="n">-o</span> <span class="n">application</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">apktool</span> <span class="n">d</span> <span class="n">application</span><span class="p">.</span><span class="n">apk</span> 
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">apktool</span> <span class="n">b</span> <span class="n">rebuild_folder</span> <span class="n">-o</span> <span class="n">rebuilt</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div>
+<h3 id="decompile-native-code">Decompile Native Code</h3>
+<p>Native library are represented as <code>.so</code> files.  <br />
+These libraries by default are included in the APK at the file path <code>/lib/&lt;cpu&gt;/lib&lt;name&gt;.so</code> or <code>/assets/&lt;custom_name&gt;</code>.</p>
+<p>Use <code>IDA</code>, <code>Radare2/Cutter</code> or <code>Ghidra</code> to reverse them.</p>
+<table>
+<thead>
+<tr>
+<th>CPU   Native</th>
+<th>Library Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"generic" 32-bit ARM</td>
+<td>lib/armeabi/libcalc.so</td>
+</tr>
+<tr>
+<td>x86</td>
+<td>lib/x86/libcalc.so</td>
+</tr>
+<tr>
+<td>x64</td>
+<td>lib/x86_64/libcalc.so</td>
+</tr>
+<tr>
+<td>ARMv7</td>
+<td>lib/armeabi-v7a/libcalc.so</td>
+</tr>
+<tr>
+<td>ARM64</td>
+<td>lib/arm64-v8a/libcalc.so</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> The shared object file (<code>.so</code>) doesn't need to be embedded in the app. </p>
+<h3 id="sign-and-package-apk">Sign and Package APK</h3>
+<ul>
+<li><code>apktool</code> + <code>jarsigner</code>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">apktool</span> <span class="n">b</span> <span class="p">./</span><span class="n">application</span><span class="p">.</span><span class="n">apk</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">keytool</span> <span class="n">-genkey</span> <span class="n">-v</span> <span class="n">-keystore</span> <span class="n">application</span><span class="p">.</span><span class="n">keystore</span> <span class="n">-alias</span> <span class="n">application</span> <span class="n">-keyalg</span> <span class="n">RSA</span> <span class="n">-keysize</span> <span class="n">2048</span> <span class="n">-validity</span> <span class="n">10000</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">jarsigner</span> <span class="n">-verbose</span> <span class="n">-sigalg</span> <span class="n">SHA1withRSA</span> <span class="n">-digestalg</span> <span class="n">SHA1</span> <span class="n">-keystore</span> <span class="n">application</span><span class="p">.</span><span class="n">keystore</span> <span class="n">application</span><span class="p">.</span><span class="n">apk</span> <span class="n">application</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">zipalign</span> <span class="n">-v</span> <span class="n">4</span> <span class="n">application</span><span class="p">.</span><span class="n">apk</span> <span class="n">application-signed</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div></li>
+<li>
+<p><code>apktool</code> + <code>signapk</code>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">apktool</span> <span class="n">b</span> <span class="n">app-release</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">./</span><span class="n">signapk</span> <span class="n">app-release</span><span class="p">/</span><span class="n">dist</span><span class="p">/</span><span class="n">app-release</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><a href="https://github.com/patrickfav/uber-apk-signer">patrickfav/uber-apk-signer</a> (Linux only)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">java</span> <span class="n">-jar</span> <span class="n">uber-apk-signer</span><span class="p">.</span><span class="n">jar</span> <span class="p">-</span><span class="n">-apks</span> <span class="p">/</span><span class="n">path</span><span class="p">/</span><span class="n">to</span><span class="p">/</span><span class="n">apks</span>
+</code></pre></div></p>
+</li>
+<li><a href="https://xdaforums.com/t/tool-apk-toolkit-v1-3-windows.4572881/">APK Toolkit v1.3</a> (Windows only)</li>
+</ul>
+<h3 id="mobile-security-framework-static">Mobile Security Framework Static</h3>
+<blockquote>
+<p>Mobile Security Framework (MobSF) is an automated, all-in-one mobile application (Android/iOS/Windows) pen-testing, malware analysis and security assessment framework capable of performing static and dynamic analysis.</p>
+</blockquote>
+<ul>
+<li><a href="https://mobsf.github.io/docs/#/">MobSF - Documentation</a></li>
+<li><a href="https://github.com/MobSF/Mobile-Security-Framework-MobSF">MobSF - Github</a></li>
+<li><a href="https://mobsf.live/">MobSF - Live Demo</a></li>
+</ul>
+<p>Run <a href="https://github.com/MobSF/Mobile-Security-Framework-MobSF">MobSF/Mobile-Security-Framework-MobSF</a></p>
+<ul>
+<li>Latest version from DockerHub
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-name</span> <span class="n">mobsf</span> <span class="n">-p</span> <span class="n">8000</span><span class="p">:</span><span class="n">8000</span> <span class="n">opensecurity</span><span class="p">/</span><span class="n">mobile-security-framework-mobsf</span><span class="p">:</span><span class="n">latest</span>
+</code></pre></div></li>
+<li>Enable persistence on the Docker container
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">docker</span> <span class="n">run</span> <span class="n">-it</span> <span class="p">-</span><span class="n">-rm</span> <span class="p">-</span><span class="n">-name</span> <span class="n">mobsf</span> <span class="n">-p</span> <span class="n">8000</span><span class="p">:</span><span class="n">8000</span> <span class="n">-v</span> <span class="p">&lt;</span><span class="n">your_local_dir</span><span class="p">&gt;:/</span><span class="n">root</span><span class="p">/.</span><span class="n">MobSF</span> <span class="n">opensecurity</span><span class="p">/</span><span class="n">mobile-security-framework-mobsf</span><span class="p">:</span><span class="n">latest</span>
+</code></pre></div></li>
+</ul>
+<h3 id="online-assets">Online Assets</h3>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> Uploading APKs to uncontrolled websites risks data leaks, malware, intellectual property theft, and privacy violations. Use trusted platforms only to ensure the security and integrity of your app.</p>
+<ul>
+<li><a href="https://appetize.io/">appetize.io</a> - Instantly run mobile apps in your browser</li>
+<li><a href="https://mobsf.live/">mobsf.live</a> - Demo version of MobSF</li>
+<li><a href="https://www.hybrid-analysis.com/sample/573df0b1cb5ffc0a25306be5ec83483ed1b2acdba37dd93223b9f14f42b2fdea?environmentId=200">hybrid-analysis.com</a> - Sandbox analysis of APK files</li>
+</ul>
+<h3 id="react-native-and-hermes">React Native and Hermes</h3>
+<p>Identify React Native app with <code>index.android.bundle</code> inside the <code>assets</code> folder</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">Hermes</span><span class="p">:</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">hbctool</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="err">╰─</span><span class="p">$</span> <span class="n">hbctool</span> <span class="n">disasm</span> <span class="n">index</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">bundle</span> <span class="n">indexasm</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="p">[*]</span> <span class="n">Disassemble</span> <span class="s1">&#39;index.android.bundle&#39;</span> <span class="n">to</span> <span class="s1">&#39;indexasm&#39;</span> <span class="n">path</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">[*]</span> <span class="n">Hermes</span> <span class="n">Bytecode</span> <span class="p">[</span> <span class="n">Source</span> <span class="n">Hash</span><span class="p">:</span> <span class="n">4013cb75f7e16d4474f5cf258edc45ee16585560</span><span class="p">,</span> <span class="n">HBC</span> <span class="n">Version</span><span class="p">:</span> <span class="n">74</span> <span class="p">]</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">[*]</span> <span class="n">Done</span>
+</code></pre></div>
+<h3 id="flutter">Flutter</h3>
+<p>Indentify Flutter use in the <code>MANIFEST.MF</code> and search for <code>libflutter.so</code>.</p>
+<ul>
+<li><a href="https://github.com/worawit/blutter">worawit/blutter</a> - Flutter Mobile Application Reverse Engineering Tool
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">blutter</span> <span class="n">jadx</span><span class="p">/</span><span class="n">resources</span><span class="p">/</span><span class="n">lib</span><span class="p">/</span><span class="n">arm64-v8a</span><span class="p">/</span> <span class="p">./</span><span class="n">blutter_output</span>
+</code></pre></div></li>
+</ul>
+<h2 id="dynamic-analysis">Dynamic Analysis</h2>
+<p>Dynamic analysis for Android malware involves executing and monitoring an app in a controlled environment to observe its behavior. This technique detects malicious activities like data exfiltration, unauthorized access, and system modifications. Additionally, it aids in reverse engineering app features, revealing hidden functionalities and potential vulnerabilities for better threat mitigation.</p>
+<h3 id="burp-suite">Burp Suite</h3>
+<ul>
+<li>Proxy &gt; Listen to all interfaces</li>
+<li>Import/Export CA certificate</li>
+<li><code>adb push burp.der /sdcard/burp.crt</code></li>
+<li>Open the Settings on the device and search "Install Cert"</li>
+<li>Click Install certificates from SD card</li>
+<li>Configure the AVD to use the proxy</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c"># Convert Burp certificate for Android</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">openssl</span> <span class="n">x509</span> <span class="n">-inform</span> <span class="n">DER</span> <span class="n">-in</span> <span class="n">burp</span><span class="p">.</span><span class="n">der</span> <span class="n">-out</span> <span class="n">burp</span><span class="p">.</span><span class="n">pem</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">openssl</span> <span class="n">x509</span> <span class="n">-inform</span> <span class="n">PEM</span> <span class="n">-subject_hash_old</span> <span class="n">-in</span> <span class="n">burp</span><span class="p">.</span><span class="n">pem</span> <span class="p">|</span><span class="n">head</span> <span class="p">-</span><span class="n">1</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nb">mv </span><span class="n">burp</span><span class="p">.</span><span class="n">pem</span> <span class="p">&lt;</span><span class="n">hash</span> <span class="n">output</span><span class="p">&gt;.</span><span class="n">0</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c"># Push the certificate in the AVD</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">emulator</span> <span class="n">-list-avds</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">emulator</span> <span class="n">-avd</span> <span class="n">Pentesting_Device</span> <span class="n">-writable-system</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="n">adb</span> <span class="n">root</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="n">adb</span> <span class="n">remount</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="n">adb</span> <span class="n">push</span> <span class="p">&lt;</span><span class="n">hash</span><span class="p">&gt;.</span><span class="n">0</span> <span class="p">/</span><span class="n">sdcard</span><span class="p">/</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="c"># Change the permissions</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="n">adb</span> <span class="n">shell</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="nb">mv </span><span class="p">/</span><span class="n">sdcard</span><span class="p">/&lt;</span><span class="n">hash</span><span class="p">&gt;.</span><span class="n">0</span> <span class="p">/</span><span class="n">system</span><span class="p">/</span><span class="n">etc</span><span class="p">/</span><span class="n">security</span><span class="p">/</span><span class="n">cacerts</span><span class="p">/</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="n">chmod</span> <span class="n">644</span> <span class="p">/</span><span class="n">system</span><span class="p">/</span><span class="n">etc</span><span class="p">/</span><span class="n">security</span><span class="p">/</span><span class="n">cacerts</span><span class="p">/&lt;</span><span class="n">hash</span><span class="p">&gt;.</span><span class="n">0</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="n">chown</span> <span class="n">root</span><span class="p">:</span><span class="n">root</span> <span class="p">/</span><span class="n">system</span><span class="p">/</span><span class="n">etc</span><span class="p">/</span><span class="n">security</span><span class="p">/</span><span class="n">cacerts</span><span class="p">/&lt;</span><span class="n">hash</span><span class="p">&gt;.</span><span class="n">0</span>
+</code></pre></div>
+<h3 id="frida">Frida</h3>
+<ul>
+<li><a href="https://frida.re/docs/android">Frida - Documentation</a></li>
+<li><a href="https://github.com/frida/frida/">Frida - Github</a></li>
+</ul>
+<p>Download <a href="https://github.com/frida/frida/releases"><code>frida</code></a> from releases.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">pip</span> <span class="n">install</span> <span class="n">frida-tools</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">unxz</span> <span class="n">frida-server</span><span class="p">.</span><span class="n">xz</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">adb</span> <span class="n">root</span> <span class="c"># might be required</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">adb</span> <span class="n">push</span> <span class="n">frida-server</span> <span class="p">/</span><span class="n">data</span><span class="p">/</span><span class="n">local</span><span class="p">/</span><span class="n">tmp</span><span class="p">/</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">adb</span> <span class="n">shell</span> <span class="s2">&quot;chmod 755 /data/local/tmp/frida-server&quot;</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">adb</span> <span class="n">shell</span> <span class="s2">&quot;/data/local/tmp/frida-server &amp;&quot;</span>
+</code></pre></div>
+<p>Interesting Frida scripts:</p>
+<ul>
+<li><a href="https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/">Universal Android SSL Pinning Bypass with Frida</a> -  <code>frida --codeshare pcipolloni/universal-android-ssl-pinning-bypass-with-frida -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@akabe1/frida-multiple-unpinning/">frida-multiple-unpinning</a> - <code>frida --codeshare akabe1/frida-multiple-unpinning -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@dzonerzy/aesinfo/">aesinfo</a> - <code>frida --codeshare dzonerzy/aesinfo -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@dzonerzy/fridantiroot/">fridantiroot</a> - <code>frida --codeshare dzonerzy/fridantiroot -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@enovella/anti-frida-bypass/">anti-frida-bypass</a> - <code>frida --codeshare enovella/anti-frida-bypass -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@Gand3lf/xamarin-antiroot/">xamarin-antiroot</a> - <code>frida --codeshare Gand3lf/xamarin-antiroot -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@fadeevab/intercept-android-apk-crypto-operations/">Intercept Android APK Crypto Operations</a> - <code>frida --codeshare fadeevab/intercept-android-apk-crypto-operations -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@dzervas/android-location-spoofing/">Android Location Spoofing</a> - <code>frida --codeshare dzervas/android-location-spoofing -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@Serhatcck/java-crypto-viewer/">java-crypto-viewer</a> - <code>frida --codeshare Serhatcck/java-crypto-viewer -f YOUR_BINARY</code></li>
+</ul>
+<h3 id="runtime-mobile-security">Runtime Mobile Security</h3>
+<blockquote>
+<p>Runtime Mobile Security (RMS) 📱🔥 - is a powerful web interface that helps you to manipulate Android and iOS Apps at Runtime</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security">RMS - Github</a></li>
+</ul>
+<p><strong>Requirements</strong>:
+* <code>adb</code>
+* <code>frida</code>: server up and running on the target device</p>
+<p>In case of issue with your favorite Browser, please use Google Chrome (fully supported).   </p>
+<ul>
+<li>Install RMS
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">npm</span> <span class="n">install</span> <span class="n">-g</span> <span class="n">rms-runtime-mobile-security</span>
+</code></pre></div></li>
+<li>Make sure <code>frida-server</code> is up and running on the target device.</li>
+<li>Launch RMS: <code>rms</code></li>
+<li>Open your browser at http://127.0.0.1:5491/</li>
+<li>Attach to the app, find name with <code>adb shell pm list package | grep NAME</code></li>
+</ul>
+<h3 id="genymotion">Genymotion</h3>
+<p>Genymotion is a robust Android emulator designed for developers, offering fast and reliable virtual devices for app testing. It features GPS, battery, and network simulation, enabling comprehensive testing and development</p>
+<ul>
+<li><a href="https://www.genymotion.com/">Genymotion</a></li>
+<li><a href="https://www.genymotion.com/product-desktop/">Genymotion Desktop</a></li>
+<li><a href="https://www.genymotion.com/product-device-image/">Genymotion Device Image</a></li>
+<li><a href="https://www.genymotion.com/product-cloud/">Genymotion SaaS</a></li>
+</ul>
+<h3 id="android-sdk-emulator">Android SDK emulator</h3>
+<p>Android Virtual Device (AVD) without Google Play Store.</p>
+<ul>
+<li>
+<p>Download the files for an API 25 build
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">sdkmanager</span> <span class="s2">&quot;system-images;android-25;google_apis;x86_64&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Create a device based on what we downloaded previously
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">avdmanager</span> <span class="n">create</span> <span class="n">avd</span> <span class="n">x86_64_api_25</span> <span class="n">-k</span> <span class="s2">&quot;system-images;android-25;google_apis;x86_64&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Run the emulator
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">emulator</span> <span class="nv">@x86_64_api_25</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">emulator</span> <span class="n">-list-avds</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">emulator</span> <span class="n">-avd</span> <span class="p">&lt;</span><span class="n">non_production_avd_name</span><span class="p">&gt;</span> <span class="n">-writable-system</span> <span class="n">-no-snapshot</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">emulator</span> <span class="n">-avd</span> <span class="n">Pixel_XL_API_31</span> <span class="n">-writable-system</span> <span class="n">-http-proxy</span> <span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">8080</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Install the APK
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">adb</span> <span class="n">install</span> <span class="p">./</span><span class="n">challenge</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Start the App
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">adb</span> <span class="n">shell</span> <span class="n">monkey</span> <span class="n">-p</span> <span class="n">com</span><span class="p">.</span><span class="n">scottyab</span><span class="p">.</span><span class="n">rootbeer</span><span class="p">.</span><span class="n">sample</span> <span class="n">1</span>
+</code></pre></div></p>
+</li>
+</ul>
+<h3 id="mobile-security-framework-dynamic">Mobile Security Framework Dynamic</h3>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> Dynamic Analysis will not work if you use MobSF docker container or setup MobSF inside a Virtual Machine.</p>
+<p><strong>Requirements</strong>:
+* Genymotion (Supports x86_64 architecture Android 4.1 - 11.0, upto API 30)
+    * Android 5.0 - 11.0 - uses Frida and works out of the box with zero configuration or setup.
+    * Android 4.1 - 4.4 - uses Xposed Framework and requires MobSFy
+* Genymotion Cloud
+    * <a href="https://aws.amazon.com/marketplace/seller-profile?id=933724b4-d35f-4266-905e-e52e4792bc45">Amazon Marketplace - TCP 5555</a>
+    * <a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/genymobile.genymotion-cloud">Azure Marketplace - TCP 5555</a>
+* Android Studio Emulator (only Android images upto API 28 are supported)
+    * AVD without Google Play Store</p>
+<p>Dynamic Analysis from MobSF grants you the following features:
+* Web API Viewer
+* Frida API Monitor</p>
+<h3 id="appium">Appium</h3>
+<p>Appium is an open-source project and ecosystem of related software, designed to facilitate UI automation of many app platforms, including mobile (iOS, Android, Tizen), browser (Chrome, Firefox, Safari), desktop (macOS, Windows), TV (Roku, tvOS, Android TV, Samsung), and more!</p>
+<ul>
+<li>Install appium: <code>npm install -g appium</code></li>
+<li>Install and validate the <code>uiautomator2</code> driver
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">export</span> <span class="n">JAVA_HOME</span><span class="p">=/</span><span class="n">usr</span><span class="p">/</span><span class="n">lib</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="k">default</span><span class="n">-java</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">export</span> <span class="n">ANDROID_HOME</span><span class="p">=/</span><span class="n">home</span><span class="p">/</span><span class="n">user</span><span class="p">/</span><span class="n">Android</span><span class="p">/</span><span class="n">Sdk</span><span class="p">/</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nb">wget </span><span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">google</span><span class="p">/</span><span class="n">bundletool</span><span class="p">/</span><span class="n">releases</span><span class="p">/</span><span class="n">download</span><span class="p">/</span><span class="n">1</span><span class="p">.</span><span class="n">17</span><span class="p">.</span><span class="n">1</span><span class="p">/</span><span class="n">bundletool-all</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">17</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">jar</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">sudo</span> <span class="nb">mv </span><span class="n">bundletool-all</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">17</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">jar</span> <span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">local</span><span class="p">/</span><span class="n">bin</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">appium</span> <span class="n">driver</span> <span class="n">install</span> <span class="n">uiautomator2</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">appium</span> <span class="n">driver</span> <span class="n">doctor</span> <span class="n">uiautomator2</span>
+</code></pre></div></li>
+<li>Start the server on the default host (0.0.0.0) and port (4723): <code>appium server</code></li>
+<li>Install the Appium Python client: <code>pip install Appium-Python-Client</code></li>
+<li>Use the <a href="https://github.com/appium/appium-inspector">appium/appium-inspector</a> with the following capability
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nt">&quot;platformName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Android&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nt">&quot;appium:automationName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UiAutomator2&quot;</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="p">}</span>
+</code></pre></div></li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><a href="https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/py/test.py">quickstarts/py/test.py</a></li>
+<li><a href="https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/js/test.js">quickstarts/js/test.js</a></li>
+<li><a href="https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/rb/test.rb">quickstarts/js/test.rb</a></li>
+</ul>
+<h3 id="flutter_1">Flutter</h3>
+<p>Repackage a Flutter Android application to allow Burp Suite proxy interception.</p>
+<ul>
+<li><a href="https://github.com/ptswarm/reFlutter">ptswarm/reFlutter</a> - Flutter Reverse Engineering Framework
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>pip3 install reflutter
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>reflutter application.apk
+</code></pre></div></li>
+<li>Sign the apk with <a href="https://github.com/patrickfav/uber-apk-signer/releases/tag/v1.2.1">patrickfav/uber-apk-signer</a> 
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">java</span> <span class="n">-jar</span> <span class="p">./</span><span class="n">uber-apk-signer</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">jar</span> <span class="p">-</span><span class="n">-apks</span> <span class="n">release</span><span class="p">.</span><span class="n">apk</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">java</span> <span class="n">-jar</span> <span class="p">./</span><span class="n">uber-apk-signer</span><span class="p">.</span><span class="n">jar</span> <span class="p">-</span><span class="n">-allowResign</span> <span class="n">-a</span> <span class="n">release</span><span class="p">.</span><span class="n">RE</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div></li>
+</ul>
+<p>An alternative way to do it is using a rooted Android device with <code>zygisk-reflutter</code>.</p>
+<ul>
+<li><a href="https://github.com/yohanes/zygisk-reflutter">yohanes/zygisk-reflutter</a> - Zygisk-based reFlutter (Rooted Android with Magisk installed and Zygisk Enabled)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">adb</span> <span class="n">push</span>  <span class="n">zygiskreflutter_1</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">zip</span> <span class="p">/</span><span class="n">sdcard</span><span class="p">/</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">adb</span> <span class="n">shell</span> <span class="n">su</span> <span class="n">-c</span> <span class="n">magisk</span> <span class="p">-</span><span class="n">-install-module</span> <span class="p">/</span><span class="n">sdcard</span><span class="p">/</span><span class="n">zygiskreflutter_1</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">zip</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">adb</span> <span class="n">reboot</span>
+</code></pre></div></li>
+</ul>
+<h2 id="ssl-pinning-bypass">SSL Pinning Bypass</h2>
+<p>SSL certificate pinning in an APK involves embedding a server's public key or certificate directly into the app. This ensures the app only trusts specific certificates, preventing man-in-the-middle attacks by rejecting any certificates not matching the pinned ones, even if they are otherwise valid.</p>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> Android 9.0 is changing the defaults for Network Security Configuration to block all cleartext traffic.</p>
+<ul>
+<li><a href="https://github.com/shroudedcode/apk-mitm">shroudedcode/apk-mitm</a> - A CLI application that automatically prepares Android APK files for HTTPS inspection
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">$</span> <span class="n">npx</span> <span class="n">apk-mitm</span> <span class="n">application</span><span class="p">.</span><span class="n">apk</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">npx</span><span class="p">:</span> <span class="n">139</span> <span class="n">installé</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">en</span> <span class="n">12</span><span class="p">.</span><span class="n">206s</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="err">╭</span> <span class="n">apk-mitm</span> <span class="n">v0</span><span class="p">.</span><span class="n">6</span><span class="p">.</span><span class="n">1</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="err">├</span> <span class="n">apktool</span> <span class="n">v2</span><span class="p">.</span><span class="n">4</span><span class="p">.</span><span class="n">1</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="err">╰</span> <span class="n">uber-apk-signer</span> <span class="n">v1</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">0</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="n">Using</span> <span class="n">temporary</span> <span class="n">directory</span><span class="p">:</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="p">/</span><span class="n">tmp</span><span class="p">/</span><span class="n">87d3a4921ddf86cde634205480f89e90</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="err">✔</span> <span class="n">Decoding</span> <span class="n">APK</span> <span class="n">file</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="err">✔</span> <span class="n">Modifying</span> <span class="n">app</span> <span class="n">manifest</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="err">✔</span> <span class="n">Modifying</span> <span class="n">network</span> <span class="n">security</span> <span class="n">config</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="err">✔</span> <span class="n">Disabling</span> <span class="n">certificate</span> <span class="n">pinning</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="err">✔</span> <span class="n">Encoding</span> <span class="n">patched</span> <span class="n">APK</span> <span class="n">file</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="err">✔</span> <span class="n">Signing</span> <span class="n">patched</span> <span class="n">APK</span> <span class="n">file</span>
+<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="n">Done</span><span class="p">!</span>  <span class="n">Patched</span> <span class="n">file</span><span class="p">:</span> <span class="p">./</span><span class="n">application</span><span class="p">.</span><span class="n">apk</span>
+</code></pre></div></li>
+<li><a href="https://github.com/51j0/Android-CertKiller">51j0/Android-CertKiller</a> - An automation script to bypass SSL/Certificate pinning in Android
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">$</span> <span class="n">python</span> <span class="n">main</span><span class="p">.</span><span class="n">py</span> <span class="n">-w</span> <span class="c">#(Wizard mode)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="p">$</span> <span class="n">python</span> <span class="n">main</span><span class="p">.</span><span class="n">py</span> <span class="n">-p</span> <span class="s1">&#39;root/Desktop/base.apk&#39;</span> <span class="c">#(Manual mode)</span>
+</code></pre></div></li>
+<li><a href="https://github.com/frida/frida">frida/frida</a> - Universal SSL Pinning Bypass
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nx">$</span><span class="w"> </span><span class="nx">adb</span><span class="w"> </span><span class="nx">devices</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="nx">$</span><span class="w"> </span><span class="nx">adb</span><span class="w"> </span><span class="nx">root</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="nx">$</span><span class="w"> </span><span class="nx">adb</span><span class="w"> </span><span class="nx">shell</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="nx">$</span><span class="w"> </span><span class="nx">phone</span><span class="o">:</span><span class="err">/# ./frida-server</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="c1">// https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="nx">$</span><span class="w"> </span><span class="nx">frida</span><span class="w"> </span><span class="o">-</span><span class="nx">U</span><span class="w"> </span><span class="o">--</span><span class="nx">codeshare</span><span class="w"> </span><span class="nx">pcipolloni</span><span class="o">/</span><span class="nx">universal</span><span class="o">-</span><span class="nx">android</span><span class="o">-</span><span class="nx">ssl</span><span class="o">-</span><span class="nx">pinning</span><span class="o">-</span><span class="nx">bypass</span><span class="o">-</span><span class="kd">with</span><span class="o">-</span><span class="nx">frida</span><span class="w"> </span><span class="o">-</span><span class="nx">f</span><span class="w"> </span><span class="nx">com</span><span class="p">.</span><span class="nx">example</span><span class="p">.</span><span class="nx">pinned</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="nx">$</span><span class="w"> </span><span class="nx">frida</span><span class="w"> </span><span class="o">-</span><span class="nx">U</span><span class="w"> </span><span class="o">-</span><span class="nx">f</span><span class="w"> </span><span class="nx">org</span><span class="p">.</span><span class="kr">package</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">-</span><span class="nx">l</span><span class="w"> </span><span class="nx">universal</span><span class="o">-</span><span class="nx">ssl</span><span class="o">-</span><span class="nx">check</span><span class="o">-</span><span class="nx">bypass</span><span class="p">.</span><span class="nx">js</span><span class="w"> </span><span class="o">--</span><span class="nx">no</span><span class="o">-</span><span class="nx">pause</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="nx">Java</span><span class="p">.</span><span class="nx">perform</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">                </span>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">array_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;java.util.ArrayList&quot;</span><span class="p">);</span>
+<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">ApiClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Java</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;com.android.org.conscrypt.TrustManagerImpl&#39;</span><span class="p">);</span>
+<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="w">    </span><span class="nx">ApiClient</span><span class="p">.</span><span class="nx">checkTrustedRecursive</span><span class="p">.</span><span class="nx">implementation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">a1</span><span class="p">,</span><span class="nx">a2</span><span class="p">,</span><span class="nx">a3</span><span class="p">,</span><span class="nx">a4</span><span class="p">,</span><span class="nx">a5</span><span class="p">,</span><span class="nx">a6</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a><span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">array_list</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span><span class="w"> </span>
+<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">k</span><span class="p">;</span>
+<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a><span class="p">},</span><span class="mf">0</span><span class="p">);</span>
+</code></pre></div></li>
+<li><a href="https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security">m0bilesecurity/RMS-Runtime-Mobile-Security</a> - Certificate Pinning bypass script (all + okhttpv3)</li>
+<li><a href="https://github.com/federicodotta/Brida">federicodotta/Brida</a> - The new bridge between Burp Suite and Frida</li>
+</ul>
+<h2 id="root-detection-bypass">Root Detection Bypass</h2>
+<p>Common root detection techniques:</p>
+<ul>
+<li>Su binaries: <code>su</code>/<code>busybox</code></li>
+<li>Known Root Files/Paths : <code>Superuser.apk</code></li>
+<li>Root Management Apps: <code>Magisk</code>, <code>SuperSU</code></li>
+<li>RW paths:  <code>/system</code>, <code>/data</code> directories</li>
+<li>System Properties</li>
+</ul>
+<p>Common bypass:</p>
+<ul>
+<li><a href="https://codeshare.frida.re/@dzonerzy/fridantiroot/">fridantiroot</a> - <code>frida --codeshare dzonerzy/fridantiroot -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@Gand3lf/xamarin-antiroot/">xamarin-antiroot</a> - <code>frida --codeshare Gand3lf/xamarin-antiroot -f YOUR_BINARY</code></li>
+<li><a href="https://codeshare.frida.re/@KishorBal/multiple-root-detection-bypass/">multiple-root-detection-bypass/</a> - <code>frida --codeshare KishorBal/multiple-root-detection-bypass -f YOUR_BINARY</code></li>
+</ul>
+<h2 id="android-debug-bridge">Android Debug Bridge</h2>
+<p>Android Debug Bridge (ADB) is a versatile command-line tool that enables communication between a computer and an Android device. It facilitates tasks like installing apps, debugging, accessing the device's shell, and transferring files, making it essential for developers and power users in Android development and troubleshooting.</p>
+<h3 id="usb-debugging">USB Debugging</h3>
+<ul>
+<li>Open the <strong>Settings</strong> app.</li>
+<li>Select <strong>System</strong>.</li>
+<li>Scroll to the bottom and select <strong>About phone</strong>.</li>
+<li>Scroll to the bottom and tap <strong>Build number</strong> 7 times.</li>
+<li>Return to the previous screen to find <strong>Developer options</strong> near the bottom.</li>
+<li>Scroll down and enable <strong>USB debugging</strong>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">./</span><span class="n">platform-tools</span><span class="p">/</span><span class="n">adb</span> <span class="n">connect</span> <span class="n">IP</span><span class="p">:</span><span class="n">PORT</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="p">./</span><span class="n">platform-tools</span><span class="p">/</span><span class="n">adb</span> <span class="n">shell</span>
+</code></pre></div>
+<h3 id="wireless-debugging">Wireless Debugging</h3>
+<ul>
+<li>Open the <strong>Settings</strong> app.</li>
+<li>Select <strong>System</strong>.</li>
+<li>Scroll to the bottom and select <strong>About phone</strong>.</li>
+<li>Scroll to the bottom and tap <strong>Build number</strong> 7 times.</li>
+<li>Return to the previous screen to find <strong>Developer options</strong> near the bottom.</li>
+<li>Scroll down and enable <strong>Wifi debugging</strong>.</li>
+<li>Click on <strong>Wifi debugging</strong> to access the settings</li>
+</ul>
+<p>One more step, you need to pair the devices using a code.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">./</span><span class="n">platform-tools</span><span class="p">/</span><span class="n">adb</span> <span class="n">pair</span> <span class="n">IP</span><span class="p">:</span><span class="n">PORT</span> <span class="n">CODE</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="p">./</span><span class="n">platform-tools</span><span class="p">/</span><span class="n">adb</span> <span class="n">connect</span> <span class="n">IP</span><span class="p">:</span><span class="n">PORT</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="p">./</span><span class="n">platform-tools</span><span class="p">/</span><span class="n">adb</span> <span class="n">shell</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>adb devices</code></td>
+<td>List devices</td>
+</tr>
+<tr>
+<td><code>adb connect &lt;IP&gt;:&lt;PORT&gt;</code></td>
+<td>Connect to a remote device</td>
+</tr>
+<tr>
+<td><code>adb install app.apk</code></td>
+<td>Install application</td>
+</tr>
+<tr>
+<td><code>adb uninstall app.apk</code></td>
+<td>Uninstall application</td>
+</tr>
+<tr>
+<td><code>adb root</code></td>
+<td>Restarting adbd as root</td>
+</tr>
+<tr>
+<td><code>adb shell pm list packages</code></td>
+<td>List packages</td>
+</tr>
+<tr>
+<td><code>adb shell pm list packages -3</code></td>
+<td>Show third party packages</td>
+</tr>
+<tr>
+<td><code>adb shell pm list packages -f</code></td>
+<td>Show packages and associated files</td>
+</tr>
+<tr>
+<td><code>adb shell pm clear com.test.abc</code></td>
+<td>Delete all data associated with a package</td>
+</tr>
+<tr>
+<td><code>adb pull &lt;remote&gt; &lt;local&gt;</code></td>
+<td>Download file</td>
+</tr>
+<tr>
+<td><code>adb push &lt;local&gt; &lt;remote&gt;</code></td>
+<td>Upload file</td>
+</tr>
+<tr>
+<td><code>adb shell screenrecord /sdcard/demo.mp4</code></td>
+<td>Record video of the screen</td>
+</tr>
+<tr>
+<td><code>adb shell am start -n com.test.abc</code></td>
+<td>Start an activity</td>
+</tr>
+<tr>
+<td><code>adb shell am startservice</code></td>
+<td>Start a service</td>
+</tr>
+<tr>
+<td><code>adb shell am broadcast</code></td>
+<td>Send a broadcast</td>
+</tr>
+<tr>
+<td><code>adb logcat *:D</code></td>
+<td>Show log with Debug level</td>
+</tr>
+<tr>
+<td><code>adb logcat -c</code></td>
+<td>Clears the entire log</td>
+</tr>
+</tbody>
+</table>
+<h2 id="android-virtual-device">Android Virtual Device</h2>
+<p>An Android Virtual Device (AVD) is an emulator configuration that mimics a physical Android device. It allows developers to test and run Android apps in a simulated environment with specific hardware profiles, screen sizes, and Android versions, facilitating app testing without needing actual devices.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">emulator</span> <span class="n">-avd</span> <span class="n">Pixel_8_API_34</span> <span class="n">-writable-system</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-tcpdump /path/dumpfile.cap</code></td>
+<td>Capture all the traffic in a file</td>
+</tr>
+<tr>
+<td><code>-dns-server X.X.X.X</code></td>
+<td>Set DNS servers</td>
+</tr>
+<tr>
+<td><code>-http-proxy X.X.X.X:8080</code></td>
+<td>Set HTTP proxy</td>
+</tr>
+<tr>
+<td><code>-port 5556</code></td>
+<td>Set the ADB TCP port number</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unlock-bootloader">Unlock Bootloader</h2>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li>Enable <code>Settings</code> &gt; <code>Developer Options</code> &gt; <code>OEM unlocking</code></li>
+<li>Enable <code>Settings</code> &gt; <code>Developer Options</code> &gt; <code>USB Debugging</code></li>
+</ul>
+<p>Unlock the bootloader will wipe the userdata partition. On some device these methods will require a key to successfully unlock the bootloader.</p>
+<ul>
+<li>Method 1
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">adb</span> <span class="n">reboot</span> <span class="n">bootloader</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="n">fastboot</span> <span class="n">oem</span> <span class="n">unlock</span>
+</code></pre></div></li>
+<li>Method 2
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">adb</span> <span class="n">reboot</span> <span class="n">bootloader</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="n">fastboot</span> <span class="n">flashing</span> <span class="n">unlock</span>
+</code></pre></div></li>
+<li>Methods based on the chip<ul>
+<li>For Qualcomm devices, you can use EDL (Emergency Download Mode)</li>
+<li>For MediaTek devices, BROM (Boot ROM) mode</li>
+<li>For Unisoc devices, Research Download Mode.</li>
+</ul>
+</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.ragingrock.com/AndroidAppRE/">Android App Reverse Engineering 101 - @maddiestone</a></li>
+<li><a href="https://static.googleusercontent.com/media/www.google.com/fr//about/appsecurity/play-rewards/Android_app_vulnerability_classes.pdf">Android app vulnerability classes - Google Play Protect</a></li>
+<li><a href="https://mobisec.reyammer.io">Mobile Systems and Smartphone Security - @reyammer</a></li>
+<li><a href="https://spenkk.github.io/bugbounty/Configuring-Frida-with-Burp-and-GenyMotion-to-bypass-SSL-Pinning/">Configuring Frida with BurpSuite and Genymotion to bypass Android SSL Pinning - arben</a></li>
+<li><a href="https://blog.ropnop.com/configuring-burp-suite-with-android-nougat">Configuring Burp Suite With Android Nougat - ropnop - January 18, 2018</a></li>
+<li><a href="https://blog.yarsalabs.com/setting-up-burp-for-android-application-testing/">Configuring Burp Suite with Android Emulators - Aashish Tamang - Jun 6, 2022</a></li>
+<li><a href="https://owlhacku.com/introduction-to-android-pentesting/">Introduction to Android Pentesting - Jarrod - July 8, 2024</a></li>
+<li><a href="https://medium.com/@dianaopanga/a-beginners-guide-to-using-frida-to-bypass-root-detection-16af76b989ac">A beginners guide to using Frida to bypass root detection. - DianaOpanga - Nov 27, 2023</a></li>
+<li><a href="https://appium.io/docs/en/latest/">Appium documentation</a></li>
+<li><a href="https://www.pentestpartners.com/security-blog/how-to-root-an-android-device-for-analysis-and-vulnerability-assessment/">How to root an Android device for analysis and vulnerability assessment - Joe Lovett - Aug 23, 2024</a></li>
+<li><a href="https://owlhacku.com/configuring-android-emulator-with-burp-suite/">Configuring Android Emulator with Burp Suite - Jarrod @Jrod_R87 - Jan 8, 2025</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 14, 2025 14:33:05">March 14, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+  <div class="social-container">
+    <b>Share this content</b>
+    <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+      <a class="a2a_button_x"></a>
+      <a class="a2a_button_telegram"></a>
+      <a class="a2a_button_linkedin"></a>
+      <a class="a2a_button_email"></a>
+      <a class="a2a_button_microsoft_teams"></a>
+    </div>
+    <br>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+  </div>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="49aad71c-7d98-4635-8bd5-b6799c8874f8"></script>
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.action.edit", "content.action.view", "content.tooltips", "navigation.tracking", "navigation.top", "search.share", "search.suggest"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

