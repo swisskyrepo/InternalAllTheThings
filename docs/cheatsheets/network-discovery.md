@@ -1,5 +1,22 @@
 # Network Discovery
 
+## MAC Address
+
+* [mac2vendor.com](https://mac2vendor.com/) - OUI Database Lookup
+* [oui.is](https://oui.is/) - MAC Address Vendor Lookup
+
+| MAC Prefix | Description           |
+| ---------- | --------------------- |
+| FC:D4:F2   | Coca Cola Company     |
+| 00:9E:C8   | Xiaomi Communications |
+| 08:9E:08   | Google                |
+
+```ps1
+sudo ifconfig <interface-name> down
+sudo ifconfig <interface-name> hw ether <new-mac-address> 
+sudo ifconfig <interface-name> up
+```
+
 ## DHCP
 
 DHCP (Dynamic Host Configuration Protocol) is a networking protocol used to automatically assign IP addresses and other network configuration parameters to devices on a network. DHCP allows devices to obtain necessary network configuration information from a DHCP server, rather than having to be manually configured.
@@ -25,7 +42,6 @@ Pre-scan script results:
 |_    Subnet Mask: 255.255.255.0
 ```
 
-
 ## DNS
 
 * AD DNS
@@ -33,16 +49,14 @@ Pre-scan script results:
     * KDC: `nslookup -type=srv _kerberos._tcp.<domain name>`
     * Global catalog: `nslookup -type=srv _ldap._tcp.<domain name>`
 
-
 ## NBT-NS
 
-NS (Name Service) is a component of NBT that provides name resolution services for NETBIOS names. In the context of NBT, NS is responsible for mapping NETBIOS names to IP addresses. 
+NS (Name Service) is a component of NBT that provides name resolution services for NETBIOS names. In the context of NBT, NS is responsible for mapping NETBIOS names to IP addresses.
 
 NBT NS uses a distributed database to store NETBIOS name-to-IP address mappings. Each computer on the network is responsible for registering its own name and IP address in the database, and for resolving names to IP addresses when necessary. When a computer needs to resolve a NETBIOS name to an IP address, it sends a query to the NBT NS service on another computer on the network. The NBT NS service responds with the IP address associated with the requested name, if it is known. It works on `UDP, Port 137`.
 
 * Get names:  `nbtscan -r 192.168.1.0/24`
 * Get the name for a single IP: `nmblookup -A <IP>`
-
 
 ## MDNS
 
@@ -50,15 +64,16 @@ MDNS (Multicast Domain Name System) is a protocol used for zero-configuration ne
 
 MDNS works by using multicast addresses to send DNS queries and responses. When a device wants to resolve a hostname to an IP address, it sends a multicast DNS query to a special multicast address (224.0.0.251 for IPv4 and ff02::fb for IPv6). Any device on the network that is listening for multicast DNS queries and has a matching hostname will respond with its IP address.
 
-```
+```ps1
 mdns-scan
 ```
 
 ## ARP
 
-ARP (Address Resolution Protocol) is a networking protocol used to map IP addresses to MAC (Media Access Control) addresses on a local area network (LAN). 
+ARP (Address Resolution Protocol) is a networking protocol used to map IP addresses to MAC (Media Access Control) addresses on a local area network (LAN).
 
 * ARP neighbors
+
     ```ps1
     :~$ ip neigh
     192.168.122.1 dev enp1s0 lladdr 52:54:00:ff:0a:2c STALE
@@ -66,6 +81,7 @@ ARP (Address Resolution Protocol) is a networking protocol used to map IP addres
     ```
 
 * ARP scan with `nmap` - note, needs root privileges. Check what packets nmap is sending with `--packet-trace`
+
     ```ps1
     :~# nmap -sn -n 192.168.122.0/24 
     Starting Nmap 7.93 ( https://nmap.org )
@@ -73,8 +89,9 @@ ARP (Address Resolution Protocol) is a networking protocol used to map IP addres
     Host is up (0.00032s latency).
     MAC Address: 52:54:00:FF:0A:2C (QEMU virtual NIC)
     ```
-    
+
 * ARP scan with `arp-scan`
+
     ```ps1
     root@kali:~# arp-scan -l
     Interface: eth0, datalink type: EN10MB (Ethernet)
@@ -85,12 +102,14 @@ ARP (Address Resolution Protocol) is a networking protocol used to map IP addres
     ```
 
 * ARP spoof with `arpspoof`
+
     ```ps1
     arpspoof [-i interface] [-c own|host|both] [-t target] [-r] host
     arpspoof -i wlan0 -t 10.0.0.X 10.0.0.Y
     ```
 
 * ARP spoof with `Bettercap`
+
     ```ps1
     sudo bettercap -iface wlan0
     net.probe on
@@ -98,7 +117,6 @@ ARP (Address Resolution Protocol) is a networking protocol used to map IP addres
     arp.spoof on
     net.sniff on
     ```
-
 
 ## Ping
 
@@ -110,11 +128,9 @@ ARP (Address Resolution Protocol) is a networking protocol used to map IP addres
     -n : Never do DNS resolution
     ```
 
-
 ## LDAP
 
 * Null bind connection: `ldapsearch -x -h <ip> -s base`
-
 
 ## Port Scans and Enumeration
 
@@ -240,6 +256,15 @@ do
 done
 ```
 
+### Network Scan with PowerShell
+
+```powershell
+# ping scan
+tnc 8.8.8.8
+
+# port scan
+tnc 8.8.8.8 -port 443
+```
 
 ### Masscan
 
@@ -309,7 +334,6 @@ Alternatively you can use the [Windows version](https://github.com/lgandx/Respon
 * ARP poisoning
 * DHCP poisoning: `responder --interface "eth0" --DHCP --wpad`
 
-
 ### Bettercap
 
 ```powershell
@@ -318,7 +342,6 @@ bettercap -X --proxy --proxy-https -T <target IP>
 # intercepting http and https requests,
 # targetting specific IP only
 ```
-
 
 ### SSL MITM with OpenSSL
 
@@ -344,7 +367,6 @@ sudo openssl s_server -cert server.pem -accept [INTERFACE TO LISTEN TO]:[PORT] -
 
 In this example, traffic is only displayed with `tee` but we could modify it using `sed` for example.
 
-
 ## References
 
-* [Pwning the Domain: Credentialess/Username - hadess - February 7, 2024 ](https://hadess.io/pwning-the-domain-credentialess-username/)
+* [Pwning the Domain: Credentialess/Username - hadess - February 7, 2024](https://hadess.io/pwning-the-domain-credentialess-username/)

