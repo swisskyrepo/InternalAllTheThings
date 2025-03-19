@@ -32,7 +32,7 @@ select version from openquery("linkedserver", 'select @@version as version');
 -- chain multiple openquery
 select version from openquery("link1",'select version from openquery("link2","select @@version as version")')
 
--- enable rpc out for xp_cmdhshell
+-- enable rpc out for xp_cmdshell
 EXEC sp_serveroption 'sqllinked-hostname', 'rpc', 'true';
 EXEC sp_serveroption 'sqllinked-hostname', 'rpc out', 'true';
 select * from openquery("SQL03", 'EXEC sp_serveroption ''SQL03'',''rpc'',''true'';');
