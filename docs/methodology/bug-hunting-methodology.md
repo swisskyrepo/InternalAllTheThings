@@ -17,6 +17,14 @@
   python3 favUp.py --web domain.behind.cloudflare -s
   ```
 
+* Search inside Shortener URLs: [shorteners.grayhatwarfare.com](https://shorteners.grayhatwarfare.com/), [utkusen/urlhunter](https://github.com/utkusen/urlhunter)
+
+  ```ps1
+  urlhunter --keywords keywords.txt --date 2020-11-20
+  ```
+
+* Search inside Buckets: [buckets.grayhatwarfare.com](https://buckets.grayhatwarfare.com/)
+
 * Using [The Wayback Machine](https://archive.org/web/) to detect forgotten endpoints
 
   ```bash
@@ -40,6 +48,8 @@
 
   ```ps1
   site: *.example.com -www
+  intext:"dhcpd.conf" "index of"
+  intitle:"SSL Network Extender Login" -checkpoint.com
   ```
 
 ## Active Recon
@@ -49,10 +59,10 @@
 * Subdomains enumeration
     * Enumerate already found subdomains: [projectdiscovery/subfinder](https://github.com/projectdiscovery/subfinder), [OWASP/Amass](https://github.com/OWASP/Amass)
 
-  ```ps1
-  subfinder -d hackerone.com
-  amass enum -passive -dir /tmp/amass_output/ -d example.com -o dir/example.com
-  ```
+    ```ps1
+    subfinder -d hackerone.com
+    amass enum -passive -dir /tmp/amass_output/ -d example.com -o dir/example.com
+    ```
 
     * Permutate subdomains: [infosec-au/altdns](https://github.com/infosec-au/altdns)
     * Bruteforce subdomains: [Josue87/gotator](https://github.com/Josue87/gotator)
