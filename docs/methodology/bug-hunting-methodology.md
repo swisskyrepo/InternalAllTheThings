@@ -44,7 +44,7 @@
   gitrob analyze johndoe --site=https://github.acme.com --endpoint=https://github.acme.com/api/v3 --access-tokens=token1,token2
   ```
 
-* Perform Google Dorks search
+* Perform Google Dorks search: [ikuamike/GoogleDorking.md](https://gist.github.com/ikuamike/c2611b171d64b823c1c1956129cbc055)
 
   ```ps1
   site: *.example.com -www

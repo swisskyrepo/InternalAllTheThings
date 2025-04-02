@@ -39,7 +39,7 @@
     * [api0cradle/UltimateAppLockerByPassList/Generic-AppLockerbypasses.md](https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/Generic-AppLockerbypasses.md)
     * [api0cradle/UltimateAppLockerByPassList/VerifiedAppLockerBypasses.md](https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/VerifiedAppLockerBypasses.md)
     * [api0cradle/UltimateAppLockerByPassList/DLL-Execution.md](https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/DLL-Execution.md)
-
+    * [api0cradle/AccessChk.bat](https://gist.github.com/api0cradle/95cd51fa1aa735d9331186f934df4df9)
 
 ## User Account Control
 
@@ -66,7 +66,10 @@ UAC stands for User Account Control. It is a security feature introduced by Micr
 * UAC Bypass
     * [AutoElevated binary signed by Microsoft](https://www.elastic.co/guide/en/security/current/bypass-uac-via-sdclt.html) - `msconfig`, `sdclt.exe`, `eventvwr.exe`, etc
     * [hfiref0x/UACME](https://github.com/hfiref0x/UACME) - Defeating Windows User Account Control
-
+    * Find process that auto elevate: 
+        ```ps1
+        strings.exe -s *.exe | findstr /I "<autoElevate>true</autoElevate>"
+        ```
 
 ## DPAPI
 

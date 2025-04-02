@@ -7,7 +7,7 @@
 * [User Enumeration](#user-enumeration)
 * [Network Enumeration](#network-enumeration)
 * [Antivirus Enumeration](#antivirus-enumeration)
-* [Default Writeable Folders](#default-writeable-folders)
+* [Default Writable Folders](#default-writable-folders)
 * [EoP - Looting for passwords](#eop---looting-for-passwords)
     * [SAM and SYSTEM files](#sam-and-system-files)
     * [HiveNightmare](#hivenightmare)
@@ -260,7 +260,7 @@ Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
 Enumerate antivirus on a box with `WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName`
 
 
-## Default Writeable Folders
+## Default Writable Folders
 
 ```powershell
 C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
@@ -609,7 +609,7 @@ PS > Get-Content -path flag.txt -Stream Flag
 
 > A service running as Administrator/SYSTEM with incorrect file permissions might allow EoP. You can replace the binary, restart the service and get system.
 
-Often, services are pointing to writeable locations:
+Often, services are pointing to writable locations:
 - Orphaned installs, not installed anymore but still exist in startup
 - DLL Hijacking
     ```powershell
@@ -751,10 +751,10 @@ Alternatively you can explore the `WSL` filesystem in the folder `C:\Users\%USER
 The Microsoft Windows Unquoted Service Path Enumeration Vulnerability. All Windows services have a Path to its executable. If that path is unquoted and contains whitespace or other separators, then the service will attempt to access a resource in the parent path first.
 
 ```powershell
-wmic service get name,displayname,pathname,startmode |findstr /i "Auto" |findstr /i /v "C:\Windows\\" |findstr /i /v """
-
+# in CMD
+wmic service get name,displayname,pathname,startmode |findstr /i "Auto" |findstr /i /v "C:\Windows\" |findstr /i /v """
 wmic service get name,displayname,startmode,pathname | findstr /i /v "C:\Windows\\" |findstr /i /v """
-
+# in PowerShell
 gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Where {$_.StartMode -eq "Auto" -and $_.PathName -notlike "C:\Windows*" -and $_.PathName -notlike '"*'} | select PathName,DisplayName,Name
 ```
 
@@ -786,8 +786,8 @@ For `C:\Program Files\something\legit.exe`, Windows will try the following paths
 ## EoP - $PATH Interception
 
 Requirements:
-- PATH contains a writeable folder with low privileges.
-- The writeable folder is _before_ the folder that contains the legitimate binary.
+- PATH contains a writable folder with low privileges.
+- The writable folder is _before_ the folder that contains the legitimate binary.
 
 EXAMPLE:
 ```powershell
@@ -886,7 +886,8 @@ Technique also available in :
 Enumerate products on the machine
 
 ```ps1
-wmic product get identifyingnumber,name,vendor,version
+Get-WmiObject Win32_Product | Select Name, LocalPackage
+wmic product get identifyingnumber,name,vendor,version,localpackage
 ```
 
 Execute the repair process with the `/fa` parameter to trigger the CustomActions. 
@@ -1496,17 +1497,25 @@ Detailed information about the vulnerability : https://www.zerodayinitiative.com
 
 ## References
 
+* [ABUSING ARBITRARY FILE DELETES TO ESCALATE PRIVILEGE AND OTHER GREAT TRICKS - Simon Zuckerbraun - March 17, 2022](https://www.zerodayinitiative.com/blog/2022/3/16/abusing-arbitrary-file-deletes-to-escalate-privilege-and-other-great-tricks)
+* [Abusing Diaghub - xct - March 7, 2019](https://vulndev.io/2019/03/06/abusing-diaghub/)
+* [Abusing SeLoadDriverPrivilege for privilege escalation - June 14, 2018 - OSCAR MALLO](https://www.tarlogic.com/en/blog/abusing-seloaddriverprivilege-for-privilege-escalation/)
+* [Abusing the SeRelabelPrivilege - @decoder_it - May 30, 2024](https://decoder.cloud/2024/05/30/abusing-the-serelabelprivilege/)
+* [Alternative methods of becoming SYSTEM - Adam Chester @_xpn_ - November 20, 2017](https://blog.xpnsec.com/becoming-system/)
+* [Basic Linux Privilege Escalation - g0tmi1k - August 2, 2011](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+* [Bypassing AppLocker by abusing HashInfo - Ian - August 19, 2022](https://shells.systems/post-bypassing-applocker-by-abusing-hashinfo/)
+* [Chapter 4 - Windows Post-Exploitation - dostoevskylabs - November 2, 2017](https://github.com/dostoevskylabs/dostoevsky-pentest-notes/blob/master/chapter-4.md)
+* [Common Windows Misconfiguration: Services - 2018-09-23 - @am0nsec](https://web.archive.org/web/20191105182846/https://amonsec.net/2018/09/23/Common-Windows-Misconfiguration-Services.html)
+* [Deleting Your Way Into SYSTEM: Why Arbitrary File Deletion Vulnerabilities Matter - ANDREW OLIVEAU - SEP 11, 2023](https://www.mandiant.com/resources/blog/arbitrary-file-deletion-vulnerabilities)
+* [Escalating Privileges via Third-Party Windows Installers - ANDREW OLIVEAU - JUL 19, 2023](https://www.mandiant.com/resources/blog/privileges-third-party-windows-installers)
+* [Giving JuicyPotato a second chance: JuicyPotatoNG - @decoder_it, @splinter_code](https://decoder.cloud/2022/09/21/giving-juicypotato-a-second-chance-juicypotatong/)
+* [Hacking Trick: Environment Variable $Path Interception y Escaladas de Privilegios para Windows](https://www.elladodelmal.com/2020/03/hacking-trick-environment-variable-path.html?m=1)
 * [icacls - Docs Microsoft](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls)
-* [Privilege Escalation Windows - Philip Linghammar](https://web.archive.org/web/20191231011305/https://xapax.gitbooks.io/security/content/privilege_escalation_windows.html)
-* [Windows elevation of privileges - Guifre Ruiz](https://guif.re/windowseop)
-* [The Open Source Windows Privilege Escalation Cheat Sheet by amAK.xyz and @xxByte](https://addaxsoft.com/wpecs/)
-* [Basic Linux Privilege Escalation](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
-* [Windows Privilege Escalation Fundamentals](http://www.fuzzysecurity.com/tutorials/16.html)
-* [TOP–10 ways to boost your privileges in Windows systems - hackmag](https://hackmag.com/security/elevating-privileges-to-administrative-and-further/)
-* [The SYSTEM Challenge](https://decoder.cloud/2017/02/21/the-system-challenge/)
-* [Windows Privilege Escalation Guide - absolomb's security blog](https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/)
-* [Chapter 4 - Windows Post-Exploitation - 2 Nov 2017 - dostoevskylabs](https://github.com/dostoevskylabs/dostoevsky-pentest-notes/blob/master/chapter-4.md)
-* [Remediation for Microsoft Windows Unquoted Service Path Enumeration Vulnerability - September 18th, 2016 - Robert Russell](https://www.tecklyfe.com/remediation-microsoft-windows-unquoted-service-path-enumeration-vulnerability/)
+* [IN THE POTATO FAMILY, I WANT THEM ALL - @BlWasp_ ](https://hideandsec.sh/books/windows-sNL/page/in-the-potato-family-i-want-them-all)
+* [Living Off The Land Binaries and Scripts (and now also Libraries)](https://github.com/LOLBAS-Project/LOLBAS)
+* [Local Privilege Escalation Workshop - Slides.pdf - @sagishahar](https://github.com/sagishahar/lpeworkshop/blob/master/Local%20Privilege%20Escalation%20Workshop%20-%20Slides.pdf)
+* [MSI Shenanigans. Part 1 – Offensive Capabilities Overview - DECEMBER 8, 2022 - Mariusz Banach](https://mgeeky.tech/msi-shenanigans-part-1/)
+* [MSIFortune - LPE with MSI Installers - Oct 3, 2023 - PfiatDe](https://badoption.eu/blog/2023/10/03/MSIFortune.html)
 * [Pentestlab.blog - WPE-01 - Stored Credentials](https://pentestlab.blog/2017/04/19/stored-credentials/)
 * [Pentestlab.blog - WPE-02 - Windows Kernel](https://pentestlab.blog/2017/04/24/windows-kernel-exploits/)
 * [Pentestlab.blog - WPE-03 - DLL Injection](https://pentestlab.blog/2017/04/04/dll-injection/)
@@ -1520,24 +1529,17 @@ Detailed information about the vulnerability : https://www.zerodayinitiative.com
 * [Pentestlab.blog - WPE-11 - Secondary Logon Handle](https://pentestlab.blog/2017/04/07/secondary-logon-handle/)
 * [Pentestlab.blog - WPE-12 - Insecure Registry Permissions](https://pentestlab.blog/2017/03/31/insecure-registry-permissions/)
 * [Pentestlab.blog - WPE-13 - Intel SYSRET](https://pentestlab.blog/2017/06/14/intel-sysret/)
-* [Alternative methods of becoming SYSTEM - 20th November 2017 - Adam Chester @_xpn_](https://blog.xpnsec.com/becoming-system/)
-* [Living Off The Land Binaries and Scripts (and now also Libraries)](https://github.com/LOLBAS-Project/LOLBAS)
-* [Common Windows Misconfiguration: Services - 2018-09-23 - @am0nsec](https://web.archive.org/web/20191105182846/https://amonsec.net/2018/09/23/Common-Windows-Misconfiguration-Services.html)
-* [Local Privilege Escalation Workshop - Slides.pdf - @sagishahar](https://github.com/sagishahar/lpeworkshop/blob/master/Local%20Privilege%20Escalation%20Workshop%20-%20Slides.pdf)
-* [Abusing Diaghub - xct - March 07, 2019](https://vulndev.io/2019/03/06/abusing-diaghub/)
-* [Windows Exploitation Tricks: Exploiting Arbitrary File Writes for Local Elevation of Privilege - James Forshaw, Project Zero - Wednesday, April 18, 2018](https://googleprojectzero.blogspot.com/2018/04/windows-exploitation-tricks-exploiting.html)
-* [Weaponizing Privileged File Writes with the USO Service - Part 2/2 - itm4n - August 19, 2019](https://itm4n.github.io/usodllloader-part2/)
-* [Hacking Trick: Environment Variable $Path Interception y Escaladas de Privilegios para Windows](https://www.elladodelmal.com/2020/03/hacking-trick-environment-variable-path.html?m=1)
-* [Abusing SeLoadDriverPrivilege for privilege escalation - 14 JUN 2018 - OSCAR MALLO](https://www.tarlogic.com/en/blog/abusing-seloaddriverprivilege-for-privilege-escalation/)
-* [Universal Privilege Escalation and Persistence – Printer - AUGUST 2, 2021)](https://pentestlab.blog/2021/08/02/universal-privilege-escalation-and-persistence-printer/)
-* [ABUSING ARBITRARY FILE DELETES TO ESCALATE PRIVILEGE AND OTHER GREAT TRICKS - March 17, 2022 | Simon Zuckerbraun](https://www.zerodayinitiative.com/blog/2022/3/16/abusing-arbitrary-file-deletes-to-escalate-privilege-and-other-great-tricks)
-* [Bypassing AppLocker by abusing HashInfo - 2022-08-19 - Ian](https://shells.systems/post-bypassing-applocker-by-abusing-hashinfo/)
-* [Giving JuicyPotato a second chance: JuicyPotatoNG - @decoder_it, @splinter_code](https://decoder.cloud/2022/09/21/giving-juicypotato-a-second-chance-juicypotatong/)
-* [IN THE POTATO FAMILY, I WANT THEM ALL - @BlWasp_ ](https://hideandsec.sh/books/windows-sNL/page/in-the-potato-family-i-want-them-all)
 * [Potatoes - Windows Privilege Escalation - Jorge Lajara - November 22, 2020](https://jlajara.gitlab.io/Potatoes_Windows_Privesc)
-* [MSIFortune - LPE with MSI Installers - Oct 3, 2023 - PfiatDe](https://badoption.eu/blog/2023/10/03/MSIFortune.html)
-* [MSI Shenanigans. Part 1 – Offensive Capabilities Overview - DECEMBER 8, 2022 - Mariusz Banach](https://mgeeky.tech/msi-shenanigans-part-1/)
-* [Escalating Privileges via Third-Party Windows Installers - ANDREW OLIVEAU - JUL 19, 2023](https://www.mandiant.com/resources/blog/privileges-third-party-windows-installers)
-* [Deleting Your Way Into SYSTEM: Why Arbitrary File Deletion Vulnerabilities Matter - ANDREW OLIVEAU - SEP 11, 2023](https://www.mandiant.com/resources/blog/arbitrary-file-deletion-vulnerabilities)
-* [ABUSING ARBITRARY FILE DELETES TO ESCALATE PRIVILEGE AND OTHER GREAT TRICKS - Simon Zuckerbraun - March 17, 2022 ](https://www.zerodayinitiative.com/blog/2022/3/16/abusing-arbitrary-file-deletes-to-escalate-privilege-and-other-great-tricks)
-* [Abusing the SeRelabelPrivilege - @decoder_it - May 30, 2024](https://decoder.cloud/2024/05/30/abusing-the-serelabelprivilege/)
+* [Privilege Escalation Windows - Philip Linghammar](https://web.archive.org/web/20191231011305/https://xapax.gitbooks.io/security/content/privilege_escalation_windows.html)
+* [Remediation for Microsoft Windows Unquoted Service Path Enumeration Vulnerability - September 18th, 2016 - Robert Russell](https://www.tecklyfe.com/remediation-microsoft-windows-unquoted-service-path-enumeration-vulnerability/)
+* [The Open Source Windows Privilege Escalation Cheat Sheet by amAK.xyz and @xxByte](https://addaxsoft.com/wpecs/)
+* [The SYSTEM Challenge](https://decoder.cloud/2017/02/21/the-system-challenge/)
+* [TOP–10 ways to boost your privileges in Windows systems - hackmag](https://hackmag.com/security/elevating-privileges-to-administrative-and-further/)
+* [Universal Privilege Escalation and Persistence – Printer - AUGUST 2, 2021)](https://pentestlab.blog/2021/08/02/universal-privilege-escalation-and-persistence-printer/)
+* [Weaponizing Privileged File Writes with the USO Service - Part 2/2 - itm4n - August 19, 2019](https://itm4n.github.io/usodllloader-part2/)
+* [Webinar - Windows Client Privilege Escalation - Oddvar Moe - March 26, 2025](https://www.youtube.com/watch?v=EG2Mbw2DVnU)
+* [Windows Client Privilege Escalation-Shared.pptx - Oddvar Moe - March 27, 2025](https://fr.slideshare.net/slideshow/windows-client-privilege-escalation-shared-pptx/277239036)
+* [Windows elevation of privileges - Guifre Ruiz](https://guif.re/windowseop)
+* [Windows Exploitation Tricks: Exploiting Arbitrary File Writes for Local Elevation of Privilege - James Forshaw, Project Zero - Wednesday, April 18, 2018](https://googleprojectzero.blogspot.com/2018/04/windows-exploitation-tricks-exploiting.html)
+* [Windows Privilege Escalation Fundamentals](http://www.fuzzysecurity.com/tutorials/16.html)
+* [Windows Privilege Escalation Guide - absolomb's security blog](https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/)
