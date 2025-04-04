@@ -1,7 +1,11 @@
 {
-    "MD013": false,
-    "MD036": false,
-    "ul-indent": {
-      "indent": 4
-    }
+  "default": true,
+  "MD013": false,
+  "MD036": false,
+  "no-duplicate-heading": {
+    "siblings_only": true
+  },
+  "ul-indent": {
+    "indent": 4
+  }
 }

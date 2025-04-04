@@ -3,17 +3,16 @@
 ## Summary
 
 * [Hashcat](https://hashcat.net/hashcat/)
-   * [Hashcat Example Hashes](https://hashcat.net/wiki/doku.php?id=example_hashes)
-   * [Hashcat Install](#hashcat-install)
-   * [Mask attack](#mask-attack)
-   * [Dictionary](#dictionary)
+    * [Hashcat Example Hashes](https://hashcat.net/wiki/doku.php?id=example_hashes)
+    * [Hashcat Install](#hashcat-install)
+    * [Mask attack](#mask-attack)
+    * [Dictionary](#dictionary)
 * [John](https://github.com/openwall/john)
-   * [Usage](#john-usage)
+    * [Usage](#john-usage)
 * [Rainbow tables](#rainbow-tables)
 * [Tips and Tricks](#tips-and-tricks)
 * [Online Cracking Resources](#online-cracking-resources)
 * [References](#references)
-
 
 ## Hashcat
 
@@ -26,7 +25,7 @@ git clone https://github.com/hashcat/hashcat.git && cd hashcat && make -j 8 && m
 ```
 
 1. Extract the hash
-2. Get the hash format: https://hashcat.net/wiki/doku.php?id=example_hashes
+2. Get the hash format: [hashcat.net/example_hashes](https://hashcat.net/wiki/doku.php?id=example_hashes)
 3. Establish a cracking stratgy based on hash format (ex: wordlist -> wordlist + rules -> mask -> combinator mode -> prince attack -> ...)
 4. Enjoy plains
 5. Review strategy
@@ -103,10 +102,7 @@ hashcat --attack-mode 3 --custom-charset1 "?u" --custom-charset2 "?l?u?d" --cust
 | ?a | ?l?u?d?s |
 | ?b | 0x00 - 0xff |
 
-
-
 ## John
-
 
 ### John Usage
 
@@ -127,7 +123,6 @@ john --show passwd
 john --restore
 ```
 
-
 ## Rainbow tables
 
 > The hash is looked for in a pre-computed table. It is a time-memory trade-off that allows cracking hashes faster, but costing a greater amount of memory than traditional brute-force of dictionary attacks. This attack cannot work if the hashed value is salted (i.e. hashed with an additional random value as prefix/suffix, making the pre-computed table irrelevant)
@@ -147,18 +142,16 @@ john --restore
     * [hashmob.net](https://hashmob.net/): great community with Discord
 * Use the `loopback` in combination with rules and dictionary to keep cracking until you don't find new passsword: `hashcat --loopback --attack-mode 0 --rules-file $rules_file --hash-type $number $hashes_file $wordlist_file`
 * PACK (Password Analysis and Cracking Kit)
-    * https://github.com/iphelix/pack/blob/master/README
+    * [iphelix/pack](https://github.com/iphelix/pack/blob/master/README)
     * Can produce custom hcmask files to use with hashcat, based on statistics and rules applied on an input dataset
 * Use Deep Learning
     * [brannondorsey/PassGAN](https://github.com/brannondorsey/PassGAN)
 
-
 ## Online Cracking Resources
 
 * [hashes.com](https://hashes.com)
-* [crackstation](https://crackstation.net)
-* [Hashmob](https://hashmob.net/)
-
+* [crackstation.net](https://crackstation.net)
+* [hashmob.net](https://hashmob.net/)
 
 ## References
 

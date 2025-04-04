@@ -16,39 +16,37 @@
 * [Shell URI Handlers](#shell-uri-handlers)
 * [References](#references)
 
-
 ## Tools
 
 * [kiosk.vsim.xyz](https://kiosk.vsim.xyz/) - tooling for browser-based, Kiosk mode testing.
 
-
 ## Methodology
 
-- Display global variables and their permissions: `export -p`
-- Switch to another user using `sudo`/`su`
-- Basic privilege escalations such as CVE, sudo misconfiguration, etc. Comprehensive list at [Linux](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/) / [Windows](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/windows-privilege-escalation/)
-- List default commands in the restricted shell: `compgen -c`
-- Container escape if it's running inside a `Docker`/`LXC` container
-- Pivot onto the network
-    - Scan other machines on the network or attempt SSRF exploitation
-    - Metadata for Cloud assets, see `cloud/aws` and `cloud/azure`
-- Use globbing capability built inside the shell: `echo *`, `echo .*`, `echo /*`
-
+* Display global variables and their permissions: `export -p`
+* Switch to another user using `sudo`/`su`
+* Basic privilege escalations such as CVE, sudo misconfiguration, etc. Comprehensive list at [Linux](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/) / [Windows](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/windows-privilege-escalation/)
+* List default commands in the restricted shell: `compgen -c`
+* Container escape if it's running inside a `Docker`/`LXC` container
+* Pivot onto the network
+    * Scan other machines on the network or attempt SSRF exploitation
+    * Metadata for Cloud assets, see `cloud/aws` and `cloud/azure`
+* Use globbing capability built inside the shell: `echo *`, `echo .*`, `echo /*`
 
 ## Gaining a command shell
 
 * **Shortcut**
-    * [Window] + [R] -> cmd 
+    * [Window] + [R] -> cmd
     * [CTRL] + [SHIFT] + [ESC] -> Task Manager
-    * [CTRL] + [ALT] + [DELETE] -> Task Manager 
+    * [CTRL] + [ALT] + [DELETE] -> Task Manager
 * **Access through file browser**: Browsing to the folder containing the binary (i.e. `C:\windows\system32\`), we can simply right click and `open` it
-* **Drag-and-drop**: dragging and dropping any file onto the cmd.exe 
+* **Drag-and-drop**: dragging and dropping any file onto the cmd.exe
 * **Hyperlink**: `file:///c:/Windows/System32/cmd.exe`
 * **Task Manager**: `File` > `New Task (Run...)` > `cmd`
 * **MSPAINT.exe**
     * Open MSPaint.exe and set the canvas size to: `Width=6` and `Height=1` pixels
     * Zoom in to make the following tasks easier
     * Using the colour picker, set pixels values to (from left to right):
+
         ```ps1
         1st: R: 10,  G: 0,   B: 0
         2nd: R: 13,  G: 10,  B: 13
@@ -57,10 +55,10 @@
         5th: R: 0,   G: 0,   B: 101
         6th: R: 0,   G: 0,   B: 0
         ```
+
     * Save it as 24-bit Bitmap (*.bmp;*.dib)
-    * Change its extension from bmp to bat and run 
-    * The generated file is also available for download: [escape-breakout-mspaint.bmp](./files/escape-breakout-mspaint.bmp) 
-    
+    * Change its extension from bmp to bat and run
+    * The generated file is also available for download: [escape-breakout-mspaint.bmp](./files/escape-breakout-mspaint.bmp)
 
 ## Sticky Keys
 
@@ -72,7 +70,6 @@
 * Start the OSK (On-Screen-Keyboard)
 * You can now use the keyboard shortcut (CTRL+N)
 
-
 ## Dialog Boxes
 
 ### Creating new files
@@ -80,11 +77,9 @@
 * Batch files – Right click > New > Text File > rename to .BAT (or .CMD) > edit > open
 * Shortcuts – Right click > New > Shortcut > `%WINDIR%\system32`
 
-
 ## Open a new Windows Explorer instance
 
 * Right click any folder > select `Open in new window`
-
 
 ## Exploring Context Menus
 
@@ -101,11 +96,9 @@
 
 Many input boxes accept file paths; try all inputs with UNC paths such as `//attacker–pc/` or `//127.0.0.1/c$` or `C:\`
 
-
 ### Bypass file restrictions
 
 Enter *.* or *.exe or similar in `File name` box
-
 
 ## Internet Explorer
 
@@ -121,7 +114,6 @@ Enter *.* or *.exe or similar in `File name` box
 * Print menus
 * All other menus that provide dialog boxes
 
-
 ### Accessing filesystem
 
 Enter these paths in the address bar:
@@ -131,11 +123,10 @@ Enter these paths in the address bar:
 * %HOMEDRIVE%
 * \\127.0.0.1\c$\Windows\System32
 
-
 ### Unassociated Protocols
 
-It is possible to escape a browser based kiosk with other protocols than usual `http` or `https`. 
-If you have access to the address bar, you can use any known protocol (`irc`, `ftp`, `telnet`, `mailto`, etc.) 
+It is possible to escape a browser based kiosk with other protocols than usual `http` or `https`.
+If you have access to the address bar, you can use any known protocol (`irc`, `ftp`, `telnet`, `mailto`, etc.)
 to trigger the *open with* prompt and select a program installed on the host.
 The program will than be launched with the uri as a parameter, you need to select a program that will not crash when recieving it.
 It is possible to send multiple parameters to the program by adding spaces in your uri.
@@ -150,23 +141,23 @@ This is a nice trick since Firefox launched with the custom profile may not be a
 1. Enter the following uri in the address bar: `irc://127.0.0.1 -P "Test"`
 2. Press enter to navigate to the uri.
 3. Select the firefox program.
-4. Firefox will be launched with the profile `Test`. 
+4. Firefox will be launched with the profile `Test`.
 
 In this example, it's the equivalent of running the following command:
-```
+
+```ps1
 firefox irc://127.0.0.1 -P "Test"
 ```
 
-
 ## Shell URI Handlers
 
-A URI (Uniform Resource Identifier) handler is a software component that enables a web browser or operating system to pass a URI to an appropriate application for further handling. 
+A URI (Uniform Resource Identifier) handler is a software component that enables a web browser or operating system to pass a URI to an appropriate application for further handling.
 
 For example, when you click on a "mailto:" link in a webpage, your device knows to open your default email application. This is because the "mailto:" URI scheme is registered to be handled by an email application. Similarly, "http:" and "https:" URIs are typically handled by a web browser.
 
 In essence, URI handlers provide a bridge between web content and desktop applications, allowing for a seamless user experience when navigating between different types of resources.
 
-The following URI handlers might trigger application on the machine: 
+The following URI handlers might trigger application on the machine:
 
 * shell:DocumentsLibrary
 * shell:Librariesshell:UserProfiles
@@ -177,7 +168,6 @@ The following URI handlers might trigger application on the machine:
 * shell:Common Administrative Tools
 * shell:MyComputerFolder
 * shell:InternetFolder
-
 
 ## References
 

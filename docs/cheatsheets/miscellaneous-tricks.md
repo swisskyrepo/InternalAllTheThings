@@ -13,7 +13,7 @@ PS C:\> msg * /V /W /SERVER:CRASHLAB "Hello all !"
 $ wall "Stop messing with the XXX service !"
 $ wall -n "System will go down for 2 hours maintenance at 13:00 PM"  # "-n" only for root
 $ who
-$ write root pts/2	# press Ctrl+D  after typing the message. 
+$ write root pts/2 # press Ctrl+D  after typing the message. 
 ```
 
 ## netexec Credential Database

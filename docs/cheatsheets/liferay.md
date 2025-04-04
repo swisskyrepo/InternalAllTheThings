@@ -115,7 +115,7 @@ Endpoints reachable by authenticated users.
 
 ### Open Redirect
 
-```
+```ps1
 /html/common/referer_jsp.jsp?referer=<url>
 /html/common/referer_js.jsp?referer=<url>
 /html/common/forward_jsp.jsp?FORWARD_URL=<url>
