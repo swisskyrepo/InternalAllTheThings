@@ -1,12 +1,12 @@
 # Office - Attacks
 
-### Summary
+## Summary
 
 * [Office Products Features](#office-products-features)
 * [Office Default Passwords](#office-default-passwords)
 * [Excel](#excel)
     * [XLSM - Hot Manchego](#xlsm---hot-manchego)
-    * [XLS - Macrome](#xls---macrome)
+    * [XLM - Macrome](#xlm---macrome)
     * [XLM Excel 4.0 - SharpShooter](#xlm-excel-40---sharpshooter)
     * [XLM Excel 4.0 - EXCELntDonut](#xlm-excel-40---excelntdonut)
     * [XLM Excel 4.0 - EXEC](#xlm-excel-40---exec)
@@ -21,7 +21,6 @@
     * [DOCM - VBA Shell Execute Comment](#docm---vba-shell-execute-comment)
     * [DOCM - VBA Spawning via svchost.exe using Scheduled Task](#docm---vba-spawning-via-svchostexe-using-scheduled-task)
     * [DCOM - WMI COM functions (VBA AMSI)](#docm---wmi-com-functions)
-    * [DOCM - winmgmts](#docm---winmgmts)
     * [DOCM - Macro Pack - Macro and DDE](#docmxlm---macro-pack---macro-and-dde)
     * [DOCM - BadAssMacros](#docm---badassmacros)
     * [DOCM - CACTUSTORCH VBA Module](#docm---cactustorch-vba-module)
@@ -30,8 +29,8 @@
     * [VBA Purging](#vba-purging)
         * [OfficePurge](#officepurge)
         * [EvilClippy](#evilclippy)
-    * [VBA AMSI](#vba-amsi)
     * [VBA - Offensive Security Template](#vba---offensive-security-template)
+    * [VBA - AMSI](#vba---amsi)
     * [DOCX - Template Injection](#docx---template-injection)
     * [DOCX - DDE](#docx---dde)
 * [Visual Studio Tools for Office (VSTO)](#visual-studio-tools-for-office-vsto)

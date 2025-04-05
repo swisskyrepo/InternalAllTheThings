@@ -1,13 +1,13 @@
 # Elastic EDR
 
-> Elastic EDR (Endpoint Detection and Response) is a component of Elastic Security designed to address cybersecurity threats at the endpoint level. It plays a crucial role in preventing, detecting, and responding to cyber threats like ransomware and malware. 
+> Elastic EDR (Endpoint Detection and Response) is a component of Elastic Security designed to address cybersecurity threats at the endpoint level. It plays a crucial role in preventing, detecting, and responding to cyber threats like ransomware and malware.
 
 * [peasead/elastic-container](https://github.com/peasead/elastic-container) - Stand up a simple Elastic container with Kibana, Fleet, and the Detection Engine
-
 
 ## Setup
 
 * First, you need `docker` and the `docker-compose` plugin
+
     ```ps1
     # Add Docker's official GPG key:
     sudo apt-get update
@@ -28,24 +28,28 @@
     ```
 
 * You might want to grant the `docker` right to the default user
+
     ```ps1
     sudo groupadd docker
     sudo usermod -aG docker $USER
     ```
 
 * Install the requirements for the elastic scripts
+
     ```ps1
     apt-get update
     apt-get install jq git curl
     ```
 
 * Clone the project
+
     ```ps1
     git clone https://github.com/peasead/elastic-container
     cd elastic-container
     ```
 
 * Edit `.env` to set the credentials and activate rules
+
     ```ps1
     ELASTIC_PASSWORD="changeme"
     KIBANA_PASSWORD="changeme"
@@ -55,15 +59,17 @@
     ```
 
 * Download the images and run the containers
+
     ```ps1
     chmod +x ./elastic-container.sh
     ./elastic-container.sh start
     ```
 
-* Access the Elastic EDR interface at https://localhost:5601 
+* Access the Elastic EDR interface at `https://localhost:5601`
 * Fleet > `Add agent`
 * Enroll in Fleet (recommended)
 * Copy Windows PowerShell one-liner and append the `--insecure` flag if you are using untrusted certificates
+
     ```ps1
     powershell Invoke-WebRequest -Uri https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-7.15.1-windows-x86_64.zip -outfile elastic-agent-7.15.1-windows-x86_64.zip
     Expand-Archive -Path elastic-agent-7.15.1-windows-x86_64.zip -DestinationPath C:\ElasticAgent
@@ -73,17 +79,18 @@
 * Fleet > Integrations > Elastic Defend
     * Switch `Prevent` to `Detect`, to keep the execution running
     * Enable these features to collect more data
-        ```
+
+        ```ps1
         windows.advanced.memory_protection.shellcode_collect_sample
         windows.advanced.memory_protection.memory_scan_collect_sample
         windows.advanced.memory_protection.shellcode_enhanced_pe_parsing
         ```
 
 * Destroy the containers
+
     ```ps1
     ./elastic-container.sh destroy
     ```
-
 
 ## References
 

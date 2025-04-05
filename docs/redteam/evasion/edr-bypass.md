@@ -2,10 +2,9 @@
 
 Endpoint Detection and Response (EDR) is a security solution that combines real-time monitoring, data collection, and advanced analytics to detect, investigate, and respond to cyber threats at the endpoint level. Leveraging machine learning algorithms and behavioral analysis, EDR tools can identify malicious activities, automate containment and remediation actions, and provide forensic insights to enhance an organization's overall security posture.
 
-
 ## Static Detection
 
-**Mechanism**: Static detection is a security technique used in EDR and antivirus software that analyzes files and applications without executing them, typically based on predefined signatures or known malicious patterns. 
+**Mechanism**: Static detection is a security technique used in EDR and antivirus software that analyzes files and applications without executing them, typically based on predefined signatures or known malicious patterns.
 
 **Bypass**:
 
@@ -15,15 +14,13 @@ Endpoint Detection and Response (EDR) is a security solution that combines real-
 - Custom `GetProcAddress` and `GetModuleHandle`
 - API Hashing
 
-
 ## User Behavioural Analysis
 
-**Mechanism**: User Behavioral Analysis (UBA) monitors and analyzes user activities and patterns to detect anomalies and potential threats. 
+**Mechanism**: User Behavioral Analysis (UBA) monitors and analyzes user activities and patterns to detect anomalies and potential threats.
 
 **Bypass**:
 
 - Learning about OPSEC methods
-
 
 ## Usermode Windows Function Monitoring
 
@@ -34,7 +31,6 @@ Endpoint Detection and Response (EDR) is a security solution that combines real-
 - Unhooking
 - Indirect syscalls
 
-
 ## Call Stack Analysis
 
 **Mechanism**: Checking the origin of function calls via the Call Stack chain
@@ -43,7 +39,6 @@ Endpoint Detection and Response (EDR) is a security solution that combines real-
 
 - TODO
 - TODO
-
 
 ## Process Analysis
 
@@ -55,15 +50,13 @@ Endpoint Detection and Response (EDR) is a security solution that combines real-
 - Break parent-child link (e.g: word.exe spawning cmd.exe)
 - TODO
 
-
 ## Kernel Callbacks
 
-**Mechanism**: Kernel callbacks in the context of Endpoint Detection and Response (EDR) are functions registered by kernel drivers that get triggered in response to specific events or actions within the operating system's kernel. 
+**Mechanism**: Kernel callbacks in the context of Endpoint Detection and Response (EDR) are functions registered by kernel drivers that get triggered in response to specific events or actions within the operating system's kernel.
 
 **Bypass**:
 
 - TODO
-
 
 ## WDAC to Disable EDR Components
 
@@ -76,15 +69,15 @@ smbmap -u Administrator -p P@ssw0rd -H 192.168.4.4 -x "shutdown /r /t 0"
 
 Using Krueger a .NET post-exploitation tool.
 
-* [logangoins/Krueger](https://github.com/logangoins/Krueger) - Proof of Concept (PoC) .NET tool for remotely killing EDR with WDAC
+- [logangoins/Krueger](https://github.com/logangoins/Krueger) - Proof of Concept (PoC) .NET tool for remotely killing EDR with WDAC
+
     ```ps1
     inlineExecute-Assembly --dotnetassembly C:\Tools\Krueger.exe --assemblyargs --host ms01
     ```
 
-
 ## References
 
-* [Flying Under the Radar: Part 1: Resolving Sensitive Windows Functions with x64 Assembly - theepicpowner - Apr 24, 2024](https://theepicpowner.gitlab.io/posts/Flying-Under-the-Radar-Part-1/)
-* [Malware AV/VM evasion - part 16: WinAPI GetProcAddress implementation. Simple C++ example - cocomelonc](https://cocomelonc.github.io/malware/2023/04/16/malware-av-evasion-16.html)
-* [Custom GetProcAddress And GetModuleHandle Implementation (X64) - daax - December 15, 2016](https://revers.engineering/custom-getprocaddress-and-getmodulehandle-implementation-x64/)
-* [Weaponizing WDAC: Killing the Dreams of EDR - Jonathan Beierle and Logan Goins - December 20, 2024](https://beierle.win/2024-12-20-Weaponizing-WDAC-Killing-the-Dreams-of-EDR/)
+- [Flying Under the Radar: Part 1: Resolving Sensitive Windows Functions with x64 Assembly - theepicpowner - Apr 24, 2024](https://theepicpowner.gitlab.io/posts/Flying-Under-the-Radar-Part-1/)
+- [Malware AV/VM evasion - part 16: WinAPI GetProcAddress implementation. Simple C++ example - cocomelonc](https://cocomelonc.github.io/malware/2023/04/16/malware-av-evasion-16.html)
+- [Custom GetProcAddress And GetModuleHandle Implementation (X64) - daax - December 15, 2016](https://revers.engineering/custom-getprocaddress-and-getmodulehandle-implementation-x64/)
+- [Weaponizing WDAC: Killing the Dreams of EDR - Jonathan Beierle and Logan Goins - December 20, 2024](https://beierle.win/2024-12-20-Weaponizing-WDAC-Killing-the-Dreams-of-EDR/)

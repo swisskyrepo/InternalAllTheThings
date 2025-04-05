@@ -8,7 +8,7 @@
     * [Certificate Transparency Logs](#certificate-transparency-logs)
     * [DNS Resolution](#dns-resolution)
     * [Technology Discovery](#technology-discovery)
-* [Subdomain Takeover](#subdomain-takovers)
+* [Subdomain Takeover](#subdomain-takover)
 * [References](#references)
 
 ## Enumerate Subdomains
@@ -118,7 +118,7 @@ Technology discovery is the process of identifying the underlying technologies, 
 * [projectdiscovery/wappalyzergo](https://github.com/projectdiscovery/wappalyzergo) - A high performance go implementation of Wappalyzer Technology Detection Library.
 * [michenriksen/aquatone](https://github.com/michenriksen/aquatone) - A Tool for Domain Flyovers
 
-  ```
+  ```ps1
   cat hosts.txt | aquatone -ports 80,443,3000,3001
   ```
 
