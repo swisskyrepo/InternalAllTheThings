@@ -2,7 +2,7 @@
 
 * Require: SID filtering disabled
 
-From the DC, dump the hash of the `currentdomain\targetdomain$` trust account using Mimikatz (e.g. with LSADump or DCSync). Then, using this trust key and the domain SIDs, forge an inter-realm TGT using 
+From the DC, dump the hash of the `currentdomain\targetdomain$` trust account using Mimikatz (e.g. with LSADump or DCSync). Then, using this trust key and the domain SIDs, forge an inter-realm TGT using
 Mimikatz, adding the SID for the target domain's enterprise admins group to our **SID history**.
 
 ## Dumping trust passwords (trust keys)
@@ -35,7 +35,6 @@ Inject the ST file and access the targeted service with the spoofed rights.
 kirbikator lsa .\ticket.kirbi
 ls \\machine.domain.local\c$
 ```
-
 
 ## References
 
