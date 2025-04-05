@@ -5,37 +5,44 @@ An AWS S3 bucket is a cloud-based storage container that holds files, known as o
 ## Tools
 
 * [aws/aws-cli](https://github.com/aws/aws-cli) - Universal Command Line Interface for Amazon Web Services
-	```ps1
-	sudo apt install awscli
-	```
+
+ ```ps1
+ sudo apt install awscli
+ ```
+
 * [digi.ninja/bucket-finder](https://digi.ninja/projects/bucket_finder.php) - Search for public buckets, list and download all files if directory indexing is enabled
-	```powershell
-	wget https://digi.ninja/files/bucket_finder_1.1.tar.bz2 -O bucket_finder_1.1.tar.bz2
-	./bucket_finder.rb my_words
-	./bucket_finder.rb --region ie my_words
-	./bucket_finder.rb --download --region ie my_words
-	./bucket_finder.rb --log-file bucket.out my_words
-	```
+
+ ```powershell
+ wget https://digi.ninja/files/bucket_finder_1.1.tar.bz2 -O bucket_finder_1.1.tar.bz2
+ ./bucket_finder.rb my_words
+ ./bucket_finder.rb --region ie my_words
+ ./bucket_finder.rb --download --region ie my_words
+ ./bucket_finder.rb --log-file bucket.out my_words
+ ```
+
 * [aws-sdk/boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) - Amazon Web Services (AWS) SDK for Python
-	```python
-	import boto3
-	s3 = boto3.client('s3',aws_access_key_id='AKIAJQDP3RKREDACTED',aws_secret_access_key='igH8yFmmpMbnkcUaCqXJIRIozKVaREDACTED',region_name='us-west-1')
 
-	try:
-		result = s3.list_buckets()
-		print(result)
-	except Exception as e:
-		print(e)
-	```
+ ```python
+ import boto3
+ s3 = boto3.client('s3',aws_access_key_id='AKIAJQDP3RKREDACTED',aws_secret_access_key='igH8yFmmpMbnkcUaCqXJIRIozKVaREDACTED',region_name='us-west-1')
+
+ try:
+  result = s3.list_buckets()
+  print(result)
+ except Exception as e:
+  print(e)
+ ```
+
 * [nccgroup/s3_objects_check](https://github.com/nccgroup/s3_objects_check) - Whitebox evaluation of effective S3 object permissions, to identify publicly accessible files
-    ```powershell
-    $ python3 -m venv env && source env/bin/activate
-    $ pip install -r requirements.txt
-    $ python s3-objects-check.py -h
-    $ python s3-objects-check.py -p whitebox-profile -e blackbox-profile
-    ```
-* [grayhatwarfare/buckets](https://buckets.grayhatwarfare.com/) - Search Public Buckets
 
+    ```powershell
+    python3 -m venv env && source env/bin/activate
+    pip install -r requirements.txt
+    python s3-objects-check.py -h
+    python s3-objects-check.py -p whitebox-profile -e blackbox-profile
+    ```
+
+* [grayhatwarfare/buckets](https://buckets.grayhatwarfare.com/) - Search Public Buckets
 
 ## Credentials and Profiles
 
@@ -57,16 +64,15 @@ export AWS_SECRET_ACCESS_KEY=fPk/Gya[...]4/j5bSuhDQ
 export AWS_SESSION_TOKEN=FQoGZXIvYXdzE[...]8aOK4QU=
 ```
 
-
 ## Public S3 Bucket
 
 An open S3 bucket refers to an Amazon Simple Storage Service (Amazon S3) bucket that has been configured to allow public access, either intentionally or by mistake. This means that anyone on the internet could potentially access, read, or even modify the data stored in the bucket, depending on the permissions set.
 
-* [http://s3.amazonaws.com/<bucket-name>/](http://s3.amazonaws.com/<bucket-name>/)
-* [http://<bucket-name>.s3.amazonaws.com/](http://<bucket-name>.s3.amazonaws.com/)
-* [https://<bucket-name>.region.amazonaws.com/<file>>](https://<bucket-name>.region.amazonaws.com/<file>)
+* `http://s3.amazonaws.com/<bucket-name>`
+* `http://<bucket-name>.s3.amazonaws.com`
+* `https://<bucket-name>.region.amazonaws.com/<file>`
 
-AWS S3 buckets name examples: [http://flaws.cloud.s3.amazonaws.com](http://flaws.cloud.s3.amazonaws.com). 
+AWS S3 buckets name examples: [http://flaws.cloud.s3.amazonaws.com](http://flaws.cloud.s3.amazonaws.com).
 
 Either bruteforce the buckets name with keyword related to your target or search through the leaked one using OSINT tool such as [buckets.grayhatwarfare.com](https://buckets.grayhatwarfare.com/).
 
@@ -76,7 +82,6 @@ When file listing is enabled, the name is also displayed inside the `<Name>` XML
 <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
 <Name>adobe-REDACTED-REDACTED-REDACTED</Name>
 ```
-
 
 ## Bucket Interations
 
@@ -94,7 +99,6 @@ Non-authoritative answer:
 11.192.218.52.in-addr.arpa name = s3-website-us-west-2.amazonaws.com.
 ```
 
-
 ### List Files
 
 To list files in an AWS S3 bucket using the AWS CLI, you can use the following command:
@@ -105,29 +109,30 @@ aws s3 ls s3://bucket-name --no-sign-request --region <insert-region-here>
 aws s3 ls s3://flaws.cloud/ --no-sign-request --region us-west-2
 ```
 
-
 ### Copy, Upload and Download Files
 
 * **Copy**
-	```bash
-	aws s3 cp <source> <target> [--options]
-	aws s3 cp local.txt s3://bucket-name/remote.txt --acl authenticated-read
-	aws s3 cp login.html s3://bucket-name --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
-	```
+
+ ```bash
+ aws s3 cp <source> <target> [--options]
+ aws s3 cp local.txt s3://bucket-name/remote.txt --acl authenticated-read
+ aws s3 cp login.html s3://bucket-name --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+ ```
 
 * **Upload**
-	```bash
-	aws s3 mv <source> <target> [--options]
-	aws s3 mv test.txt s3://hackerone.files
-	SUCCESS : "move: ./test.txt to s3://hackerone.files/test.txt"
-	```
+
+ ```bash
+ aws s3 mv <source> <target> [--options]
+ aws s3 mv test.txt s3://hackerone.files
+ SUCCESS : "move: ./test.txt to s3://hackerone.files/test.txt"
+ ```
 
 * **Download**
-	```bash
-	aws s3 sync <source> <target> [--options]
-	aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sign-request --region us-west-2
-	```
 
+ ```bash
+ aws s3 sync <source> <target> [--options]
+ aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sign-request --region us-west-2
+ ```
 
 ## References
 

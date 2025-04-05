@@ -2,7 +2,6 @@
 
 The AWS Command Line Interface (CLI) is a unified tool to manage AWS services from the command line. Using the AWS CLI, you can control multiple AWS services, automate tasks, and manage configurations through profiles.
 
-
 ## Set up AWS CLI
 
 Install AWS CLI and configure it for the first time:
@@ -17,7 +16,6 @@ This will prompt for:
 * AWS Secret Access Key
 * Default region name
 * Default output format
-
 
 ## Creating Profiles
 
@@ -37,7 +35,7 @@ You can configure multiple profiles in `~/.aws/credentials` and `~/.aws/config`.
     [prod-profile]
     aws_access_key_id = <prod-access-key>
     aws_secret_access_key = <prod-secret-key>
-    ``` 
+    ```
 
 * `~/.aws/config` (stores region and output settings)
 
@@ -53,15 +51,13 @@ You can configure multiple profiles in `~/.aws/credentials` and `~/.aws/config`.
     [profile prod-profile]
     region = eu-west-1
     output = json
-    ``` 
+    ```
 
 You can also create profiles via the command line:
 
 ```ps1
 aws configure --profile dev-profile
 ```
-
-
 
 ## Using Profiles
 

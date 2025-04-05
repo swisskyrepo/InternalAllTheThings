@@ -5,21 +5,20 @@
 ### Disable CloudTrail
 
 ```powershell
-$ aws cloudtrail delete-trail --name cloudgoat_trail --profile administrator
+aws cloudtrail delete-trail --name cloudgoat_trail --profile administrator
 ```
 
-Disable monitoring of events from global services 
+Disable monitoring of events from global services
 
 ```powershell
-$ aws cloudtrail update-trail --name cloudgoat_trail --no-include-global-service-event 
+aws cloudtrail update-trail --name cloudgoat_trail --no-include-global-service-event 
 ```
 
 Disable Cloud Trail on specific regions
 
 ```powershell
-$ aws cloudtrail update-trail --name cloudgoat_trail --no-include-global-service-event --no-is-multi-region --region=eu-west
+aws cloudtrail update-trail --name cloudgoat_trail --no-include-global-service-event --no-is-multi-region --region=eu-west
 ```
-
 
 ## GuardDuty
 

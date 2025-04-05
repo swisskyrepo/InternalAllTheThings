@@ -3,6 +3,7 @@
 ## Collectors
 
 * [nccgroup/ScoutSuite](https://github.com/nccgroup/ScoutSuite/wiki) - Multi-Cloud Security Auditing Tool
+
     ```powershell
     $ python scout.py PROVIDER --help
     # The --session-token is optional and only used for temporary credentials (i.e. role assumption).
@@ -11,6 +12,7 @@
     ```
 
 * [RhinoSecurityLabs/pacu](https://github.com/RhinoSecurityLabs/pacu) - Exploit configuration flaws within an AWS environment using an extensible collection of modules with a diverse feature-set
+
     ```powershell
     $ bash install.sh
     $ python3 pacu.py
@@ -20,13 +22,15 @@
     ```
 
 * [salesforce/cloudsplaining](https://github.com/salesforce/cloudsplaining) - An AWS IAM Security Assessment tool that identifies violations of least privilege and generates a risk-prioritized report
+
     ```powershell
-    $ pip3 install --user cloudsplaining
-    $ cloudsplaining download --profile myawsprofile
-    $ cloudsplaining scan --input-file default.json
+    pip3 install --user cloudsplaining
+    cloudsplaining download --profile myawsprofile
+    cloudsplaining scan --input-file default.json
     ```
 
 * [duo-labs/cloudmapper](https://github.com/duo-labs/cloudmapper) - CloudMapper helps you analyze your Amazon Web Services (AWS) environments
+
     ```powershell
     sudo apt-get install autoconf automake libtool python3.7-dev python3-tk jq awscli build-essential
     pipenv install --skip-lock
@@ -39,6 +43,7 @@
     ```
 
 * [cyberark/SkyArk](https://github.com/cyberark/SkyArk) - Discover the most privileged users in the scanned AWS environment, including the AWS Shadow Admins
+
     ```powershell
     $ powershell -ExecutionPolicy Bypass -NoProfile
     PS C> Import-Module .\SkyArk.ps1 -force
@@ -47,20 +52,23 @@
     ```
 
 * [BishopFox/CloudFox](https://github.com/BishopFox/CloudFox/) - Automating situational awareness for cloud penetration tests. Designed for white box enumeration (SecurityAudit/ReadOnly type permission), but can be used for black box (found credentials) as well.
+
     ```ps1
     cloudfox aws --profile [profile-name] all-checks
     ```
 
-* [toniblyx/Prowler](https://github.com/toniblyx/prowler) - AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It follows guidelines of the CIS Amazon Web Services Foundations Benchmark and DOZENS of additional checks including GDPR and HIPAA (+100).    
+* [toniblyx/Prowler](https://github.com/toniblyx/prowler) - AWS security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It follows guidelines of the CIS Amazon Web Services Foundations Benchmark and DOZENS of additional checks including GDPR and HIPAA (+100).
+
     ```powershell
-    $ pip install awscli ansi2html detect-secrets
-    $ sudo apt install jq
-    $ ./prowler -E check42,check43
-    $ ./prowler -p custom-profile -r us-east-1 -c check11
-    $ ./prowler -A 123456789012 -R ProwlerRole
+    pip install awscli ansi2html detect-secrets
+    sudo apt install jq
+    ./prowler -E check42,check43
+    ./prowler -p custom-profile -r us-east-1 -c check11
+    ./prowler -A 123456789012 -R ProwlerRole
     ```
 
 * [nccgroup/PMapper](https://github.com/nccgroup/PMapper) - A tool for quickly evaluating IAM permissions in AWS
+
     ```powershell
     pip install principalmapper
     pmapper graph --create
@@ -83,7 +91,6 @@
     pmapper query "preset connected * user/PowerUser"
     pmapper argquery --principal '*' --resource user/PowerUser --preset connected
     ```
-
 
 ## AWS - Enumerate IAM permissions
 
@@ -110,7 +117,6 @@ pip install -r requirements.txt
 2019-05-10 15:58:27,021 - 21345 - [INFO] -- gamelift.describe_matchmaking_rule_sets() worked!
 2019-05-10 15:58:27,311 - 21345 - [INFO] -- sqs.list_queues() worked!
 ```
-
 
 ## References
 
