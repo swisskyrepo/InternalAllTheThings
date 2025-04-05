@@ -6,7 +6,6 @@
 * [HTB VIP - Pinned](https://app.hackthebox.com/challenges/282) - Hack The Box challenge
 * [HTB VIP - Manager](https://app.hackthebox.com/challenges/283) - Hack The Box challenge
 
-
 ## Extract APK
 
 ### ADB Method
@@ -35,7 +34,6 @@ Download APK from Google Play using a 3rd Party:
 * [apkcombo.com](https://apkcombo.com/downloader/)
 * [apps.evozi.com](https://apps.evozi.com/apk-downloader/)
 
-
 ## Static Analysis
 
 ### Extract Contents From APK
@@ -52,6 +50,7 @@ apktool d application.apk
 * Extract `classes.dex`: `unzip application.zip`
 * Use `dex2jar` to obtain a jar file: `/usr/bin/d2j-dex2jar classes.dex`
 * Use `jadx` using full CPU: `jadx classes.dex -j $(grep -c ^processor /proc/cpuinfo) -d Downloads/app/ > /dev/null`
+
     ```powershell
     jadx-gui
     --deobf # remove obfuscation by AndroGuard
@@ -66,15 +65,14 @@ apktool d application.apk
 apktool b rebuild_folder -o rebuilt.apk
 ```
 
-
 ### Decompile Native Code
 
-Native library are represented as `.so` files.    
+Native library are represented as `.so` files.
 These libraries by default are included in the APK at the file path `/lib/<cpu>/lib<name>.so` or `/assets/<custom_name>`.
 
 Use `IDA`, `Radare2/Cutter` or `Ghidra` to reverse them.
 
-| CPU	Native         | Library Path                |
+| CPU Native         | Library Path                |
 |----------------------|-----------------------------|
 | "generic" 32-bit ARM | lib/armeabi/libcalc.so      |
 | x86                  | lib/x86/libcalc.so          |
@@ -82,30 +80,33 @@ Use `IDA`, `Radare2/Cutter` or `Ghidra` to reverse them.
 | ARMv7                | lib/armeabi-v7a/libcalc.so  |
 | ARM64                | lib/arm64-v8a/libcalc.so    |
 
-:warning: The shared object file (`.so`) doesn't need to be embedded in the app. 
-
+:warning: The shared object file (`.so`) doesn't need to be embedded in the app.
 
 ### Sign and Package APK
 
 * `apktool` + `jarsigner`
+
     ```powershell
     apktool b ./application.apk
     keytool -genkey -v -keystore application.keystore -alias application -keyalg RSA -keysize 2048 -validity 10000
     jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore application.keystore application.apk application
     zipalign -v 4 application.apk application-signed.apk
     ```
+
 * `apktool` + `signapk`
+
     ```powershell
     apktool b app-release
     ./signapk app-release/dist/app-release.apk
     ```
 
 * [patrickfav/uber-apk-signer](https://github.com/patrickfav/uber-apk-signer) (Linux only)
+
     ```powershell
     java -jar uber-apk-signer.jar --apks /path/to/apks
     ```
-* [APK Toolkit v1.3](https://xdaforums.com/t/tool-apk-toolkit-v1-3-windows.4572881/) (Windows only)
 
+* [APK Toolkit v1.3](https://xdaforums.com/t/tool-apk-toolkit-v1-3-windows.4572881/) (Windows only)
 
 ### Mobile Security Framework Static
 
@@ -118,14 +119,16 @@ Use `IDA`, `Radare2/Cutter` or `Ghidra` to reverse them.
 Run [MobSF/Mobile-Security-Framework-MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF)
 
 * Latest version from DockerHub
+
     ```powershell
     docker run -it --name mobsf -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
     ```
+
 * Enable persistence on the Docker container
+
     ```powershell
     docker run -it --rm --name mobsf -p 8000:8000 -v <your_local_dir>:/root/.MobSF opensecurity/mobile-security-framework-mobsf:latest
     ```
-
 
 ### Online Assets
 
@@ -134,7 +137,6 @@ Run [MobSF/Mobile-Security-Framework-MobSF](https://github.com/MobSF/Mobile-Secu
 * [appetize.io](https://appetize.io/) - Instantly run mobile apps in your browser
 * [mobsf.live](https://mobsf.live/) - Demo version of MobSF
 * [hybrid-analysis.com](https://www.hybrid-analysis.com/sample/573df0b1cb5ffc0a25306be5ec83483ed1b2acdba37dd93223b9f14f42b2fdea?environmentId=200) - Sandbox analysis of APK files
-
 
 ### React Native and Hermes
 
@@ -148,21 +150,19 @@ Hermes: pip install hbctool
 [*] Done
 ```
 
-
 ### Flutter
 
 Indentify Flutter use in the `MANIFEST.MF` and search for `libflutter.so`.
 
 * [worawit/blutter](https://github.com/worawit/blutter) - Flutter Mobile Application Reverse Engineering Tool
+
     ```ps1
     blutter jadx/resources/lib/arm64-v8a/ ./blutter_output
     ```
 
-
 ## Dynamic Analysis
 
 Dynamic analysis for Android malware involves executing and monitoring an app in a controlled environment to observe its behavior. This technique detects malicious activities like data exfiltration, unauthorized access, and system modifications. Additionally, it aids in reverse engineering app features, revealing hidden functionalities and potential vulnerabilities for better threat mitigation.
-
 
 ### Burp Suite
 
@@ -193,7 +193,6 @@ chmod 644 /system/etc/security/cacerts/<hash>.0
 chown root:root /system/etc/security/cacerts/<hash>.0
 ```
 
-
 ### Frida
 
 * [Frida - Documentation](https://frida.re/docs/android)
@@ -222,7 +221,6 @@ Interesting Frida scripts:
 * [Android Location Spoofing](https://codeshare.frida.re/@dzervas/android-location-spoofing/) - `frida --codeshare dzervas/android-location-spoofing -f YOUR_BINARY`
 * [java-crypto-viewer](https://codeshare.frida.re/@Serhatcck/java-crypto-viewer/) - `frida --codeshare Serhatcck/java-crypto-viewer -f YOUR_BINARY`
 
-
 ### Runtime Mobile Security
 
 > Runtime Mobile Security (RMS) 📱🔥 - is a powerful web interface that helps you to manipulate Android and iOS Apps at Runtime
@@ -230,20 +228,22 @@ Interesting Frida scripts:
 * [RMS - Github](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security)
 
 **Requirements**:
+
 * `adb`
 * `frida`: server up and running on the target device
 
-In case of issue with your favorite Browser, please use Google Chrome (fully supported).   
+In case of issue with your favorite Browser, please use Google Chrome (fully supported).
 
 * Install RMS
+
     ```powershell
     npm install -g rms-runtime-mobile-security
     ```
+
 * Make sure `frida-server` is up and running on the target device.
 * Launch RMS: `rms`
-* Open your browser at http://127.0.0.1:5491/
+* Open your browser at `http://127.0.0.1:5491/`
 * Attach to the app, find name with `adb shell pm list package | grep NAME`
-
 
 ### Genymotion
 
@@ -254,23 +254,25 @@ Genymotion is a robust Android emulator designed for developers, offering fast a
 * [Genymotion Device Image](https://www.genymotion.com/product-device-image/)
 * [Genymotion SaaS](https://www.genymotion.com/product-cloud/)
 
-
 ### Android SDK emulator
 
 Android Virtual Device (AVD) without Google Play Store.
 
 * Download the files for an API 25 build
-    ```powershell 
+
+    ```powershell
     sdkmanager "system-images;android-25;google_apis;x86_64"
     ```
 
 * Create a device based on what we downloaded previously
-    ```powershell 
+
+    ```powershell
     avdmanager create avd x86_64_api_25 -k "system-images;android-25;google_apis;x86_64"
     ```
 
 * Run the emulator
-    ```powershell 
+
+    ```powershell
     emulator @x86_64_api_25
 
     emulator -list-avds
@@ -279,21 +281,23 @@ Android Virtual Device (AVD) without Google Play Store.
     ```
 
 * Install the APK
-    ```powershell 
+
+    ```powershell
     adb install ./challenge.apk
     ```
 
 * Start the App
-    ```powershell 
+
+    ```powershell
     adb shell monkey -p com.scottyab.rootbeer.sample 1
     ```
-
 
 ### Mobile Security Framework Dynamic
 
 :warning: Dynamic Analysis will not work if you use MobSF docker container or setup MobSF inside a Virtual Machine.
 
 **Requirements**:
+
 * Genymotion (Supports x86_64 architecture Android 4.1 - 11.0, upto API 30)
     * Android 5.0 - 11.0 - uses Frida and works out of the box with zero configuration or setup.
     * Android 4.1 - 4.4 - uses Xposed Framework and requires MobSFy
@@ -304,9 +308,9 @@ Android Virtual Device (AVD) without Google Play Store.
     * AVD without Google Play Store
 
 Dynamic Analysis from MobSF grants you the following features:
+
 * Web API Viewer
 * Frida API Monitor
-
 
 ### Appium
 
@@ -314,6 +318,7 @@ Appium is an open-source project and ecosystem of related software, designed to 
 
 * Install appium: `npm install -g appium`
 * Install and validate the `uiautomator2` driver
+
     ```ps1
     export JAVA_HOME=/usr/lib/jvm/default-java
     export ANDROID_HOME=/home/user/Android/Sdk/
@@ -322,9 +327,11 @@ Appium is an open-source project and ecosystem of related software, designed to 
     appium driver install uiautomator2
     appium driver doctor uiautomator2
     ```
+
 * Start the server on the default host (0.0.0.0) and port (4723): `appium server`
 * Install the Appium Python client: `pip install Appium-Python-Client`
 * Use the [appium/appium-inspector](https://github.com/appium/appium-inspector) with the following capability
+
     ```json
     {
     "platformName": "Android",
@@ -338,17 +345,19 @@ Examples:
 * [quickstarts/js/test.js](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/js/test.js)
 * [quickstarts/js/test.rb](https://github.com/appium/appium/blob/master/packages/appium/sample-code/quickstarts/rb/test.rb)
 
-
 ### Flutter
 
 Repackage a Flutter Android application to allow Burp Suite proxy interception.
 
 * [ptswarm/reFlutter](https://github.com/ptswarm/reFlutter) - Flutter Reverse Engineering Framework
-    ```
+
+    ```ps1
     pip3 install reflutter
     reflutter application.apk
     ```
-* Sign the apk with [patrickfav/uber-apk-signer](https://github.com/patrickfav/uber-apk-signer/releases/tag/v1.2.1) 
+
+* Sign the apk with [patrickfav/uber-apk-signer](https://github.com/patrickfav/uber-apk-signer/releases/tag/v1.2.1)
+
     ```ps1
     java -jar ./uber-apk-signer-1.3.0.jar --apks release.apk
     java -jar ./uber-apk-signer.jar --allowResign -a release.RE.apk
@@ -357,12 +366,12 @@ Repackage a Flutter Android application to allow Burp Suite proxy interception.
 An alternative way to do it is using a rooted Android device with `zygisk-reflutter`.
 
 * [yohanes/zygisk-reflutter](https://github.com/yohanes/zygisk-reflutter) - Zygisk-based reFlutter (Rooted Android with Magisk installed and Zygisk Enabled)
+
     ```ps1
     adb push  zygiskreflutter_1.0.zip /sdcard/
     adb shell su -c magisk --install-module /sdcard/zygiskreflutter_1.0.zip
     adb reboot
     ```
-
 
 ## SSL Pinning Bypass
 
@@ -371,6 +380,7 @@ SSL certificate pinning in an APK involves embedding a server's public key or ce
 :warning: Android 9.0 is changing the defaults for Network Security Configuration to block all cleartext traffic.
 
 * [shroudedcode/apk-mitm](https://github.com/shroudedcode/apk-mitm) - A CLI application that automatically prepares Android APK files for HTTPS inspection
+
     ```powershell
     $ npx apk-mitm application.apk
     npx: 139 installé(s) en 12.206s
@@ -387,12 +397,16 @@ SSL certificate pinning in an APK involves embedding a server's public key or ce
     ✔ Signing patched APK file
     Done!  Patched file: ./application.apk
     ```
+
 * [51j0/Android-CertKiller](https://github.com/51j0/Android-CertKiller) - An automation script to bypass SSL/Certificate pinning in Android
+
     ```powershell
-    $ python main.py -w #(Wizard mode)
-    $ python main.py -p 'root/Desktop/base.apk' #(Manual mode)
+    python main.py -w #(Wizard mode)
+    python main.py -p 'root/Desktop/base.apk' #(Manual mode)
     ```
+
 * [frida/frida](https://github.com/frida/frida) - Universal SSL Pinning Bypass
+
     ```javascript
     $ adb devices
     $ adb root
@@ -412,9 +426,9 @@ SSL certificate pinning in an APK involves embedding a server's public key or ce
         }
     },0);
     ```
+
 * [m0bilesecurity/RMS-Runtime-Mobile-Security](https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security) - Certificate Pinning bypass script (all + okhttpv3)
 * [federicodotta/Brida](https://github.com/federicodotta/Brida) - The new bridge between Burp Suite and Frida
-
 
 ## Root Detection Bypass
 
@@ -422,7 +436,7 @@ Common root detection techniques:
 
 * Su binaries: `su`/`busybox`
 * Known Root Files/Paths : `Superuser.apk`
-* Root Management Apps: `Magisk`, `SuperSU `
+* Root Management Apps: `Magisk`, `SuperSU`
 * RW paths:  `/system`, `/data` directories
 * System Properties
 
@@ -431,7 +445,6 @@ Common bypass:
 * [fridantiroot](https://codeshare.frida.re/@dzonerzy/fridantiroot/) - `frida --codeshare dzonerzy/fridantiroot -f YOUR_BINARY`
 * [xamarin-antiroot](https://codeshare.frida.re/@Gand3lf/xamarin-antiroot/) - `frida --codeshare Gand3lf/xamarin-antiroot -f YOUR_BINARY`
 * [multiple-root-detection-bypass/](https://codeshare.frida.re/@KishorBal/multiple-root-detection-bypass/) - `frida --codeshare KishorBal/multiple-root-detection-bypass -f YOUR_BINARY`
-
 
 ## Android Debug Bridge
 
@@ -484,11 +497,10 @@ One more step, you need to pair the devices using a code.
 | `adb push <local> <remote>`  | Upload file                                    |
 | `adb shell screenrecord /sdcard/demo.mp4`| Record video of the screen         |
 | `adb shell am start -n com.test.abc` | Start an activity                      |
-| `adb shell am startservice ` | Start a service                                |
-| `adb shell am broadcast `    | Send a broadcast                               |
+| `adb shell am startservice` | Start a service                                |
+| `adb shell am broadcast`    | Send a broadcast                               |
 | `adb logcat *:D`             | Show log with Debug level                      |
 | `adb logcat -c`              | Clears the entire log                          |
-
 
 ## Android Virtual Device
 
@@ -505,7 +517,6 @@ emulator -avd Pixel_8_API_34 -writable-system
 | `-http-proxy X.X.X.X:8080`   | Set HTTP proxy |
 | `-port 5556`                 | Set the ADB TCP port number |
 
-
 ## Unlock Bootloader
 
 **Requirements**:
@@ -516,20 +527,23 @@ emulator -avd Pixel_8_API_34 -writable-system
 Unlock the bootloader will wipe the userdata partition. On some device these methods will require a key to successfully unlock the bootloader.
 
 * Method 1
+
     ```ps1
     adb reboot bootloader
     fastboot oem unlock
     ```
+
 * Method 2
+
     ```ps1
     adb reboot bootloader
     fastboot flashing unlock
     ```
+
 * Methods based on the chip
     * For Qualcomm devices, you can use EDL (Emergency Download Mode)
     * For MediaTek devices, BROM (Boot ROM) mode
     * For Unisoc devices, Research Download Mode.
-
 
 ## References
 

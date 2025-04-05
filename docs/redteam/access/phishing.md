@@ -2,22 +2,17 @@
 
 > TODO
 
-
 ## Opsec fail
 
 * wildcard
 
-
-
 ## GoPhish
-
 
 ### IOC
 
-* 
+*
 
 ## Evilginx
-
 
 ## References
 

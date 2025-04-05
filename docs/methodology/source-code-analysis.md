@@ -2,7 +2,6 @@
 
 > Source code analysis is the process of examining and reviewing the code of a software program to identify errors, vulnerabilities, and potential improvements. This can be performed manually by developers or through automated tools that scan the code for issues like security risks, coding standard violations, and performance inefficiencies.
 
-
 ## Semgrep
 
 > Lightweight static analysis for many languages. Find bug variants with patterns that look like source code.
@@ -42,7 +41,7 @@
 
 * Go to localhost:9000
 * Login with `admin:admin`
-* Create a local project 
+* Create a local project
 * Generate a token for the project
 * Use `sonar-scanner-cli` with the generated token
 
@@ -54,10 +53,9 @@
 
 :warning: remove dead symbolic links before scanning a folder.
 
-
 ## Psalm
 
->  A static analysis tool for finding errors in PHP applications
+> A static analysis tool for finding errors in PHP applications
 
 **Install**
 
@@ -76,8 +74,6 @@ composer require --dev vimeo/psalm
     ```
 
 * Use a Sarif viewer to see the results: [microsoft.github.io/sarif-web-component](https://microsoft.github.io/sarif-web-component/)
-
-
 
 ## CodeQL
 
@@ -100,7 +96,6 @@ codeql database analyze /codeql-dbs/example-repo javascript-code-scanning.qls --
 codeql database analyze <database> microsoft/coding-standards@1.0.0 github/security-queries --format=sarifv2.1.0 --output=query-results.sarif --download
 ```
 
-
 ## Snyk
 
 > Snyk CLI scans and monitors your projects for security vulnerabilities.
@@ -122,7 +117,6 @@ codeql database analyze <database> microsoft/coding-standards@1.0.0 github/secur
     snyk/snyk:gradle:6.4 test --org=my-org-name
     ```
 
-
 **Configuration**
 
 ```ps1
@@ -133,7 +127,6 @@ snyk code test
 # npm install snyk-to-html -g
 snyk code test --json | snyk-to-html -o results-opensource.html
 ```
-
 
 ## References
 

