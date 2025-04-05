@@ -6,7 +6,6 @@
 az webapp list
 ```
 
-
 ## Execute Commands
 
 ```ps1
@@ -20,20 +19,17 @@ Invoke-AzureRMWebAppShellCommand `
     -Command "whoami"
 ```
 
-
 ## SSH Connection
 
 First check if the SSH over HTTP connection is enabled: `(curl https://${appName}?app.scm.azurewebsites.net/webssh/host).statuscode`
-
 
 ```powershell
 az webapp create-remote-connection --subscription <SUBSCRIPTION-ID> --resource-group <RG-NAME> -n <APP-SERVICE-NAME>
 ```
 
-
 ## Kudu
 
-In Azure App Service, Kudu is the advanced management and deployment tool used for various operations such as continuous integration, troubleshooting, and diagnostic tasks for your web applications. It provides a set of utilities and features for managing your app’s environment, including access to application settings, log streams, and deployment management. 
+In Azure App Service, Kudu is the advanced management and deployment tool used for various operations such as continuous integration, troubleshooting, and diagnostic tasks for your web applications. It provides a set of utilities and features for managing your app’s environment, including access to application settings, log streams, and deployment management.
 
 You can access this Kudu app at the following URLs:
 
@@ -48,7 +44,6 @@ Key Features of Kudu in App Service:
 * **Environment Diagnostics**: Offers insights into the environment variables, app settings, and detailed diagnostic logs.
 * **Process Explorer**: Allows you to monitor and manage running processes in your app’s environment.
 * **Access to Logs**: Easily view, download, and stream logs for debugging and troubleshooting.
-
 
 ## References
 

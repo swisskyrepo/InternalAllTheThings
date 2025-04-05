@@ -1,6 +1,6 @@
 # Azure Services - DNS Suffix
 
-## DNS table 
+## DNS table
 
 Many Azure services generate custom endpoints with a suffix such as `.cloudapp.azure.com`, `.windows.net`. Below is a table of common services and their associated DNS suffixes.
 
@@ -26,14 +26,13 @@ These services can also be leveraged for domain fronting or communication with a
 | Logic App Suffix | .azurewebsites.net |
 | Queue Endpoint Suffix | .queue.core.windows.net |
 | Redis Cache Suffix | .redis.cache.windows.net |
-| Service Bus Suffix | .servicesbus.windows.net	 |
+| Service Bus Suffix | .servicesbus.windows.net  |
 | Service Fabric Suffix | .cloudapp.azure.com |
 | SQL Database Suffix | .database.windows.net |
 | Storage Endpoint Suffix | .core.windows.net |
 | Table Endpoint Suffix | .table.core.windows.net |
 | Traffic Manager Suffix | .trafficmanager.net |
 | Web Application Gateway Suffix | .cloudapp.azure.com |
-
 
 ## References
 

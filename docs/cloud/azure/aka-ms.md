@@ -1,6 +1,6 @@
 # aka.ms Shortcuts
 
-aka.ms is a URL shortening service used by Microsoft. It is commonly employed to create short, easily shareable links that redirect users to longer or more complex URLs, typically related to Microsoft services, products, or resources. 
+aka.ms is a URL shortening service used by Microsoft. It is commonly employed to create short, easily shareable links that redirect users to longer or more complex URLs, typically related to Microsoft services, products, or resources.
 
 ## Azure Active Directory - Admins
 
@@ -95,7 +95,6 @@ aka.ms is a URL shortening service used by Microsoft. It is commonly employed to
 |[aka.ms/entradeprecations](https://aka.ms/entradeprecations)|Entra/Azure AD related retirements/deprecations|
 |[aka.ms/entratemplates](https://aka.ms/entratemplates)|Email templates & posters to roll out Azure Active Directory features|
 |[aka.ms/Fileshare Migration](https://aka.ms/odsp-mm-fs)|Fileshare Migration Portal|
-
 
 ## References
 

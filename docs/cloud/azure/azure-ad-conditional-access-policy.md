@@ -16,7 +16,6 @@ Conditional Access is used to restrict access to resources to compliant devices 
 | Legacy Protocols          | / |
 | Domain Joined             | / |
 
-
 ## Bypassing CAP by faking device compliance
 
 ### Intune Company Portal Client ID Bypass
@@ -59,7 +58,6 @@ When the condition of CAP is `device.trustType -eq "<TYPE>"`, the values can be:
 * `Workplace`: Azure AD registered devices
 * `ServerAD`: Hybrid joined devices
 
-
 ## Bypassing CAP with user agent
 
 There are several devices you can use to authenticate and interact with a service.
@@ -71,7 +69,6 @@ Try several `User-Agent` to get access to the resources:
 * Android: `Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.117 Mobile Safari/537.36`
 * iOS: `Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/98.0.4758.85 Mobile/15E148 Safari/604.1`
 * WindowsPhone: `Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Microsoft; Lumia 650) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.85 Safari/537.36`
-
 
 ## Bypassing CAP with location
 

