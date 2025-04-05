@@ -14,12 +14,12 @@ Use the appropriate data collector to gather information for **BloodHound** or *
 * [c3c/ADExplorerSnapshot.py](https://github.com/c3c/ADExplorerSnapshot.py) - for local Active Directory (Generate BloodHound compatible JSON from AD Explorer snapshot)
 * [CrowdStrike/sccmhound](https://github.com/CrowdStrike/sccmhound) for local Active Directory (C# collector using Microsoft Configuration Manager)
 
-
 **Examples**:
 
 * Use [BloodHoundAD/AzureHound](https://github.com/BloodHoundAD/AzureHound) (more info: [Cloud - Azure Pentest](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Cloud%20-%20Azure%20Pentest.md#azure-recon-tools))
 
 * Use [BloodHoundAD/SharpHound.exe](https://github.com/BloodHoundAD/BloodHound) - run the collector on the machine using SharpHound.exe
+
   ```powershell
   .\SharpHound.exe -c all -d active.htb --searchforest
   .\SharpHound.exe -c all,GPOLocalGroup # all collection doesn't include GPOLocalGroup by default
@@ -30,18 +30,24 @@ Use the appropriate data collector to gather information for **BloodHound** or *
 
   .\SharpHound.exe -c All,GPOLocalGroup --outputdirectory C:\Windows\Temp --prettyprint --randomfilenames --collectallproperties --throttle 10000 --jitter 23  --outputprefix internalallthething
   ```
+
 * Use [BloodHoundAD/SharpHound.ps1](https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1) - run the collector on the machine using Powershell
+
   ```powershell
   Invoke-BloodHound -SearchForest -CSVFolder C:\Users\Public
   Invoke-BloodHound -CollectionMethod All  -LDAPUser <UserName> -LDAPPass <Password> -OutputDirectory <PathToFile>
   ```
+
 * Use [ly4k/Certipy](https://github.com/ly4k/Certipy) to collect certificates data
+
   ```ps1
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -bloodhound
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -old-bloodhound
   certipy find 'corp.local/john:Passw0rd@dc.corp.local' -vulnerable -hide-admins -username user@domain -password Password123
   ```
+
 * Use [NH-RED-TEAM/RustHound](https://github.com/OPENCYBER-FR/RustHound)
+
   ```ps1
   # Windows with GSSAPI session
   rusthound.exe -d domain.local --ldapfqdn domain
@@ -50,7 +56,9 @@ Use the appropriate data collector to gather information for **BloodHound** or *
   # Linux with username:password and ADCS module for @ly4k BloodHound version
   rusthound -d domain.local -u 'user@domain.local' -p 'Password123' -o /tmp/adcs --adcs -z
   ```
+
 * Use [FalconForceTeam/SOAPHound](https://github.com/FalconForceTeam/SOAPHound)
+
   ```ps1
   --buildcache: Only build cache and not perform further actions
   --bhdump: Dump BloodHound data
@@ -63,12 +71,16 @@ Use the appropriate data collector to gather information for **BloodHound** or *
   SOAPHound.exe -c c:\temp\cache.txt --certdump -o c:\temp\bloodhound-output
   SOAPHound.exe --dnsdump -o c:\temp\dns-output
   ```
+
 * Use [fox-it/BloodHound.py](https://github.com/fox-it/BloodHound.py)
-  ```
+
+  ```ps1
   pip install bloodhound
-  bloodhound-python -d lab.local -u rsmith -p Winter2017 -gc LAB2008DC01.lab.local -c all
+  bloodhound-python -d domain.local -u username -p password -gc LAB2008DC01.domain.local -c all
   ```
+
 * Use [c3c/ADExplorerSnapshot.py](https://github.com/c3c/ADExplorerSnapshot.py) to query data from SysInternals/ADExplorer snapshot  (ADExplorer remains a legitimate binary signed by Microsoft, avoiding detection with security solutions).
+
   ```py
   ADExplorerSnapshot.py <snapshot path> -o <*.json output folder path>
   ```
@@ -87,7 +99,7 @@ root@payload$ ./bloodhound --no-sandbox
 Go to http://127.0.0.1:7474, use db:bolt://localhost:7687, user:neo4J, pass:neo4j
 ```
 
-NOTE: Currently BloodHound Community Edition is still a work in progress, it is highly recommended to stay on the original [BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound/) version. 
+NOTE: Currently BloodHound Community Edition is still a work in progress, it is highly recommended to stay on the original [BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound/) version.
 
 ```ps1
 git clone https://github.com/SpecterOps/BloodHound
@@ -107,13 +119,13 @@ You can add some custom queries like :
 
 Replace the customqueries.json file located at `/home/username/.config/bloodhound/customqueries.json` or `C:\Users\USERNAME\AppData\Roaming\BloodHound\customqueries.json`.
 
-
 ## Using PowerView
   
-- **Get Current Domain:** `Get-NetDomain`
-- **Enum Other Domains:** `Get-NetDomain -Domain <DomainName>`
-- **Get Domain SID:** `Get-DomainSID`
-- **Get Domain Policy:** 
+* **Get Current Domain:** `Get-NetDomain`
+* **Enum Other Domains:** `Get-NetDomain -Domain <DomainName>`
+* **Get Domain SID:** `Get-DomainSID`
+* **Get Domain Policy:**
+
   ```powershell
   Get-DomainPolicy
 
@@ -121,12 +133,16 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   (Get-DomainPolicy)."system access"
   (Get-DomainPolicy)."kerberos policy"
   ```
-- **Get Domain Controlers:** 
+
+* **Get Domain Controlers:**
+
   ```powershell
   Get-NetDomainController
   Get-NetDomainController -Domain <DomainName>
   ```
-- **Enumerate Domain Users:** 
+
+* **Enumerate Domain Users:**
+
   ```powershell
   Get-NetUser
   Get-NetUser -SamAccountName <user> 
@@ -148,7 +164,9 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Enumerate domain machines of the current/specified domain where specific users are logged into
   Find-DomainUserLocation -Domain <DomainName> | Select-Object UserName, SessionFromName
   ```
-- **Enum Domain Computers:** 
+
+* **Enum Domain Computers:**
+
   ```powershell
   Get-NetComputer -FullData
   Get-DomainGroup
@@ -156,7 +174,9 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Enumerate Live machines 
   Get-NetComputer -Ping
   ```
-- **Enum Groups and Group Members:**
+
+* **Enum Groups and Group Members:**
+
   ```powershell
   Get-NetGroupMember -GroupName "<GroupName>" -Domain <DomainName>
   
@@ -166,7 +186,9 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Returns all GPOs in a domain that modify local group memberships through Restricted Groups or Group Policy Preferences
   Get-DomainGPOLocalGroup | Select-Object GPODisplayName, GroupName
   ```
-- **Enumerate Shares**
+
+* **Enumerate Shares**
+
   ```powershell
   #Enumerate Domain Shares
   Find-DomainShare
@@ -174,7 +196,9 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Enumerate Domain Shares the current user has access
   Find-DomainShare -CheckShareAccess
   ```
-- **Enum Group Policies:** 
+
+* **Enum Group Policies:**
+
   ```powershell
   Get-NetGPO
 
@@ -185,12 +209,16 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Get users that are part of a Machine's local Admin group
   Find-GPOComputerAdmin -ComputerName <ComputerName>
   ```
-- **Enum OUs:** 
+
+* **Enum OUs:**
+
   ```powershell
   Get-NetOU -FullData 
   Get-NetGPO -GPOname <The GUID of the GPO>
   ```
-- **Enum ACLs:** 
+
+* **Enum ACLs:**
+
   ```powershell
   # Returns the ACLs associated with the specified account
   Get-ObjectAcl -SamAccountName <AccountName> -ResolveGUIDs
@@ -202,12 +230,16 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Check the ACLs associated with a specified path (e.g smb share)
   Get-PathAcl -Path "\\Path\Of\A\Share"
   ```
-- **Enum Domain Trust:** 
+
+* **Enum Domain Trust:**
+
   ```powershell
   Get-NetDomainTrust
   Get-NetDomainTrust -Domain <DomainName>
   ```
-- **Enum Forest Trust:** 
+
+* **Enum Forest Trust:**
+
   ```powershell
   Get-NetForestDomain
   Get-NetForestDomain Forest <ForestName>
@@ -220,7 +252,9 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   Get-NetForestTrust
   Get-NetDomainTrust -Forest <ForestName>
   ```
-- **User Hunting:** 
+
+* **User Hunting:**
+
   ```powershell
   #Finds all machines on the current domain where the current user has local admin access
   Find-LocalAdminAccess -Verbose
@@ -237,37 +271,43 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   Invoke-UserHunter -CheckAccess
   ```
 
-
 ## Using AD Module
 
-- **Get Current Domain:** `Get-ADDomain`
-- **Enum Other Domains:** `Get-ADDomain -Identity <Domain>`
-- **Get Domain SID:** `Get-DomainSID`
-- **Get Domain Controlers:** 
+* **Get Current Domain:** `Get-ADDomain`
+* **Enum Other Domains:** `Get-ADDomain -Identity <Domain>`
+* **Get Domain SID:** `Get-DomainSID`
+* **Get Domain Controlers:**
 
   ```powershell
   Get-ADDomainController
   Get-ADDomainController -Identity <DomainName>
   ```
   
-- **Enumerate Domain Users:** 
+* **Enumerate Domain Users:**
+
   ```powershell
   Get-ADUser -Filter * -Identity <user> -Properties *
 
   #Get a specific "string" on a user's attribute
   Get-ADUser -Filter 'Description -like "*wtver*"' -Properties Description | select Name, Description
   ```
-- **Enum Domain Computers:** 
+
+* **Enum Domain Computers:**
+
   ```powershell
   Get-ADComputer -Filter * -Properties *
   Get-ADGroup -Filter * 
   ```
-- **Enum Domain Trust:** 
+
+* **Enum Domain Trust:**
+
   ```powershell
   Get-ADTrust -Filter *
   Get-ADTrust -Identity <DomainName>
   ```
-- **Enum Forest Trust:** 
+
+* **Enum Forest Trust:**
+
   ```powershell
   Get-ADForest
   Get-ADForest -Identity <ForestName>
@@ -275,30 +315,36 @@ Replace the customqueries.json file located at `/home/username/.config/bloodhoun
   #Domains of Forest Enumeration
   (Get-ADForest).Domains
   ```
- - **Enum Local AppLocker Effective Policy:**
+
+* **Enum Local AppLocker Effective Policy:**
+
  ```powershell
  Get-AppLockerPolicy -Effective | select -ExpandProperty RuleCollections
  ```
 
-
 ## User Hunting
 
-Sometimes you need to find a machine where a specific user is logged in.    
+Sometimes you need to find a machine where a specific user is logged in.
 You can remotely query every machines on the network to get a list of the users's sessions.
 
 * netexec
+
   ```ps1
   nxc smb 10.10.10.0/24 -u Administrator -p 'P@ssw0rd' --sessions
   SMB         10.10.10.10    445    WIN-8OJFTLMU1IG  [+] Enumerated sessions
   SMB         10.10.10.10    445    WIN-8OJFTLMU1IG  \\10.10.10.10            User:Administrator
   ```
+
 * Impacket Smbclient
+
   ```ps1
   $ impacket-smbclient Administrator@10.10.10.10
   # who
   host:  \\10.10.10.10, user: Administrator, active:     1, idle:     0
   ```
+
 * PowerView Invoke-UserHunter
+
   ```ps1
   # Find computers were a Domain Admin OR a specified user has a session
   Invoke-UserHunter
@@ -306,12 +352,12 @@ You can remotely query every machines on the network to get a list of the users'
   Invoke-UserHunter -Stealth
   ```
 
-
 ## RID cycling
 
 Enumerate users from the Domain Controllers.
 
 * Using `netexec`
+
   ```ps1
   netexec smb 10.10.11.231 -u guest -p '' --rid-brute 10000 --log rid-brute.txt
   SMB         10.10.11.231    445    DC01             [*] Windows 10 / Server 2019 Build 17763 x64 (name:DC01) (domain:rebound.htb) (signing:True) (SMBv1:False)
@@ -323,14 +369,15 @@ Enumerate users from the Domain Controllers.
   ```
 
 * Using Impacket script [lookupsid.py](https://github.com/fortra/impacket/blob/master/examples/lookupsid.py)
+
   ```ps1
   lookupsid.py -no-pass 'guest@rebound.htb' 20000
   ```
 
-
 ## Other Interesting Commands
 
-- **Find Domain Controllers**
+* **Find Domain Controllers**
+
   ```ps1
   nslookup domain.com
   nslookup -type=srv _ldap._tcp.dc._msdcs.<domain>.com
@@ -340,7 +387,6 @@ Enumerate users from the Domain Controllers.
   $Env:LOGONSERVER 
   echo %LOGONSERVER%
   ```
-
 
 ## References
 

