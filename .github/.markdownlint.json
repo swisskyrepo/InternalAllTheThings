@@ -2,6 +2,7 @@
   "default": true,
   "MD013": false,
   "MD036": false,
+  "MD033": false,
   "no-duplicate-heading": {
     "siblings_only": true
   },
