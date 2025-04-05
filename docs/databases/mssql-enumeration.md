@@ -16,12 +16,10 @@
     - [Gather 5 Entries from a Specific Table](#gather-5-entries-from-a-specific-table)
     - [Dump common information from server to files](#dump-common-information-from-server-to-files)
 
-
 ## Tools
 
-* [NetSPI/PowerUpSQL](https://github.com/NetSPI/PowerUpSQL) - A PowerShell Toolkit for Attacking SQL Server
-* [skahwah/SQLRecon](https://github.com/skahwah/SQLRecon/) - A C# MS SQL toolkit designed for offensive reconnaissance and post-exploitation.
-
+- [NetSPI/PowerUpSQL](https://github.com/NetSPI/PowerUpSQL) - A PowerShell Toolkit for Attacking SQL Server
+- [skahwah/SQLRecon](https://github.com/skahwah/SQLRecon/) - A C# MS SQL toolkit designed for offensive reconnaissance and post-exploitation.
 
 ## Identify Instances and Databases
 
@@ -30,7 +28,6 @@
 ```ps1
 Get-SQLInstanceLocal
 ```
-
 
 ### Discover Domain SQL Server Instances
 
@@ -49,10 +46,9 @@ Get-SQLInstanceBroadcast -Verbose
 Get-SQLInstanceScanUDPThreaded -Verbose -ComputerName SQLServer1
 ```
 
-### Identify Encrypted databases 
+### Identify Encrypted databases
 
 Note: These are automatically decrypted for admins
-
 
 ```ps1
 Get-SQLDatabase -Username sa -Password Password1234 -Instance "<DBSERVERNAME\DBInstance>" -Verbose | Where-Object {$_.is_encrypted -eq "True"}
@@ -64,37 +60,42 @@ Get-SQLDatabase -Username sa -Password Password1234 -Instance "<DBSERVERNAME\DBI
 Get-SQLInstanceDomain | Get-Query "select @@version"
 ```
 
-
 ## Identify Users and Roles
 
-* Query Current User & determine if the user is a sysadmin
+- Query Current User & determine if the user is a sysadmin
+
     ```sql
     select suser_sname()
     Select system_user
     select is_srvrolemember('sysadmin')
     ```
 
-* Current Role
+- Current Role
+
     ```sql
     select user
     ```
 
-* All Logins on Server
+- All Logins on Server
+
     ```sql
     Select * from sys.server_principals where type_desc != 'SERVER_ROLE'
     ```
 
-* All Database Users for a Database 
+- All Database Users for a Database
+
     ```sql
     Select * from sys.database_principals where type_desc != 'database_role';
     ```
 
-* List All Sysadmins
+- List All Sysadmins
+
     ```sql
     SELECT name,type_desc,is_disabled FROM sys.server_principals WHERE IS_SRVROLEMEMBER ('sysadmin',name) = 1
     ```
 
-* List All Database Roles
+- List All Database Roles
+
     ```sql
     SELECT DB1.name AS DatabaseRoleName,
     isnull (DB2.name, 'No members') AS DatabaseUserName
@@ -107,7 +108,6 @@ Get-SQLInstanceDomain | Get-Query "select @@version"
     ORDER BY DB1.name;
     ```
 
-
 ## Identify Sensitive Information
 
 ### Get Tables from a Specific Database
@@ -118,25 +118,25 @@ Get Column Details from a Table
 Get-SQLInstanceDomain | Get-SQLColumn -DatabaseName <DBName> -TableName <TableName>
 ```
 
+- Current database
 
-* Current database
     ```sql
     select db_name()
     ```
 
-* List all tables
+- List all tables
+
     ```sql
     select table_name from information_schema.tables
     ```
 
-* List all databases
+- List all databases
+
     ```sql
     select name from master..sysdatabases
     ```
 
-
 ### Gather 5 Entries from Each Column
-
 
 ```ps1
 Get-SQLInstanceDomain | Get-SQLColumnSampleData -Keywords "<columnname1,columnname2,columnname3,columnname4,columnname5>" -Verbose -SampleSize 5
@@ -144,11 +144,9 @@ Get-SQLInstanceDomain | Get-SQLColumnSampleData -Keywords "<columnname1,columnna
 
 ### Gather 5 Entries from a Specific Table
 
-
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query 'select TOP 5 * from <DatabaseName>.dbo.<TableName>'
 ```
-
 
 ### Dump common information from server to files
 
@@ -158,9 +156,7 @@ Invoke-SQLDumpInfo -Verbose -Instance SQLSERVER1\Instance1 -csv
 
 ## ee
 
-
-
 ## References
 
-* [PowerUpSQL Cheat Sheet & SQL Server Queries - Leo Pitt](https://medium.com/@D00MFist/powerupsql-cheat-sheet-sql-server-queries-40e1c418edc3)
-* [PowerUpSQL Cheat Sheet - Scott Sutherland](https://github.com/NetSPI/PowerUpSQL/wiki/PowerUpSQL-Cheat-Sheet)
+- [PowerUpSQL Cheat Sheet & SQL Server Queries - Leo Pitt](https://medium.com/@D00MFist/powerupsql-cheat-sheet-sql-server-queries-40e1c418edc3)
+- [PowerUpSQL Cheat Sheet - Scott Sutherland](https://github.com/NetSPI/PowerUpSQL/wiki/PowerUpSQL-Cheat-Sheet)

