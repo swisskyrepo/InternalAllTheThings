@@ -9,19 +9,19 @@ IBM Cloud offers a variety of managed database services that allow organizations
 - **Description**: PostgreSQL is an open-source relational database known for its robustness, extensibility, and SQL compliance. It supports advanced data types and offers features like complex queries, ACID compliance, and full-text search.
 
 - **Key Features**:
-  - Automated backups and recovery
-  - High availability with clustering options
-  - Scale horizontally and vertically with ease
-  - Support for JSON and unstructured data
-  - Advanced security features including encryption
+    - Automated backups and recovery
+    - High availability with clustering options
+    - Scale horizontally and vertically with ease
+    - Support for JSON and unstructured data
+    - Advanced security features including encryption
 
 - **Use Cases**:
-  - Web applications
-  - Data analytics
-  - Geospatial data applications
-  - E-commerce platforms
+    - Web applications
+    - Data analytics
+    - Geospatial data applications
+    - E-commerce platforms
 
- #### Connecting to PostgreSQL
+#### Connecting to PostgreSQL
 
 You can connect to a PostgreSQL database using various programming languages. Here's an example in Python using the `psycopg2` library.
 
@@ -54,19 +54,20 @@ conn.close()
 - **Description**: MongoDB is a leading NoSQL database that provides a flexible data model, enabling developers to work with unstructured data and large volumes of data. It uses a document-oriented data model and is designed for scalability and performance.
 
 - **Key Features**:
-  - Automatic sharding for horizontal scaling
-  - Built-in replication for high availability
-  - Rich querying capabilities and indexing options
-  - Full-text search and aggregation framework
-  - Flexible schema design
+    - Automatic sharding for horizontal scaling
+    - Built-in replication for high availability
+    - Rich querying capabilities and indexing options
+    - Full-text search and aggregation framework
+    - Flexible schema design
 
 - **Use Cases**:
-  - Content management systems
-  - Real-time analytics
-  - Internet of Things (IoT) applications
-  - Mobile applications
+    - Content management systems
+    - Real-time analytics
+    - Internet of Things (IoT) applications
+    - Mobile applications
 
 #### Connecting to MongoDB
+
 You can connect to MongoDB using various programming languages. Here's an example in JavaScript using the mongodb library.
 
 ```javascript

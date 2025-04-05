@@ -24,8 +24,9 @@ Beacon Command Elevators
 
 ## Persistence Kit
 
-* https://github.com/0xthirteen/MoveKit
-* https://github.com/fireeye/SharPersist
+* [0xthirteen/MoveKit](https://github.com/0xthirteen/MoveKit)
+* [fireeye/SharPersist](https://github.com/fireeye/SharPersist)
+
     ```powershell
     # List persistences
     SharPersist -t schtaskbackdoor -m list
@@ -44,27 +45,24 @@ Beacon Command Elevators
     SharPersist -t schtask -n "Some Task" -m remove
     ```
 
-
 ## Resource Kit
 
 > The Resource Kit is Cobalt Strike's means to change the HTA, PowerShell, Python, VBA, and VBS script templates Cobalt Strike uses in its workflows
-
 
 ## Artifact Kit
 
 > Cobalt Strike uses the Artifact Kit to generate its executables and DLLs. The Artifact Kit is a source code framework to build executables and DLLs that evade some anti-virus products. The Artifact Kit build script creates a folder with template artifacts for each Artifact Kit technique. To use a technique with Cobalt Strike, go to Cobalt Strike -> Script Manager, and load the artifact.cna script from that technique's folder.
 
-Artifact Kit (Cobalt Strike 4.0) - https://www.youtube.com/watch?v=6mC21kviwG4 :
+[Artifact Kit (Cobalt Strike 4.0)](https://www.youtube.com/watch?v=6mC21kviwG4)
 
-- Download the artifact kit : `Go to Help -> Arsenal to download Artifact Kit (requires a licensed version of Cobalt Strike)`
-- Install the dependencies : `sudo apt-get install mingw-w64`
-- Edit the Artifact code
+* Download the artifact kit : `Go to Help -> Arsenal to download Artifact Kit (requires a licensed version of Cobalt Strike)`
+* Install the dependencies : `sudo apt-get install mingw-w64`
+* Edit the Artifact code
     * Change pipename strings
     * Change `VirtualAlloc` in `patch.c`/`patch.exe`, e.g: HeapAlloc
     * Change Import
-- Build the Artifact
-- Cobalt Strike -> Script Manager > Load .cna
-
+* Build the Artifact
+* Cobalt Strike -> Script Manager > Load .cna
 
 ## Mimikatz Kit
 
@@ -72,13 +70,11 @@ Artifact Kit (Cobalt Strike 4.0) - https://www.youtube.com/watch?v=6mC21kviwG4 :
 * Load the mimikatz.cna aggressor script
 * Use mimikatz functions as normal
 
-
 ## Sleep Mask Kit
 
 > The Sleep Mask Kit is the source code for the sleep mask function that is executed to obfuscate Beacon, in memory, prior to sleeping.
 
 Use the included `build.sh` or `build.bat` script to build the Sleep Mask Kit on Kali Linux or Microsoft Windows. The script builds the sleep mask object file for the three types of Beacons (default, SMB, and TCP) on both x86 and x64 architectures in the sleepmask directory. The default type supports HTTP, HTTPS, and DNS Beacons.
-
 
 ## Mutator Kit
 
@@ -91,13 +87,11 @@ OBFUSCATIONS=substitution mutator.sh x64 -emit-llvm -S example.c -o example_with
 mutator.sh x64 -c -DIMPL_CHKSTK_MS=1 -DMASK_TEXT_SECTION=1 -o sleepmask.x64.o src49/sleepmask.c
 ```
 
-
 ## Thread Stack Spoofer
 
 > An advanced in-memory evasion technique that spoofs Thread Call Stack. This technique allows to bypass thread-based memory examination rules and better hide shellcodes while in-process memory.
 
 Thread Stack Spoofer is now enabled by default in the Artifact Kit, it is possible to disable it via the option `artifactkit_stack_spoof` in the config file `arsenal_kit.config`.
-
 
 ## References
 
