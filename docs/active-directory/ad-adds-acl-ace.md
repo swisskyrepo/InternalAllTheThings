@@ -21,7 +21,7 @@ An **Access Control List (ACL)** is a collection of Access Control Entries (ACEs
 ### User/Computer
 
 We can set a **SPN** on a target account, request a Service Ticket (ST), then grab its hash and kerberoast it.
-    
+
 * Windows/Linux
 
   ```ps1
