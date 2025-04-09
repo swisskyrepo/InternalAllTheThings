@@ -354,9 +354,18 @@ You can remotely query every machines on the network to get a list of the users'
 
 ## RID cycling
 
-Enumerate users from the Domain Controllers.
+In Windows, every security principal (user, group, etc.) has a Security Identifier (SID). The SID is a unique identifier used for access control.
 
-* Using `netexec`
+```ps1
+S-1-5-21-<domain>-<RID>
+```
+
+* `S-1-5-21-<domain>` = Base domain SID
+* `<RID>` = Unique ID assigned to a user/group
+
+RID cycling involves brute-forcing a range of RIDs (like 500–1500) by appending them to the known domain SID, and attempting to resolve each SID into a username.
+
+* Using [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec)
 
   ```ps1
   netexec smb 10.10.11.231 -u guest -p '' --rid-brute 10000 --log rid-brute.txt
@@ -368,7 +377,7 @@ Enumerate users from the Domain Controllers.
   SMB         10.10.11.231    445    DC01             502: rebound\krbtgt (SidTypeUser)
   ```
 
-* Using Impacket script [lookupsid.py](https://github.com/fortra/impacket/blob/master/examples/lookupsid.py)
+* Using Impacket script [impacket/lookupsid.py](https://github.com/fortra/impacket/blob/master/examples/lookupsid.py)
 
   ```ps1
   lookupsid.py -no-pass 'guest@rebound.htb' 20000

@@ -2,10 +2,10 @@
 
 ## Passive Recon
 
-* Using [Shodan](https://www.shodan.io/) to detect similar app
+* Using [shodan.io](https://www.shodan.io/), [fofa.info](https://en.fofa.info/), [zoomeye.ai](https://www.zoomeye.ai/) or [odin.io](https://search.odin.io/hosts) to detect similar app
 
-  ```bash
-  can be integrated with nmap (https://github.com/glennzw/shodan-hq-nse)
+  ```ps1
+  # https://github.com/glennzw/shodan-hq-nse
   nmap --script shodan-hq.nse --script-args 'apikey=<yourShodanAPIKey>,target=<hackme>'
   ```
 

