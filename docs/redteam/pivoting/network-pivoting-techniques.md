@@ -9,6 +9,7 @@
     * [Local Port Forwarding](#local-port-forwarding)
     * [Remote Port Forwarding](#remote-port-forwarding)
 * [Proxychains](#proxychains)
+* [Proxifier](#proxifier)
 * [Graftcp](#graftcp)
 * [Web SOCKS - reGeorg](#web-socks---regeorg)
 * [Web SOCKS - pivotnacci](#web-socks---pivotnacci)
@@ -97,19 +98,28 @@ ssh -R 3389:10.1.1.224:3389 root@10.11.0.32
 ```bash
 [ProxyList]
 socks4 localhost 8080
+socks5 localhost 8081
 ```
 
 Set the SOCKS4 proxy then `proxychains nmap -sT 192.168.5.6`
 
+## Proxifier
+
+Proxifier allows network applications that do not support working through proxy servers to operate through a SOCKS or HTTPS proxy and chains.
+
+* [proxifier](https://www.proxifier.com/) - The Most Advanced Proxy Client
+
+Open Proxifier, go to **Profile** -> **Proxy Servers** and **Add a new proxy entry**, which will point at the IP address and Port of your SOCKS proxy.
+
+Go to **Profile** -> **Proxification Rules**. This is where you can add rules that tell Proxifier when and where to proxy specific applications. Multiple applications can be added to the same rule.
+
 ## Graftcp
 
-> A flexible tool for redirecting a given program's TCP traffic to SOCKS5 or HTTP proxy.
+* [hmgle/graftcp](https://github.com/hmgle/graftcp) - A flexible tool for redirecting a given program's TCP traffic to SOCKS5 or HTTP proxy.
 
 :warning: Same as proxychains, with another mechanism to "proxify" which allow Go applications.
 
 ```ps1
-# https://github.com/hmgle/graftcp
-
 # Create a SOCKS5, using Chisel or another tool and forward it through SSH
 (attacker) $ ssh -fNT -i /tmp/id_rsa -L 1080:127.0.0.1:1080 root@IP_VPS
 (vps) $ ./chisel server --tls-key ./key.pem --tls-cert ./cert.pem -p 8443 -reverse 

@@ -17,6 +17,9 @@ By default the first domain created if the Forest Root.
     ```
 
 - Replace 502 with 519 to represent Enterprise Admins
+
+**Exploitation**:
+
 - Create golden ticket and attack parent domain.
 
     ```powershell

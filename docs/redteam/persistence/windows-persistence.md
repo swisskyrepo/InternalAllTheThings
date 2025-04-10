@@ -508,9 +508,11 @@ Create a malicious **HID.dll** in  `C:\Program Files\Common Files\microsoft shar
 
 > Inject a master password into the LSASS process of a Domain Controller.
 
-Requirements:
+**Requirements**:
 
 * Domain Administrator (SeDebugPrivilege) or `NTAUTHORITY\SYSTEM`
+
+**Exploitation**:
 
 ```powershell
 # Execute the skeleton key attack

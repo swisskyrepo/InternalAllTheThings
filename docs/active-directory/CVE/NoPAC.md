@@ -15,11 +15,11 @@ The attacker can then perform S4U2Self and request a ST to itself as any user.
 
 Since the machine account with the sAMAccountName set to 'DC' has been renamed, the KDC will try to find the machine account by appending a '$', which will then match the domain controller. The KDC will then issue a valid ST for the domain controller.
 
-**Requirements**
+**Requirements**:
 
 * MachineAccountQuota > 0
 
-**Check for exploitation**
+**Check for exploitation**:
 
 * Check the MachineAccountQuota of the account
 
@@ -34,7 +34,7 @@ Since the machine account with the sAMAccountName set to 'DC' has been renamed, 
   netexec smb 10.10.10.10 -u '' -p '' -d domain -M nopac
   ```
 
-**Exploitation**
+**Exploitation**:
 
 1. Create a computer account
 
