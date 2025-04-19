@@ -4,6 +4,15 @@
 
 * Use generic name for DNS, avoid company names
 * Use wildcard (*) when issuing certificates to avoid leaking internal name
+* Do not use the default certificates embedded in your C2: [elastic/Default Cobalt Strike Team Server Certificate](https://www.elastic.co/docs/reference/security/prebuilt-rules/rules/network/command_and_control_cobalt_strike_default_teamserver_cert), [zeek/zeek_default_cobalt_strike_certificate](https://detection.fyi/sigmahq/sigma/network/zeek/zeek_default_cobalt_strike_certificate/)
+
+    ```cs
+    (event.dataset: network_traffic.tls or event.category: (network or network_traffic))
+    and (tls.server.hash.md5:950098276A495286EB2A2556FBAB6D83
+    or tls.server.hash.sha1:6ECE5ECE4192683D2D84E25B0BA7E04F9CB7EB7C
+    or tls.server.hash.sha256:87F2085C32B6A2CC709B365F55873E207A9CAA10BFFECF2FD16D3CF9D94D390C)
+    ```
+
 * Disable staging endpoints or restrict the access
 * Do not upload your stealthy binaries to VirusTotal or other online scanners
 * Guardrails your payload to trigger for a specific user/domain/computer name
@@ -18,7 +27,8 @@
     * Use a beacon object file (BOF) to bring your own whoami
 * DCSync (Replication) is always done between domain controllers
     * DCSync from machine accounts look more legit than with a user account
-    * You don’t need to dump the whole database, the account krbtgt will grant you every access you need.
+    * You don't need to dump the whole database, the account krbtgt will grant you every access you need.
+* Kerberoasting must use the correct encryption, RC4 is often the default in offensive tool instead of AES.
 
 ## IOC
 
@@ -30,7 +40,7 @@
 
 **Impacket**:
 
-* smbexec.py is using a service to execute commands. In the earliest version, it was named `BTOBTO` but it has now 8 random characters.
+* smbexec.py is using a service to execute commands. In the earliest version, it was named `BTOBTO` but it has now 8 random characters. Change it to 10+ characters to break other correlation rules.
 * psexec.py is based on a well known service released on January 2012: [kavika13/RemComSvc](https://github.com/kavika13/RemCom)
 * wmiexec.py every command will be prefixed with `cmd.exe /Q` /c : [impacket/wmiexec.py#L127](https://github.com/fortra/impacket/blob/master/examples/wmiexec.py#L127)
 
