@@ -1,4 +1,4 @@
-# Drone CI
+# CI/CD - Drone CI
 
 The configuration files for Drone builds are located in `.drone.yml`\
 Drone build are often self-hosted, this means that you may gain excessive privileges to the kubernetes cluster that runs the runners, or to the hosting cloud environment.

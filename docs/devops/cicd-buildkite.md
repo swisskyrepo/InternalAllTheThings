@@ -1,4 +1,4 @@
-# BuildKite
+# CI/CD - BuildKite
 
 The configuration files for BuildKite builds are located in `.buildkite/*.yml`\
 BuildKite build are often self-hosted, this means that you may gain excessive privileges to the kubernetes cluster that runs the runners, or to the hosting cloud environment.

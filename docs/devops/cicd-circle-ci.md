@@ -1,4 +1,4 @@
-# CircleCI
+# CI/CD - CircleCI
 
 The configuration files for CircleCI builds are located in `.circleci/config.yml`\
 By default - CircleCI pipelines don't build forked pull requests. It's an opt-in feature that should be enabled by the pipeline owners.

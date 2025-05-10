@@ -1,4 +1,4 @@
-# Azure DevOps
+# CI/CD - Azure DevOps
 
 ## Azure Pipelines
 
@@ -14,3 +14,7 @@ trigger:
 pr:
 - master
 ```
+
+## References
+
+- [Azure DevOps CICD Pipelines - Command Injection with Parameters, Variables and a discussion on Runner hijacking - Sana Oshika - May 1 2023](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)

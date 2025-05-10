@@ -1,8 +1,11 @@
-# GitHub Actions
+# CI/CD - GitHub Actions
+
+GitHub Actions is GitHub’s built-in CI/CD automation tool that lets you build, test, and deploy your code right from your GitHub repository. It runs workflows triggered by events like code pushes, pull requests, or manual triggers.
 
 ## Default Action
 
-The configuration files for GH actions are located in the directory `.github/workflows/`\
+The configuration files for GH actions are located in the directory `.github/workflows/`
+
 You can tell if the action builds pull requests based on its trigger (`on`) instructions:
 
 ```yaml
@@ -22,6 +25,27 @@ jobs:
     name: Command execution
     steps:
     - run: echo whoami"
+```
+
+`workflow_dispatch` is a special trigger in GitHub Actions that allows you to manually trigger a workflow from the GitHub UI or via the GitHub API.
+
+```yml
+name: example
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+      - name: Execute
+        run: |
+          whoami
 ```
 
 ## Misconfigured Actions
@@ -50,7 +74,7 @@ Analyze repositories to find misconfigured Github actions.
 
 ![GitHub-Actions-Attack-Diagram](https://raw.githubusercontent.com/jstawinski/GitHub-Actions-Attack-Diagram/refs/heads/main/GitHub%20Actions%20Attack%20Diagram.svg)
 
-### Repo Jacking
+### Repository Hijacking
 
 When the action is using a non-existing action, Github username or organization.
 
