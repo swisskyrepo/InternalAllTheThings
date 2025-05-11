@@ -31,5 +31,4 @@
 - [Poisoned Pipeline Execution](https://web.archive.org/web/20240226215436/https://www.cidersecurity.io/top-10-cicd-security-risks/poisoned-pipeline-execution-ppe/)
 - [DEF CON 25 - Exploiting Continuous Integration (CI) and Automated Build systems - spaceB0x - 2 nov. 2017](https://youtu.be/mpUDqo7tIk8)
 - [Controlling the Source: Abusing Source Code Management Systems - Brett Hawkins - August 9, 2022](https://securityintelligence.com/posts/abusing-source-code-management-systems/)
-- [CI/CD SECRETS EXTRACTION, TIPS AND TRICKS - Hugo Vincent, Théo Louis-Tisserand - 01/03/2023](https://www.synacktiv.com/publications/cicd-secrets-extraction-tips-and-tricks.html)
 - [Fixing Typos and Breaching Microsoft’s Perimeter - John Stawinski IV - April 15, 2024](https://johnstawinski.com/2024/04/15/fixing-typos-and-breaching-microsofts-perimeter/)

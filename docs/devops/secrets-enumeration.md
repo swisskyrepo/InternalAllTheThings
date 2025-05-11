@@ -41,3 +41,7 @@
     SCMKit.exe -s gitlab -m listsnippet -c userName:password -u https://gitlab.something.local
     SCMKit.exe -s gitlab -m listsnippet -c apikey -u https://gitlab.something.local
     ```
+
+## References
+
+* [CI/CD SECRETS EXTRACTION, TIPS AND TRICKS - Hugo Vincent, Théo Louis-Tisserand - 01/03/2023](https://www.synacktiv.com/publications/cicd-secrets-extraction-tips-and-tricks.html)

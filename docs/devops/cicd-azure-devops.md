@@ -15,6 +15,20 @@ pr:
 - master
 ```
 
+## Secret Extractions
+
+Extract secrets for these service connection:
+
+* AzureRM
+* GitHub
+* AWS
+* SonarQube
+* SSH
+
+```ps1
+nord-stream.py devops ... --build-yaml test.yml --build-type ssh  
+```
+
 ## References
 
-- [Azure DevOps CICD Pipelines - Command Injection with Parameters, Variables and a discussion on Runner hijacking - Sana Oshika - May 1 2023](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)
+* [Azure DevOps CICD Pipelines - Command Injection with Parameters, Variables and a discussion on Runner hijacking - Sana Oshika - May 1 2023](https://pulsesecurity.co.nz/advisories/Azure-Devops-Command-Injection)
