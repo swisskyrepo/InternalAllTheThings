@@ -25,6 +25,10 @@
 * [Decurity/semgrep-smart-contracts)](https://github.com/Decurity/semgrep-smart-contracts) - Semgrep rules for smart contracts based on DeFi exploits
 * [0xdea/semgrep-rules](https://github.com/0xdea/semgrep-rules) - A collection of Semgrep rules to facilitate vulnerability research.
 
+**Other Tools**:
+
+* [Orange-Cyberdefense/grepmarx](https://github.com/Orange-Cyberdefense/grepmarx) - A source code static analysis platform for AppSec enthusiasts, based on semgrep engine.
+
 ## SonarQube
 
 > Continuous Inspection
