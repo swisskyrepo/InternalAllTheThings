@@ -134,6 +134,21 @@ aws s3 ls s3://flaws.cloud/ --no-sign-request --region us-west-2
  aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sign-request --region us-west-2
  ```
 
+### List File Versions
+
+When versioning is enabled in an AWS S3 bucket, list file history using the AWS CLI:
+
+```bash
+aws s3api list-object-versions --bucket <bucket-name> [--options]
+aws s3api list-object-versions --bucket <bucket-name> --prefix <file-path>
+```
+
+### Download a Specific File Version
+
+```bash
+aws s3api get-object --bucket <bucket-name> --key <source> --version-id <id> <target>
+```
+
 ## References
 
 * [There's a Hole in 1,951 Amazon S3 Buckets - Mar 27, 2013 - Rapid7 willis](https://community.rapid7.com/community/infosec/blog/2013/03/27/1951-open-s3-buckets)
