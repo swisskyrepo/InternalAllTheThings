@@ -2,6 +2,10 @@
 
 GitHub Actions is GitHub’s built-in CI/CD automation tool that lets you build, test, and deploy your code right from your GitHub repository. It runs workflows triggered by events like code pushes, pull requests, or manual triggers.
 
+## Lab
+
+* [messypoutine/gravy-overflow](https://github.com/messypoutine/gravy-overflow/) - A GitHub Actions Supply Chain CTF / Goat
+
 ## Default Action
 
 The configuration files for GH actions are located in the directory `.github/workflows/`
@@ -172,3 +176,4 @@ jobs:
 * [GITHUB ACTIONS EXPLOITATION: SELF HOSTED RUNNERS - Hugo Vincent - 17/07/2024](https://www.synacktiv.com/publications/github-actions-exploitation-self-hosted-runners)
 * [GITHUB ACTIONS EXPLOITATION: REPO JACKING AND ENVIRONMENT MANIPULATION - Hugo Vincent - 10/07/2024](https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation)
 * [GITHUB ACTIONS EXPLOITATION: DEPENDABOT - Hugo Vincent - 06/08/2024](https://www.synacktiv.com/publications/github-actions-exploitation-dependabot)
+* [Weaponizing Dependabot: Pwn Request at its finest - Sébastien Graveline - 02/06/2025](https://boostsecurity.io/blog/weaponizing-dependabot-pwn-request-at-its-finest)
