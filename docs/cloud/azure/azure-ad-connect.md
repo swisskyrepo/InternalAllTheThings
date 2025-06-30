@@ -116,12 +116,13 @@ Using [https://autologon.microsoftazuread-sso.com/](https://autologon.microsofta
 
 ## References
 
+* [Azure AD connect for RedTeam - Adam Chester @xpnsec - February 18, 2019](https://blog.xpnsec.com/azuread-connect-for-redteam/)
+* [Azure AD Kerberos Tickets: Pivoting to the Cloud - Edwin David - February 9, 2023](https://trustedsec.com/blog/azure-ad-kerberos-tickets-pivoting-to-the-cloud)
+* [Azure AD Overview - John Savill's Technical Training - Oct 7, 2014](https://www.youtube.com/watch?v=l_pnNpdxj20)
+* [DUMPING NTHASHES FROM MICROSOFT ENTRA ID - Secureworks](https://www.secureworks.com/research/dumping-nthashes-from-microsoft-entra-id)
+* [Impersonating Office 365 Users With Mimikatz - Michael Grafnetter - January 15, 2017](https://www.dsinternals.com/en/impersonating-office-365-users-mimikatz/)
 * [Introduction to Microsoft Entra Connect V2 - Microsoft](https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect-v2)
 * [TR19: I'm in your cloud, reading everyone's emails - hacking Azure AD via Active Directory - Dirk-jan Mollema - 1st apr. 2019](https://www.youtube.com/watch?v=JEIR5oGCwdg)
-* [Impersonating Office 365 Users With Mimikatz - Michael Grafnetter - January 15, 2017](https://www.dsinternals.com/en/impersonating-office-365-users-mimikatz/)
-* [Azure AD Overview - John Savill's Technical Training - Oct 7, 2014](https://www.youtube.com/watch?v=l_pnNpdxj20)
-* [Windows Azure Active Directory in plain English - Openness AtCEE - Jan 9, 2014](https://www.youtube.com/watch?v=IcSATObaQZE)
-* [Azure AD connect for RedTeam - Adam Chester @xpnsec -  2019-02-18](https://blog.xpnsec.com/azuread-connect-for-redteam/)
-* [Azure AD Kerberos Tickets: Pivoting to the Cloud - Edwin David - February 09, 2023](https://trustedsec.com/blog/azure-ad-kerberos-tickets-pivoting-to-the-cloud)
-* [DUMPING NTHASHES FROM MICROSOFT ENTRA ID - Secureworks](https://www.secureworks.com/research/dumping-nthashes-from-microsoft-entra-id)
 * [Training - Attacking and Defending Azure Lab - Altered Security](https://www.alteredsecurity.com/azureadlab)
+* [Update: Dumping Entra Connect Sync Credentials - @hotnops - June 10, 2025](https://posts.specterops.io/update-dumping-entra-connect-sync-credentials-4a9114734f71)
+* [Windows Azure Active Directory in plain English - Openness AtCEE - January 9, 2014](https://www.youtube.com/watch?v=IcSATObaQZE)

