@@ -61,6 +61,15 @@ The VSS is a Windows service that allows users to create snapshots or backups of
   nxc smb 10.10.0.202 -u username -p password --ntds vss
   ```
 
+Alternate way to access a VSS snapshot in GUI:
+
+- Select a snapshot, go to "Previous Versions" tab
+- See the properties and recover the path in this format `@GMT-yyyy.MM.dd-HH.mm.ss`
+
+  ```ps1
+  Y:\@GMT-2025.07.10-13.05.00
+  ```
+
 ## Forensic Tools
 
 A good method for avoiding or reducing detections involves using common forensic tools to dump the NTDS.dit file and the SYSTEM hive. By utilizing widely recognized and legitimate forensic software, the process can be conducted more discreetly and with a lower risk of triggering security alerts.
@@ -179,7 +188,7 @@ mimikatz> lsadump::lsa /inject /name:krbtgt
 
 ## References
 
+- [Bypassing EDR NTDS.dit protection using BlueTeam tools - bilal al-qurneh - June 9, 2024](https://medium.com/@0xcc00/bypassing-edr-ntds-dit-protection-using-blueteam-tools-1d161a554f9f)
 - [Diskshadow The Return Of VSS Evasion Persistence And AD Db Extraction - bohops - March 26, 2018](https://bohops.com/2018/03/26/diskshadow-the-return-of-vss-evasion-persistence-and-active-directory-database-extraction/)
 - [Dumping Domain Password Hashes - Pentestlab - July 4, 2018](https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/)
-- [Using Ntdissector To Extract Secrets From Adam Ntds Files - Julien Legras, Mehdi Elyassa - 06/12/2023](https://www.synacktiv.com/publications/using-ntdissector-to-extract-secrets-from-adam-ntds-files)
-- [Bypassing EDR NTDS.dit protection using BlueTeam tools - bilal al-qurneh - Jun 9, 2024](https://medium.com/@0xcc00/bypassing-edr-ntds-dit-protection-using-blueteam-tools-1d161a554f9f)
+- [Using Ntdissector To Extract Secrets From Adam Ntds Files - Julien Legras, Mehdi Elyassa - December 06, 2023](https://www.synacktiv.com/publications/using-ntdissector-to-extract-secrets-from-adam-ntds-files)
