@@ -11,8 +11,13 @@ Use the appropriate data collector to gather information for **BloodHound** or *
 * [NH-RED-TEAM/RustHound](https://github.com/NH-RED-TEAM/RustHound) for local Active Directory (Rust collector)
 * [fox-it/BloodHound.py](https://github.com/fox-it/BloodHound.py) for local Active Directory (Python collector)
 * [coffeegist/bofhound](https://github.com/coffeegist/bofhound) for local Active Directory  (Generate BloodHound compatible JSON from logs written by ldapsearch BOF, pyldapsearch and Brute Ratel's LDAP Sentinel)
-* [c3c/ADExplorerSnapshot.py](https://github.com/c3c/ADExplorerSnapshot.py) - for local Active Directory (Generate BloodHound compatible JSON from AD Explorer snapshot)
+* [c3c/ADExplorerSnapshot.py](https://github.com/c3c/ADExplorerSnapshot.py) for local Active Directory (Generate BloodHound compatible JSON from AD Explorer snapshot)
 * [CrowdStrike/sccmhound](https://github.com/CrowdStrike/sccmhound) for local Active Directory (C# collector using Microsoft Configuration Manager)
+* [SpecterOps/MSSQLHound](https://github.com/SpecterOps/MSSQLHound) for MSSQL attack paths (BloodHound OpenGraph PowerShell collector)
+* [SpecterOps/SnowHound](https://github.com/SpecterOps/SnowHound) for Snowflake attack paths (BloodHound OpenGraph PowerShell collector)
+* [SpecterOps/GitHound](https://github.com/SpecterOps/GitHound) for GitHub attack paths (BloodHound OpenGraph PowerShell collector)
+* [SpecterOps/1PassHound](https://github.com/SpecterOps/1PassHound) for 1Password attack paths (BloodHound OpenGraph PowerShell collector)
+* [TheSleekBoyCompany/AnsibleHound](https://github.com/TheSleekBoyCompany/AnsibleHound) for Ansible WorX and Ansible Tower attack paths (BloodHound OpenGraph Go collector)
 
 **Examples**:
 
@@ -112,6 +117,7 @@ cat docker-compose.yml | docker compose -f - up
 
 You can add some custom queries like :
 
+* [BloodHound Queries For All - SpecterOps](https://queries.specterops.io/)
 * [Bloodhound-Custom-Queries from @hausec](https://github.com/hausec/Bloodhound-Custom-Queries/blob/master/customqueries.json)
 * [BloodHoundQueries from CompassSecurity](https://github.com/CompassSecurity/BloodHoundQueries/blob/master/customqueries.json)
 * [BloodHound Custom Queries from Exegol - @ShutdownRepo](https://raw.githubusercontent.com/ThePorgs/Exegol-images/main/sources/assets/bloodhound/customqueries.json)

