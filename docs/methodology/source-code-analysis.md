@@ -134,5 +134,6 @@ snyk code test --json | snyk-to-html -o results-opensource.html
 
 ## References
 
-* [Security Analysis in Psalm - Official Documentation](https://psalm.dev/docs/security_analysis/)
+* [Code auditing 101 - Rodolphe Ghio - August 2, 2025](https://blog.rodolpheg.xyz/posts/code-auditing--101/)
 * [Detect PHP security vulnerabilities with Psalm - Matt Brown - June 23, 2020](https://psalm.dev/articles/detect-security-vulnerabilities-with-psalm)
+* [Security Analysis in Psalm - Official Documentation](https://psalm.dev/docs/security_analysis/)
