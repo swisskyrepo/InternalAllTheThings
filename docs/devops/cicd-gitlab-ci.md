@@ -113,6 +113,10 @@ Create a PAT (Personal Access Token) as a persistence mechanism for the Gitlab i
     SCMKit.exe -s gitlab -m removeadmin -c userName:password -u https://gitlab.something.local -o targetUserName
     ```
 
+## Tools
+
+- [praetorian-inc/glato](https://github.com/praetorian-inc/glato) - GitLab Attack TOolkit
+
 ## References
 
 * [Security for self-managed runners - Gitlab](https://docs.gitlab.com/runner/security/)
