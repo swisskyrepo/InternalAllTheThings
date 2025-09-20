@@ -136,6 +136,12 @@ Get-SQLInstanceDomain | Get-SQLColumn -DatabaseName <DBName> -TableName <TableNa
     select name from master..sysdatabases
     ```
 
+- List server informations
+
+    ```sql
+    SELECT * FROM sys.configurations
+    ```
+
 ### Gather 5 Entries from Each Column
 
 ```ps1
@@ -153,8 +159,6 @@ Get-SQLQuery -Instance "<DBSERVERNAME\DBInstance>" -Query 'select TOP 5 * from <
 ```ps1
 Invoke-SQLDumpInfo -Verbose -Instance SQLSERVER1\Instance1 -csv
 ```
-
-## ee
 
 ## References
 

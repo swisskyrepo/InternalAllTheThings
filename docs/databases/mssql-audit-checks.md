@@ -2,11 +2,12 @@
 
 ## Summary
 
-* [Find and exploit impersonation opportunities](#find-and-exploit-impersonation-opportunities)
-* [Find SQL Server Logins Which can be Impersonated for the Current Database](#find-sql-server-logins-which-can-be-impersonated-for-the-current-database)
-* [Find databases that have been configured as trustworthy](#find-databases-that-have-been-configured-as-trustworthy)
+* [Impersonation Opportunities](#impersonation-opportunities)
+    * [Exploiting Impersonation](#exploiting-impersonation)
+    * [Exploiting Nested Impersonation](#exploiting-nested-impersonation)
+* [Trustworthy Databases](#trustworthy-databases)
 
-## Find and exploit impersonation opportunities
+## Impersonation Opportunities
 
 * Impersonate as: `EXECUTE AS LOGIN = 'sa'`
 * Impersonate `dbo` with DB_OWNER
@@ -48,17 +49,7 @@ SELECT ORIGINAL_LOGIN()
 SELECT SYSTEM_USER
 ```
 
-## Find SQL Server Logins Which can be Impersonated for the Current Database
-
-```sql
-select distinct b.name
-from sys.server_permissions a
-inner join sys.server_principals b
-on a.grantor_principal_id = b.principal_id
-where a.permission_name = 'impersonate'
-```
-
-## Find databases that have been configured as trustworthy
+## Trustworthy Databases
 
 ```sql
 Invoke-SQLAuditPrivTrustworthy -Instance "<DBSERVERNAME\DBInstance>" -Exploit -Verbose 
