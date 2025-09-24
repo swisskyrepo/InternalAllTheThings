@@ -115,7 +115,7 @@ Create a PAT (Personal Access Token) as a persistence mechanism for the Gitlab i
 
 ## Tools
 
-- [praetorian-inc/glato](https://github.com/praetorian-inc/glato) - GitLab Attack TOolkit
+* [praetorian-inc/glato](https://github.com/praetorian-inc/glato) - GitLab Attack TOolkit
 
 ## References
 
