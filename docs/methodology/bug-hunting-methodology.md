@@ -187,5 +187,5 @@
 
 ## References
 
-* [[BugBounty] Yahoo phpinfo.php disclosure - Patrik Fehrenbach](http://blog.it-securityguard.com/bugbounty-yahoo-phpinfo-php-disclosure-2/)
+* [[BugBounty] Yahoo phpinfo.php disclosure - Patrik Fehrenbach](https://blog.wss.sh/bugbounty-yahoo-phpinfo-php-disclosure/)
 * [Nmap CheatSheet - HackerTarget](https://hackertarget.com/nmap-cheatsheet-a-quick-reference-guide/)
