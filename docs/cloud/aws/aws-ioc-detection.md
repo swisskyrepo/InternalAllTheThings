@@ -26,7 +26,7 @@ aws cloudtrail update-trail --name cloudgoat_trail --no-include-global-service-e
 
 :warning: When using awscli on Kali Linux, Pentoo and Parrot Linux, a log is generated based on the user-agent.
 
-Pacu bypass this problem by defining a custom User-Agent: [pacu.py#L1473](https://web.archive.org/web/20201111195614/https://github.com/RhinoSecurityLabs/pacu/blob/master/pacu.py#L1473) (note: check the lines in the area of L1300)
+Pacu bypass this problem by defining a custom User-Agent: [pacu.py#L1473](https://web.archive.org/web/20201111195614/https://github.com/RhinoSecurityLabs/pacu/blob/master/pacu.py#L1303) 
 
 ```python
 boto3_session = boto3.session.Session()
