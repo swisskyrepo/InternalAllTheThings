@@ -9,6 +9,7 @@
 * [ESC7 - Vulnerable Certificate Authority Access Control](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc07/)
 * [ESC8 - Web Enrollment Relay](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc08/)
 * [ESC9 - No Security Extension](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc09/)
+* [ESC10 - Weak Certificate Mapping](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc10/)
 * [ESC11 - Relaying NTLM to ICPR](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc11/)
 * [ESC12 - ADCS CA on YubiHSM](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc12/)
 * [ESC13 - Issuance Policy](https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-esc13/)

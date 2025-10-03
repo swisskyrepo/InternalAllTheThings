@@ -50,3 +50,4 @@ certipy auth -pfx administrator.pfx -dc-ip 10.10.10.10
 * [Curious case of AD CS ESC15 vulnerable instance and its manual exploitation - Mannu Linux - February 13, 2025](https://www.mannulinux.org/2025/02/Curious-case-of-AD-CS-ESC15-vulnerable-instance-and-its-manual-exploitation.html)
 * [EKUwu: Not just another AD CS ESC - Justin Bollinger - October 08, 2024](https://trustedsec.com/blog/ekuwu-not-just-another-ad-cs-esc)
 * [ESC15/EKUwu PR #228 - dru1d-foofus - August 10, 2024](https://github.com/ly4k/Certipy/pull/228)
+* [GOAD - part 14 - ADCS 5/7/9/10/11/13/14/15 - Mayfly - March 10, 2025](https://mayfly277.github.io/posts/ADCS-part14/)

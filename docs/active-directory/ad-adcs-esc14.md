@@ -61,3 +61,4 @@ Rubeus.exe asktgt /user:Administrator /certificate:esc13.pfx /domain:lab.local /
 
 * [ADCS ESC14 Abuse Technique - Jonas Bülow Knudsen - February 28, 2024](https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9)
 * [Exploitation de l’AD CS : ESC12, ESC13 et ESC14 - Guillon Bony Rémi - February, 2025](https://connect.ed-diamond.com/misc/mischs-031/exploitation-de-l-ad-cs-esc12-esc13-et-esc14)
+* [GOAD - part 14 - ADCS 5/7/9/10/11/13/14/15 - Mayfly - March 10, 2025](https://mayfly277.github.io/posts/ADCS-part14/)

