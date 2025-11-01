@@ -62,7 +62,7 @@ reg query HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v lmcompatibilitylevel
     [NTHASH-SHUCKED] 93B3C62269D55DB9CA660BBB91E2BD0B
     ```
 
-* If you got some `NetNTLMv1 tokens`, you can also try to crack them via [crack.sh](https://crack.sh/) (cloud service when available, more time and potentially chargeable). For this you need to format them to submit them on [crack.sh](https://crack.sh/netntlm/). The converter of [shuck.sh](https://shuck.sh/) can be used to format easily.
+* If you got some `NetNTLMv1 tokens`, you can also try to crack them via [crack.sh](https://crack.sh/)/[ntlmv1.com](https://ntlmv1.com/). For this you need to format them to submit them on [crack.sh](https://crack.sh/netntlm/)/[ntlmv1.com](https://ntlmv1.com/). The converter of [shuck.sh](https://shuck.sh/) can be used to format easily.
 
     ```ps1
     # When there is no-ESS/SSP and the challenge is set to 1122334455667788, it's free (0$):

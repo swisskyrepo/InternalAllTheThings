@@ -27,8 +27,8 @@
 
 * Using [The Wayback Machine](https://archive.org/web/) to detect forgotten endpoints
 
-  ```bash
-  look for JS files, old links
+  ```powershell
+  # Look for JS files, old links
   curl -sX GET "http://web.archive.org/cdx/search/cdx?url=<targetDomain.com>&output=text&fl=original&collapse=urlkey&matchType=prefix"
   ```
 
@@ -50,6 +50,18 @@
   site: *.example.com -www
   intext:"dhcpd.conf" "index of"
   intitle:"SSL Network Extender Login" -checkpoint.com
+  ```
+
+* Enumerate subdomains using HackerTarget
+
+  ```ps1
+  curl --silent 'https://api.hackertarget.com/hostsearch/?q=targetdomain.com' | grep -o '\w.*targetdomain.com'
+  ```
+
+* Enumerate endpoints using CommonCrawl
+
+  ```ps1
+  echo "targetdomain.com" | xargs -I domain curl -s "http://index.commoncrawl.org/CC-MAIN-2018-22-index?url=*.targetdomain.com&output=json" | jq -r .url | sort -u
   ```
 
 ## Active Recon
@@ -98,12 +110,33 @@
 
 ### Web Discovery
 
-* Locate `robots.txt`, `security.txt`, `sitemap.xml` files
-* Retrieve comments in source code
-* Discover URL: [tomnomnom/waybackurls](https://github.com/tomnomnom/waybackurls), [lc/gau](https://github.com/lc/gau)
-* Search for `hidden` parameters: [PortSwigger/param-miner](https://github.com/PortSwigger/param-miner), [s0md3v/Arjun](https://github.com/s0md3v/Arjun) and [Sh1Yo/x8](https://github.com/Sh1Yo/x8)
+#### Common Files
 
-* List all the subdirectories and files with [OJ/gobuster](https://github.com/OJ/gobuster), [ffuf/ffuf](https://github.com/ffuf/ffuf) and [bitquark/shortscan](https://github.com/bitquark/shortscan)
+* `security.txt`: A file that provides contact info for reporting security issues with your site (like an email or PGP key).
+
+  ```ps1
+  Contact: mailto:security@example.com
+  ```
+
+* `sitemap.xml`: Lists all the important URLs of your site so search engines can index them efficiently.
+
+  ```ps1
+  <urlset>
+    <url><loc>https://example.com/</loc></url>
+    <url><loc>https://example.com/about</loc></url>
+  </urlset>
+  ```
+
+* `robots.txt`: Tells search engine crawlers which pages or files they can or cannot access on your site.
+
+  ```ps1
+  User-agent: *
+  Disallow: /admin/
+  ```
+
+#### Enumerate Files and Folders
+
+List all the subdirectories and files with [OJ/gobuster](https://github.com/OJ/gobuster), [ffuf/ffuf](https://github.com/ffuf/ffuf) and [bitquark/shortscan](https://github.com/bitquark/shortscan)
 
   ```ps1
   gobuster dir -a 'Mozilla' -e -k -l -t 30 -w mydirfilelist.txt -c 'NAME1=VALUE1; NAME2=VALUE2' -u 'https://example.com/'
@@ -117,13 +150,75 @@
   bfac --list testing_list.txt
   ```
 
-* Map technologies: Web service enumeration using [projectdiscovery/httpx](https://github.com/projectdiscovery/httpx) or [projectdiscovery/wappalyzergo](https://github.com/projectdiscovery/wappalyzergo)
+* Crawl through website pages and files: [hakluke/hakrawler](https://github.com/hakluke/hakrawler) and [projectdiscovery/katana](https://github.com/projectdiscovery/katana)
+
+  ```ps1
+  katana -u https://tesla.com
+  echo https://google.com | hakrawler
+  ```
+
+#### Next.js Endpoints
+
+In Next.js, `window.__BUILD_MANIFEST` is a runtime global variable that the framework automatically injects into the client-side JavaScript bundle.
+
+Go to `DevTools->Console` and execute this JavaScript code:
+
+```js
+console.log(window.__BUILD_MANIFEST)
+console.log(__BUILD_MANIFEST.sortedPages)
+```
+
+If you inspect your app in the browser console (for a production build), you might see something like this:
+
+```js
+{__rewrites: {…}, /: Array(10), /404: Array(8), /500: Array(4), /_error: Array(1), …}
+/: (10) ['static/chunks/2852872c-b605aca0298c2109.js', 'static/chunks/3748-2a8cf394c7270ee0.js']
+/404: (8) ['static/chunks/2852872c-b605aca0298c2109.js', 'static/chunks/3748-2a8cf394c7270ee0.js']
+/500: (4) ['static/chunks/3748-2a8cf394c7270ee0.js', 'static/chunks/1221-b44c330d41258365.js']
+/[slug]: (30) ['static/chunks/2852872c-b605aca0298c2109.js', 'static/chunks/29107295-4cc022cea922dbb4.js']
+/_error: ['static/chunks/pages/_error-6ddff449d199572c.js']
+/about/[slug]: (31) ['static/chunks/2852872c-b605aca0298c2109.js']
+```
+
+#### JS and HTML Comments
+
+Retrieve comments in source code
+
+```html
+<!-- HTML Comment -->
+// JS Comment
+```
+
+#### Internet Archive
+
+Discover URL: [tomnomnom/waybackurls](https://github.com/tomnomnom/waybackurls), [lc/gau](https://github.com/lc/gau)
+
+  ```ps1
+  gau --o example-urls.txt example.com
+  gau --blacklist png,jpg,gif example.com
+  ```
+
+#### Hidden Parameters
+
+Search for `hidden` parameters: [PortSwigger/param-miner](https://github.com/PortSwigger/param-miner), [s0md3v/Arjun](https://github.com/s0md3v/Arjun) and [Sh1Yo/x8](https://github.com/Sh1Yo/x8)
+
+  ```ps1
+  x8 -u "https://example.com/?something=1" -w <wordlist>
+  ```
+
+#### Map Technologies
+
+* Web service enumeration using [projectdiscovery/httpx](https://github.com/projectdiscovery/httpx) or [projectdiscovery/wappalyzergo](https://github.com/projectdiscovery/wappalyzergo)
     * Favicon hash
     * JARM fingerprint
     * ASN
     * Status code
     * Services
     * Technologies (Github Pages, Cloudflare, Ruby, Nginx,...)
+
+    ```ps1
+    httpx -title -tech-detect -status-code -follow-redirects -jarm -asn -json -silent -ports 80,443 -l urls.txt
+    ```
 
 * Look for WAF with [projectdiscovery/cdncheck](https://github.com/projectdiscovery/cdncheck) and identify the real IP with [christophetd/CloudFlair](https://github.com/christophetd/CloudFlair)
 
@@ -132,24 +227,30 @@
   www.hackerone.com [waf] [cloudflare]
   ```
 
-* Crawl through website pages and files: [hakluke/hakrawler](https://github.com/hakluke/hakrawler) and [projectdiscovery/katana](https://github.com/projectdiscovery/katana)
-
-  ```ps1
-  katana -u https://tesla.com
-  echo https://google.com | hakrawler
-  ```
-
 * Take screenshots for every websites using [sensepost/gowitness](https://github.com/sensepost/gowitness)
 
-* Automated vulnerability scanners
-    * [projectdiscovery/nuclei](https://github.com/projectdiscovery/nuclei): `nuclei -u https://example.com`
-    * [Burp Suite's web vulnerability scanner](https://portswigger.net/burp/vulnerability-scanner)
-    * [sullo/nikto](https://github.com/sullo/nikto): `./nikto.pl -h http://www.example.com`
+#### Manual Testing
 
-* Manual Testing: Explore the website with a proxy:
-    * [Caido - A lightweight web security auditing toolkit](https://caido.io/)
-    * [ZAP - OWASP Zed Attack Proxy](https://www.zaproxy.org/)
-    * [Burp Suite - Community Edition](https://portswigger.net/burp/communitydownload)
+Explore the website with a proxy:
+
+* [Caido - A lightweight web security auditing toolkit](https://caido.io/)
+* [ZAP - OWASP Zed Attack Proxy](https://www.zaproxy.org/)
+* [Burp Suite - Community Edition](https://portswigger.net/burp/communitydownload)
+
+#### Automated vulnerability scanners
+
+* [projectdiscovery/nuclei](https://github.com/projectdiscovery/nuclei):
+
+  ```ps1
+  nuclei -u https://example.com
+  ```
+
+* [Burp Suite's web vulnerability scanner](https://portswigger.net/burp/vulnerability-scanner)
+* [sullo/nikto](https://github.com/sullo/nikto)
+
+  ```ps1
+  ./nikto.pl -h http://www.example.com
+  ```
 
 ## Looking for Web Vulnerabilities
 
@@ -157,15 +258,14 @@
 * Test for Business Logic weaknesses
     * High or negative numerical values
     * Try all the features and click all the buttons
-* [The Web Application Hacker's Handbook Checklist](https://gist.github.com/gbedoya/10935137) copied from <http://mdsec.net/wahh/tasks.html>
+* [The Web Application Hacker's Handbook Checklist](https://web.archive.org/web/20210126221152/https://gist.github.com/gbedoya/10935137)
 
 * Subscribe to the site and pay for the additional functionality to test
 
 * Inspect Payment functionality - [@gwendallecoguic](https://twitter.com/gwendallecoguic/status/988138794686779392)
-  > if the webapp you're testing uses an external payment gateway, check the doc to find the test credit numbers, purchase something and if the webapp didn't disable the test mode, it will be free
+  > If the webapp you're testing uses an external payment gateway, check the doc to find the test credit numbers, purchase something and if the webapp didn't disable the test mode, it will be free
 
-  From <https://stripe.com/docs/testing#cards> : "Use any of the following test card numbers, a valid expiration date in the future, and any random CVC number, to create a successful payment. Each test card's billing country is set to U.S. "
-  e.g :
+  From [https://stripe.com/docs/testing](https://stripe.com/docs/testing#cards) : "Use any of the following test card numbers, a valid expiration date in the future, and any random CVC number, to create a successful payment. Each test card's billing country is set to U.S."
 
   Test card numbers and tokens  
 

