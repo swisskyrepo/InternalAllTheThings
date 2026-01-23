@@ -24,6 +24,7 @@
 * [trailofbits/semgrep-rules](https://github.com/trailofbits/semgrep-rules) - Semgrep queries developed by Trail of Bits
 * [Decurity/semgrep-smart-contracts)](https://github.com/Decurity/semgrep-smart-contracts) - Semgrep rules for smart contracts based on DeFi exploits
 * [0xdea/semgrep-rules](https://github.com/0xdea/semgrep-rules) - A collection of Semgrep rules to facilitate vulnerability research.
+* [elttam/semgrep-rules](https://github.com/elttam/semgrep-rules) - Elttam's public semgrep rules repository.
 
 **Other Tools**:
 

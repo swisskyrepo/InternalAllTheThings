@@ -287,5 +287,6 @@ Explore the website with a proxy:
 
 ## References
 
-* [[BugBounty] Yahoo phpinfo.php disclosure - Patrik Fehrenbach](https://blog.wss.sh/bugbounty-yahoo-phpinfo-php-disclosure/)
 * [Nmap CheatSheet - HackerTarget](https://hackertarget.com/nmap-cheatsheet-a-quick-reference-guide/)
+* [Yahoo phpinfo.php disclosure - Patrik Fehrenbach - January 20, 2013](https://blog.wss.sh/bugbounty-yahoo-phpinfo-php-disclosure/)
+* [Bug Bounty Masterclass - Wiz, Gal Nagli](https://www.wiz.io/bug-bounty-masterclass)
