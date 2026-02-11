@@ -136,26 +136,35 @@
 
 #### Enumerate Files and Folders
 
-List all the subdirectories and files with [OJ/gobuster](https://github.com/OJ/gobuster), [ffuf/ffuf](https://github.com/ffuf/ffuf) and [bitquark/shortscan](https://github.com/bitquark/shortscan)
+Enumerate all accessible files and subdirectories. Once the underlying technology has been identified, prioritize the use of targeted wordlists rather than generic ones. Technology specific wordlists such as those provided by Assetnote (https://wordlists.assetnote.io/), significantly improve coverage and efficiency. Examples include `httparchive_parameters_top_1m_2026_01_27.txt`, `httparchive_directories_1m_2026_01_27.txt`, and `httparchive_php_2026_01_27.txt`.
+
+* [OJ/gobuster](https://github.com/OJ/gobuster)
+* [ffuf/ffuf](https://github.com/ffuf/ffuf)
+* [bitquark/shortscan](https://github.com/bitquark/shortscan)
 
   ```ps1
-  gobuster dir -a 'Mozilla' -e -k -l -t 30 -w mydirfilelist.txt -c 'NAME1=VALUE1; NAME2=VALUE2' -u 'https://example.com/'
   ffuf -H 'User-Agent: Mozilla' -v -t 30 -w mydirfilelist.txt -b 'NAME1=VALUE1; NAME2=VALUE2' -u 'https://example.com/FUZZ'
+  gobuster dir -a 'Mozilla' -e -k -l -t 30 -w mydirfilelist.txt -c 'NAME1=VALUE1; NAME2=VALUE2' -u 'https://example.com/'
   ```
 
-* Find backup files with [mazen160/bfac](https://github.com/mazen160/bfac)
+Identify and enumerate backup and temporary files that may have been unintentionally exposed. These files often contain source code, credentials, or sensitive configuration data and are commonly created by editors, deployment processes, or manual backups.
 
-  ```bash
-  bfac --url http://example.com/test.php --level 4
-  bfac --list testing_list.txt
-  ```
+* [mazen160/bfac](https://github.com/mazen160/bfac)
 
-* Crawl through website pages and files: [hakluke/hakrawler](https://github.com/hakluke/hakrawler) and [projectdiscovery/katana](https://github.com/projectdiscovery/katana)
+```bash
+bfac --url http://example.com/test.php --level 4
+bfac --list testing_list.txt
+```
 
-  ```ps1
-  katana -u https://tesla.com
-  echo https://google.com | hakrawler
-  ```
+Crawl the website's pages and resources to identify additional attack surface and expand the assessment perimeter.
+
+* [hakluke/hakrawler](https://github.com/hakluke/hakrawler)
+* [projectdiscovery/katana](https://github.com/projectdiscovery/katana)
+
+```ps1
+katana -u https://tesla.com
+echo https://google.com | hakrawler
+```
 
 #### Next.js Endpoints
 
@@ -182,7 +191,7 @@ If you inspect your app in the browser console (for a production build), you mig
 
 #### JS and HTML Comments
 
-Retrieve comments in source code
+Retrieve comments in source code.
 
 ```html
 <!-- HTML Comment -->
@@ -191,16 +200,23 @@ Retrieve comments in source code
 
 #### Internet Archive
 
-Discover URL: [tomnomnom/waybackurls](https://github.com/tomnomnom/waybackurls), [lc/gau](https://github.com/lc/gau)
+Identify historical URLs and endpoints by reviewing archived content from sources such as the Wayback Machine and the Internet Archive.
 
-  ```ps1
-  gau --o example-urls.txt example.com
-  gau --blacklist png,jpg,gif example.com
-  ```
+* [tomnomnom/waybackurls](https://github.com/tomnomnom/waybackurls)
+* [lc/gau](https://github.com/lc/gau)
+
+```ps1
+gau --o example-urls.txt example.com
+gau --blacklist png,jpg,gif example.com
+```
 
 #### Hidden Parameters
 
-Search for `hidden` parameters: [PortSwigger/param-miner](https://github.com/PortSwigger/param-miner), [s0md3v/Arjun](https://github.com/s0md3v/Arjun) and [Sh1Yo/x8](https://github.com/Sh1Yo/x8)
+Search for `hidden` parameters: 
+
+* [PortSwigger/param-miner](https://github.com/PortSwigger/param-miner)
+* [s0md3v/Arjun](https://github.com/s0md3v/Arjun)
+* [Sh1Yo/x8](https://github.com/Sh1Yo/x8)
 
   ```ps1
   x8 -u "https://example.com/?something=1" -w <wordlist>

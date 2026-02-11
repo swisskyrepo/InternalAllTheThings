@@ -2,6 +2,26 @@
 
 > Source code analysis is the process of examining and reviewing the code of a software program to identify errors, vulnerabilities, and potential improvements. This can be performed manually by developers or through automated tools that scan the code for issues like security risks, coding standard violations, and performance inefficiencies.
 
+## AI Analysis
+
+* [trailofbits/skills](https://github.com/trailofbits/skills) - Trail of Bits Claude Code skills for security research, vulnerability detection, and audit workflows.
+
+```ps1
+npm install -g @github/copilot
+copilot
+/login
+/model
+/plugin marketplace add trailofbits/skills
+/plugin marketplace browse trailofbits
+/plugin install ask-questions-if-underspecified@trailofbits
+/plugin install static-analysis@trailofbits
+/plugin install entry-point-analyzer@trailofbits
+/plugin install semgrep-rule-creator@trailofbits
+/plugin install semgrep-rule-variant-creator@trailofbits
+/plugin install sharp-edges@trailofbits
+/plugin install insecure-defaults@trailofbits
+```
+
 ## Semgrep
 
 > Lightweight static analysis for many languages. Find bug variants with patterns that look like source code.
