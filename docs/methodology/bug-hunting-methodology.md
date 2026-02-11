@@ -136,7 +136,7 @@
 
 #### Enumerate Files and Folders
 
-Enumerate all accessible files and subdirectories. Once the underlying technology has been identified, prioritize the use of targeted wordlists rather than generic ones. Technology specific wordlists such as those provided by Assetnote (https://wordlists.assetnote.io/), significantly improve coverage and efficiency. Examples include `httparchive_parameters_top_1m_2026_01_27.txt`, `httparchive_directories_1m_2026_01_27.txt`, and `httparchive_php_2026_01_27.txt`.
+Enumerate all accessible files and subdirectories. Once the underlying technology has been identified, prioritize the use of targeted wordlists rather than generic ones. Technology specific wordlists such as those provided by Assetnote ([https://wordlists.assetnote.io](https://wordlists.assetnote.io)), significantly improve coverage and efficiency. Examples include `httparchive_parameters_top_1m_2026_01_27.txt`, `httparchive_directories_1m_2026_01_27.txt`, and `httparchive_php_2026_01_27.txt`.
 
 * [OJ/gobuster](https://github.com/OJ/gobuster)
 * [ffuf/ffuf](https://github.com/ffuf/ffuf)
@@ -212,7 +212,7 @@ gau --blacklist png,jpg,gif example.com
 
 #### Hidden Parameters
 
-Search for `hidden` parameters: 
+Search for `hidden` parameters:
 
 * [PortSwigger/param-miner](https://github.com/PortSwigger/param-miner)
 * [s0md3v/Arjun](https://github.com/s0md3v/Arjun)
