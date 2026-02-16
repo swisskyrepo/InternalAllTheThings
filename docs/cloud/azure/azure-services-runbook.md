@@ -78,7 +78,7 @@ Get-AzAutomationAccount | Get-AzAutomationDscConfiguration
 
 ```ps1
 $DSCName = ${dscToExport}
-Get-AzAutomationAccount | Get-AzAutomationDscConfiguration | where {$_.name -march $DSCName} | Export-AzAutomationDscConfiguration -OutputFolder (get-location) -Debug
+Get-AzAutomationAccount | Get-AzAutomationDscConfiguration | where {$_.name -match $DSCName} | Export-AzAutomationDscConfiguration -OutputFolder (get-location) -Debug
 ```
 
 ## References
