@@ -39,7 +39,6 @@ uv run relayinformer ldap --method LDAPS --dc-ip 10.10.10.10 --user USER --passw
 | Allowed / Accepted / When Supported | You can theoretically conduct an NTLM relay but common relay scenarios will not work because standard coercion / poisoning techniques (mentioned above) will result in the addition of EPA-relevant AV pairs, indicating the client’s support for EPA. |
 | Required | NTLM relay should be prevented by validation of values provided in EPA-relevant AV pairs. |
 
-
 ## WebClient Service
 
 * On Windows workstations, the WebClient service is installed by default.
