@@ -22,6 +22,24 @@ Coerce refers to forcing a target machine (usually with SYSTEM privileges) to au
 * Server-side SMB signing has been enabled on domain controllers
 * Server-side SMB signing is still not required by default on non-DC Windows server
 
+### EPA
+
+* [zyn3rgy/RelayInformer](https://github.com/zyn3rgy/RelayInformer) - Python and BOF utilites to the determine EPA enforcement levels of popular NTLM relay targets from the offensive perspective.
+
+```ps1
+uv run relayinformer mssql --target 10.10.10.10 --user USER --password PASSWORD
+uv run relayinformer http --url http://10.10.10.10/page --user USER --password PASSWORD
+uv run relayinformer ldap --method BOTH --dc-ip 10.10.10.10 --user USER --password PASSWORD
+uv run relayinformer ldap --method LDAPS --dc-ip 10.10.10.10 --user USER --password PASSWORD
+```
+
+| EPA Values | Description |
+| ---------- | ----------- |
+| Disabled / Never | You should generally be able to target with NTLM relay, regardless of the client's support for EPA or version of NTLM being used. |
+| Allowed / Accepted / When Supported | You can theoretically conduct an NTLM relay but common relay scenarios will not work because standard coercion / poisoning techniques (mentioned above) will result in the addition of EPA-relevant AV pairs, indicating the client’s support for EPA. |
+| Required | NTLM relay should be prevented by validation of values provided in EPA-relevant AV pairs. |
+
+
 ## WebClient Service
 
 * On Windows workstations, the WebClient service is installed by default.
@@ -130,4 +148,5 @@ ntlmrelayx.py -t "http://192.0.2.5/certsrv/" -debug -6 -smb2support --adcs
 ## References
 
 * [Changes to SMB Signing Enforcement Defaults in Windows 24H2 - Michael Grafnetter - January 26, 2025](https://www.dsinternals.com/en/smb-signing-windows-server-2025-client-11-24h2-defaults/)
+* [Less Praying More Relaying – Enumerating EPA Enforcement for MSSQL and HTTPS - Nick Powers, Matt Creel - November 25, 2025](https://specterops.io/blog/2025/11/25/less-praying-more-relaying-enumerating-epa-enforcement-for-mssql-and-https/)
 * [The Ultimate Guide to Windows Coercion Techniques in 2025 - RedTeam Pentesting - June 4, 2025](https://blog.redteam-pentesting.de/2025/windows-coercion/)

@@ -2,6 +2,11 @@
 
 Conditional Access is used to restrict access to resources to compliant devices only.
 
+* [rbnroot/CAPSlock](https://github.com/rbnroot/CAPSlock) - Offline Conditional Access (CA) analysis tool built on top of a roadrecon database.
+* [absolomb/FindMeAccess](https://github.com/absolomb/FindMeAccess) - Tool for finding gaps in Azure/M365 MFA requirements for different resources, client ids, and user agents. 
+
+## Enumerate Conditional Access Policies
+
 * Enumerate Conditional Access Policies: `roadrecon plugin policies` (query the local database)
 
 | CAP                       | Bypass  |
@@ -15,6 +20,12 @@ Conditional Access is used to restrict access to resources to compliant devices 
 | MFA                       | / |
 | Legacy Protocols          | / |
 | Domain Joined             | / |
+
+```ps1
+python3 CAPSlock.py analyze -u <userprincipalname> --resource <resource-id> [options]
+python3 CAPSlock.py what-if -u <userprincipalname> --resource <resource-id> [options]
+python3 CAPSlock.py web-gui --port 8080
+```
 
 ## Bypassing CAP by faking device compliance
 
@@ -78,3 +89,4 @@ Try different IP locations using a VPN.
 
 * [Conditional Access bypasses - Fabian Bader - November 30, 2025](https://cloudbrothers.info/en/conditional-access-bypasses/)
 * [Finding Entra ID CA Bypasses - the structured way - Dirk-jan Mollema and Fabian Bader - June 23, 2025](https://troopers.de/troopers25/talks/tfsfqs/)
+* [STOP THE CAP: Making Entra ID Conditional Access Make Sense Offline - Lee Robinson - February 17, 2026](https://specterops.io/blog/2026/02/17/stop-the-cap-making-entra-id-conditional-access-make-sense-offline/)
