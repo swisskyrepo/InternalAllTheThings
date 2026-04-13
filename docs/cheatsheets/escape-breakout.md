@@ -18,7 +18,8 @@
 
 ## Tools
 
-* [kiosk.vsim.xyz](https://kiosk.vsim.xyz/) - tooling for browser-based, Kiosk mode testing.
+* [kiosk.vsim.xyz](https://kiosk.vsim.xyz/) - Tooling for browser-based, Kiosk mode testing.
+* [break.yxz.red](https://break.yxz.red/) - Breakout Kit for Web Browser / Kiosk breakout Assessments.
 
 ## Methodology
 
