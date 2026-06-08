@@ -1,5 +1,35 @@
 # Active Directory - Certificate ESC8
 
+## Web Enrollment Endpoint
+
+Probe the endpoint by sending a request to:
+
+```text
+http://<webserver-ip>/certsrv/certfnsp.aspx
+```
+
+A valid enrollment endpoint will respond with NTLM/Negotiate authentication headers (`WWW-Authenticate`).
+
+The Web Enrollment role does **not** need to run on the CA itself; it can be hosted on any IIS server configured for delegation to the target CA.
+
+In high-traffic environments, Web Enrollment is commonly deployed on a **dedicated IIS server** to offload traffic from the CA.
+
+> When CA Web Enrollment is installed on a non-CA server, that server acts as an **enrollment registration authority**. The target CA is selected by CA name or computer name. — [Microsoft Docs](https://learn.microsoft.com/en-us/windows-server/identity/ad-cs/certificate-authority-web-enrollment#deployment-topology)
+
+### Certipy Blind Spot
+
+Certipy **does not** enumerate Web Enrollment on remote IIS servers. It only inspects the CA host. It also does not verify whether a delegated Web Enrollment server is bound to the CA.
+
+```
+Web Enrollment
+    HTTP
+        Enabled: False
+    HTTPS
+        Enabled: False
+```
+
+> `False` on both means the CA host is not running Web Enrollment but a separate IIS server may still expose it.
+
 ## ESC8 - Web Enrollment Relay
 
 > An attacker can trigger a Domain Controller using PetitPotam to NTLM relay credentials to a host of choice. The Domain Controller’s NTLM Credentials can then be relayed to the Active Directory Certificate Services (AD CS) Web Enrollment pages, and a DC certificate can be enrolled. This certificate can then be used to request a TGT (Ticket Granting Ticket) and compromise the entire domain through Pass-The-Ticket.
@@ -99,5 +129,6 @@ Require [SecureAuthCorp/impacket](https://github.com/SecureAuthCorp/impacket/pul
 
 ## References
 
-* [NTLM relaying to AD CS - On certificates, printers and a little hippo - Dirk-jan Mollema](https://dirkjanm.io/ntlm-relaying-to-ad-certificate-services/)
 * [AD CS relay attack - practical guide - @exandroiddev - June 23, 2021](https://www.exandroid.dev/2021/06/23/ad-cs-relay-attack-practical-guide/)
+* [ESC8s and Where to Find Them - Abdul Mhanni - March 27, 2026](https://www.abdulmhsblog.com/posts/esc8andfindingwebenrollmentendpoints/)
+* [NTLM relaying to AD CS - On certificates, printers and a little hippo - Dirk-jan Mollema - July 28, 2021](https://dirkjanm.io/ntlm-relaying-to-ad-certificate-services/)
