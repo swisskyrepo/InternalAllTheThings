@@ -20,7 +20,7 @@ In high-traffic environments, Web Enrollment is commonly deployed on a **dedicat
 
 Certipy **does not** enumerate Web Enrollment on remote IIS servers. It only inspects the CA host. It also does not verify whether a delegated Web Enrollment server is bound to the CA.
 
-```
+```js
 Web Enrollment
     HTTP
         Enabled: False
