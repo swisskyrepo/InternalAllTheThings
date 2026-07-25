@@ -84,6 +84,22 @@ Active Directory Certificate Services (AD CS) is a Microsoft Windows server role
   secretsdump.py -user-status -just-dc-ntlm -just-dc-user krbtgt 'lab.local/Administrator@dc.lab.local' -k -no-pass -dc-ip 10.10.10.10 -target-ip 10.10.10.10 
   ```
 
+## Certighost CVE-2026-54121
+
+Patched in July 2026 update.
+
+Certighost is a vulnerability in certificate enrollment where a Certification Authority trusts a requester-controlled directory lookup target. By supplying the **cdc** and **rmd** attributes, an attacker can redirect the CA to a rogue host running SMB, LDAP, and LSA services.
+
+The attacker-controlled server can return forged directory information for a chosen Domain Controller, such as its SID and DNS hostname. The CA then embeds this identity data into the issued certificate, allowing the attacker to impersonate the Domain Controller during certificate-based authentication and potentially gain replication privileges.
+
+A standard domain machine account is sufficient to pass the CA's initial authentication checks, meaning the rogue lookup server does not need to be the Domain Controller it claims to represent.
+
+* [aniqfakhrul/CVE-2026-54121](https://github.com/aniqfakhrul/CVE-2026-54121)
+
+  ```ps1
+  sudo python3 certighost.py -d playground.local -u lowpriv -p 'Password1234' --dc-ip 192.168.1.10
+  ```
+
 ## Pass-The-Certificate
 
 > Pass the Certificate in order to get a TGT, this technique is used in "UnPAC the Hash" and "Shadow Credential"
