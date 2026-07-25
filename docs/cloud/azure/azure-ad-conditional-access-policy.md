@@ -87,6 +87,7 @@ Try different IP locations using a VPN.
 
 ## References
 
+* [Bypassing Conditional Access policies that have a resource exclusion - Dirk-jan Mollema - June 22, 2026](https://dirkjanm.io/bypassing-conditional-access-with-resource-exclusion/)
 * [Conditional Access bypasses - Fabian Bader - November 30, 2025](https://cloudbrothers.info/en/conditional-access-bypasses/)
 * [Finding Entra ID CA Bypasses - the structured way - Dirk-jan Mollema and Fabian Bader - June 23, 2025](https://troopers.de/troopers25/talks/tfsfqs/)
 * [STOP THE CAP: Making Entra ID Conditional Access Make Sense Offline - Lee Robinson - February 17, 2026](https://specterops.io/blog/2026/02/17/stop-the-cap-making-entra-id-conditional-access-make-sense-offline/)

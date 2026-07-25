@@ -104,6 +104,12 @@
   Invoke-CMLootDownload -InventoryFile .\sccmfiles.txt -Extension msi
   ```
 
+* [synacktiv/SCCMSecrets](https://github.com/synacktiv/SCCMSecrets)
+
+    ```ps1
+    SCCMSecrets.py files --distribution-point 'sccm.lab.local/' --username 'username' --password 'P@ssw0rd'
+    ```
+
 ## SCCM Configuration Manager
 
 * [subat0mik/Misconfiguration-Manager/MisconfigurationManager.ps1](https://github.com/subat0mik/Misconfiguration-Manager) - Misconfiguration Manager is a central knowledge base for all known Microsoft Configuration Manager tradecraft and associated defensive and hardening guidance.
@@ -126,7 +132,11 @@
     sudo python3 pxethiefy.py explore -i eth0
     ```
 
-* [MWR-CyberSec/PXEThief](https://github.com/MWR-CyberSec/PXEThief)
+* [MWR-CyberSec/PXEThief](https://github.com/MWR-CyberSec/PXEThief), [PR #11](https://github.com/MWR-CyberSec/PXEThief/pull/11) - Removing win32crypt dependency for full Linux support
+
+    ```ps1
+    python pxethief.py 2 10.10.10.10
+    ```
 
 ### CRED-2 Request a policy containing credentials
 

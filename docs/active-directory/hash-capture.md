@@ -1,5 +1,25 @@
 # Hash - Capture and Cracking
 
+## Hash Cracking Table
+
+| Hashcat mode | Hash type                 | Generic hash format                                                                |
+| -----------: | ------------------------- | ---------------------------------------------------------------------------------- |
+|       `3000` | LM                        | `<LM_HASH>`                                                                        |
+|       `1000` | NT                        | `<NT_HASH>`                                                                        |
+|       `5500` | NetNTLMv1 / NetNTLMv1+ESS | `<USERNAME>::<DOMAIN>:<LM_RESPONSE>:<NTLM_RESPONSE>:<SERVER_CHALLENGE>`            |
+|       `5600` | NetNTLMv2                 | `<USERNAME>::<DOMAIN>:<SERVER_CHALLENGE>:<NT_PROOF_STRING>:<NTLMV2_RESPONSE_BLOB>` |
+
+All hashes are not born equals, **LM hash (LAN Manager hash)** is an obsolete Windows password-hashing format. Here are the steps to reproduce the LM hashing method.
+
+1. Convert the password to uppercase.
+2. Pad or truncate it to exactly 14 characters.
+3. Split it into two independent 7-character halves.
+4. Convert each half into a DES key.
+5. Use each key to encrypt the fixed string.
+6. Concatenate the two 8-byte results.
+
+LM hash can be cracked easily, NT hash might be cracked depending on the size of the password. However it is also possible to use it without breaking it, see the **Hash - Pass the Hash** page.
+
 ## LmCompatibilityLevel
 
 LmCompatibilityLevel is a Windows security setting that determines the level of authentication protocol used between computers. It specifies how Windows handles NTLM and LAN Manager (LM) authentication protocols, impacting how passwords are stored and how authentication requests are processed. The level can range from 0 to 5, with higher levels generally providing more secure authentication methods.
