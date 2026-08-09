@@ -55,11 +55,11 @@ PS > Set-AADIntUserPassword -SourceAnchor "<IMMUTABLE-ID>" -Password "Password" 
 
 * [dirkjanm/adconnectdump](https://github.com/dirkjanm/adconnectdump) - Dump Azure AD Connect credentials for Azure AD and Active Directory
 
-| Tool | Requires code execution on target | DLL dependencies | Requires MSSQL locally | Requires python locally |
-| --- | --- | --- | --- | --- |
-| ADSyncDecrypt | Yes | Yes | No | No |
-| ADSyncGather | Yes | No | No | Yes |
-| ADSyncQuery | No (network RPC calls only) | No | Yes | Yes |
+| Tool          | Requires code execution on target | DLL dependencies | Requires MSSQL locally | Requires python locally |
+| ------------- | --------------------------------- | ---------------- | ---------------------- | ----------------------- |
+| ADSyncDecrypt | Yes                               | Yes              | No                     | No                      |
+| ADSyncGather  | Yes                               | No               | No                     | Yes                     |
+| ADSyncQuery   | No (network RPC calls only)       | No               | Yes                    | Yes                     |
 
 * **ADSyncDecrypt**: Decrypts the credentials fully on the target host. Requires the AD Connect DLLs to be in the PATH. A similar version in PowerShell was released by Adam Chester on his blog.
 * **ADSyncGather**: Queries the credentials and the encryption keys on the target host, decryption is done locally (python). No DLL dependencies.

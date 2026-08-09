@@ -1,0 +1,12 @@
+repos:
+  - repo: local
+    hooks:
+      - id: markdownlint
+        name: Verify Markdown
+        entry: >-
+          sh -c 'docker run --rm -v "$PWD:/workdir"
+          davidanson/markdownlint-cli2:latest
+          "**/*.md" --config .github/.markdownlint.json'
+        language: system
+        files: '(\.md$|^\.github/\.markdownlint\.json$)'
+        pass_filenames: false

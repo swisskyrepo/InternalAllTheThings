@@ -79,11 +79,11 @@ select_proxy_mode = auto
 
 ### SSH (native)
 
-| Pivoting Technique     | Command |
-| ---------------------- | ------- |
-| Local Port Forwarding  | `ssh -L [bindaddr]:[port]:[dsthost]:[dstport] [user]@[host]` |
+| Pivoting Technique     | Command                                                          |
+| ---------------------- | ---------------------------------------------------------------- |
+| Local Port Forwarding  | `ssh -L [bindaddr]:[port]:[dsthost]:[dstport] [user]@[host]`     |
 | Remote Port Forwarding | `ssh -R [bindaddr]:[port]:[localhost]:[localport] [user]@[host]` |
-| Socks Proxy            | `ssh -N -f -D listenport [user]@[host]` |
+| Socks Proxy            | `ssh -N -f -D listenport [user]@[host]`                          |
 
 Inside an already established SSH session, press `~C` to opens an interactive mode to add local (-L), remote (-R), or dynamic (-D) port forwards. `-D` currently cannot be added after connection. Only `-L` or `-R` work reliably. Dynamic forwarding inside an existing session is not supported by OpenSSH.
 

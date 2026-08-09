@@ -58,12 +58,12 @@ UAC stands for User Account Control. It is a security feature introduced by Micr
     REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v FilterAdministratorToken
     ```
 
-| EnableLUA  | LocalAccountTokenFilterPolicy | FilterAdministratorToken | Description  |
-|---|---|---|---|
-| 0 | / | / | No UAC |
-| 1 | 1 | / | No UAC |
-| 1 | 0 | 0 | No UAC for RID 500 |
-| 1 | 0 | 1 | UAC for Everyone |
+| EnableLUA | LocalAccountTokenFilterPolicy | FilterAdministratorToken | Description        |
+| --------- | ----------------------------- | ------------------------ | ------------------ |
+| 0         | /                             | /                        | No UAC             |
+| 1         | 1                             | /                        | No UAC             |
+| 1         | 0                             | 0                        | No UAC for RID 500 |
+| 1         | 0                             | 1                        | UAC for Everyone   |
 
 * UAC Bypass
     * [AutoElevated binary signed by Microsoft](https://www.elastic.co/guide/en/security/current/bypass-uac-via-sdclt.html) - `msconfig`, `sdclt.exe`, `eventvwr.exe`, etc
@@ -90,13 +90,13 @@ Refer to [InternalAllTheThings/Windows - DPAPI.md](https://swisskyrepo.github.io
     Get-ExecutionPolicy
     ```
 
-| Policy     | Description                                       |
-| ------------- | ------------------------------------------------- |
-| Restricted    | No scripts allowed (default in some systems).     |
-| AllSigned     | Only runs signed scripts.                         |
-| RemoteSigned  | Local scripts run, remote scripts must be signed. |
-| Unrestricted  | Runs all scripts, warns for remote scripts.       |
-| Bypass        | No restrictions; all scripts run.                 |
+| Policy       | Description                                       |
+| ------------ | ------------------------------------------------- |
+| Restricted   | No scripts allowed (default in some systems).     |
+| AllSigned    | Only runs signed scripts.                         |
+| RemoteSigned | Local scripts run, remote scripts must be signed. |
+| Unrestricted | Runs all scripts, warns for remote scripts.       |
+| Bypass       | No restrictions; all scripts run.                 |
 
 * `Restricted`: it prevents the execution of all scripts (the default for workstations).
 * `RemoteSigned`: it blocks the execution of unsigned scripts downloaded from the Internet, but allows the execution of "local" scripts (the default on servers). The command `Unblock-File` can be used to remove the Mark-of-the-Web (MotW) and make a downloaded script look like a "local" script.
@@ -279,17 +279,17 @@ When a process is marked as "protected" using PPL, it is assigned a security lev
 
 A process's protection is defined by a combination of the "level" and the "signer". The following table represent commonly used combinations, from [itm4n.github.io](https://itm4n.github.io/lsass-runasppl/).
 
-| Protection level                | Value | Signer          | Type                |
-|---------------------------------|------|------------------|---------------------|
-| PS_PROTECTED_SYSTEM             | 0x72 | WinSystem (7)    | Protected (2)       |
-| PS_PROTECTED_WINTCB             | 0x62 | WinTcb (6)       | Protected (2)       |
-| PS_PROTECTED_WINDOWS            | 0x52 | Windows (5)      | Protected (2)       |
-| PS_PROTECTED_AUTHENTICODE       | 0x12 | Authenticode (1) | Protected (2)       |
-| PS_PROTECTED_WINTCB_LIGHT       | 0x61 | WinTcb (6)       | Protected Light (1) |
-| PS_PROTECTED_WINDOWS_LIGHT      | 0x51 | Windows (5)      | Protected Light (1) |
-| PS_PROTECTED_LSA_LIGHT          | 0x41 | Lsa (4)          | Protected Light (1) |
-| PS_PROTECTED_ANTIMALWARE_LIGHT  | 0x31 | Antimalware (3)  | Protected Light (1) |
-| PS_PROTECTED_AUTHENTICODE_LIGHT | 0x11 | Authenticode (1) | Protected Light (1) |
+| Protection level                | Value | Signer           | Type                |
+| ------------------------------- | ----- | ---------------- | ------------------- |
+| PS_PROTECTED_SYSTEM             | 0x72  | WinSystem (7)    | Protected (2)       |
+| PS_PROTECTED_WINTCB             | 0x62  | WinTcb (6)       | Protected (2)       |
+| PS_PROTECTED_WINDOWS            | 0x52  | Windows (5)      | Protected (2)       |
+| PS_PROTECTED_AUTHENTICODE       | 0x12  | Authenticode (1) | Protected (2)       |
+| PS_PROTECTED_WINTCB_LIGHT       | 0x61  | WinTcb (6)       | Protected Light (1) |
+| PS_PROTECTED_WINDOWS_LIGHT      | 0x51  | Windows (5)      | Protected Light (1) |
+| PS_PROTECTED_LSA_LIGHT          | 0x41  | Lsa (4)          | Protected Light (1) |
+| PS_PROTECTED_ANTIMALWARE_LIGHT  | 0x31  | Antimalware (3)  | Protected Light (1) |
+| PS_PROTECTED_AUTHENTICODE_LIGHT | 0x11  | Authenticode (1) | Protected Light (1) |
 
 PPL works by restricting access to the protected process's memory and system resources, and by preventing the process from being modified or terminated by other processes or users. The process is also isolated from other processes running on the system, which helps prevent attacks that attempt to exploit shared resources or dependencies.
 
@@ -318,11 +318,11 @@ Credential Guard uses a combination of hardware-based virtualization and the Tru
 * [bytewreck/DumpGuard](https://github.com/bytewreck/DumpGuard) - Proof-of-Concept tool for extracting NTLMv1 hashes from sessions on modern Windows systems.
 * [EvanMcBroom/lsa-whisperer](https://github.com/EvanMcBroom/lsa-whisperer) - Tools for interacting with authentication packages using their individual message protocols.
 
-| Technique | Requires<br>SYSTEM | Requires<br>SPN Account | Can Dump<br>Credential Guard |
-| -------- | :-------: | :-------: | :-------: |
-| Extract own credentials via Remote Credential Guard protocol | :x:| ✅ | ✅ |
-| Extract all credentials via Remote Credential Guard protocol | ✅ | ✅ | ✅ |
-| Extract all credentials via Microsoft v1 authentication package | ✅ | :x: | :x: |
+| Technique                                                       | Requires<br>SYSTEM | Requires<br>SPN Account | Can Dump<br>Credential Guard |
+| --------------------------------------------------------------- | :----------------: | :---------------------: | :--------------------------: |
+| Extract own credentials via Remote Credential Guard protocol    | :x:                | ✅                      | ✅                           |
+| Extract all credentials via Remote Credential Guard protocol    | ✅                 | ✅                      | ✅                           |
+| Extract all credentials via Microsoft v1 authentication package | ✅                 | :x:                     | :x:                          |
 
 * **Dumping own session using Remote Credential Guard**: this works regardless of the state of Credential Guard, but requires credentials for an SPN-enabled account.
 
@@ -441,14 +441,14 @@ Add-MpPreference -AttackSurfaceReductionRules_Ids <Id> -AttackSurfaceReductionRu
 Add-MpPreference -AttackSurfaceReductionRules_Ids <Id> -AttackSurfaceReductionRules_Actions Enabled
 ```
 
-| Description | Id |
-|---------------------------------------------------------------------------|--------------------------------------|
-| Block execution of potentially obfuscated scripts                         | 5beb7efe-fd9a-4556-801d-275e5ffc04cc |
-| Block JavaScript or VBScript from launching downloaded executable content | d3e037e1-3eb8-44c8-a917-57927947596d |
-| Block abuse of exploited vulnerable signed drivers                        | 56a863a9-875e-4185-98a7-b882c64b5ce5 |
-| Block executable content from email client and webmail                    | be9ba2d9-53ea-4cdc-84e5-9b1eeee46550 |
-| Block process creations originating from PSExec and WMI commands          | d1e49aac-8f56-4280-b9ba-993a6d77406c |
-| Use advanced protection against ransomware                                | c1db55ab-c21a-4637-bb3f-a12568109d35 |
+| Description                                                                               | Id                                   |
+| ----------------------------------------------------------------------------------------- | ------------------------------------ |
+| Block execution of potentially obfuscated scripts                                         | 5beb7efe-fd9a-4556-801d-275e5ffc04cc |
+| Block JavaScript or VBScript from launching downloaded executable content                 | d3e037e1-3eb8-44c8-a917-57927947596d |
+| Block abuse of exploited vulnerable signed drivers                                        | 56a863a9-875e-4185-98a7-b882c64b5ce5 |
+| Block executable content from email client and webmail                                    | be9ba2d9-53ea-4cdc-84e5-9b1eeee46550 |
+| Block process creations originating from PSExec and WMI commands                          | d1e49aac-8f56-4280-b9ba-993a6d77406c |
+| Use advanced protection against ransomware                                                | c1db55ab-c21a-4637-bb3f-a12568109d35 |
 | Block credential stealing from the Windows local security authority subsystem (lsass.exe) | 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2 |
 
 ## Windows Defender Antivirus

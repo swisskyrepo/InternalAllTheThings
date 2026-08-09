@@ -90,6 +90,9 @@ Patched in July 2026 update.
 
 Certighost is a vulnerability in certificate enrollment where a Certification Authority trusts a requester-controlled directory lookup target. By supplying the **cdc** and **rmd** attributes, an attacker can redirect the CA to a rogue host running SMB, LDAP, and LSA services.
 
+* `cdc` (Client DC), which identifies the host the CA should contact
+* `rmd` (Remote Domain), which identifies the principal the CA should look up
+
 The attacker-controlled server can return forged directory information for a chosen Domain Controller, such as its SID and DNS hostname. The CA then embeds this identity data into the issued certificate, allowing the attacker to impersonate the Domain Controller during certificate-based authentication and potentially gain replication privileges.
 
 A standard domain machine account is sufficient to pass the CA's initial authentication checks, meaning the rogue lookup server does not need to be the Domain Controller it claims to represent.
@@ -210,12 +213,12 @@ Using the **UnPAC The Hash** method, you can retrieve the NT Hash for an User vi
 
 ## Common Error Messages
 
-| Error Name | Description |
-| ---------- | ----------- |
-| `CERTSRV_E_TEMPLATE_DENIED` | The permissions on the certificate template do not allow the current user to enroll |
-| `KDC_ERR_INCONSISTENT_KEY_PURPOSE` | Certificate cannot be used for PKINIT client authentication |
-| `KDC_ERROR_CLIENT_NOT_TRUSTED` | Reserved for PKINIT. Try to authenticate to another DC |
-| `KDC_ERR_PADATA_TYPE_NOSUPP` | KDC has no support for padata type. CA might be expired |
+| Error Name                         | Description                                                                         |
+| ---------------------------------- | ----------------------------------------------------------------------------------- |
+| `CERTSRV_E_TEMPLATE_DENIED`        | The permissions on the certificate template do not allow the current user to enroll |
+| `KDC_ERR_INCONSISTENT_KEY_PURPOSE` | Certificate cannot be used for PKINIT client authentication                         |
+| `KDC_ERROR_CLIENT_NOT_TRUSTED`     | Reserved for PKINIT. Try to authenticate to another DC                              |
+| `KDC_ERR_PADATA_TYPE_NOSUPP`       | KDC has no support for padata type. CA might be expired                             |
 
 `KDC_ERR_PADATA_TYPE_NOSUPP` error still allow the attacker to use the certificate with the Pass-The-Cert. Since the DC's LDAPS service only check the SAN.
 

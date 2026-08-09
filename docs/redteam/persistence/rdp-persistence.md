@@ -39,13 +39,13 @@ RDP shadowing is a feature of Remote Desktop Protocol (RDP) that allows a remote
 
 Shadow Remote Desktop Session can be enabled by editing the `HKLM\Software\Policies\Microsoft\Windows NT\Terminal Services` registry key.
 
-| Value | Name                  | Description |
-| ----- | --------------------- | --- |
-|   0   | Disable               | Remote control is disabled. |
-|   1   | EnableInputNotify     | The user of remote control has full control of the user's session, with the user's permission. |
-|   2   | EnableInputNoNotify   | The user of remote control has full control of the user's session; the user's permission is not required. |
-|   3   | EnableNoInputNotify   | The user of remote control can view the session remotely, with the user's permission; the remote user cannot actively control the session. |
-|   4   | EnableNoInputNoNotify | The user of remote control can view the session remotely, but not actively control the session; the user's permission is not required. |
+| Value | Name                  | Description                                                                                                                                |
+| ----- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0     | Disable               | Remote control is disabled.                                                                                                                |
+| 1     | EnableInputNotify     | The user of remote control has full control of the user's session, with the user's permission.                                             |
+| 2     | EnableInputNoNotify   | The user of remote control has full control of the user's session; the user's permission is not required.                                  |
+| 3     | EnableNoInputNotify   | The user of remote control can view the session remotely, with the user's permission; the remote user cannot actively control the session. |
+| 4     | EnableNoInputNoNotify | The user of remote control can view the session remotely, but not actively control the session; the user's permission is not required.     |
 
 Usually you want to be able to see and interact with the Remote Desktop: option 2 `EnableInputNoNotify`.
 

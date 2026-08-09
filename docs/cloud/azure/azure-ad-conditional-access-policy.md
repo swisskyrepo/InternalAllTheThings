@@ -9,17 +9,17 @@ Conditional Access is used to restrict access to resources to compliant devices 
 
 * Enumerate Conditional Access Policies: `roadrecon plugin policies` (query the local database)
 
-| CAP                       | Bypass  |
-|---------------------------|---------|
-| Location / IP ranges      | Corporate VPN, Guest Wifi |
-| Platform requirement      | User-Agent switcher (Android, PS4, Linux, ...) |
+| CAP                       | Bypass                                                          |
+| ------------------------- | --------------------------------------------------------------- |
+| Location / IP ranges      | Corporate VPN, Guest Wifi                                       |
+| Platform requirement      | User-Agent switcher (Android, PS4, Linux, ...)                  |
 | Protocol requirement      | Use another protocol (e.g for e-mail acccess:  POP, IMAP, SMTP) |
-| Azure AD Joined Device    | Try to join a VM (Work Access)|
-| Compliant Device (Intune) | Fake device compliance |
-| Device requirement        | / |
-| MFA                       | / |
-| Legacy Protocols          | / |
-| Domain Joined             | / |
+| Azure AD Joined Device    | Try to join a VM (Work Access)                                  |
+| Compliant Device (Intune) | Fake device compliance                                          |
+| Device requirement        | /                                                               |
+| MFA                       | /                                                               |
+| Legacy Protocols          | /                                                               |
+| Domain Joined             | /                                                               |
 
 ```ps1
 python3 CAPSlock.py analyze -u <userprincipalname> --resource <resource-id> [options]

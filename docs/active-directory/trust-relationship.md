@@ -37,12 +37,12 @@
 
 :warning: Require a Domain-Admin level access to the current domain.
 
-| Source     | Target  | Technique to use  | Trust relationship  |
-|---|---|---|---|
-| Root      | Child  | Golden Ticket + Enterprise Admin group (Mimikatz /groups) | Inter Realm (2-way)  |
-| Child     | Child  | SID History exploitation (Mimikatz /sids)                 | Inter Realm Parent-Child (2-way)  |
-| Child     | Root   | SID History exploitation (Mimikatz /sids)                 | Inter Realm Tree-Root (2-way)  |
-| Forest A  | Forest B  | PrinterBug + Unconstrained delegation ?  | Inter Realm Forest or External (2-way)  |
+| Source   | Target   | Technique to use                                          | Trust relationship                     |
+| -------- | -------- | --------------------------------------------------------- | -------------------------------------- |
+| Root     | Child    | Golden Ticket + Enterprise Admin group (Mimikatz /groups) | Inter Realm (2-way)                    |
+| Child    | Child    | SID History exploitation (Mimikatz /sids)                 | Inter Realm Parent-Child (2-way)       |
+| Child    | Root     | SID History exploitation (Mimikatz /sids)                 | Inter Realm Tree-Root (2-way)          |
+| Forest A | Forest B | PrinterBug + Unconstrained delegation ?                   | Inter Realm Forest or External (2-way) |
 
 ## References
 

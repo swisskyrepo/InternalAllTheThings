@@ -48,10 +48,10 @@ By default, Excel does not set a password when saving a new file. However, some 
 
 > If the user has not supplied an encryption password and the document is encrypted, the default encryption choice using the techniques specified in section 2.3 MUST be the following password: "`\x2f\x30\x31\x48\x61\x6e\x6e\x65\x73\x20\x52\x75\x65\x73\x63\x68\x65\x72\x2f\x30\x31`". - [2.4.2.3 Binary Document Write Protection Method 3](https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/57fc02f0-c1de-4fc6-908f-d146104662f5)
 
-| Product    | Password         | Supported Formats |
-|------------|------------------|-------------------|
-| Excel      | VelvetSweatshop  | all Excel formats |
-| PowerPoint | 01Hannes Ruescher/01 | .pps .ppt     |
+| Product    | Password             | Supported Formats |
+| ---------- | -------------------- | ----------------- |
+| Excel      | VelvetSweatshop      | all Excel formats |
+| PowerPoint | 01Hannes Ruescher/01 | .pps .ppt         |
 
 ## Excel
 

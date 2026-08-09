@@ -11,20 +11,20 @@ Pre-authentication requires the requesting user to provide a secret key, which i
 
 In the past, there were more encryptions methods, that have now been deprecated.
 
-| enctype                    | weak?| krb5   | Windows |
-| -------------------------- | ---- | ------ | ------- |  
-| des-cbc-crc                | weak | <1.18  | >=2000  |
-| des-cbc-md4                | weak | <1.18  | ?       |
-| des-cbc-md5                | weak | <1.18  | >=2000  |
-| des3-cbc-sha1              |    | >=1.1  | none    |
-| arcfour-hmac               |    | >=1.3  | >=2000  |
-| arcfour-hmac-exp           | weak | >=1.3  | >=2000  |
-| aes128-cts-hmac-sha1-96    |    | >=1.3  | >=Vista |
-| aes256-cts-hmac-sha1-96  |      | >=1.3  | >=Vista |
-| aes128-cts-hmac-sha256-128 |    | >=1.15 | none    |
-| aes256-cts-hmac-sha384-192 |    | >=1.15 | none    |
-| camellia128-cts-cmac    |      | >=1.9  | none    |
-| camellia256-cts-cmac    |      | >=1.9  | none    |
+| enctype                    | weak? | krb5   | Windows |
+| -------------------------- | ----- | ------ | ------- |
+| des-cbc-crc                | weak  | <1.18  | >=2000  |
+| des-cbc-md4                | weak  | <1.18  | ?       |
+| des-cbc-md5                | weak  | <1.18  | >=2000  |
+| des3-cbc-sha1              |       | >=1.1  | none    |
+| arcfour-hmac               |       | >=1.3  | >=2000  |
+| arcfour-hmac-exp           | weak  | >=1.3  | >=2000  |
+| aes128-cts-hmac-sha1-96    |       | >=1.3  | >=Vista |
+| aes256-cts-hmac-sha1-96    |       | >=1.3  | >=Vista |
+| aes128-cts-hmac-sha256-128 |       | >=1.15 | none    |
+| aes256-cts-hmac-sha384-192 |       | >=1.15 | none    |
+| camellia128-cts-cmac       |       | >=1.9  | none    |
+| camellia256-cts-cmac       |       | >=1.9  | none    |
 
 Microsoft Windows releases Windows 7 and later disable single-DES enctypes by default.
 

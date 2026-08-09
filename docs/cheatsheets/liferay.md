@@ -31,15 +31,15 @@ minimized
 
 * **mode**: Portlet's current function. Values are: view, edit, help
 
-| Name                | Portlet ID |
-| ------------------- | ---------- |
-| Asset Publisher     | com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet |
-| Documents and Media | com_liferay_document_library_web_portlet_DLPortlet |
-| Navigation Menu     | com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet |
+| Name                | Portlet ID                                                                    |
+| ------------------- | ----------------------------------------------------------------------------- |
+| Asset Publisher     | com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet                 |
+| Documents and Media | com_liferay_document_library_web_portlet_DLPortlet                            |
+| Navigation Menu     | com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet        |
 | Site Map            | com_liferay_site_navigation_site_map_web_portlet_SiteNavigationSiteMapPortlet |
-| Web Content Display | com_liferay_journal_content_web_portlet_JournalContentPortlet |
-| Search Bar          | com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet |
-| Search              | com_liferay_portal_search_web_portlet_SearchPortlet |
+| Web Content Display | com_liferay_journal_content_web_portlet_JournalContentPortlet                 |
+| Search Bar          | com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet             |
+| Search              | com_liferay_portal_search_web_portlet_SearchPortlet                           |
 
 ## Login Page
 

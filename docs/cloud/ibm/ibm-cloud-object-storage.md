@@ -108,7 +108,7 @@ Here’s an example using Python and the IBM Cloud SDK to upload and retrieve an
 
 To start using IBM Cloud Object Storage, follow these steps:
 
-1. **Sign Up**: Create an IBM Cloud account [here](https://cloud.ibm.com/registration).
+1. **Sign Up**: Create an IBM Cloud account at [cloud.ibm.com](https://cloud.ibm.com/registration).
 2. **Create Object Storage**: In the IBM Cloud console, navigate to **Catalog** > **Storage** > **Object Storage**, and follow the steps to create an instance.
 3. **Create Buckets**: After creating an instance, you can create storage containers (buckets) to store your objects. Buckets are where data is logically stored.
 4. **Manage Access**: Define access policies using IBM IAM for your Object Storage buckets.

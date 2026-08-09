@@ -37,15 +37,15 @@
 
 Small extract from [subat0mik/whoamsi](https://github.com/subat0mik/whoamsi) - An effort to track security vendors' use of Microsoft's Antimalware Scan Interface:
 
-| Vendor/Product  | AMSI | Date | Reference |
-| -------- | -------- | -------- | -------- |
-| Avast | Y | 03/20/2016 | <https://forum.avast.com/index.php?topic=184491.msg1300884#msg1300884> |
-| AVG | Y | 03/08/2016 | <https://support.avg.com/answers?id=906b00000008oUTAAY> |
-| BitDefender Consumer | Y | 09/20/2016 | <https://forum.bitdefender.com/index.php?/topic/72455-antimalware-scan-service/> |
-| BitDefender Enterprise | Y | 05/25/2021 | <https://twitter.com/Bitdefender_Ent/status/1397187195669295111?s=20> |
-| Kaspersky Anti Targeted Attack Platform | Y | 10/10/2018 | <https://help.kaspersky.com/KIS/2019/en-US/119653.htm> |
-| Symantec Advanced Threat Protection | Y | 07/15/2020 | <https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/symantec-security-software/endpoint-security-and-management/endpoint-protection/all/release-notes/Whats-new-for-Symantec-Endpoint-Protection-14_3-.html> |
-| Microsoft Defender for Endpoint | Y | 06/09/2015 | <https://www.microsoft.com/security/blog/2015/06/09/windows-10-to-offer-application-developers-new-malware-defenses/> |
+| Vendor/Product                          | AMSI | Date       | Reference                                                                                                                                                                                                               |
+| --------------------------------------- | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Avast                                   | Y    | 03/20/2016 | <https://forum.avast.com/index.php?topic=184491.msg1300884#msg1300884>                                                                                                                                                  |
+| AVG                                     | Y    | 03/08/2016 | <https://support.avg.com/answers?id=906b00000008oUTAAY>                                                                                                                                                                 |
+| BitDefender Consumer                    | Y    | 09/20/2016 | <https://forum.bitdefender.com/index.php?/topic/72455-antimalware-scan-service/>                                                                                                                                        |
+| BitDefender Enterprise                  | Y    | 05/25/2021 | <https://twitter.com/Bitdefender_Ent/status/1397187195669295111?s=20>                                                                                                                                                   |
+| Kaspersky Anti Targeted Attack Platform | Y    | 10/10/2018 | <https://help.kaspersky.com/KIS/2019/en-US/119653.htm>                                                                                                                                                                  |
+| Symantec Advanced Threat Protection     | Y    | 07/15/2020 | <https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/symantec-security-software/endpoint-security-and-management/endpoint-protection/all/release-notes/Whats-new-for-Symantec-Endpoint-Protection-14_3-.html> |
+| Microsoft Defender for Endpoint         | Y    | 06/09/2015 | <https://www.microsoft.com/security/blog/2015/06/09/windows-10-to-offer-application-developers-new-malware-defenses/>                                                                                                   |
 
 ## Patching amsi.dll AmsiScanBuffer by rasta-mouse
 

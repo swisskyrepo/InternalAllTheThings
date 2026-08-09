@@ -6,18 +6,18 @@ Coerce refers to forcing a target machine (usually with SYSTEM privileges) to au
 
 ### Server Side Signing
 
-| Operating System | SMB Signing | LDAP Signing |
-| ------------------------------- | --- | --- |
-| Windows Server 2019 DC          | ✅  |  ❌ |
-| Windows Server 2022 DC pre 23H2 | ✅  |  ❌ |
-| Windows Server 2022 DC 23H2     | ✅  |  ✅ |
-| Windows Server 2025 DC          | ✅  |  ✅ |
-| Windows Server 2019 Member      | ❌  |  -  |
-| Windows Server 2022 Member      | ❌  |  -  |
-| Windows Server 2025 Member      | ❌  |  -  |
-| Windows 10                      | ❌  |  -  |
-| Windows 11 23H2                 | ❌  |  -  |
-| Windows 11 24H2                 | ✅  |  -  |
+| Operating System                | SMB Signing | LDAP Signing |
+| ------------------------------- | ----------- | ------------ |
+| Windows Server 2019 DC          | ✅          | ❌           |
+| Windows Server 2022 DC pre 23H2 | ✅          | ❌           |
+| Windows Server 2022 DC 23H2     | ✅          | ✅           |
+| Windows Server 2025 DC          | ✅          | ✅           |
+| Windows Server 2019 Member      | ❌          | -            |
+| Windows Server 2022 Member      | ❌          | -            |
+| Windows Server 2025 Member      | ❌          | -            |
+| Windows 10                      | ❌          | -            |
+| Windows 11 23H2                 | ❌          | -            |
+| Windows 11 24H2                 | ✅          | -            |
 
 * Server-side SMB signing has been enabled on domain controllers
 * Server-side SMB signing is still not required by default on non-DC Windows server
@@ -33,11 +33,11 @@ uv run relayinformer ldap --method BOTH --dc-ip 10.10.10.10 --user USER --passwo
 uv run relayinformer ldap --method LDAPS --dc-ip 10.10.10.10 --user USER --password PASSWORD
 ```
 
-| EPA Values | Description |
-| ---------- | ----------- |
-| Disabled / Never | You should generally be able to target with NTLM relay, regardless of the client's support for EPA or version of NTLM being used. |
+| EPA Values                          | Description                                                                                                                                                                                                                                            |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Disabled / Never                    | You should generally be able to target with NTLM relay, regardless of the client's support for EPA or version of NTLM being used.                                                                                                                      |
 | Allowed / Accepted / When Supported | You can theoretically conduct an NTLM relay but common relay scenarios will not work because standard coercion / poisoning techniques (mentioned above) will result in the addition of EPA-relevant AV pairs, indicating the client’s support for EPA. |
-| Required | NTLM relay should be prevented by validation of values provided in EPA-relevant AV pairs. |
+| Required                            | NTLM relay should be prevented by validation of values provided in EPA-relevant AV pairs.                                                                                                                                                              |
 
 ## WebClient Service
 

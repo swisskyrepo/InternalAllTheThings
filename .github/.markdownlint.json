@@ -8,5 +8,8 @@
   },
   "ul-indent": {
     "indent": 4
+  },
+  "MD060": {
+    "style": "aligned"
   }
 }

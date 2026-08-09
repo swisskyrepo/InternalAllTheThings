@@ -72,13 +72,13 @@ These libraries by default are included in the APK at the file path `/lib/<cpu>/
 
 Use `IDA`, `Radare2/Cutter` or `Ghidra` to reverse them.
 
-| CPU Native         | Library Path                |
-|----------------------|-----------------------------|
-| "generic" 32-bit ARM | lib/armeabi/libcalc.so      |
-| x86                  | lib/x86/libcalc.so          |
-| x64                  | lib/x86_64/libcalc.so       |
-| ARMv7                | lib/armeabi-v7a/libcalc.so  |
-| ARM64                | lib/arm64-v8a/libcalc.so    |
+| CPU Native           | Library Path               |
+| -------------------- | -------------------------- |
+| "generic" 32-bit ARM | lib/armeabi/libcalc.so     |
+| x86                  | lib/x86/libcalc.so         |
+| x64                  | lib/x86_64/libcalc.so      |
+| ARMv7                | lib/armeabi-v7a/libcalc.so |
+| ARM64                | lib/arm64-v8a/libcalc.so   |
 
 :warning: The shared object file (`.so`) doesn't need to be embedded in the app.
 
@@ -573,25 +573,25 @@ One more step, you need to pair the devices using a code.
 ./platform-tools/adb shell
 ```
 
-| Command                      | Description                                    |
-|------------------------------|------------------------------------------------|
-| `adb devices`                | List devices                                   |
-| `adb connect <IP>:<PORT>`    | Connect to a remote device                     |
-| `adb install app.apk`        | Install application                            |
-| `adb uninstall app.apk`      | Uninstall application                          |
-| `adb root`                   | Restarting adbd as root                        |
-| `adb shell pm list packages` | List packages                                  |
-| `adb shell pm list packages -3` | Show third party packages                   |
-| `adb shell pm list packages -f` | Show packages and associated files          |
-| `adb shell pm clear com.test.abc` | Delete all data associated with a package |
-| `adb pull <remote> <local>`  | Download file                                  |
-| `adb push <local> <remote>`  | Upload file                                    |
-| `adb shell screenrecord /sdcard/demo.mp4`| Record video of the screen         |
-| `adb shell am start -n com.test.abc` | Start an activity                      |
-| `adb shell am startservice` | Start a service                                |
-| `adb shell am broadcast`    | Send a broadcast                               |
-| `adb logcat *:D`             | Show log with Debug level                      |
-| `adb logcat -c`              | Clears the entire log                          |
+| Command                                   | Description                               |
+| ----------------------------------------- | ----------------------------------------- |
+| `adb devices`                             | List devices                              |
+| `adb connect <IP>:<PORT>`                 | Connect to a remote device                |
+| `adb install app.apk`                     | Install application                       |
+| `adb uninstall app.apk`                   | Uninstall application                     |
+| `adb root`                                | Restarting adbd as root                   |
+| `adb shell pm list packages`              | List packages                             |
+| `adb shell pm list packages -3`           | Show third party packages                 |
+| `adb shell pm list packages -f`           | Show packages and associated files        |
+| `adb shell pm clear com.test.abc`         | Delete all data associated with a package |
+| `adb pull <remote> <local>`               | Download file                             |
+| `adb push <local> <remote>`               | Upload file                               |
+| `adb shell screenrecord /sdcard/demo.mp4` | Record video of the screen                |
+| `adb shell am start -n com.test.abc`      | Start an activity                         |
+| `adb shell am startservice`               | Start a service                           |
+| `adb shell am broadcast`                  | Send a broadcast                          |
+| `adb logcat *:D`                          | Show log with Debug level                 |
+| `adb logcat -c`                           | Clears the entire log                     |
 
 ## Android Virtual Device
 
@@ -601,12 +601,12 @@ An Android Virtual Device (AVD) is an emulator configuration that mimics a physi
 emulator -avd Pixel_8_API_34 -writable-system
 ```
 
-| Command                      | Description                                    |
-|------------------------------|------------------------------------------------|
-| `-tcpdump /path/dumpfile.cap`| Capture all the traffic in a file |
-| `-dns-server X.X.X.X`        | Set DNS servers |
-| `-http-proxy X.X.X.X:8080`   | Set HTTP proxy |
-| `-port 5556`                 | Set the ADB TCP port number |
+| Command                       | Description                       |
+| ----------------------------- | --------------------------------- |
+| `-tcpdump /path/dumpfile.cap` | Capture all the traffic in a file |
+| `-dns-server X.X.X.X`         | Set DNS servers                   |
+| `-http-proxy X.X.X.X:8080`    | Set HTTP proxy                    |
+| `-port 5556`                  | Set the ADB TCP port number       |
 
 ## Unlock Bootloader
 

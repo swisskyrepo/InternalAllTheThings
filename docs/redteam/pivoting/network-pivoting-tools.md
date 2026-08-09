@@ -4,17 +4,17 @@
 
 Comparison table showing platform support (Windows, Linux, macOS), available polling methods (HTTPS, WebSockets), and supported SOCKS versions (4/5).
 
-| Name         | SOCKS4 | SOCKS5 | SOCKET | HTTPS | Web Socket | Windows | Linux | MacOS  | Tun Interface |
-| ------------ | ------ | ------ | ------ | ----- | ---------- | ------- | ----- | -----  | ------------  |
-| SSH          |     ✅ |     ✅ |     ✅ |    ❌ |         ❌ |     ✅  |   ✅  |     ✅ |           ❌ |
-| reGeorg      |     ✅ |     ❌ |     ✅ |    ❌ |         ❌ |     ✅  |   ✅  |     ✅ |           ❌ |
-| pivotnacci   |     ✅ |     ✅ |     ❌ |    ✅ |         ❌ |     ✅  |   ✅  |     ✅ |           ❌ |
-| wstunnel     |     ✅ |     ✅ |     ❌ |    ✅ |         ✅ |     ✅  |   ✅  |     ✅ |           ❌ |
-| chisel       |     ❌ |     ✅ |     ❌ |    ✅ |         ✅ |     ✅  |   ✅  |     ✅ |           ❌ |
-| revsocks     |     ❌ |     ✅ |     ✅ |    ✅ |         ✅ |     ✅  |   ✅  |     ✅ |           ❌ |
-| ligolo-ng    |     ❌ |     ❌ |     ✅ |    ❌ |         ✅ |     ✅  |   ✅  |     ✅ |           ✅ |
-| gost         |     ✅ |     ✅ |     ✅ |    ❌ |         ❌ |     ✅  |   ✅  |     ✅ |           ✅ |
-| rpivot       |     ✅ |     ❌ |     ✅ |    ❌ |         ❌ |     ✅  |   ✅  |     ✅ |           ❌ |
+| Name       | SOCKS4 | SOCKS5 | SOCKET | HTTPS | Web Socket | Windows | Linux | MacOS | Tun Interface |
+| ---------- | ------ | ------ | ------ | ----- | ---------- | ------- | ----- | ----- | ------------- |
+| SSH        | ✅     | ✅     | ✅     | ❌    | ❌         | ✅      | ✅    | ✅    | ❌            |
+| reGeorg    | ✅     | ❌     | ✅     | ❌    | ❌         | ✅      | ✅    | ✅    | ❌            |
+| pivotnacci | ✅     | ✅     | ❌     | ✅    | ❌         | ✅      | ✅    | ✅    | ❌            |
+| wstunnel   | ✅     | ✅     | ❌     | ✅    | ✅         | ✅      | ✅    | ✅    | ❌            |
+| chisel     | ❌     | ✅     | ❌     | ✅    | ✅         | ✅      | ✅    | ✅    | ❌            |
+| revsocks   | ❌     | ✅     | ✅     | ✅    | ✅         | ✅      | ✅    | ✅    | ❌            |
+| ligolo-ng  | ❌     | ❌     | ✅     | ❌    | ✅         | ✅      | ✅    | ✅    | ✅            |
+| gost       | ✅     | ✅     | ✅     | ❌    | ❌         | ✅      | ✅    | ✅    | ✅            |
+| rpivot     | ✅     | ❌     | ✅     | ❌    | ❌         | ✅      | ✅    | ✅    | ❌            |
 
 ## Tools
 

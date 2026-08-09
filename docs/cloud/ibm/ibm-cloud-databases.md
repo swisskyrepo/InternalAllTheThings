@@ -113,7 +113,7 @@ run().catch(console.dir);
 
 To begin using IBM Cloud Managed Database services, follow these steps:
 
-1. **Sign Up**: Create an IBM Cloud account [here](https://cloud.ibm.com/registration).
+1. **Sign Up**: Create an IBM Cloud account at [cloud.ibm.com](https://cloud.ibm.com/registration).
 2. **Select Database Service**: Choose the managed database service you need (PostgreSQL, MongoDB, etc.).
 3. **Configure Your Database**: Set up your database parameters, including region, storage size, and instance type.
 4. **Deploy**: Launch your database instance with a few clicks.

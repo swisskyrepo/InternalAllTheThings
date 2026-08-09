@@ -71,9 +71,9 @@ Any valid domain user can request a kerberos ticket (ST) for any domain service.
 
 Then crack the ticket using the correct hashcat mode (`$krb5tgs$23`= `etype 23`)
 
-| Mode    | Description  |
-|---------|--------------|
-| `13100` | Kerberos 5 TGS-REP etype 23 (RC4) |
+| Mode    | Description                                           |
+| ------- | ----------------------------------------------------- |
+| `13100` | Kerberos 5 TGS-REP etype 23 (RC4)                     |
 | `19600` | Kerberos 5 TGS-REP etype 17 (AES128-CTS-HMAC-SHA1-96) |
 | `19700` | Kerberos 5 TGS-REP etype 18 (AES256-CTS-HMAC-SHA1-96) |
 

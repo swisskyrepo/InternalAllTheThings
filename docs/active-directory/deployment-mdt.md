@@ -11,21 +11,21 @@ These files contains credentials used by Microsoft Deployment Toolkit to join a 
 * **Bootstrap.ini** - Located in `DeploymentShare\Control\Bootstrap.ini`
 * **CustomSettings.ini** - Located in `DeploymentShare\Control\CustomSettings.ini`
 
-| Name | Description |
-| --- | --- |
-| DomainAdmin | Account used to join the computer to the domain |
-| DomainAdminPassword | Password used to join the computer to the domain |
-| UserID | Account used for accessing network resources |
-| UserPassword | Password used for accessing network resources |
-| AdminPassword | The local administrator account on the computer |
-| ADDSUserName | Account used when promoting to DC during deployment |
-| ADDSPassword | Password used when promoting to DC during deployment |
-| Password | Password to use for promoting member server to a domain controller |
-| SafeModeAdminPassword | Used when deploying DCs, it is the AD restore mode password |
-| TPMOwnerPassword | The TPM password if not set already |
-| DBID | Account used to connect to SQL server during deployment |
-| DBPwd | Password used to connect to SQL server during deployment |
-| OSDBitLockerRecoveryPassword | BitLocker recovery password |
+| Name                         | Description                                                        |
+| ---------------------------- | ------------------------------------------------------------------ |
+| DomainAdmin                  | Account used to join the computer to the domain                    |
+| DomainAdminPassword          | Password used to join the computer to the domain                   |
+| UserID                       | Account used for accessing network resources                       |
+| UserPassword                 | Password used for accessing network resources                      |
+| AdminPassword                | The local administrator account on the computer                    |
+| ADDSUserName                 | Account used when promoting to DC during deployment                |
+| ADDSPassword                 | Password used when promoting to DC during deployment               |
+| Password                     | Password to use for promoting member server to a domain controller |
+| SafeModeAdminPassword        | Used when deploying DCs, it is the AD restore mode password        |
+| TPMOwnerPassword             | The TPM password if not set already                                |
+| DBID                         | Account used to connect to SQL server during deployment            |
+| DBPwd                        | Password used to connect to SQL server during deployment           |
+| OSDBitLockerRecoveryPassword | BitLocker recovery password                                        |
 
 Other credentials can be found inside the files hosted in the deployment share:
 

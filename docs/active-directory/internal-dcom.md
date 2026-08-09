@@ -114,4 +114,5 @@ $obj.Application.ShellExecute("cmd.exe","/c calc.exe","C:\windows\system32",$nul
 ## References
 
 * [Lateral movement via dcom: round 2 - enigma0x3 - January 23, 2017](https://enigma0x3.net/2017/01/23/lateral-movement-via-dcom-round-2/)
-* [New lateral movement techniques abuse DCOM technology - Philip Tsukerman - Jan 25, 2018](https://www.cybereason.com/blog/dcom-lateral-movement-techniques)
+* [New lateral movement techniques abuse DCOM technology - Philip Tsukerman - January 25, 2018](https://www.cybereason.com/blog/dcom-lateral-movement-techniques)
+* [Non-administrative DCOM Execution: Exploring BloodHound's ExecuteDCOM - simondotsh - December 29, 2021](https://simondotsh.com/infosec/2021/12/29/dcom-without-admin.html)

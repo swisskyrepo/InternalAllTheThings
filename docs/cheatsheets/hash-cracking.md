@@ -93,14 +93,14 @@ hashcat --attack-mode 3 --hash-type $number $hashes_file "?a?a?a?a?a?a?a?a"
 hashcat --attack-mode 3 --custom-charset1 "?u" --custom-charset2 "?l?u?d" --custom-charset3 "?d" --hash-type $number $hashes_file "?1?2?2?2?3"
 ```
 
-| Shortcut  | Characters  |
-|----|----------------------------|
-| ?l | abcdefghijklmnopqrstuvwxyz |
-| ?u | ABCDEFGHIJKLMNOPQRSTUVWXYZ |
-| ?d | 0123456789 |
-| ?s | !"#$%&'()*+,-./:;<=>?@[\]^_`{}~ |
-| ?a | ?l?u?d?s |
-| ?b | 0x00 - 0xff |
+| Shortcut | Characters                      |
+| -------- | ------------------------------- |
+| ?l       | abcdefghijklmnopqrstuvwxyz      |
+| ?u       | ABCDEFGHIJKLMNOPQRSTUVWXYZ      |
+| ?d       | 0123456789                      |
+| ?s       | !"#$%&'()*+,-./:;<=>?@[\]^_`{}~ |
+| ?a       | ?l?u?d?s                        |
+| ?b       | 0x00 - 0xff                     |
 
 ## John
 

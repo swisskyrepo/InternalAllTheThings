@@ -43,11 +43,11 @@ Debug the DNS queries with `tcpdump -l -n -s 5655 -i eth0  udp port 53`.
 
 ### DNS Mode
 
-| Mode | Description |
-| --- | --- |
+| Mode           | Description                           |
+| -------------- | ------------------------------------- |
 | `mode dns-txt` | DNS TXT record data channel (default) |
-| `mode dns`     | DNS A record data channel |
-| `mode dns6`    | DNS AAAA record channel |
+| `mode dns`     | DNS A record data channel             |
+| `mode dns6`    | DNS AAAA record channel               |
 
 ## SMB Beacon
 
@@ -60,11 +60,11 @@ jump [exec] [host] [pipe]
 
 SMB Beacon uses Named Pipes. You might encounter these error code while running it.
 
-| Error Code | Meaning              | Description                                        |
-|------------|----------------------|----------------------------------------------------|
-| 2          | File Not Found       | There is no beacon for you to link to              |
-| 5          | Access is denied     | Invalid credentials or you don't have permission   |
-| 53         | Bad Netpath          | You have no trust relationship with the target system. It may or may not be a beacon there. |
+| Error Code | Meaning          | Description                                                                                 |
+| ---------- | ---------------- | ------------------------------------------------------------------------------------------- |
+| 2          | File Not Found   | There is no beacon for you to link to                                                       |
+| 5          | Access is denied | Invalid credentials or you don't have permission                                            |
+| 53         | Bad Netpath      | You have no trust relationship with the target system. It may or may not be a beacon there. |
 
 ## SSH Beacon
 

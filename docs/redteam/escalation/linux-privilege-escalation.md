@@ -370,11 +370,11 @@ find / -uid 0 -perm -4000 -type f 2>/dev/null
 
 ### Create a SUID binary
 
-| Function   | Description  |
-|------------|---|
-| setreuid() | sets real and effective user IDs of the calling process  |
-| setuid()   | sets the effective user ID of the calling process        |
-| setgid()   | sets the effective group ID of the calling process       |
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| setreuid() | sets real and effective user IDs of the calling process |
+| setuid()   | sets the effective user ID of the calling process       |
+| setgid()   | sets the effective group ID of the calling process      |
 
 ```bash
 print 'int main(void){\nsetresuid(0, 0, 0);\nsystem("/bin/sh");\n}' > /tmp/suid.c   
@@ -432,23 +432,23 @@ sh-5.0# id
 uid=0(root) gid=1000(swissky)
 ```
 
-| Capabilities name  | Description |
-|---|---|
-| CAP_AUDIT_CONTROL  | Allow to enable/disable kernel auditing |
-| CAP_AUDIT_WRITE  | Helps to write records to kernel auditing log |
-| CAP_BLOCK_SUSPEND  | This feature can block system suspends   |
-| CAP_CHOWN  | Allow user to make arbitrary change to files UIDs and GIDs |
-| CAP_DAC_OVERRIDE  | This helps to bypass file read, write and execute permission checks |
-| CAP_DAC_READ_SEARCH  | This only bypasses file and directory read/execute permission checks  |
-| CAP_FOWNER  | This enables bypass of permission checks on operations that normally require the filesystem UID of the process to match the UID of the file  |
-| CAP_KILL  | Allow the sending of signals to processes belonging to others  |
-| CAP_SETGID  | Allow changing of the GID  |
-| CAP_SETUID  | Allow changing of the UID  |
-| CAP_SETPCAP  | Helps to transferring and removal of current set to any PID |
-| CAP_IPC_LOCK  | This helps to lock memory  |
-| CAP_MAC_ADMIN  | Allow MAC configuration or state changes  |
-| CAP_NET_RAW  | Use RAW and PACKET sockets |
-| CAP_NET_BIND_SERVICE  | SERVICE Bind a socket to internet domain privileged ports  |
+| Capabilities name    | Description                                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| CAP_AUDIT_CONTROL    | Allow to enable/disable kernel auditing                                                                                                     |
+| CAP_AUDIT_WRITE      | Helps to write records to kernel auditing log                                                                                               |
+| CAP_BLOCK_SUSPEND    | This feature can block system suspends                                                                                                      |
+| CAP_CHOWN            | Allow user to make arbitrary change to files UIDs and GIDs                                                                                  |
+| CAP_DAC_OVERRIDE     | This helps to bypass file read, write and execute permission checks                                                                         |
+| CAP_DAC_READ_SEARCH  | This only bypasses file and directory read/execute permission checks                                                                        |
+| CAP_FOWNER           | This enables bypass of permission checks on operations that normally require the filesystem UID of the process to match the UID of the file |
+| CAP_KILL             | Allow the sending of signals to processes belonging to others                                                                               |
+| CAP_SETGID           | Allow changing of the GID                                                                                                                   |
+| CAP_SETUID           | Allow changing of the UID                                                                                                                   |
+| CAP_SETPCAP          | Helps to transferring and removal of current set to any PID                                                                                 |
+| CAP_IPC_LOCK         | This helps to lock memory                                                                                                                   |
+| CAP_MAC_ADMIN        | Allow MAC configuration or state changes                                                                                                    |
+| CAP_NET_RAW          | Use RAW and PACKET sockets                                                                                                                  |
+| CAP_NET_BIND_SERVICE | SERVICE Bind a socket to internet domain privileged ports                                                                                   |
 
 ## SUDO
 
