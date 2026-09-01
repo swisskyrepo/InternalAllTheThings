@@ -374,59 +374,14 @@ In this example, traffic is only displayed with `tee` but we could modify it usi
 
 
 
-
 ## Non-Standard SSH Port Discovery
 
-Fast Bash script to scan ports 1-10000 and perform banner grabbing using Netcat to detect SSH services running on non-standard ports:
+Scan open ports and grab banners using Nmap and Netcat to detect SSH running on non-standard ports:
 
 ```bash
-#!/bin/bash
+# Fast scan for open ports (1-10000) and extract port list
+TARGET="10.10.10.10"; PORTS=$(nmap -p 1-10000 --open -T4 -n -oG - "$TARGET" | awk -F'Ports: ' '{print $2}' | tr ',' '\n' | awk -F '/' '{print $1}' | tr -d ' ')
 
-# Color definitions
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m'
+# Banner grab each open port to identify SSH
+for port in $PORTS; do echo -n "Port $port: "; nc -w 3 -v "$TARGET" "$port" 2>&1 | grep -i "SSH"; done
 
-read -p "Enter the target IP address: " TARGET_IP
-
-if [[ -z "$TARGET_IP" ]]; then
-    echo -e "${RED}[!] Error: No IP address entered. Exiting...${NC}"
-    exit 1
-fi
-
-echo -e "${CYAN}[*] Scanning $TARGET_IP for open ports (1-10000)...${NC}"
-
-OPEN_PORTS=$(nmap -p 1-10000 --open -T4 -n -oG - "$TARGET_IP" | awk -F'Ports: ' '{print $2}' | tr ',' '\n' | awk -F '/' '{print $1}' | tr -d ' ')
-
-if [[ -z "$OPEN_PORTS" ]]; then
-    echo -e "${RED}[!] No open ports found on $TARGET_IP.${NC}"
-    exit 1
-fi
-
-echo -e "${GREEN}[+] Open ports found: $(echo $OPEN_PORTS | tr '\n' ' ')${NC}"
-echo -e "${CYAN}[*] Grabbing banners via Netcat to identify SSH service...${NC}"
-
-SSH_FOUND=false
-
-for PORT in $OPEN_PORTS; do
-    echo -e "${YELLOW}[*] Testing port $PORT...${NC}"
-    SSH_BANNER=$(nc -w 3 -v "$TARGET_IP" "$PORT" 2>&1 | head -n 2)
-
-    if [[ "$SSH_BANNER" == *"SSH-"* ]]; then
-        echo -e "${GREEN}[+] SUCCESS: SSH detected on port $PORT${NC}"
-        echo -e "${BLUE}    Banner: $SSH_BANNER${NC}"
-        SSH_FOUND=true
-    else
-        echo -e "${RED}[-] Port $PORT is not running SSH${NC}"
-    fi
-done
-
-if [[ "$SSH_FOUND" == false ]]; then
-    echo -e "${RED}[!] No SSH service identified on the scanned ports.${NC}"
-    exit 1
-fi
-
-exit 0
