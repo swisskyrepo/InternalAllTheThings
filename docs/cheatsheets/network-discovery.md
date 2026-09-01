@@ -380,8 +380,8 @@ Scan open ports and grab banners using Nmap and Netcat to detect SSH running on 
 
 ```bash
 # Fast scan for open ports (1-10000) and extract port list
-TARGET="10.10.10.10"; PORTS=$(nmap -p 1-10000 --open -T4 -n -oG - "$TARGET" | awk -F'Ports: ' '{print $2}' | tr ',' '\n' | awk -F '/' '{print $1}' | tr -d ' ')
-
 # Banner grab each open port to identify SSH
+
+TARGET="10.10.10.10"; PORTS=$(nmap -p 1-10000 --open -T4 -n -oG - "$TARGET" | awk -F'Ports: ' '{print $2}' | tr ',' '\n' | awk -F '/' '{print $1}' | tr -d ' ')
 for port in $PORTS; do echo -n "Port $port: "; nc -w 3 -v "$TARGET" "$port" 2>&1 | grep -i "SSH"; done
 
