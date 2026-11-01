@@ -156,12 +156,6 @@ proxychains nmap -sT -Pn -n -p- 127.0.0.1
 
 ### Scan Ports through Squid
 
-* [aancw/spose](https://github.com/aancw/spose) - Squid Pivoting Open Port Scanner
-
-    ```bash
-    python spose.py --proxy http://10.10.10.10:3128 --target 10.10.10.10
-    ```
-
 * [hack-ita/mysquidscanner](https://github.com/hack-ita/mysquidscanner) - asyncio scanner using the `CONNECT` method, it classifies each port (`OPEN`, `BLOCKED` by the Squid ACL, `CLOSED`, `AUTH`, `TIMEOUT`) and grabs a banner from the open ones
 
     ```bash
