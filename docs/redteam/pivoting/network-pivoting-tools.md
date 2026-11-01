@@ -120,6 +120,18 @@ route_add --name ligolo --route 10.24.0.0/24
 tunnel_start --tun ligolo
 ```
 
+### Squid proxy
+
+A misconfigured Squid proxy that allows the `CONNECT` method to arbitrary ports can be used to reach internal services (localhost, internal subnets) that the firewall blocks from the outside.
+
+* [hack-ita/mysquidscanner](https://github.com/hack-ita/mysquidscanner) - Asyncio scanner that pivots through a Squid proxy with `CONNECT` and grabs a banner from every open port.
+
+```powershell
+python3 mysquid.py --proxy 10.10.10.1:3128 --target 127.0.0.1 --ports 22,80,443
+python3 mysquid.py --proxy 10.10.10.1:3128 --target 192.168.1.50 --allports
+python3 mysquid.py --proxy user:pass@10.10.10.1:3128 --target 127.0.0.1 --show-blocked
+```
+
 ### gost
 
 * [ginuerzh/gost](https://github.com/ginuerzh/gost) - GO Simple Tunnel - a simple tunnel written in golang
@@ -143,3 +155,4 @@ sshuttle -vvr root@10.10.10.10 10.1.1.0/24 -e "ssh -i ~/.ssh/id_rsa"
 * [GO Simple Tunnel - Documentation](https://gost.run/en/)
 * [Ligolo-ng - Documentation](https://docs.ligolo.ng/)
 * [sshutle - Documentation](https://sshuttle.readthedocs.io/en/stable/usage.html)
+* [Squid Proxy Port 3128: pentest, pivoting and secure configuration - Hackita](https://en.hackita.it/articoli/porta-3128-squid-proxy/)
