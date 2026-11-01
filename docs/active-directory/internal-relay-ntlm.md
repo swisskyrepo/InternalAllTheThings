@@ -446,6 +446,7 @@ By default the SMB service is listening on port 445, blocking any relaying attem
 * [Lateral Movement – WebClient](https://pentestlab.blog/2021/10/20/lateral-movement-webclient/)
 * [NTLM reflection is dead, long live NTLM reflection! – An in-depth analysis of CVE-2025-33073 - Wilfried Bécard and Guillaume André - June 11, 2025](https://www.synacktiv.com/en/publications/ntlm-reflection-is-dead-long-live-ntlm-reflection-an-in-depth-analysis-of-cve-2025)
 * [NTLM Relaying to LDAP - The Hail Mary of Network Compromise - @logangoins - July 23, 2024](https://logan-goins.com/2024-07-23-ldap-relay/)
+* [ntlmrelayx: NTLM Relay Attack - Setup and Bypass - Hackita - June 18, 2026](https://en.hackita.it/articoli/ntlm-relay/)
 * [Playing with Relayed Credentials - June 27, 2018](https://www.secureauth.com/blog/playing-relayed-credentials)
 * [Relay Your Heart Away - An OPSEC-Conscious Approach to 445 Takeover - Nick Powers (@zyn3rgy) - Aug 1, 2024](https://posts.specterops.io/relay-your-heart-away-an-opsec-conscious-approach-to-445-takeover-1c9b4666c8ac)
 * [Relay Your Heart Away: An OPSEC-Conscious Approach to 445 Takeover - Nick Powers (@zyn3rgy) - July 27, 2024](https://www.youtube.com/watch?v=iBqOOkQGJEA)
