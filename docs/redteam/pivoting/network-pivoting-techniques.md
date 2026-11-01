@@ -134,6 +134,41 @@ netsh advfirewall firewall add rule name="PortForwarding 4545" dir=out action=al
     plink -l root -pw toor -R 445:127.0.0.1:445 
     ```
 
+## HTTP Proxy
+
+An HTTP proxy such as Squid (default port **3128**) can be used as a pivot when it is misconfigured. The `CONNECT` method opens a TCP tunnel to any `host:port` allowed by the proxy ACLs, so the proxy can reach services that are only visible from its own perspective, like loopback-only services or internal subnets.
+
+### Proxychains with an HTTP Proxy
+
+Add the proxy at the end of `/etc/proxychains.conf`, with credentials if the proxy requires authentication (`407 Proxy Authentication Required`).
+
+```bash
+[ProxyList]
+http 10.10.10.10 3128
+# http 10.10.10.10 3128 username password
+```
+
+Only TCP `connect()` calls are proxied: use a connect scan, SYN and UDP scans won't work.
+
+```ps1
+proxychains nmap -sT -Pn -n -p- 127.0.0.1
+```
+
+### Scan Ports through Squid
+
+* [aancw/spose](https://github.com/aancw/spose) - Squid Pivoting Open Port Scanner
+
+    ```bash
+    python spose.py --proxy http://10.10.10.10:3128 --target 10.10.10.10
+    ```
+
+* [hack-ita/mysquidscanner](https://github.com/hack-ita/mysquidscanner) - asyncio scanner using the `CONNECT` method, it classifies each port (`OPEN`, `BLOCKED` by the Squid ACL, `CLOSED`, `AUTH`, `TIMEOUT`) and grabs a banner from the open ones
+
+    ```bash
+    python3 mysquid.py --proxy 10.10.10.10:3128 --target 127.0.0.1 --ports 22,80,443
+    python3 mysquid.py --proxy user:pass@10.10.10.10:3128 --target 192.168.1.50 --allports
+    ```
+
 ## Network Capture
 
 ### TCPDump
@@ -189,5 +224,6 @@ tcpdump -i eth0 port 22
 * [Ligolo-ng - Documentation](https://docs.ligolo.ng/)
 * [Overview of network pivoting and tunneling [2022 updated] - Alexandre ZANNI](https://blog.raw.pm/en/state-of-the-art-of-network-pivoting-in-2019/)
 * [Port Forwarding in Windows - Windows OS Hub](http://woshub.com/port-forwarding-in-windows/)
+* [Squid Proxy Port 3128: pentest, pivoting and secure configuration - Hackita](https://en.hackita.it/articoli/porta-3128-squid-proxy/)
 * [Using the SSH "Konami Code" (SSH Control Sequences) - Jeff McJunkin - November 10, 2015](https://web.archive.org/web/20151205120607/https://pen-testing.sans.org/blog/2015/11/10/protected-using-the-ssh-konami-code-ssh-control-sequences)
 * [Windows: Capture a network trace with builtin tools (netsh) - Michael Albert - February 22, 2021](https://michlstechblog.info/blog/windows-capture-a-network-trace-with-builtin-tools-netsh/)
